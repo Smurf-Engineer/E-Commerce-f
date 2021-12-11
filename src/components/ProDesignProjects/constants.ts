@@ -15,3 +15,11 @@ export enum Pages {
   DETAILS = 1
 }
   
+// Member Colors
+export const memberColors = [
+  '#689ac5',
+  '#c57168',
+  '#68c56f',
+  '#a668c5',
+  '#e9c74b'
+]

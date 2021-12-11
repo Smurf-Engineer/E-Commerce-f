@@ -26,6 +26,7 @@ export const getProdesignItemQuery = gql`
       showNotification
       limitRequests: limit_requests
       paidRequests: paid_requests
+      role
       product {
         id
         productId: id
@@ -294,10 +295,28 @@ export const sendInvitationsMutation = gql`
   mutation sendInvitations(
     $projectId: String!
     $emails: [String]!
+    $projectItemId: String!
   ) {
     sendInvitations(
       projectId: $projectId
       emails: $emails
+      projectItemId: $projectItemId
+    ) {
+      message
+    }
+  }
+`
+
+export const reSendInvitationsMutation = gql`
+  mutation reSendInvitation(
+    $projectId: String!
+    $email: String!
+    $projectItemId: String!
+  ) {
+    reSendInvitation(
+      projectId: $projectId
+      email: $email
+      projectItemId: $projectItemId
     ) {
       message
     }

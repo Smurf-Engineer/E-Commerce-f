@@ -1975,6 +1975,8 @@ export type Project = {
   designs: ProDesignItem[]
   totalNotifications?: number
   updatedAt?: string
+  members?: User[]
+  shared?: boolean
 }
 
 export type ProjectsResult = {

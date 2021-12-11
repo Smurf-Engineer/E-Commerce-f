@@ -13,6 +13,7 @@ export const getProDesignProject = gql`
       teamSize: team_size
       deliveryDate: delivery_date
       phone
+      shared
       notes
       locker {
         id

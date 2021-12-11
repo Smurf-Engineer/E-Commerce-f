@@ -69,6 +69,7 @@ interface Props {
   myLockerList?: boolean
   currentCurrency: string
   disableSlider?: boolean
+  isOwner?: boolean
   reversePriceRange?: boolean
   backgroundColor?: string
   colors: ProductColors[]
@@ -285,6 +286,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       labelButton,
       image,
       product,
+      isOwner,
       createdAt,
       formatMessage,
       showTooltips,
@@ -414,6 +416,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             fromIntakeForm,
             selectedIndex,
             fitContainer,
+            isOwner,
             showTooltips,
             setSeen,
             proCertified,

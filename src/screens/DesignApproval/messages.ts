@@ -346,4 +346,8 @@ export default defineMessages({
     id: 'screens.DesignApproval.copiedLink',
     defaultMessage: 'Link copied!'
   },
+  invitationResent: {
+    id: 'screens.DesignApproval.invitationResent',
+    defaultMessage: 'Invitation resent!'
+  },
 })

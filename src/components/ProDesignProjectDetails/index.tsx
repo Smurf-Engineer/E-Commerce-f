@@ -155,6 +155,7 @@ export class Review extends React.Component<Props, {}> {
     const projectName = get(data, 'project.name', '')
     const projectDescription = get(data, 'project.notes', '')
     const designs = get(data, 'project.designs', [])
+    const isOwner = !get(data, 'project.shared', true)
     const files = get(data, 'project.files', [])
     const inspiration = get(data, 'project.inspiration', [])
     const teamSize = get(data, 'project.teamSize', '')
@@ -380,6 +381,7 @@ export class Review extends React.Component<Props, {}> {
                         yotpoId,
                         createdAt,
                         deleteItem,
+                        isOwner,
                         notifications,
                         isTopProduct,
                         priceRange,
@@ -389,7 +391,7 @@ export class Review extends React.Component<Props, {}> {
                     />
                   )
                 })}
-                {designs.length < LIMIT_PRODUCTS &&
+                {designs.length < LIMIT_PRODUCTS && isOwner &&
                   <AddProductButton onClick={this.addNewProduct}>
                     <AddLabel 
                       dangerouslySetInnerHTML={{

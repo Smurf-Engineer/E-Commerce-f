@@ -30,6 +30,14 @@ export default defineMessages({
     id: 'components.ProDesignProjects.cancel',
     defaultMessage: 'Cancel'
   },
+  access: {
+    id: 'components.ProDesignProjects.access',
+    defaultMessage: 'Access'
+  },
+  private: {
+    id: 'components.ProDesignProjects.private',
+    defaultMessage: 'Private'
+  },
   yesDelete: {
     id: 'components.ProDesignProjects.yesDelete',
     defaultMessage: 'YES, DELETE'

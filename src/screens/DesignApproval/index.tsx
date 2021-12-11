@@ -37,7 +37,8 @@ import {
   getEditRequestPrices,
   sendInvitationsMutation,
   changeMemberRoleMutation,
-  deleteMemberMutation
+  deleteMemberMutation,
+  reSendInvitationsMutation
 } from './data'
 import {
   openLoginAction
@@ -235,15 +236,18 @@ import Tab from './Tab'
 import Modal from 'antd/lib/modal'
 import { COLOR, APPROVAL, COLLAB, COMMENTS, memberColors, memberTypeOptions } from './constants'
 import {
+  APPROVER_ROLE,
   COMMENTER_ROLE,
   CUSTOMER_APPROVED,
   CUSTOMER_PREVIEW,
   DATE_FORMAT,
   EDIT,
   FROM_ADMIN,
+  GUEST_ROLE,
   IN_DESIGN,
   itemLabels,
   NEW_PRODUCT,
+  OWNER_ROLE,
   PREDYED_DEFAULT,
   PREDYED_TRANSPARENT,
   PREFLIGHT_STATUS,
@@ -299,6 +303,7 @@ interface StateProps {
   items: string[]
   value: string
   error: string
+  resendingEmail: string
   savingInvitations: boolean
   showConfirmInvites: boolean
   openInviteModal: boolean
@@ -345,6 +350,7 @@ interface Props extends RouteComponentProps<any> {
   setApproveLoading: (loading: boolean) => void
   deleteMember: (variables: {}) => Promise<MessagePayload>
   changeMemberRole: (variables: {}) => Promise<MessagePayload>
+  reSendInvitation: (variables: {}) => Promise<MessagePayload>
   sendInvitations: (variables: {}) => Promise<MessagePayload>
   addProductProject: (variables: {}) => Promise<MessagePayload>
   addItemToStore: (variables: {}) => Promise<MessagePayload>
@@ -361,6 +367,7 @@ interface Props extends RouteComponentProps<any> {
 
 export class DesignApproval extends React.Component<Props, StateProps> {
   state = {
+    resendingEmail: '',
     showRenderWindow: true,
     selectedKey: APPROVAL,
     openShare: false,
@@ -772,10 +779,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } = this.props
     try {
       const projectId = get(data, 'projectItem.project.shortId', '')
+      const projectItemId = get(data, 'projectItem.id', '')
       if (!!projectId) {
         const { items: emails } = this.state
         this.setState({ savingInvitations: true })
-        await sendInvitations({ variables: { projectId, emails } })
+        await sendInvitations({ variables: { projectId, emails, projectItemId } })
         data.refetch()
         AntdMessage.success(formatMessage(messages.invitationsSent))
         this.closeInviteModal()
@@ -784,6 +792,30 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       AntdMessage.error(e.message)
     } finally {
       this.setState({ savingInvitations: false })
+    }
+  }
+
+  reSendInvitationsAction = async (evt: React.MouseEvent) => {
+    const {
+      intl: { formatMessage },
+      reSendInvitation,
+      data,
+    } = this.props
+    const {
+      currentTarget: { id: email }
+    } = evt
+    try {
+      const projectId = get(data, 'projectItem.project.shortId', '')
+      const projectItemId = get(data, 'projectItem.id', '')
+      if (!!projectId && !!email) {
+        this.setState({ resendingEmail: email })
+        await reSendInvitation({ variables: { projectId, email, projectItemId } })
+        AntdMessage.success(formatMessage(messages.invitationResent))
+      }
+    } catch (e) {
+      AntdMessage.error(e.message)
+    } finally {
+      this.setState({ resendingEmail: '' })
     }
   }
 
@@ -1084,9 +1116,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
 
   isInList = (email: string, items: string[]) => {
     if (email) {
+      const { data } = this.props
+      const ownerMail = get(data, 'projectItem.project.customerEmail', '')
       const cleanMail = email.trim().toLowerCase()
       const valid = this.isAllowed(cleanMail)
-      return (items.includes(cleanMail) || !valid)
+      return (items.includes(cleanMail) || !valid || cleanMail === ownerMail)
     }
     return true
   }
@@ -1118,6 +1152,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } = this.props
     const { formatMessage } = intl
     const {
+      resendingEmail,
       savingInvitations,
       showConfirmInvites,
       openInviteModal,
@@ -1141,6 +1176,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const colors = get(projectItem, 'colors', []) as ColorType[]
     const projectItemId = get(projectItem, 'id', '') as string
     const itemCode = get(projectItem, 'code', '') as string
+    const role = get(projectItem, 'role', GUEST_ROLE) as string
     const editRequestPrice = get(editRequestData, ['editRequestPrices', currency], 0) as number
     const highlight = get(projectItem, 'showNotification', false) as boolean
     const projectDesigns = get(projectItem, 'project.designs', []) as DesignType[]
@@ -1178,7 +1214,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       modelSize,
       name: productName
     } = product || {}
-
+    const isOwner = role === OWNER_ROLE
+    const isApprover = role === APPROVER_ROLE
+    const isGuest = role === GUEST_ROLE
     const variants = get(dataVariants, 'getVariants', [])
     let modelObj
     let modelMtl
@@ -1350,8 +1388,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                           incomingMessage
                       }}
                     />
-
-                    {required &&
+                    {required && !isGuest &&
                       <RequiredText onClick={this.replyMessage(id, incomingMessage)}>
                         {formatMessage(messages.required)}
                       </RequiredText>
@@ -1440,8 +1477,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             {formatMessage(messages.teamCollabWarning)}
           </CollabWarning>
           <AddMemberButton
-            disabled={projectMembers.length >= 5}
-            onClick={projectMembers.length >= 5 ? () => {} : this.openInviteModal}
+            disabled={projectMembers.length >= 5 || !isOwner}
+            onClick={(projectMembers.length >= 5 || !isOwner) ? () => {} : this.openInviteModal}
           >
             {formatMessage(messages.inviteMembers)}
           </AddMemberButton>
@@ -1458,7 +1495,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 <MemberName>{formatMessage(messages.name)} {ownerName || '-'}</MemberName>
                 <MemberEmail>{ownerEmail || '-'}</MemberEmail>
               </MemberData>
-              <MemberOwnerLabel>
+              <MemberOwnerLabel secondary={!isOwner}>
                 {formatMessage(messages.owner)}
               </MemberOwnerLabel>
             </Member>
@@ -1481,11 +1518,19 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   {!member.dateAdded &&
                     <PendingDiv>
                       <PendingLabel>{formatMessage(messages.pending)}</PendingLabel>
-                      <Resend>{formatMessage(messages.resend)}</Resend>
+                      {isOwner &&
+                        <Resend
+                          id={member.email}
+                          onClick={this.reSendInvitationsAction}
+                        >
+                          {resendingEmail === member.email ? <Spin size="small" /> : formatMessage(messages.resend)}
+                        </Resend>
+                      }
                     </PendingDiv>
                   }
                 </MemberData>
                 <MemberType
+                  disabled={!isOwner}
                   onChange={(e: string) => this.onSelectRole(e, member.shortId)}
                   value={member.role}>
                   {memberTypeOptions.map((value: string, index: number) => (
@@ -1494,7 +1539,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     </Option>
                   ))}
                 </MemberType>
-                <MemberDelete id={member.shortId} onClick={this.onDeleteMember} type="delete" />
+                {isOwner && <MemberDelete id={member.shortId} onClick={this.onDeleteMember} type="delete" />}
               </Member>
             )}
           </MembersList>
@@ -1625,22 +1670,38 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           </BlackBar>
           <Layouts>
             {!!itemStatus &&
-              <StyledTabs activeKey={selectedKey} onTabClick={this.onTabClickAction}>
-                <TabPane tab={<Tab label={COLLAB} icon={teamIcon} />} key={COLLAB}>
-                  <TabContent>
-                    {collabComponent}
-                  </TabContent>
-                </TabPane>
+              <StyledTabs 
+                secondary={
+                  ownerEmail === 'jesus@tailrecursive.co' || 
+                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekrwiseman@gmail.com'
+                }
+                activeKey={selectedKey}
+                onTabClick={this.onTabClickAction}
+              >
+                {(ownerEmail === 'jesus@tailrecursive.co' || 
+                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekrwiseman@gmail.com') &&
+                  <TabPane tab={<Tab label={COLLAB} icon={teamIcon} />} key={COLLAB}>
+                    <TabContent>
+                      {collabComponent}
+                    </TabContent>
+                  </TabPane>
+                }
                 <TabPane tab={<Tab label={APPROVAL} icon={messageIcon} />} key={APPROVAL}>
                   <TabContent>
                     {chatComponent}
                   </TabContent>
                 </TabPane>
-                <TabPane tab={<Tab label={COMMENTS} icon={commentsIcon} />} key={COMMENTS}>
-                  <TabContent>
-                    {commentsComponent}
-                  </TabContent>
-                </TabPane>
+                {(ownerEmail === 'jesus@tailrecursive.co' || 
+                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekrwiseman@gmail.com') &&
+                  <TabPane tab={<Tab label={COMMENTS} icon={commentsIcon} />} key={COMMENTS}>
+                    <TabContent>
+                      {commentsComponent}
+                    </TabContent>
+                  </TabPane>
+                }
                 <TabPane tab={<Tab label={COLOR} icon={colorIcon} />} key={COLOR}>
                   <TabContent>
                     {colorComponent}
@@ -1751,7 +1812,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   disabled={
                     approveLoading ||
                     itemStatus !== CUSTOMER_PREVIEW ||
-                    (!!designToApply && outputPng !== designToApply)
+                    (!!designToApply && outputPng !== designToApply) ||
+                    (!isOwner && !isApprover)
                   }
                   onClick={this.handlePromptApprove}
                 >
@@ -1775,7 +1837,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </StyledTooltip>
                 }
                 <RequestEdit
-                  disabled={itemStatus !== CUSTOMER_PREVIEW}
+                  disabled={itemStatus !== CUSTOMER_PREVIEW || (!isOwner && !isApprover)}
                   onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
                 >
                   <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
@@ -1790,14 +1852,15 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   disabled={
                     approveLoading ||
                     itemStatus !== CUSTOMER_PREVIEW ||
-                    (!!designToApply && outputPng !== designToApply)
+                    (!!designToApply && outputPng !== designToApply) ||
+                    (!isOwner && !isApprover)
                   }
                   onClick={this.handlePromptApprove}
                 >
                   {formatMessage(messages.approve)}
                 </ApproveButton>
                 <RequestEdit
-                  disabled={itemStatus !== CUSTOMER_PREVIEW}
+                  disabled={itemStatus !== CUSTOMER_PREVIEW || (!isOwner && !isApprover)}
                   onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
                 >
                   <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
@@ -1823,7 +1886,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </StyledTooltipMobile>
                 }
               </MobileRequestButtons>
-              {!!itemStatus && false &&
+              {!!itemStatus &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId && showRenderWindow &&
                     <Render3D
@@ -1862,6 +1925,21 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 accordion={true}
                 destroyInactivePanel={true}
               >
+                {(ownerEmail === 'jesus@tailrecursive.co' || 
+                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekrwiseman@gmail.com') &&
+                  <PanelMobile
+                    header={
+                      <PanelTitle>
+                        <PanelIcon src={teamIcon} />
+                        {formatMessage(messages.teamMembers)}
+                      </PanelTitle>
+                    }
+                    key="0"
+                  >
+                    {collabComponent}
+                  </PanelMobile>
+                }
                 <PanelMobile
                   header={
                     <PanelTitle ref={e => { this.chatDiv = e }}>
@@ -2175,6 +2253,7 @@ const DesignsEnhance = compose(
       }
     }
   }),
+  graphql(reSendInvitationsMutation, { name: 'reSendInvitation' }),
   graphql(deleteMemberMutation, { name: 'deleteMember' }),
   graphql(changeMemberRoleMutation, { name: 'changeMemberRole' }),
   graphql(sendInvitationsMutation, { name: 'sendInvitations' }),

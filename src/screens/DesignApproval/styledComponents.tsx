@@ -479,11 +479,11 @@ export const StyledTabs = styled(AntdTabs)`
     width: 100%;
   }
   .ant-tabs-tab {
-    width: 25%;
+    width: ${({ secondary }: RowProps) => secondary ? '25%' : '50%'};
     margin: 0;
   }
   .ant-tabs-ink-bar {
-    width: 25%;
+    width: ${({ secondary }: RowProps) => secondary ? '25%' : '50%'};
   }
   .ant-tabs-bar {
     margin: 0;
@@ -1471,7 +1471,7 @@ export const Collaboration = styled.div`
   overflow-x: hidden;
   @media (max-width: 1023px) {
     padding: 0;
-    height: calc(100vh - 277px);
+    height: calc(100vh - 210px);
   }
 `
 
@@ -1520,6 +1520,10 @@ export const CollabMembers = styled.div`
 
 export const MembersList = styled.div`
   margin-top: 24px;
+  @media (max-width: 1023px) {
+    max-width: 472px;
+    width: 100%;
+  }
 `
 
 export const Member = styled.div`
@@ -1541,6 +1545,10 @@ export const MemberImage = styled(Icon)`
   margin-right: 18px;
   opacity: 0.75;
   color: ${WHITE};
+  @media(max-width: 767px) {
+    font-size: 16px;
+    padding: 10px;
+  }
 `
 
 export const MemberData = styled.div`
@@ -1559,11 +1567,14 @@ export const MemberName = styled.div`
 
 export const MemberEmail = styled.div`
   text-align: left;
+  word-break: break-all;
+  margin-right: 6px;
 `
 
 export const MemberDate = styled.div`
   color: ${DARKER_GRAY};
   text-align: left;
+  font-size: 11px;
 `
 
 export const MemberType = styled(Select)`
@@ -1853,7 +1864,8 @@ export const CollabWarning = styled.div`
 export const MemberOwnerLabel = styled.div`
   font-weight: bold;
   flex: 1;
-  padding: 8px;
+  text-align: center;
+  padding: ${({ secondary }: RowProps) => secondary ? '0px' : '8px'};
   font-size: 12px;
 `
 
@@ -1863,6 +1875,9 @@ export const StarIcon = styled(Icon)`
   bottom: 0;
   color: #ffca00;
   z-index: 2;
+  @media(max-width: 767px) {
+    left: 23px;
+  }
 `
 
 export const StyledPopOver = styled(Tooltip)`

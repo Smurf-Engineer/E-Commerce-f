@@ -49,6 +49,14 @@ body {
   }
 }
 
+.slaask-button {
+  @media (max-width: 767px) {
+    bottom: 68px !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
 .innerClassTooltip .ant-tooltip-inner {
   background-color: #ffffffe0;
   backdrop-filter: blur(9px);
