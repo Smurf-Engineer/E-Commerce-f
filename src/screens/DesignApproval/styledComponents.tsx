@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdTabs from 'antd/lib/tabs'
+import Select from 'antd/lib/select'
 import Collapse from 'antd/lib/collapse'
 import {
   BLUE,
@@ -25,13 +26,18 @@ import {
   GREEN_PAYDAY,
   BLACK_LABEL,
   GREEN_STATUS,
-  BLUE_SOFT
+  BLUE_SOFT,
+  GRAY_SKELETON,
+  COLOR_IN_DESIGN,
+  DARKER_GRAY
 } from '../../theme/colors'
 import TextArea from 'antd/lib/input/TextArea'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
 import Icon from 'antd/lib/icon'
+import Tooltip from 'antd/lib/tooltip'
 import Popover from 'antd/lib/popover'
+import Spin from 'antd/lib/spin'
 import DraggableModal from 'react-modal-resizable-draggable'
 import { AVENIR_MEDIUM } from '../../theme/fonts'
 
@@ -473,11 +479,11 @@ export const StyledTabs = styled(AntdTabs)`
     width: 100%;
   }
   .ant-tabs-tab {
-    width: 50%;
+    width: ${({ secondary }: RowProps) => secondary ? '25%' : '50%'};
     margin: 0;
   }
   .ant-tabs-ink-bar {
-    width: 50%;
+    width: ${({ secondary }: RowProps) => secondary ? '25%' : '50%'};
   }
   .ant-tabs-bar {
     margin: 0;
@@ -922,7 +928,7 @@ export const MessageHeader = styled.div`
 
 export const TabContent = styled.div`
   display: flex;
-  height: calc(100vh - 221px);
+  height: calc(100vh - 215px);
   flex-flow: column;
 `
 
@@ -1452,4 +1458,435 @@ export const DeleteFile = styled(Icon)`
     cursor: pointer;
     opacity: 0.6;
   }
+`
+
+export const Collaboration = styled.div`
+  padding: 0 14px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  @media (max-width: 1023px) {
+    padding: 0;
+    height: calc(100vh - 210px);
+  }
+`
+
+export const CollabInfo = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  margin-top: 14px;
+`
+
+export const CollabTitle = styled.div`
+  text-align: left;
+  font-weight: bold;
+`
+
+export const CollabDescription = styled.div`
+  text-align: left;
+  margin-top: 8px;
+`
+
+export const AddMemberButton = styled.div`
+  padding: 6px 12px;
+  border-radius: 4px;
+  background: rgb(68, 104, 249);
+  margin-top: 12px;
+  color: ${WHITE};
+  transition: all .25s;
+  &:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+  ${({ disabled }: RowProps) => disabled ? `
+    background: ${GRAY_LIGHT};
+    &:hover {
+      opacity: 1;
+      cursor: not-allowed;
+    }
+  ` : ''}
+`
+
+export const CollabMembers = styled.div`
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid ${GRAY_SKELETON};
+`
+
+export const MembersList = styled.div`
+  margin-top: 24px;
+  @media (max-width: 1023px) {
+    max-width: 472px;
+    width: 100%;
+  }
+`
+
+export const Member = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 24px;
+  position: relative;
+`
+
+export const MemberImage = styled(Icon)`
+  background: ${({ codeColor }: RowProps) => codeColor || COLOR_IN_DESIGN};
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  font-size: 20px;
+  margin-right: 18px;
+  opacity: 0.75;
+  color: ${WHITE};
+  @media(max-width: 767px) {
+    font-size: 16px;
+    padding: 10px;
+  }
+`
+
+export const MemberData = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: column;
+  align-items: flex-start;
+  font-size: 12px;
+  flex: 1;
+`
+
+export const MemberName = styled.div`
+  font-weight: bold;
+  text-align: left;
+`
+
+export const MemberEmail = styled.div`
+  text-align: left;
+  word-break: break-all;
+  margin-right: 6px;
+`
+
+export const MemberDate = styled.div`
+  color: ${DARKER_GRAY};
+  text-align: left;
+  font-size: 11px;
+`
+
+export const MemberType = styled(Select)`
+  min-width: 108px;
+  margin-right: 10px;
+  font-size: 12px;
+`
+
+export const MemberDelete = styled(Icon)`
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    color: ${RED};
+  }
+`
+
+export const PendingDiv = styled.div`
+  display: flex;
+  margin-top: 2px;
+`
+
+export const PendingLabel = styled.div`
+  font-style: italic;
+  color: ${RED};
+`
+
+export const Resend = styled.div`
+  margin-left: 32px;
+  color: ${BLUE};
+  font-weight: bold;
+  transition: all .25s;
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+`
+
+export const InviteContainer = styled.div`
+  margin: 22px 20px;
+`
+
+export const InviteTitle = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  font-family: Avenir;
+`
+
+export const MailsContainer = styled.div`
+  margin-top: 22px;
+`
+
+export const EmailsLabel = styled.div`
+  font-weight: bold;
+`
+
+export const StyledEmailTags = styled.div`
+  margin-top: 16px;
+  border: 1px solid #d4d5d6;
+  padding: 10px 8px;
+  border-radius: 5px;
+  min-height: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  &:hover {
+    cursor: text;
+  }
+  .input {
+    display: inline-block;
+    width: ${({ secondary }: RowProps) => secondary ? 'auto' : '100%'};
+    height: 28px;
+    flex: 1;
+    box-sizing: border-box;
+    font: inherit;
+    border-radius: 0.2rem;
+    border: none;
+    color: #565656;
+    -webkit-appearance: none;
+  }
+
+  .input:focus {
+    border-color: cornflowerblue;
+    outline: none;
+  }
+
+  .input.has-error {
+    border-color: tomato;
+  }
+
+  .input:disabled {
+    background: unset;
+  }
+
+  .error {
+    margin: 0;
+    font-size: 90%;
+    color: tomato;
+  }
+
+  .tag-item {
+    background-color: #d4d5d6;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 30px;
+    height: 30px;
+    padding: 0 4px 0 1rem;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0.3rem 0.3rem 0;
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  .tag-item > .button {
+    background-color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    margin-left: 10px;
+    font-weight: bold;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`
+
+export const SendInvitationButton = styled.div`
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 4px;
+  background: rgb(68, 104, 249);
+  margin-top: 18px;
+  color: ${WHITE};
+  transition: all .25s;
+  &:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+  ${({ disabled }: RowProps) => disabled ? `
+    background: ${GRAY_LIGHT};
+    &:hover {
+      opacity: 1;
+      cursor: not-allowed;
+    }
+  ` : ''}
+`
+
+export const BottomSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid ${GRAY_LIGHT};
+`
+
+export const InviteLink = styled.div`
+  display: flex;
+  font-weight: bold;
+  align-items: center;
+`
+
+export const InviteLinkLabel = styled.div`
+  margin-left: 10px;
+  transition: all .25s;
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`
+
+export const CopyLinkButton = styled.div`
+  display: inline-block;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  color: rgb(68,104,249);
+  background: ${WHITE};
+  border: 1px solid rgb(68,104,249);
+  transition: all .25s;
+  &:hover {
+    background: rgb(68,104,249);
+    color: ${WHITE};
+    cursor: pointer;
+  }
+`
+
+export const GearIcon = styled(Icon)`
+  color: ${BLACK};
+  transition: all .25s;
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`
+
+export const InfoIconLink = styled(Icon)`
+  margin-left: 10px;
+  color: ${GRAY};
+`
+
+export const ConfirmEmailTags = styled.div`
+  margin: 20px 0;
+  display: flex;
+  align-items: flex-start;
+  flex-flow: column;
+  flex-wrap: wrap;
+  max-height: 256px;
+  .tag-item {
+    background-color: #d4d5d6;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 30px;
+    height: 30px;
+    padding: 0 4px 0 1rem;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0.3rem 0.3rem 0;
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  .tag-item > .button {
+    background-color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    margin-left: 10px;
+    font-weight: bold;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`
+
+export const InfoConfirmation = styled.div`
+  margin: 0 4px;
+`
+
+export const ConfirmBottom = styled.div`
+  display: flex;
+`
+
+export const CancelInvitation = styled.div`
+  margin-top: 18px;
+  margin-left: 16px;
+  display: flex;
+  align-items: center;
+  padding: 7px 18px;
+  border-radius: 4px;
+  color: rgb(68,104,249);
+  background: ${WHITE};
+  border: 1px solid rgb(68,104,249);
+  transition: all .25s;
+  &:hover {
+    background: rgb(68,104,249);
+    color: ${WHITE};
+    cursor: pointer;
+  }
+`
+
+export const StyledSpinInvitation = styled(Spin)`
+  width: 79px;
+  height: 15px;
+`
+
+export const CollabWarning = styled.div`
+  text-align: left;
+  color: red;
+  margin-top: 4px;
+`
+
+export const MemberOwnerLabel = styled.div`
+  font-weight: bold;
+  flex: 1;
+  text-align: center;
+  padding: ${({ secondary }: RowProps) => secondary ? '0px' : '8px'};
+  font-size: 12px;
+`
+
+export const StarIcon = styled(Icon)`
+  position: absolute;
+  left: 30px;
+  bottom: 0;
+  color: #ffca00;
+  z-index: 2;
+  @media(max-width: 767px) {
+    left: 23px;
+  }
+`
+
+export const StyledPopOver = styled(Tooltip)`
+  cursor: pointer;
+`
+
+export const PopoverText = styled.div`
+  max-width: 256px;
+  width: 100%;
+  font-size: 12px;
+  color: ${BLACK};
 `

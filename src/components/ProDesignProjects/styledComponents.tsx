@@ -3,9 +3,20 @@
  */
 import styled from 'styled-components'
 import Badge from 'antd/lib/badge'
-import { BLACK, BLUE, GRAY_DARK, GRAY_LIGHT, RED, RED_TRANSPARENT, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
+import {
+  BLACK,
+  BLUE,
+  COLOR_IN_DESIGN,
+  GRAY_DARK,
+  GRAY_LIGHT,
+  RED,
+  RED_TRANSPARENT,
+  WHITE,
+  WHITE_TRANSPARENT
+} from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 import { AVENIR_NEXT } from '../../theme/fonts'
+import Tooltip from 'antd/lib/tooltip'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -19,6 +30,8 @@ interface HeaderProps {
 interface CellProps {
   bold?: boolean
   width?: string
+  secondary?: boolean
+  codeColor?: string
 }
 
 export const Container = styled.div`
@@ -230,6 +243,7 @@ export const Header = styled.th`
     letter-spacing: 0.09px;
     font-size: 11px;
     line-height: 15px;
+    padding-right: 5px;
   }
 `
 
@@ -327,3 +341,52 @@ export const cancelButtonStyle = {
   borderColor: GRAY_LIGHT,
   boxShadow: 'none'
 }
+
+export const MemberList = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+export const CircleMember = styled.div`
+  color: ${WHITE};
+  padding-top: 3px;
+  padding-left: 1px;
+  font-weight: bold;
+  font-family: Avenir;
+  border-radius: 25px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  margin-left: ${({ secondary }: CellProps) => secondary ? '-7px' : '0'};
+  background: ${({ codeColor }: CellProps) => codeColor || COLOR_IN_DESIGN};
+`
+
+export const StyledPopOver = styled(Tooltip)`
+  cursor: pointer;
+`
+
+export const PopoverText = styled.div`
+  font-size: 12px;
+  color: ${BLACK};
+`
+
+export const PopOverValue = styled.div`
+  margin: 7px 4px;
+`
+
+export const SharedIcon = styled(Icon)`
+  font-size: 14px;
+  display: block;
+  z-index: 9;
+  margin-right: 8px;
+  max-width: 30px;
+  width: 100%;
+  color: ${BLUE};
+  transition: all .25s;
+  padding: 8px 0px;
+  border-radius: 50%;
+`

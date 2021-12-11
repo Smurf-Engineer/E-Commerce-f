@@ -26,6 +26,7 @@ export const getProdesignItemQuery = gql`
       showNotification
       limitRequests: limit_requests
       paidRequests: paid_requests
+      role
       product {
         id
         productId: id
@@ -129,6 +130,20 @@ export const getProdesignItemQuery = gql`
         status
         createdAt: created_at
         updatedAt: updated_at
+        customer
+        customerEmail: customer_email
+        members {
+          id
+          shortId: short_id
+          userId: user_id
+          firstName: first_name
+          lastName: last_name
+          dateInvited: date_invited
+          dateAdded: date_added
+          role
+          projectId: project_id
+          email
+        }
         designs {
           id: short_id
           name
@@ -271,6 +286,60 @@ export const addTeamStoreItemMutation = gql`
       teamStoreItem: $teamStoreItem
       teamStoreId: $teamStoreId
     ) {
+      message
+    }
+  }
+`
+
+export const sendInvitationsMutation = gql`
+  mutation sendInvitations(
+    $projectId: String!
+    $emails: [String]!
+    $projectItemId: String!
+  ) {
+    sendInvitations(
+      projectId: $projectId
+      emails: $emails
+      projectItemId: $projectItemId
+    ) {
+      message
+    }
+  }
+`
+
+export const reSendInvitationsMutation = gql`
+  mutation reSendInvitation(
+    $projectId: String!
+    $email: String!
+    $projectItemId: String!
+  ) {
+    reSendInvitation(
+      projectId: $projectId
+      email: $email
+      projectItemId: $projectItemId
+    ) {
+      message
+    }
+  }
+`
+
+export const changeMemberRoleMutation = gql`
+  mutation changeMemberRole(
+    $role: String!
+    $memberId: String!
+  ) {
+    changeMemberRole(
+      role: $role
+      memberId: $memberId
+    ) {
+      message
+    }
+  }
+`
+
+export const deleteMemberMutation = gql`
+  mutation deleteMember($memberId: String!) {
+    deleteMember(memberId: $memberId) {
       message
     }
   }

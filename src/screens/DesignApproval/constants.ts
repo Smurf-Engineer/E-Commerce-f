@@ -1,3 +1,14 @@
+import { COMMENTER_ROLE, APPROVER_ROLE } from '../../constants'
+import {
+    BLUE_STATUS,
+    GREEN_BRIGHT,
+    RED_DARK,
+    ORANGE_STATUS,
+    COLOR_IN_DESIGN,
+    COLOR_AM_REVIEW,
+    COLOR_EDIT_REQUEST
+} from '../../theme/colors'
+
 /**
  * Designs Types - Created by david on 27/03/18.
  */
@@ -17,3 +28,21 @@ export const SET_EDIT_PROJECT = `${namespace}/SET_EDIT_PROJECT`
 // Tabs Key
 export const APPROVAL = 'approval'
 export const COLOR = 'color'
+export const COLLAB = 'collab'
+export const COMMENTS = 'comments'
+
+// Member Colors
+export const memberColors = [
+    BLUE_STATUS,
+    GREEN_BRIGHT,
+    RED_DARK,
+    ORANGE_STATUS,
+    COLOR_IN_DESIGN,
+    COLOR_AM_REVIEW,
+    COLOR_EDIT_REQUEST,
+]
+
+export const memberTypeOptions = [
+    COMMENTER_ROLE,
+    APPROVER_ROLE
+]

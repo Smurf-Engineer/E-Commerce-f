@@ -54,6 +54,7 @@ interface Props {
   currentImage: number
   labelButton?: string | React.ReactNode
   hideCustomButton?: boolean
+  isOwner?: boolean
   hideQuickView?: boolean
   urlProduct: string
   myLockerList?: boolean
@@ -113,6 +114,7 @@ const ProductSlide = ({
   customizable,
   backgroundColor,
   proDesign,
+  isOwner = true,
   formatMessage,
   showTooltips,
   setSeen,
@@ -294,7 +296,7 @@ const ProductSlide = ({
             </QuickView>)
           }
         </AboveTablet>
-        {(isProDesign && proStatus === PREFLIGHT_STATUS) &&
+        {(isProDesign && proStatus === PREFLIGHT_STATUS) && isOwner &&
           <DeleteButton onClick={deleteItem} type="delete" />
         }
         {selectProduct && <BelowTablet><QuickView onClick={onPressQuickView}>

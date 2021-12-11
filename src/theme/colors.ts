@@ -66,3 +66,7 @@ export const BLACK_SEMILIGHT = '#231F20'
 export const DARK_TEXT = '#606062'
 export const BLACK_3D_LIGHT = '#2b2b2c73'
 export const BLACK_3D_DARK = '#2b2b2c'
+
+export const COLOR_IN_DESIGN = '#00A3E0'
+export const COLOR_AM_REVIEW = '#39A884'
+export const COLOR_EDIT_REQUEST = '#9C69F1'

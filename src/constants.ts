@@ -131,6 +131,12 @@ export const CATALOGUE_CONSTANT = 'catalogue'
 export const NAVBAR_CONSTANT = 'navbar'
 export const ACTIVE_CONSTANT = 'active'
 
+/* Member Types */
+export const OWNER_ROLE = 'Owner'
+export const COMMENTER_ROLE = 'Commenter'
+export const APPROVER_ROLE = 'Approver'
+export const GUEST_ROLE = 'Guest'
+
 export const MAIN_TITLE = 'Online Jersey Design Center - Designlab by Jakroo'
 
 /* Zoom Size Products */

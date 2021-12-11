@@ -14,9 +14,12 @@ import { connect } from 'react-redux'
 import queryString from 'query-string'
 import AntdMessage from 'antd/lib/message'
 import Button from 'antd/lib/button'
+import Select from 'antd/lib/select'
 import messageIcon from '../../assets/approval_log.svg'
 import JakRooLogo from '../../assets/Jackroologo.svg'
 import quickView from '../../assets/quickview.svg'
+import teamIcon from '../../assets/team.svg'
+import commentsIcon from '../../assets/comments.svg'
 import printPreviewImg from '../../assets/printpreview.svg'
 import messageSent from '../../assets/message_sent.wav'
 import colorIcon from '../../assets/color_white.svg'
@@ -31,7 +34,11 @@ import {
   getPredyedColors,
   getProdesignItemQuery,
   getVariantsFromProduct,
-  getEditRequestPrices
+  getEditRequestPrices,
+  sendInvitationsMutation,
+  changeMemberRoleMutation,
+  deleteMemberMutation,
+  reSendInvitationsMutation
 } from './data'
 import {
   openLoginAction
@@ -71,8 +78,10 @@ import {
   BlackBarMobile,
   BottomButtons,
   BottomSheetWrapper,
+  AddMemberButton,
   ButtonContainer,
   buttonPrompt,
+  InviteContainer,
   ButtonsContainer,
   ButtonWrapper,
   CancelButton,
@@ -181,21 +190,64 @@ import {
   CloseIcon,
   PreviewImg,
   DownloadDiv,
-  DownloadIcon
+  DownloadIcon,
+  Collaboration,
+  CollabInfo,
+  CollabTitle,
+  CollabDescription,
+  CollabMembers,
+  MembersList,
+  Member,
+  MemberData,
+  MemberDate,
+  MemberDelete,
+  MemberEmail,
+  MemberImage,
+  MemberName,
+  MemberType,
+  PendingDiv,
+  PendingLabel,
+  Resend,
+  InviteTitle,
+  MailsContainer,
+  EmailsLabel,
+  StyledEmailTags,
+  SendInvitationButton,
+  BottomSection,
+  CopyLinkButton,
+  GearIcon,
+  InfoIconLink,
+  InviteLink,
+  InviteLinkLabel,
+  ConfirmEmailTags,
+  InfoConfirmation,
+  ConfirmBottom,
+  CancelInvitation,
+  StyledSpinInvitation,
+  CollabWarning,
+  MemberOwnerLabel,
+  StarIcon,
+  StyledPopOver,
+  PopoverText
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Tab from './Tab'
 import Modal from 'antd/lib/modal'
-import { COLOR, APPROVAL } from './constants'
+import { COLOR, APPROVAL, COLLAB, COMMENTS, memberColors, memberTypeOptions } from './constants'
 import {
+  APPROVER_ROLE,
+  COMMENTER_ROLE,
   CUSTOMER_APPROVED,
   CUSTOMER_PREVIEW,
+  DATE_FORMAT,
   EDIT,
   FROM_ADMIN,
+  GUEST_ROLE,
   IN_DESIGN,
   itemLabels,
   NEW_PRODUCT,
+  OWNER_ROLE,
   PREDYED_DEFAULT,
   PREDYED_TRANSPARENT,
   PREFLIGHT_STATUS,
@@ -213,6 +265,7 @@ import ShareDesignModal from '../../components/ShareDesignModal'
 import AddToCartButton from '../../components/AddToCartButton'
 import AddToTeamStore from '../../components/AddToTeamStore'
 import unset from 'lodash/unset'
+import set from 'lodash/set'
 import {
   BLUE_STATUS,
   BLACK,
@@ -226,6 +279,7 @@ import {
 import PayModal from '../../components/PayModal'
 import config from '../../config'
 
+const Option = Select.Option
 const { confirm, info } = Modal
 const { TabPane } = AntdTabs
 
@@ -246,6 +300,13 @@ interface EditRequestData extends QueryProps {
 }
 
 interface StateProps {
+  items: string[]
+  value: string
+  error: string
+  resendingEmail: string
+  savingInvitations: boolean
+  showConfirmInvites: boolean
+  openInviteModal: boolean
   showRenderWindow: boolean
   selectedKey: string
   openShare: boolean
@@ -287,6 +348,10 @@ interface Props extends RouteComponentProps<any> {
     hideSliderButtons?: boolean
   ) => void
   setApproveLoading: (loading: boolean) => void
+  deleteMember: (variables: {}) => Promise<MessagePayload>
+  changeMemberRole: (variables: {}) => Promise<MessagePayload>
+  reSendInvitation: (variables: {}) => Promise<MessagePayload>
+  sendInvitations: (variables: {}) => Promise<MessagePayload>
   addProductProject: (variables: {}) => Promise<MessagePayload>
   addItemToStore: (variables: {}) => Promise<MessagePayload>
   setApproveDesign: (variables: {}) => Promise<ProDesignMessage>
@@ -302,6 +367,7 @@ interface Props extends RouteComponentProps<any> {
 
 export class DesignApproval extends React.Component<Props, StateProps> {
   state = {
+    resendingEmail: '',
     showRenderWindow: true,
     selectedKey: APPROVAL,
     openShare: false,
@@ -313,11 +379,18 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     designToApply: '',
     selectedVariant: -1,
     retryLoad: false,
-    openPrintPreview: false
+    openPrintPreview: false,
+    items: [],
+    value: '',
+    error: null,
+    openInviteModal: false,
+    showConfirmInvites: false,
+    savingInvitations: false
   }
   private listMsg: any
   private chatDiv: any
   private catalogDiv: any
+  private emailInput: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     if (navigator && navigator.serviceWorker) {
@@ -464,6 +537,25 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } = evt
     const { changeNoteAction } = this.props
     changeNoteAction(value)
+  }
+
+  openInviteModal = () => {
+    this.setState({ openInviteModal: true, showConfirmInvites: false })
+  }
+
+  closeInviteModal = () => {
+    this.setState({ openInviteModal: false, showConfirmInvites: false, items: [] })
+  }
+
+  showConfirmInvites = () => {
+    const { items } = this.state
+    if (items && items.length > 0) {
+      this.setState({ showConfirmInvites: true })
+    }
+  }
+
+  closeConfirmInvites = () => {
+    this.setState({ showConfirmInvites: false })
   }
 
   openMessages = () => {
@@ -679,6 +771,105 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     })
   }
 
+  sendInvitationsAction = async () => {
+    const {
+      intl: { formatMessage },
+      sendInvitations,
+      data,
+    } = this.props
+    try {
+      const projectId = get(data, 'projectItem.project.shortId', '')
+      const projectItemId = get(data, 'projectItem.id', '')
+      if (!!projectId) {
+        const { items: emails } = this.state
+        this.setState({ savingInvitations: true })
+        await sendInvitations({ variables: { projectId, emails, projectItemId } })
+        data.refetch()
+        AntdMessage.success(formatMessage(messages.invitationsSent))
+        this.closeInviteModal()
+      }
+    } catch (e) {
+      AntdMessage.error(e.message)
+    } finally {
+      this.setState({ savingInvitations: false })
+    }
+  }
+
+  reSendInvitationsAction = async (evt: React.MouseEvent) => {
+    const {
+      intl: { formatMessage },
+      reSendInvitation,
+      data,
+    } = this.props
+    const {
+      currentTarget: { id: email }
+    } = evt
+    try {
+      const projectId = get(data, 'projectItem.project.shortId', '')
+      const projectItemId = get(data, 'projectItem.id', '')
+      if (!!projectId && !!email) {
+        this.setState({ resendingEmail: email })
+        await reSendInvitation({ variables: { projectId, email, projectItemId } })
+        AntdMessage.success(formatMessage(messages.invitationResent))
+      }
+    } catch (e) {
+      AntdMessage.error(e.message)
+    } finally {
+      this.setState({ resendingEmail: '' })
+    }
+  }
+
+  onSelectRole = async (value: string, memberId: string) => {
+    const {
+      data,
+      intl: { formatMessage },
+      changeMemberRole
+    } = this.props
+    try {
+      if (!!memberId) {
+        const membersArray = get(data, 'projectItem.project.members', [])
+        const newMembers = membersArray.map(element => {
+          element.role = element.shortId === memberId ? value : COMMENTER_ROLE
+          return element
+        })
+        set(data, 'projectItem.project.members', newMembers)
+        this.forceUpdate()
+        await changeMemberRole(
+          { variables: { role: value, memberId }
+        })
+        AntdMessage.success(formatMessage(messages.userUpdated))
+      }
+    } catch (e) {
+      AntdMessage.error(e.message)
+    }
+  }
+
+  onDeleteMember = async (evt: React.MouseEvent<HTMLDivElement>) => {
+    const {
+      data,
+      intl: { formatMessage },
+      deleteMember
+    } = this.props
+    try {
+      const {
+        currentTarget: { id: memberId }
+      } = evt
+      if (!!memberId) {
+        const membersArray = get(data, 'projectItem.project.members', [])
+        const index = membersArray.findIndex((item) => item.shortId === memberId)
+        membersArray.splice(index, 1)
+        set(data, 'projectItem.project.members', membersArray)
+        this.forceUpdate()
+        await deleteMember(
+          { variables: { memberId }
+        })
+        AntdMessage.success(formatMessage(messages.memberDeleted))
+      }
+    } catch (e) {
+      AntdMessage.error(e.message)
+    }
+  }
+
   approveDesign = async () => {
     const {
       intl: { formatMessage },
@@ -809,6 +1000,135 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     this.setState({ openPrintPreview: !openPrintPreview })
   }
 
+  handleKeyDown = evt => {
+    if (['Enter', 'Tab', ',', ' '].includes(evt.key)) {
+      evt.preventDefault()
+      var value = this.state.value.trim()
+      if (value && this.isValid(value)) {
+        this.setState({
+          items: [...this.state.items, this.state.value],
+          value: ''
+        })
+      }
+    }
+  }
+
+  handleBlur = evt => {
+    if (evt) {
+      evt.preventDefault()
+      var value = this.state.value.trim()
+      if (value && this.isValid(value)) {
+        this.setState({
+          items: [...this.state.items, this.state.value],
+          value: ''
+        })
+      }
+    }
+  }
+
+  handleChange = (evt: any) => {
+    this.setState({
+      value: evt.target.value,
+      error: null
+    })
+  }
+
+  handleDelete = (item: any, e: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation()
+      e.preventDefault()
+    }
+    this.setState({
+      items: this.state.items.filter(i => i !== item)
+    })
+  }
+
+  copyShareLink = () => {
+    const { intl: { formatMessage }, data } = this.props
+    const itemId = get(data, 'projectItem.id', '')
+    const tempInput = document.createElement('input')
+    tempInput.value = `${config.baseUrl}approval?id=${itemId}`
+    document.body.appendChild(tempInput)
+    tempInput.select()
+    document.execCommand('copy')
+    document.body.removeChild(tempInput)
+    AntdMessage.success(formatMessage(messages.copiedLink))
+  }
+
+  focusOnInput = () => {
+    if (this.emailInput) {
+      this.emailInput.focus()
+    }
+  }
+
+  handlePaste = (evt: any) => {
+    evt.preventDefault()
+    const paste = evt.clipboardData.getData('text')
+    const emails = paste.match(/[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/g)
+    if (emails) {
+      const { data } = this.props
+      const { items } = this.state
+      const projectMembers = get(data, 'projectItem.project.members', [])
+      const projectMembersMails = projectMembers.map((item) => item.email.trim().toLowerCase())
+      const itemsLower = items.map((item: string) => item.trim().toLowerCase())
+      const toBeAdded = emails.filter(
+        (email: string) => !this.isInList(email, [...projectMembersMails, ...itemsLower])
+      )
+      const arrayCleaned = toBeAdded.slice(0, 5 - (items.length + projectMembers.length))
+      this.setState({
+        items: [...this.state.items, ...arrayCleaned]
+      })
+    }
+  }
+
+  isAllowed = (email: string) => {
+    if (email) {
+      const cleanMail = email.trim().toLowerCase()
+      return !(/^[a-zA-Z0-9_.+-]+@((jakroousa.com|jakroo.ca))$/g.test(cleanMail))
+    }
+    return false
+  }
+
+  isValid = (email: string) => {
+    let error = null
+    const { data } = this.props
+    const { items } = this.state
+    const projectMembers = get(data, 'projectItem.project.members', [])
+    const projectMembersMails = projectMembers.map((item) => item.email.trim().toLowerCase())
+    const itemsLower = items.map((item: string) => item.trim().toLowerCase())
+    if (!this.isAllowed(email)) {
+      error = 'This email domain is not allowed'
+      this.setState({ error })
+      return false
+    }
+    if (this.isInList(email, [...projectMembersMails, ...itemsLower])) {
+      error = `${email} has already been added.`
+    }
+    if (!this.isEmail(email)) {
+      error = `${email} is not a valid email address.`
+    }
+    if (error) {
+      this.setState({ error })
+      return false
+    }
+    return true
+  }
+
+  isInList = (email: string, items: string[]) => {
+    if (email) {
+      const { data } = this.props
+      const ownerMail = get(data, 'projectItem.project.customerEmail', '')
+      const cleanMail = email.trim().toLowerCase()
+      const valid = this.isAllowed(cleanMail)
+      return (items.includes(cleanMail) || !valid || cleanMail === ownerMail)
+    }
+    return true
+  }
+
+  isEmail = (email: string) => {
+    return /[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/.test(email)
+  }
+
   render() {
     const {
       fontsData,
@@ -832,6 +1152,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } = this.props
     const { formatMessage } = intl
     const {
+      resendingEmail,
+      savingInvitations,
+      showConfirmInvites,
+      openInviteModal,
       showRenderWindow,
       selectedKey,
       openBottom,
@@ -852,6 +1176,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const colors = get(projectItem, 'colors', []) as ColorType[]
     const projectItemId = get(projectItem, 'id', '') as string
     const itemCode = get(projectItem, 'code', '') as string
+    const role = get(projectItem, 'role', GUEST_ROLE) as string
     const editRequestPrice = get(editRequestData, ['editRequestPrices', currency], 0) as number
     const highlight = get(projectItem, 'showNotification', false) as boolean
     const projectDesigns = get(projectItem, 'project.designs', []) as DesignType[]
@@ -860,6 +1185,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const paidRequests = get(projectItem, 'paidRequests', 0) as number
     const limitRequests = paidRequests + requestsLimit
     const predyedColors = get(predyedData, 'getPredyedColors', [])
+    const projectMembers = get(projectItem, 'project.members', [])
+    const ownerName = get(projectItem, 'project.customer', '')
+    const ownerEmail = get(projectItem, 'project.customerEmail', '')
     const {
       id: designSerialId,
       predyedName,
@@ -886,7 +1214,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       modelSize,
       name: productName
     } = product || {}
-
+    const isOwner = role === OWNER_ROLE
+    const isApprover = role === APPROVER_ROLE
+    const isGuest = role === GUEST_ROLE
     const variants = get(dataVariants, 'getVariants', [])
     let modelObj
     let modelMtl
@@ -1058,8 +1388,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                           incomingMessage
                       }}
                     />
-
-                    {required &&
+                    {required && !isGuest &&
                       <RequiredText onClick={this.replyMessage(id, incomingMessage)}>
                         {formatMessage(messages.required)}
                       </RequiredText>
@@ -1134,6 +1463,191 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         </Accesories>
       </Colors> : null
 
+    const collabComponent = !!itemStatus ?
+      <Collaboration>
+        <ApprovalTitle>{formatMessage(messages.teamMembers)}</ApprovalTitle>
+        <CollabInfo>
+          <CollabTitle>
+            {formatMessage(messages.teamCollaborationTitle)}
+          </CollabTitle>
+          <CollabDescription>
+            {formatMessage(messages.teamCollaborationDesc)}
+          </CollabDescription>
+          <CollabWarning>
+            {formatMessage(messages.teamCollabWarning)}
+          </CollabWarning>
+          <AddMemberButton
+            disabled={projectMembers.length >= 5 || !isOwner}
+            onClick={(projectMembers.length >= 5 || !isOwner) ? () => {} : this.openInviteModal}
+          >
+            {formatMessage(messages.inviteMembers)}
+          </AddMemberButton>
+        </CollabInfo>
+        <CollabMembers>
+          <CollabTitle>
+            {formatMessage(messages.myTeam)}
+          </CollabTitle>
+          <MembersList>
+            <Member>
+              <StarIcon type="star" theme="filled" />
+              <MemberImage codeColor={'#395CA9'} type="user" />
+              <MemberData>
+                <MemberName>{formatMessage(messages.name)} {ownerName || '-'}</MemberName>
+                <MemberEmail>{ownerEmail || '-'}</MemberEmail>
+              </MemberData>
+              <MemberOwnerLabel secondary={!isOwner}>
+                {formatMessage(messages.owner)}
+              </MemberOwnerLabel>
+            </Member>
+            {projectMembers.map((member, key: number) =>
+              <Member {...{ key }}>
+                <MemberImage codeColor={memberColors[Math.floor(key % 7)]} type="user" />
+                <MemberData>
+                  <MemberName>{formatMessage(messages.name)} {member.firstName || '-'} {member.lastName}</MemberName>
+                  <MemberEmail>{member.email}</MemberEmail>
+                  {member.dateAdded &&
+                    <MemberDate>
+                      {formatMessage(messages.dateAdded)} {moment(member.dateAdded).local().format(DATE_FORMAT)}
+                    </MemberDate>
+                  }
+                  {member.dateInvited &&
+                    <MemberDate>
+                      {formatMessage(messages.dateInvited)} {moment(member.dateInvited).local().format(DATE_FORMAT)}
+                    </MemberDate>
+                  }
+                  {!member.dateAdded &&
+                    <PendingDiv>
+                      <PendingLabel>{formatMessage(messages.pending)}</PendingLabel>
+                      {isOwner &&
+                        <Resend
+                          id={member.email}
+                          onClick={this.reSendInvitationsAction}
+                        >
+                          {resendingEmail === member.email ? <Spin size="small" /> : formatMessage(messages.resend)}
+                        </Resend>
+                      }
+                    </PendingDiv>
+                  }
+                </MemberData>
+                <MemberType
+                  disabled={!isOwner}
+                  onChange={(e: string) => this.onSelectRole(e, member.shortId)}
+                  value={member.role}>
+                  {memberTypeOptions.map((value: string, index: number) => (
+                    <Option key={index} value={value}>
+                      {value}
+                    </Option>
+                  ))}
+                </MemberType>
+                {isOwner && <MemberDelete id={member.shortId} onClick={this.onDeleteMember} type="delete" />}
+              </Member>
+            )}
+          </MembersList>
+        </CollabMembers>
+        <Modal
+          visible={openInviteModal}
+          footer={null}
+          onCancel={this.closeInviteModal}
+          wrapClassName="rounded-corner"
+          width={'545px'}
+        >
+          {!showConfirmInvites ? 
+            <InviteContainer>
+              <InviteTitle>{formatMessage(messages.inviteToTeam)}</InviteTitle>
+              <MailsContainer>
+                <EmailsLabel>{formatMessage(messages.emails)}</EmailsLabel>
+                <StyledEmailTags onClick={this.focusOnInput} secondary={this.state.items.length > 0}>
+                  {this.state.items.map(item => (
+                    <div className="tag-item" key={item}>
+                      {item}
+                      <button
+                        type="button"
+                        className="button"
+                        onClick={(e) => this.handleDelete(item, e)}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  ))}
+                  <input
+                    ref={(emailInput) => { this.emailInput = emailInput }} 
+                    className={'input ' + (this.state.error && ' has-error')}
+                    value={this.state.value}
+                    disabled={this.state.items.length >= 5 || (projectMembers.length + this.state.items.length) >= 5}
+                    placeholder={this.state.items.length > 0 ? null : 'You can copy and paste a list of emails...'}
+                    onKeyDown={this.handleKeyDown}
+                    onChange={this.handleChange}
+                    onPaste={this.handlePaste}
+                    onBlur={this.handleBlur}
+                  />
+                  {this.state.error && <p className="error">{this.state.error}</p>}
+                </StyledEmailTags>
+                <SendInvitationButton
+                  disabled={!this.state.items.length}
+                  onClick={this.showConfirmInvites}
+                >
+                  {formatMessage(messages.sendInvitations)}
+                </SendInvitationButton>
+                <BottomSection>
+                  <InviteLink>
+                    <GearIcon onClick={this.copyShareLink} type="link" />
+                    <InviteLinkLabel onClick={this.copyShareLink}>
+                      {formatMessage(messages.teamInviteLink)}
+                    </InviteLinkLabel>
+                    <StyledPopOver
+                      overlayClassName="innerClassTooltip"
+                      title={
+                        <PopoverText
+                          dangerouslySetInnerHTML={{
+                            __html: formatMessage(messages.linkInfo)
+                          }}
+                        />
+                      }
+                    >
+                      <InfoIconLink type="question-circle" theme="filled" />
+                    </StyledPopOver>
+                  </InviteLink>
+                  <CopyLinkButton onClick={this.copyShareLink}>{formatMessage(messages.copyLink)}</CopyLinkButton>
+                </BottomSection>
+              </MailsContainer>
+            </InviteContainer> :
+            <InviteContainer>
+              <InviteTitle>{formatMessage(messages.confirmTitle)}</InviteTitle>
+              <ConfirmEmailTags>
+                {this.state.items.map(item => (
+                  <div className="tag-item" key={item}>
+                    {item}
+                    <button
+                      type="button"
+                      className="button"
+                      onClick={(e) => this.handleDelete(item, e)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+              </ConfirmEmailTags>
+              <InfoConfirmation>
+                {formatMessage(messages.infoConfirmation)}
+              </InfoConfirmation>
+              <ConfirmBottom>
+                <SendInvitationButton
+                  disabled={!this.state.items.length || savingInvitations}
+                  onClick={this.sendInvitationsAction}
+                >
+                  {savingInvitations ? <StyledSpinInvitation size="small" /> : formatMessage(messages.addToTeamCollab)}
+                </SendInvitationButton>
+                <CancelInvitation onClick={this.closeConfirmInvites}>
+                  {formatMessage(messages.cancel)}
+                </CancelInvitation>
+              </ConfirmBottom>
+            </InviteContainer>
+          }
+        </Modal>
+      </Collaboration> : null
+
+    const commentsComponent = null
+
     return (
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true} hideAlerts={true}>
         <Container>
@@ -1156,12 +1670,38 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           </BlackBar>
           <Layouts>
             {!!itemStatus &&
-              <StyledTabs activeKey={selectedKey} onTabClick={this.onTabClickAction}>
+              <StyledTabs 
+                secondary={
+                  ownerEmail === 'jesus@tailrecursive.co' || 
+                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekrwiseman@gmail.com'
+                }
+                activeKey={selectedKey}
+                onTabClick={this.onTabClickAction}
+              >
+                {(ownerEmail === 'jesus@tailrecursive.co' || 
+                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekrwiseman@gmail.com') &&
+                  <TabPane tab={<Tab label={COLLAB} icon={teamIcon} />} key={COLLAB}>
+                    <TabContent>
+                      {collabComponent}
+                    </TabContent>
+                  </TabPane>
+                }
                 <TabPane tab={<Tab label={APPROVAL} icon={messageIcon} />} key={APPROVAL}>
                   <TabContent>
                     {chatComponent}
                   </TabContent>
                 </TabPane>
+                {(ownerEmail === 'jesus@tailrecursive.co' || 
+                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekrwiseman@gmail.com') &&
+                  <TabPane tab={<Tab label={COMMENTS} icon={commentsIcon} />} key={COMMENTS}>
+                    <TabContent>
+                      {commentsComponent}
+                    </TabContent>
+                  </TabPane>
+                }
                 <TabPane tab={<Tab label={COLOR} icon={colorIcon} />} key={COLOR}>
                   <TabContent>
                     {colorComponent}
@@ -1275,7 +1815,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   disabled={
                     approveLoading ||
                     itemStatus !== CUSTOMER_PREVIEW ||
-                    (!!designToApply && outputPng !== designToApply)
+                    (!!designToApply && outputPng !== designToApply) ||
+                    (!isOwner && !isApprover)
                   }
                   onClick={this.handlePromptApprove}
                 >
@@ -1299,7 +1840,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </StyledTooltip>
                 }
                 <RequestEdit
-                  disabled={itemStatus !== CUSTOMER_PREVIEW}
+                  disabled={itemStatus !== CUSTOMER_PREVIEW || (!isOwner && !isApprover)}
                   onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
                 >
                   <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
@@ -1314,14 +1855,15 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   disabled={
                     approveLoading ||
                     itemStatus !== CUSTOMER_PREVIEW ||
-                    (!!designToApply && outputPng !== designToApply)
+                    (!!designToApply && outputPng !== designToApply) ||
+                    (!isOwner && !isApprover)
                   }
                   onClick={this.handlePromptApprove}
                 >
                   {formatMessage(messages.approve)}
                 </ApproveButton>
                 <RequestEdit
-                  disabled={itemStatus !== CUSTOMER_PREVIEW}
+                  disabled={itemStatus !== CUSTOMER_PREVIEW || (!isOwner && !isApprover)}
                   onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
                 >
                   <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
@@ -1386,6 +1928,21 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 accordion={true}
                 destroyInactivePanel={true}
               >
+                {(ownerEmail === 'jesus@tailrecursive.co' || 
+                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekrwiseman@gmail.com') &&
+                  <PanelMobile
+                    header={
+                      <PanelTitle>
+                        <PanelIcon src={teamIcon} />
+                        {formatMessage(messages.teamMembers)}
+                      </PanelTitle>
+                    }
+                    key="0"
+                  >
+                    {collabComponent}
+                  </PanelMobile>
+                }
                 <PanelMobile
                   header={
                     <PanelTitle ref={e => { this.chatDiv = e }}>
@@ -1699,6 +2256,10 @@ const DesignsEnhance = compose(
       }
     }
   }),
+  graphql(reSendInvitationsMutation, { name: 'reSendInvitation' }),
+  graphql(deleteMemberMutation, { name: 'deleteMember' }),
+  graphql(changeMemberRoleMutation, { name: 'changeMemberRole' }),
+  graphql(sendInvitationsMutation, { name: 'sendInvitations' }),
   graphql(getEditRequestPrices, { name: 'editRequestData' }),
   graphql(addTeamStoreItemMutation, { name: 'addItemToStore' }),
   graphql(getPredyedColors, { name: 'predyedData' }),

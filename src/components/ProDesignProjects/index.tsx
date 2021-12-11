@@ -33,7 +33,13 @@ import {
   Title,
   FAQSection,
   FAQBody,
-  FaqTitle
+  FaqTitle,
+  CircleMember,
+  MemberList,
+  StyledPopOver,
+  PopoverText,
+  PopOverValue,
+  SharedIcon
 } from './styledComponents'
 import messages from './messages'
 import {
@@ -43,13 +49,14 @@ import {
   ProjectsResult,
   MessagePayload,
   HeaderImagePlaceHolder,
-  HomepageImagesType
+  HomepageImagesType,
+  User
 } from '../../types/common'
 import EmptyContainer from '../EmptyContainer'
 import Pagination from 'antd/lib/pagination/Pagination'
 import moment from 'moment'
 import get from 'lodash/get'
-import { PROJECTS_LIMIT, Pages } from './constants'
+import { PROJECTS_LIMIT, Pages, memberColors } from './constants'
 import { deleteProjectMutation, getHomepageInfo, getProDesignProjects } from './data'
 import Spin from 'antd/lib/spin'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
@@ -174,6 +181,15 @@ class ProDesignProjects extends React.Component<Props, {}> {
     }
   }
 
+  getInitials = (value = '') => {
+    let names = value.split(' ')
+    let initials = names[0].substring(0, 1).toUpperCase()
+    if (names.length > 1) {
+      initials += names[names.length - 1].substring(0, 1).toUpperCase()
+    }
+    return initials
+  }
+
   toggleProductInfo = (id: string) => {
     const stateValue = this.state[id]
     this.setState({ [id]: !stateValue } as any)
@@ -188,6 +204,13 @@ class ProDesignProjects extends React.Component<Props, {}> {
   goToCreate = () => {
     const { history } = this.props
     history.push('/pro-design')
+  }
+
+  preventDefault = (evt: React.MouseEvent) => {
+    if (evt) {
+      evt.preventDefault()
+      evt.stopPropagation()
+    }
   }
 
   render() {
@@ -215,6 +238,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
     const fullCount = get(list, 'projectsResult.fullCount', 0)
     const mainHeaderImages = get(carouselImages, 'getHomepageContent.mainHeaderImages', [])
     const carouselSettings = get(carouselImages, 'getHomepageContent.carouselSettings', {})
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 604px)').matches
     const {
       slideTransition,
       slideDuration
@@ -268,10 +292,11 @@ class ProDesignProjects extends React.Component<Props, {}> {
                 <thead>
                   <Row>
                     <Header>{formatMessage(messages.projectName)}</Header>
+                    <Header>{formatMessage(messages.access)}</Header>
                     <Header>{formatMessage(messages.createdDate)}</Header>
-                    <Header>{formatMessage(messages.projectNo)}</Header>
+                    {!isMobile && <Header>{formatMessage(messages.projectNo)}</Header>}
                     <Header textAlign="center">{formatMessage(messages.products)}</Header>
-                    <Header textAlign="center">{formatMessage(messages.updatedAt)}</Header>
+                    {!isMobile && <Header textAlign="center">{formatMessage(messages.updatedAt)}</Header>}
                     <Header textAlign="center">{formatMessage(messages.notifications)}</Header>
                     <Header />
                   </Row>
@@ -286,6 +311,8 @@ class ProDesignProjects extends React.Component<Props, {}> {
                       totalNotifications = 0,
                       lastUpdated,
                       updatedAt,
+                      shared,
+                      members = [],
                       designs = []
                     }: Project,
                     index: number) => {
@@ -294,17 +321,61 @@ class ProDesignProjects extends React.Component<Props, {}> {
                     return (<TableRow key={index} onClick={handleOnClickRow}>
                       <Cell>{name}</Cell>
                       <Cell>
+                        {members.length > 0 ?
+                          <StyledPopOver
+                            onClick={this.preventDefault}
+                            overlayClassName="innerClassTooltip"
+                            title={
+                              <PopoverText onClick={this.preventDefault}>
+                                {members.map((member: User, key: number) => 
+                                  <PopOverValue
+                                    {...{ key }}
+                                    dangerouslySetInnerHTML={{
+                                      __html: member.firstName ? 
+                                      `👤<b>${member.firstName} ${member.lastName}</b> - ${member.role}
+                                        <br/>(${member.email})` :
+                                      `✉️<i>Pending</i><br/>(${member.email})`
+                                    }}
+                                  />
+                                )}
+                              </PopoverText>
+                            }
+                          >
+                            <MemberList>
+                              {members.map((member: User, key: number) => 
+                                <CircleMember
+                                  {...{ key }}
+                                  secondary={key > 0}
+                                  codeColor={memberColors[Math.floor(key % 7)]}
+                                >
+                                  {this.getInitials(member.firstName ? 
+                                    `${member.firstName} ${member.lastName}` : member.email
+                                  )}
+                                </CircleMember>
+                              )}
+                            </MemberList>
+                          </StyledPopOver> :
+                          formatMessage(messages.private)
+                        }
+                      </Cell>
+                      <Cell>
                         {createdAt ? moment(createdAt).format(DATE_FORMAT) : '-'}
                       </Cell>
-                      <Cell>JV2-{userId}-PD-{((currentPage - 1) * PROJECTS_LIMIT) + (index + 1)}</Cell>
+                      {!isMobile && <Cell>JV2-{userId}-PD-{((currentPage - 1) * PROJECTS_LIMIT) + (index + 1)}</Cell>}
                       <Cell textAlign="center">{designs.length}</Cell>
-                      <Cell textAlign="center">
-                        {lastUpdated || updatedAt ? moment(lastUpdated || updatedAt).format(DATE_FORMAT) : '-'}
-                      </Cell>
+                      {!isMobile &&
+                        <Cell textAlign="center">
+                          {lastUpdated || updatedAt ? moment(lastUpdated || updatedAt).format(DATE_FORMAT) : '-'}
+                        </Cell>
+                      }
                       <Cell textAlign="center">
                         {totalNotifications > 0 && <StyledBadge count={totalNotifications} />}
                       </Cell>
-                      <Cell><DeleteButton onClick={handleDelete} type="delete"/></Cell>
+                      <Cell>
+                        {shared ? 
+                          <SharedIcon type="team"/> : 
+                          <DeleteButton onClick={handleDelete} type="delete"/>}
+                      </Cell>
                     </TableRow>)
                     }
                   ) : null}
