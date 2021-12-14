@@ -23,6 +23,13 @@ export const FacebookButtonWrapper = styled.div`
     text-transform: uppercase;
     width: 100%;
     cursor: pointer;
+    border: none;
+    box-shadow: none;
+    transition: all .25s;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.7;
+    }
   }
 `
 
@@ -38,11 +45,30 @@ export const GoogleButton = styled(GoogleLogin)`
     cursor: pointer;
   }
 `
+
+export const GoogleRenderButton = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  background-color: ${GOOGLERED};
+  color: ${WHITE};
+  margin-bottom: 10px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
+
 export const SocialIcon = styled.i`
   font-size: 20px !important;
   position: absolute;
   left: 10px;
   top: 10px;
+  z-index: 1;
   & img {
     width: 17px;
   }

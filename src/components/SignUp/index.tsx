@@ -46,6 +46,8 @@ interface Props {
   closeSignUp: () => void
   signUpUser: (variables: {}) => void
   requestClose: () => void
+  setCountryValue: (countryId: string, countryName: string, countryCode: string) => void
+  setRegionChange: (name: string, code: string) => void
   formatMessage: (messageDescriptor: any, values?: object) => string
   initialCountryCode: string
   login: (user: object) => void
@@ -267,20 +269,25 @@ class SignUp extends React.Component<Props, StateProps> {
     countryId: string,
     countryName: string
   ) => {
+    const { setCountryValue } = this.props
     this.setState({
       selectedCountry: value,
       selectedCountryId: countryId,
       selectedCountryName: countryName
     })
+    setCountryValue(value, countryId, countryName)
   }
 
   handleRegionChange = (
-    value: any, regionCode: string
+    value: any,
+    regionCode: string
   ) => {
+    const { setRegionChange } = this.props
     this.setState({
       selectedRegion: value,
       selectedRegionCode: regionCode
     })
+    setRegionChange(value, regionCode)
   }
 
   toggleCheckbox = () => {
