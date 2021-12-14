@@ -50,9 +50,13 @@ import {
   HeaderInfoTitle,
   RedirectDiv,
   JakrooLogo,
-  LabelRedirect
+  LabelRedirect,
 } from './styledComponents'
-import { getDesignLabInfo, getShortenURLQuery, profileSettingsQuery } from './data'
+import {
+  getDesignLabInfo,
+  getShortenURLQuery,
+  profileSettingsQuery,
+} from './data'
 import SearchResults from '../../components/SearchResults'
 import leftArrow from '../../assets/leftarrowwhite.svg'
 import rightArrow from '../../assets/rightarrowwhite.svg'
@@ -73,7 +77,10 @@ import {
   HeaderImagePlaceHolder,
   HomepageCarousel,
   ProductFile,
-  DeliveryDays, IProfileSettings, User, ShortenedURL
+  DeliveryDays,
+  IProfileSettings,
+  User,
+  ShortenedURL,
 } from '../../types/common'
 import { Helmet } from 'react-helmet'
 import CarouselItem from '../../components/CarouselItem'
@@ -92,7 +99,7 @@ interface ShortenData extends QueryProps {
   shortenURL: ShortenedURL
 }
 
-interface DesignLab extends QueryProps {
+export interface DesignLab extends QueryProps {
   designInfo?: DeliveryDays
 }
 
@@ -137,7 +144,7 @@ interface Props extends RouteComponentProps<any> {
 export class Home extends React.Component<Props, {}> {
   state = {
     openQuickView: false,
-    openResults: true
+    openResults: true,
   }
   private stepInput: any
 
@@ -145,7 +152,7 @@ export class Home extends React.Component<Props, {}> {
     const {
       dispatch,
       match: { params },
-      client: { query }
+      client: { query },
     } = this.props
     const { getHomepage } = thunkActions
     dispatch(getHomepage(query, params.sportRoute))
@@ -226,20 +233,22 @@ export class Home extends React.Component<Props, {}> {
         slideTransition,
         slideDuration,
         secondarySlideTransition,
-        secondarySlideDuration
+        secondarySlideDuration,
       },
       title = MAIN_TITLE,
-      dataDesignLabInfo
+      dataDesignLabInfo,
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
-    const { params } = match || {}
-    const shortUrl = params.region || ''
+    const { params } = match || {}
+    const shortUrl = params.region || ''
     if (!!shortUrl && shortUrl.length > 0 && shortUrl.charAt(0) === '~') {
       return (
         <RedirectDiv>
           <JakrooLogo src={jakrooLogoWhite} />
-          <LabelRedirect>{formatMessage(messages.redirectMessage)}</LabelRedirect>
+          <LabelRedirect>
+            {formatMessage(messages.redirectMessage)}
+          </LabelRedirect>
           <Spin size="large" />
         </RedirectDiv>
       )
@@ -410,7 +419,9 @@ export class Home extends React.Component<Props, {}> {
               </Carousel>
             </CarouselContainer>
           ) : null}
-          {secondaryFeaturedItems && secondaryFeaturedItems.length ? secondaryFeaturedItems : null}
+          {secondaryFeaturedItems && secondaryFeaturedItems.length
+            ? secondaryFeaturedItems
+            : null}
           {/* <PropositionTilesContainer>
             <PropositionTile>
               <FormattedMessage {...messages.flexibleLabel} />
@@ -432,11 +443,11 @@ export class Home extends React.Component<Props, {}> {
                   <source src={url} type="video/mp4" />
                 </SlideVideo>
               ) : (
-                  <ImageContainer>
-                    <SlideImage src={url} />
-                    <SlideImageMobile src={urlMobile} />
-                  </ImageContainer>
-                )}
+                <ImageContainer>
+                  <SlideImage src={url} />
+                  <SlideImageMobile src={urlMobile} />
+                </ImageContainer>
+              )}
             </SlideImageContainer>
           ))}
           <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
@@ -482,11 +493,11 @@ const HomeEnhance = compose(
   withApollo,
   graphql(getShortenURLQuery, {
     options: ({ match }: OwnProps) => {
-      const { params } = match || {}
+      const { params } = match || {}
       return {
         fetchPolicy: 'network-only',
         variables: { id: params.region },
-        skip: !match
+        skip: !match,
       }
     },
     name: 'shortenURLData',
@@ -495,16 +506,16 @@ const HomeEnhance = compose(
     options: ({ user }: OwnProps) => {
       return {
         fetchPolicy: 'network-only',
-        skip: !user
+        skip: !user,
       }
     },
     name: 'profileData',
   }),
   graphql<DesignLab>(getDesignLabInfo, {
     options: () => ({
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'network-only',
     }),
-    name: 'dataDesignLabInfo'
+    name: 'dataDesignLabInfo',
   })
 )(Home)
 
