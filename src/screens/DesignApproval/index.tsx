@@ -228,7 +228,12 @@ import {
   MemberOwnerLabel,
   StarIcon,
   StyledPopOver,
-  PopoverText
+  PopoverText,
+  CommentSection,
+  ChatComments,
+  CommentMessage,
+  CommentHeader,
+  MemberInitials
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -1646,7 +1651,77 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         </Modal>
       </Collaboration> : null
 
-    const commentsComponent = null
+    const commentsComponent = 
+      <CommentSection>
+        <ChatComments>
+          <IncomingMessage isAdmin={true}>
+            <MessageHeader isAdmin={true}>
+              <MemberInitials codeColor={memberColors[Math.floor(1 % 7)]}>
+                <UserIcon type="user" />
+              </MemberInitials>
+            </MessageHeader>
+            <InfoDiv isAdmin={true}>
+              <CommentMessage>
+                <CommentHeader codeColor={memberColors[Math.floor(1 % 7)]}>
+                  Armando Christian
+                </CommentHeader>
+                {(true) &&
+                  <ParentText>
+                    <CommentHeader codeColor="#E61737B8">
+                      Armando Christian
+                    </CommentHeader>
+                    Is this Mr. WorldWide?
+                  </ParentText>
+                }
+                <MessageBody>
+                  What's going on here Pablo Lorenzo?
+                </MessageBody>
+                {['mrWorldWide.jpeg'].map((fileString: string, index: number) =>
+                  <MessageFile isAdmin={true} onClick={this.openFile(fileString)} key={index}>
+                    <Clip type="paper-clip" />
+                    <FileName>
+                      {getFileWithExtension(fileString || '')}
+                    </FileName>
+                  </MessageFile>
+                )}
+              </CommentMessage>
+              <DateMessage>
+                {true ? moment().format('DD/MM/YYYY HH:mm') : '-'}
+              </DateMessage>
+            </InfoDiv>
+          </IncomingMessage>
+          <IncomingMessage>
+            <MessageHeader>
+              <MemberInitials>
+                <UserIcon type="user" />
+              </MemberInitials>
+            </MessageHeader>
+            <InfoDiv>
+              <CommentMessage>
+                {(true) &&
+                  <ParentText>
+                    This is a question example
+                  </ParentText>
+                }
+                <MessageBody>
+                  This is an example of a text made by an user
+                </MessageBody>
+                {['mrWorldWide.jpeg'].map((fileString: string, index: number) =>
+                  <MessageFile onClick={this.openFile(fileString)} key={index}>
+                    <Clip type="paper-clip" />
+                    <FileName>
+                      {getFileWithExtension(fileString || '')}
+                    </FileName>
+                  </MessageFile>
+                )}
+              </CommentMessage>
+              <DateMessage>
+                {true ? moment().format('DD/MM/YYYY HH:mm') : '-'}
+              </DateMessage>
+            </InfoDiv>
+          </IncomingMessage>
+        </ChatComments>
+      </CommentSection>
 
     return (
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true} hideAlerts={true}>
@@ -1889,7 +1964,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </StyledTooltipMobile>
                 }
               </MobileRequestButtons>
-              {!!itemStatus &&
+              {!!itemStatus && false &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId && showRenderWindow &&
                     <Render3D

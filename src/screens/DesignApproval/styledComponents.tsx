@@ -823,6 +823,7 @@ export const MessageFile = styled.div`
   font-size: 12px;
   color: ${BLUE};
   text-decoration: underline;
+  align-self: ${({ isAdmin }: RowProps) => isAdmin ? 'flex-end' : 'unset'};
   &:hover {
     cursor: pointer;
   }
@@ -1467,6 +1468,7 @@ export const Collaboration = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
+  font-family: Avenir;
   overflow-y: scroll;
   overflow-x: hidden;
   @media (max-width: 1023px) {
@@ -1614,6 +1616,7 @@ export const Resend = styled.div`
 
 export const InviteContainer = styled.div`
   margin: 22px 20px;
+  font-family: Avenir;
 `
 
 export const InviteTitle = styled.div`
@@ -1889,4 +1892,70 @@ export const PopoverText = styled.div`
   width: 100%;
   font-size: 12px;
   color: ${BLACK};
+`
+
+export const CommentSection = styled.div`
+  padding: 0 14px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+  font-family: Avenir;
+  @media (max-width: 1023px) {
+    padding: 0;
+    height: calc(100vh - 277px);
+  }
+`
+
+export const ChatComments = styled.div`
+  flex: 1;
+  overflow-y: scroll;
+  @media (min-width: 1024px) {
+    max-height: calc(100% - 45px);
+  }
+`
+
+export const CommentMessage = styled.div`
+  background: ${WHITE};
+  padding: 8px;
+  box-shadow: 0px 2px 7px 0px ${GRAY_LIGHT};
+  display: inline-flex;
+  flex-flow: column;
+  border-radius: 5px;
+  justify-content: space-between;
+  align-items: flex-start;
+  ${({ highlight }: RowProps) => highlight ? `
+    animation: blink-1 1.5s 2s 2 ease-in-out;
+    @keyframes blink-1 {
+      0% {
+        box-shadow: 0 0 0 0 #ff6a6a;
+      }
+      100% {
+        box-shadow: 0 0 0 16px #ffebebb8;
+      }
+    }
+  ` : ''}
+`
+
+export const MemberInitials = styled.div`
+  width: 24px;
+  font-size: 12px;
+  height: 24px;
+  background: ${({ codeColor }: RowProps) => codeColor || BLUE};
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+`
+
+export const CommentHeader = styled.div`
+  margin-left: 2px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Avenir;
+  margin-bottom: 4px;
+  color: ${({ codeColor }: RowProps) => codeColor || BLUE};
+  filter: contrast(0.5);
 `
