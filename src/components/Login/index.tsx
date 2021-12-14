@@ -53,6 +53,11 @@ interface StateProps {
   validPassword: boolean
   loginFailed: boolean
   loginFailedReason: string
+  selectedCountry: string,
+  selectedCountryName: string,
+  selectedCountryId: string,
+  selectedRegion: string,
+  selectedRegionCode: string,
 }
 
 export class Login extends React.Component<Props, StateProps> {
@@ -60,6 +65,11 @@ export class Login extends React.Component<Props, StateProps> {
     isLoginIn: true,
     email: '',
     password: '',
+    selectedCountry: '',
+    selectedCountryName: '',
+    selectedCountryId: '',
+    selectedRegion: '',
+    selectedRegionCode: '',
     validEmail: false,
     validPassword: false,
     loginFailed: false,
@@ -78,7 +88,19 @@ export class Login extends React.Component<Props, StateProps> {
       regionName,
       city
     } = this.props
-    const { isLoginIn, loginFailed, loginFailedReason, email, password } = this.state
+    const {
+      isLoginIn,
+      loginFailed,
+      loginFailedReason,
+      email,
+      password,
+      selectedCountry = '',
+      selectedCountryName = '',
+      selectedRegion = ''
+    } = this.state
+    const countrySelected = selectedCountryName || countryName
+    const countryCodeSelected = selectedCountry || countryCode
+    const regionSelected = selectedRegion || regionName
     const loginFailedMessage = loginFailedReason === 'email'
       ? messages.msgLoginFailed
       : messages.msgLoginFailedSocial
@@ -126,14 +148,15 @@ export class Login extends React.Component<Props, StateProps> {
             </StyledLoginButton>
             <FacebookGmailLogin
               handleLogin={login}
+              handleJoinNow={this.handleJoinNow}
+              regionName={regionSelected}
+              countryName={countrySelected}
+              initialCountryCode={countryCodeSelected}
+              countryCode={countryCodeSelected}
+              city={regionSelected === regionName ? city : ''}
               {...{
                 requestClose,
-                formatMessage,
-                initialCountryCode,
-                countryName,
-                countryCode,
-                regionName,
-                city
+                formatMessage
               }}
             />
           </FormContainer>
@@ -148,6 +171,8 @@ export class Login extends React.Component<Props, StateProps> {
       <SignUp
         closeSignUp={this.showLogin}
         login={this.onSignedUp}
+        setCountryValue={this.handleCountryChange}
+        setRegionChange={this.handleRegionChange}
         {...{
           requestClose,
           formatMessage,
@@ -199,6 +224,28 @@ export class Login extends React.Component<Props, StateProps> {
     } = evt
     evt.persist()
     this.setState({ [id]: value } as any)
+  }
+
+  handleCountryChange = (
+    value: any,
+    countryId: string,
+    countryName: string
+  ) => {
+    this.setState({
+      selectedCountry: value,
+      selectedCountryId: countryId,
+      selectedCountryName: countryName
+    })
+  }
+
+  handleRegionChange = (
+    value: any,
+    regionCode: string
+  ) => {
+    this.setState({
+      selectedRegion: value,
+      selectedRegionCode: regionCode
+    })
   }
 
   handleMailLogin = async (evt: React.MouseEvent<EventTarget>) => {

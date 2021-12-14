@@ -11,7 +11,8 @@ import {
   FacebookButtonWrapper,
   GoogleButton,
   SocialIcon,
-  GoogleLabel
+  GoogleLabel,
+  GoogleRenderButton
 } from './styledComponents'
 import { NEW_USER } from '../../constants'
 import config from '../../config'
@@ -26,6 +27,7 @@ interface Props {
   loginWithFacebook: (variables: {}) => void
   loginWithGoogle: (variables: {}) => void
   requestClose?: () => void
+  handleJoinNow?: () => void
   handleLogin: (user: object) => void
   initialCountryCode: string
   signUpView: boolean
@@ -38,7 +40,7 @@ interface Props {
 
 class FacebookGmailLogin extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, signUpView, adminLogin } = this.props
+    const { formatMessage, signUpView, adminLogin, countryCode, handleJoinNow } = this.props
     const googleLabel = signUpView
       ? formatMessage(messages.googleSignUpLabel)
       : formatMessage(messages.googleLoginLabel)
@@ -53,6 +55,14 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
           clientId={config.googleId || ''}
           onSuccess={this.googleLoginSuccess}
           onFailure={this.googleLoginFailure}
+          render={({ onClick }) => 
+            <GoogleRenderButton onClick={countryCode ? onClick : handleJoinNow}>
+              <SocialIcon>
+                <img src={googleIcon} />
+              </SocialIcon>
+              <GoogleLabel>{googleLabel}</GoogleLabel>
+            </GoogleRenderButton>
+          }
         >
           <SocialIcon>
             <img src={googleIcon} />
@@ -71,7 +81,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
               callback={this.responseFacebook}
               scope="public_profile, email"
               render={({ onClick }) => (
-                <button className="login-facebook" {...{ onClick }}>
+                <button className="login-facebook" onClick={countryCode ? onClick : handleJoinNow}>
                   {facebookLabel}
                 </button>
               )}
