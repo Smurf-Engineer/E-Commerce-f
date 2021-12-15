@@ -6,6 +6,7 @@ import Input from '../Common/CustomInput'
 import Divider from 'antd/lib/divider'
 import Button from 'antd/lib/button'
 import {
+  BLACK,
   BLUE,
   BLUE_LIGHT,
   BLUE_SKY,
@@ -155,6 +156,7 @@ export const StyledButton = styled(Button)`
 `
 
 export const HaveAnAccountRow = styled.div`
+  color: ${BLACK};
   padding: 10px 0 10px;
   text-align: center;
   font-size: 16px;
