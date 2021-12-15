@@ -16,7 +16,7 @@ import {
   DividerRow,
   OrLabel,
   StyledInput,
-  SocialMediaContainer,
+  LocationContainer,
   FormContainer,
   RightDivider,
   LeftDivider,
@@ -127,7 +127,7 @@ class SignUp extends React.Component<Props, StateProps> {
 
     return (
       <Container>
-        <SocialMediaContainer>
+        <LocationContainer>
           <SignUpLabel>
             {formatMessage(messages.createAccountLabel)}
           </SignUpLabel>
@@ -164,7 +164,7 @@ class SignUp extends React.Component<Props, StateProps> {
               </CountryContainer>
             </>
           )}
-        </SocialMediaContainer>
+        </LocationContainer>
         {showSignupForm && (
           <>
             <FormContainer>
@@ -210,11 +210,7 @@ class SignUp extends React.Component<Props, StateProps> {
                 <CreateAccountText>
                   {formatMessage(messages.termsAndPolicyLegend)}
                 </CreateAccountText>
-                <StyledButton
-                  type="danger"
-                  ghost={true}
-                  onClick={this.handleCreateAccount}
-                >
+                <StyledButton onClick={this.handleCreateAccount}>
                   {formatMessage(messages.createAccountButtonLabel)}
                 </StyledButton>
               </CreateAccountContainer>
