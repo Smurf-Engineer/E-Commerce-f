@@ -29,7 +29,7 @@ import {
   createStoreMutation,
   GetTeamStoreQuery,
   profileSettingsQuery,
-  updateStoreMutation
+  updateStoreMutation,
 } from './data'
 import {
   TeamstoreType,
@@ -38,7 +38,8 @@ import {
   LockerTableType,
   DesignType,
   SelectedDesignObjectType,
-  UserType, IProfileSettings
+  UserType,
+  IProfileSettings,
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import { cutoffDateSettingsQuery } from './data'
@@ -74,17 +75,20 @@ import {
   TitleContainer,
   ModalTitle,
   InfoBody,
-  buttonStyle, DescDiv
+  buttonStyle,
+  DescDiv,
 } from './styledComponents'
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
 import {
   FIXED_TEAMSTORE,
   ON_DEMAND_TEAMSTORE,
-  DEFAULT_CUTOFF_DAYS
+  DEFAULT_CUTOFF_DAYS,
 } from './constants'
 import { APPROVED } from '../../constants'
 import find from 'lodash/find'
+import { getDesignLabInfo } from '../Home/data'
+import { DesignLab } from '../Home'
 const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 const BULLETIN_MAX_LENGTH = 120
 
@@ -134,8 +138,14 @@ interface Props extends RouteComponentProps<any> {
   datesEdited: boolean
   datesEditedTemporal: boolean
   profileData: ProfileData
+  dataDesignLabInfo: DesignLab
   // Redux actions
-  setPriceAction: (value: number, currency: number, itemIndex: number, abbreviation: string) => void
+  setPriceAction: (
+    value: number,
+    currency: number,
+    itemIndex: number,
+    abbreviation: string
+  ) => void
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
   changeBulletinAction: (value: string) => void
@@ -184,7 +194,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
   state = {
     file: null,
     imagePreviewUrl: '',
-    hasError: false
+    hasError: false,
   }
   private lockerTable: any
 
@@ -198,12 +208,12 @@ export class CreateStore extends React.Component<Props, StateProps> {
   ) => {
     const {
       privateStore,
-      intl: { formatMessage }
+      intl: { formatMessage },
     } = this.props
     let validForm = true
     if (!name || ((!startDate || !endDate) && !onDemand)) {
       this.setState({
-        hasError: !name || !startDate || !endDate || !items.length
+        hasError: !name || !startDate || !endDate || !items.length,
       })
       validForm = false
       zenscroll.toY(0)
@@ -213,7 +223,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       validForm = false
     } else if (privateStore && (!passCode || !passwordRegex.test(passCode))) {
       this.setState({
-        hasError: true
+        hasError: true,
       })
       validForm = false
     }
@@ -246,7 +256,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
   handleOnBulletinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { changeBulletinAction } = this.props
     const {
-      target: { value }
+      target: { value },
     } = event
     if (value.length <= BULLETIN_MAX_LENGTH) {
       changeBulletinAction(value)
@@ -292,7 +302,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
   getStoreId = () => {
     const {
-      location: { search }
+      location: { search },
     } = this.props
     const { storeId } = queryString.parse(search)
 
@@ -302,7 +312,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
   isOnDemand = () => {
     const {
       location: { search },
-      profileData
+      profileData,
     } = this.props
     const { type, storeId } = queryString.parse(search)
     const resellerStatus = get(profileData, 'profileData.reseller.status', '')
@@ -325,7 +335,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const {
       offset: offsetProp,
       currentPage: pageProp,
-      setPaginationData
+      setPaginationData,
     } = this.props
     let offset = offsetParam !== undefined ? offsetParam : offsetProp
     let currentPage = pageParam !== undefined ? pageParam : pageProp
@@ -347,7 +357,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     this.setState({
       file: null,
       imagePreviewUrl: '',
-      hasError: false
+      hasError: false,
     })
   }
 
@@ -373,7 +383,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       teamSizeId,
       onDemand,
       banner,
-      datesEditedTemporal
+      datesEditedTemporal,
     } = this.props
 
     const { file } = this.state
@@ -389,23 +399,32 @@ export class CreateStore extends React.Component<Props, StateProps> {
       return
     }
     const reseller = get(profileData, 'profileData.reseller', {})
-    const { currency: resellerCurrency, status: resellerStatus } = reseller || {}
+    const { currency: resellerCurrency, status: resellerStatus } =
+      reseller || {}
     const isReseller = resellerStatus === APPROVED && onDemand
     const storeShortId = this.getStoreId()
     setLoadingAction(true)
     const items = itemsSelected.map((item) => {
       let resellerPrice = 0
       if (isReseller) {
-        const priceSelected = get(find((item.resellerRange || []), ['abbreviation', resellerCurrency]), 'price', 0)
+        const priceSelected = get(
+          find(item.resellerRange || [], ['abbreviation', resellerCurrency]),
+          'price',
+          0
+        )
         const productPriceRange = get(item, 'design.product.priceRange', [])
-        const normalPrice = find(productPriceRange, { quantity: '2-5', abbreviation: resellerCurrency })
+        const normalPrice = find(productPriceRange, {
+          quantity: '2-5',
+          abbreviation: resellerCurrency,
+        })
         const purchasePrice = normalPrice ? normalPrice.price : 0
-        resellerPrice = priceSelected < purchasePrice ? purchasePrice : priceSelected
+        resellerPrice =
+          priceSelected < purchasePrice ? purchasePrice : priceSelected
       }
       return {
         design_id: get(item, 'design.shortId'),
         visible: get(item, 'visible'),
-        reseller_price: resellerPrice
+        reseller_price: resellerPrice,
       }
     })
 
@@ -420,9 +439,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
           method: 'POST',
           headers: {
             Accept: 'application/json',
-            Authorization: `Bearer ${user.token}`
+            Authorization: `Bearer ${user.token}`,
           },
-          body: formData
+          body: formData,
         })
         const { image } = await uploadResp.json()
         bannerResp = image
@@ -440,22 +459,22 @@ export class CreateStore extends React.Component<Props, StateProps> {
         teamsizeId: teamSizeId,
         demandMode: this.isOnDemand(),
         banner: bannerResp,
-        datesEdited: datesEditedTemporal
+        datesEdited: datesEditedTemporal,
       }
 
       if (storeShortId) {
         const {
           data: {
-            store: { message: messageResp }
-          }
+            store: { message: messageResp },
+          },
         } = await updateStore({
           variables: { teamStore },
           refetchQueries: [
             {
               query: GetTeamStoreQuery,
-              variables: { teamStoreId: storeShortId }
-            }
-          ]
+              variables: { teamStoreId: storeShortId },
+            },
+          ],
         })
 
         if (messageResp) {
@@ -465,9 +484,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
         window.location.replace(`/store-front?storeId=${storeShortId}`)
       } else {
         const {
-          data: { store }
+          data: { store },
         } = await createStore({
-          variables: { teamStore }
+          variables: { teamStore },
         })
 
         const { shortId } = store as any
@@ -500,7 +519,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       setDataToEditAction,
       setLoadingAction,
       location: { search },
-      client: { query }
+      client: { query },
     } = this.props
     const { storeId } = queryString.parse(search)
 
@@ -508,7 +527,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       query({
         query: GetTeamStoreQuery,
         variables: { teamStoreId: storeId },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       })
         .then(({ data: { teamStore } }: any) => {
           setDataToEditAction(teamStore)
@@ -527,7 +546,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     this.setState({
       file: null,
       imagePreviewUrl: '',
-      hasError: false
+      hasError: false,
     })
     clearDataAction()
   }
@@ -535,7 +554,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
   openInfo = () => {
     const {
       intl: { formatMessage },
-      onDemand
+      onDemand,
     } = this.props
     info({
       title: (
@@ -548,17 +567,17 @@ export class CreateStore extends React.Component<Props, StateProps> {
       icon: ' ',
       okText: formatMessage(messages.gotIt),
       okButtonProps: {
-        style: buttonStyle
+        style: buttonStyle,
       },
       content: (
         <InfoBody
           dangerouslySetInnerHTML={{
             __html: formatMessage(
               onDemand ? messages.batchOrderContent : messages.omDemandContent
-            )
+            ),
           }}
         />
-      )
+      ),
     })
   }
 
@@ -566,18 +585,18 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const {
       intl: { formatMessage },
       endDateMoment,
-      startDateMoment
+      startDateMoment,
     } = this.props
     if (startDateMoment && endDateMoment) {
       confirm({
         title: formatMessage(messages.editDatesTitle),
         okText: formatMessage(messages.proceed),
         okButtonProps: {
-          style: buttonStyle
+          style: buttonStyle,
         },
         content: formatMessage(messages.editDatesMessage, {
           cutOff: startDateMoment.format('DD-MM-YYYY'),
-          delivery: endDateMoment.format('DD-MM-YYYY')
+          delivery: endDateMoment.format('DD-MM-YYYY'),
         }),
         onOk: async () => {
           try {
@@ -585,7 +604,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
           } catch (e) {
             message.error(e.message)
           }
-        }
+        },
       })
     } else {
       await this.handleBuildTeamStore()
@@ -636,7 +655,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
       cutoffSettings,
       onDemand,
       startDate,
-      datesEdited
+      datesEdited,
+      dataDesignLabInfo,
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -652,15 +672,20 @@ export class CreateStore extends React.Component<Props, StateProps> {
       imagePreviewUrl || (storeId && banner) ? (
         <PreviewImage src={imagePreviewUrl || banner} />
       ) : (
-          <Dragger onSelectImage={this.beforeUpload} />
-        )
+        <Dragger onSelectImage={this.beforeUpload} />
+      )
     const reseller = get(profileData, 'profileData.reseller', {})
-    const { comission: resellerComission, status: resellerStatus, currency: resellerCurrency } = reseller
+    const {
+      comission: resellerComission,
+      status: resellerStatus,
+      currency: resellerCurrency,
+    } = reseller
     const tableItems = this.getCheckedItems(items)
     const storeShortId = this.getStoreId()
     const isOnDemand = this.isOnDemand()
     const cutoffDays = get(cutoffSettings, 'cutoffDays', DEFAULT_CUTOFF_DAYS)
     const isReseller = resellerStatus === APPROVED && isOnDemand
+    const deliveryDays = get(dataDesignLabInfo, 'deliveryDays.days', null)
     return (
       <Layout {...{ history, intl }}>
         {loading ? (
@@ -668,245 +693,278 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <Spin />
           </Loading>
         ) : (
-            <Container>
-              <TitleContainer>
-                <Title>
-                  <FormattedMessage {...messages[isReseller ? 'buildCustom' : 'title']} />
-                </Title>
-                {storeId && (isOnDemand || !startDate) && !isReseller && (
-                  <SwitchWithLabel
-                    checked={onDemand}
-                    onChange={updateOnDemandAction}
-                    label={formatMessage(
-                      isOnDemand
-                        ? messages.switchToBatch
-                        : messages.switchToDemand
-                    )}
-                    message={''}
-                    infoIcon={true}
-                    handleOpenInfo={this.openInfo}
-                  />
-                )}
-              </TitleContainer>
-              <StoreForm
-                {...{ formatMessage }}
-                name={name}
-                startDate={startDateMoment}
-                endDate={endDateMoment}
-                onUpdateName={updateNameAction}
-                onSelectStartDate={updateStartDateAction}
-                onSelectEndDate={updateEndDateAction}
-                onDemand={isOnDemand}
-                {...{ hasError, cutoffDays, storeId, datesEdited, initialStartDate, isReseller }}
-              />
-              {isOnDemand ? (
-                <React.Fragment>
-                  <TextBlock>
-                    <Subtitle>
-                      <FormattedMessage {...messages.pricingCheckout} />
-                    </Subtitle>
-                    {isReseller ?
-                      <DescDiv
-                        dangerouslySetInnerHTML={{
-                          __html: formatMessage(messages.priceDropReseller)
-                        }}
-                      /> :
-                      <FormattedMessage
-                        {...messages.pricingCheckoutContent}
-                        values={{
-                          onDemandTeam: (
-                            <strong>{formatMessage(messages.onDemandTeamStore)}</strong>
-                          ),
-                          discount: <strong>{formatMessage(messages.percent)}</strong>
-                        }}
-                      />
-                    }
-                  </TextBlock>
-                  <TextBlock>
-                    <Subtitle>
-                      <FormattedMessage {...messages.productionDelivery} />
-                    </Subtitle>
-                    {isReseller ?
-                      <DescDiv
-                        dangerouslySetInnerHTML={{
-                          __html: formatMessage(messages.deliveryReseller)
-                        }}
-                      /> :
-                      <FormattedMessage
-                        {...messages.productionDeliveryContent}
-                        values={{
-                          orderDays: <strong>{formatMessage(messages.orderDays)}</strong>,
-                          shippingCompany: (
-                            <strong>{formatMessage(messages.shippingCompany)}</strong>
-                          ),
-                          signature: <strong>{formatMessage(messages.signature)}</strong>
-                        }}
-                      />
-                    }
-                  </TextBlock>
-                </React.Fragment>
-              ) : (
-                  <React.Fragment>
-                    <DynamicDropLogo src={dropLogo} />
-                    <PriceMessage>
-                      <FormattedHTMLMessage {...messages.priceDropMessage} />
-                    </PriceMessage>
-                  </React.Fragment>
-                )}
-              <Subtitle>
-                <div
-                  ref={(table) => {
-                    this.lockerTable = table
-                  }}
-                >
-                  <FormattedMessage {...messages.storeItemsTitle} />
-                </div>
-              </Subtitle>
-              <LockerMessage>
-                <FormattedMessage {...messages.storeItemsMessage} />
-              </LockerMessage>
-              <AddItem
-                type="primary"
-                ghost={true}
-                size="large"
-                onClick={this.handleOnAddItem}
-              >
-                {formatMessage(messages.addItem)}
-              </AddItem>
-              <LockerTable
-                {...{ formatMessage, teamSizeRange, currentCurrency, resellerComission, isReseller }}
-                items={items}
-                hideQuickView={true}
-                isFixed={!isOnDemand}
-                currentCurrency={isReseller ? resellerCurrency : currentCurrency}
-                onPressDelete={this.handleOnDeleteItem}
-                onPressQuickView={this.handleOnPressQuickView}
-                onPressVisible={this.handleOnPressVisible}
-                handleOnSetPrice={this.handleOnSetPrice}
-                onMoveRow={moveRowAction}
-              />
-              <Row>
-                <BannerTitleContainer>
-                  <Subtitle>
-                    <FormattedMessage {...messages.bannerMessage} />
-                  </Subtitle>
-                  <OptionalLabel>
-                    {formatMessage(messages.optional)}
-                  </OptionalLabel>
-                </BannerTitleContainer>
-                {(!!imagePreviewUrl || storeId) && (
-                  <RowButtons>
-                    <Upload
-                      beforeUpload={this.beforeUpload}
-                      multiple={false}
-                      showUploadList={false}
-                      supportServerRender={true}
-                    >
-                      <Button>{formatMessage(messages.changeLabel)}</Button>
-                    </Upload>
-                    <ButtonDelete onClick={this.handleOnDeleteImage}>
-                      {formatMessage(messages.deleteLabel)}
-                    </ButtonDelete>
-                  </RowButtons>
-                )}
-              </Row>
-              {bannerComponent}
-              <RowColumn>
-                <BulletinLabel>
-                  <Subtitle>
-                    <FormattedMessage {...messages[isReseller ? 'bulletinStore' : 'bulletin']} />
-                  </Subtitle>
-                  <OptionalLabel>
-                    {formatMessage(messages.optional)}
-                  </OptionalLabel>
-                </BulletinLabel>
-                <Bulletin>
-                  <PinDiv>
-                    <Pin src={PinSVG} left={true} />
-                    <Pin src={PinSVG} />
-                  </PinDiv>
-                  <BulletinInput
-                    value={bulletin}
-                    autosize={true}
-                    placeholder={formatMessage(messages.bulletinPlaceholder)}
-                    size="large"
-                    onChange={this.handleOnBulletinChange}
-                  />
-                  <Corner />
-                </Bulletin>
-              </RowColumn>
-              <RowSwitch>
-                <SwitchWithLabel
-                  hasError={hasError}
-                  defaultChecked={true}
-                  {...{ passCode, updatePassCodeAction }}
-                  withInput={true}
-                  checked={privateStore}
-                  onChange={this.handlePrivateSwitch}
-                  placeholder={formatMessage(messages.passcode)}
-                  label={formatMessage(messages.privateLabel)}
-                  subLabel={formatMessage(messages.passFormat)}
-                  message={formatMessage(messages.privateMessage)}
-                  errorLabel={formatMessage(messages.requiredFieldLabel)}
+          <Container>
+            <TitleContainer>
+              <Title>
+                <FormattedMessage
+                  {...messages[isReseller ? 'buildCustom' : 'title']}
                 />
-              </RowSwitch>
-              {storeShortId ? (
-                <ButtonOptionsWrapper>
-                  <ButtonOptionStyle
-                    {...{ loading }}
-                    size="large"
-                    onClick={this.handleCancelTeamStore}
-                  >
-                    {formatMessage(messages.cancel)}
-                  </ButtonOptionStyle>
-                  <SaveButton
-                    {...{ loading }}
-                    size="large"
-                    onClick={
-                      !datesEdited
-                        ? this.openEditDatesInfo
-                        : this.handleBuildTeamStore
-                    }
-                  >
-                    {formatMessage(messages.save)}
-                  </SaveButton>
-                </ButtonOptionsWrapper>
-              ) : (
-                  <SaveButton
-                    {...{ loading }}
-                    type="primary"
-                    width="316px"
-                    size="large"
-                    onClick={this.handleBuildTeamStore}
-                  >
-                    {formatMessage(messages.buttonBuild)}
-                  </SaveButton>
-                )}
-              <LockerModal
-                {...{
-                  selectedItems,
-                  tableItems,
-                  currentPage,
-                  limit,
-                  offset
+              </Title>
+              {storeId && (isOnDemand || !startDate) && !isReseller && (
+                <SwitchWithLabel
+                  checked={onDemand}
+                  onChange={updateOnDemandAction}
+                  label={formatMessage(
+                    isOnDemand
+                      ? messages.switchToBatch
+                      : messages.switchToDemand
+                  )}
+                  message={''}
+                  infoIcon={true}
+                  handleOpenInfo={this.openInfo}
+                />
+              )}
+            </TitleContainer>
+            <StoreForm
+              {...{ formatMessage }}
+              name={name}
+              startDate={startDateMoment}
+              endDate={endDateMoment}
+              onUpdateName={updateNameAction}
+              onSelectStartDate={updateStartDateAction}
+              onSelectEndDate={updateEndDateAction}
+              onDemand={isOnDemand}
+              {...{
+                hasError,
+                cutoffDays,
+                storeId,
+                datesEdited,
+                initialStartDate,
+                isReseller,
+              }}
+            />
+            {isOnDemand ? (
+              <React.Fragment>
+                <TextBlock>
+                  <Subtitle>
+                    <FormattedMessage {...messages.pricingCheckout} />
+                  </Subtitle>
+                  {isReseller ? (
+                    <DescDiv
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.priceDropReseller),
+                      }}
+                    />
+                  ) : (
+                    <FormattedMessage
+                      {...messages.pricingCheckoutContent}
+                      values={{
+                        onDemandTeam: (
+                          <strong>
+                            {formatMessage(messages.onDemandTeamStore)}
+                          </strong>
+                        ),
+                        discount: (
+                          <strong>{formatMessage(messages.percent)}</strong>
+                        ),
+                      }}
+                    />
+                  )}
+                </TextBlock>
+                <TextBlock>
+                  <Subtitle>
+                    <FormattedMessage {...messages.productionDelivery} />
+                  </Subtitle>
+                  {isReseller ? (
+                    <DescDiv
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.deliveryReseller),
+                      }}
+                    />
+                  ) : (
+                    <FormattedMessage
+                      {...messages.productionDeliveryContent}
+                      values={{
+                        orderDays: (
+                          <strong>
+                            {formatMessage(messages.orderDays, {
+                              deliveryDays,
+                            })}
+                          </strong>
+                        ),
+                        shippingCompany: (
+                          <strong>
+                            {formatMessage(messages.shippingCompany)}
+                          </strong>
+                        ),
+                        signature: (
+                          <strong>{formatMessage(messages.signature)}</strong>
+                        ),
+                      }}
+                    />
+                  )}
+                </TextBlock>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <DynamicDropLogo src={dropLogo} />
+                <PriceMessage>
+                  <FormattedHTMLMessage {...messages.priceDropMessage} />
+                </PriceMessage>
+              </React.Fragment>
+            )}
+            <Subtitle>
+              <div
+                ref={(table) => {
+                  this.lockerTable = table
                 }}
-                visible={openLocker}
-                onRequestClose={this.handleOnCloseLocker}
-                onSelectItem={setItemSelectedAction}
-                onUnselectItem={onUnselectItemAction}
-                onAddItems={setItemsAddAction}
-                changePage={this.changePage}
-                proDesign={false}
-                userId={user ? user.id : ''}
+              >
+                <FormattedMessage {...messages.storeItemsTitle} />
+              </div>
+            </Subtitle>
+            <LockerMessage>
+              <FormattedMessage {...messages.storeItemsMessage} />
+            </LockerMessage>
+            <AddItem
+              type="primary"
+              ghost={true}
+              size="large"
+              onClick={this.handleOnAddItem}
+            >
+              {formatMessage(messages.addItem)}
+            </AddItem>
+            <LockerTable
+              {...{
+                formatMessage,
+                teamSizeRange,
+                currentCurrency,
+                resellerComission,
+                isReseller,
+              }}
+              items={items}
+              hideQuickView={true}
+              isFixed={!isOnDemand}
+              currentCurrency={isReseller ? resellerCurrency : currentCurrency}
+              onPressDelete={this.handleOnDeleteItem}
+              onPressQuickView={this.handleOnPressQuickView}
+              onPressVisible={this.handleOnPressVisible}
+              handleOnSetPrice={this.handleOnSetPrice}
+              onMoveRow={moveRowAction}
+            />
+            <Row>
+              <BannerTitleContainer>
+                <Subtitle>
+                  <FormattedMessage {...messages.bannerMessage} />
+                </Subtitle>
+                <OptionalLabel>
+                  {formatMessage(messages.optional)}
+                </OptionalLabel>
+              </BannerTitleContainer>
+              {(!!imagePreviewUrl || storeId) && (
+                <RowButtons>
+                  <Upload
+                    beforeUpload={this.beforeUpload}
+                    multiple={false}
+                    showUploadList={false}
+                    supportServerRender={true}
+                  >
+                    <Button>{formatMessage(messages.changeLabel)}</Button>
+                  </Upload>
+                  <ButtonDelete onClick={this.handleOnDeleteImage}>
+                    {formatMessage(messages.deleteLabel)}
+                  </ButtonDelete>
+                </RowButtons>
+              )}
+            </Row>
+            {bannerComponent}
+            <RowColumn>
+              <BulletinLabel>
+                <Subtitle>
+                  <FormattedMessage
+                    {...messages[isReseller ? 'bulletinStore' : 'bulletin']}
+                  />
+                </Subtitle>
+                <OptionalLabel>
+                  {formatMessage(messages.optional)}
+                </OptionalLabel>
+              </BulletinLabel>
+              <Bulletin>
+                <PinDiv>
+                  <Pin src={PinSVG} left={true} />
+                  <Pin src={PinSVG} />
+                </PinDiv>
+                <BulletinInput
+                  value={bulletin}
+                  autosize={true}
+                  placeholder={formatMessage(messages.bulletinPlaceholder)}
+                  size="large"
+                  onChange={this.handleOnBulletinChange}
+                />
+                <Corner />
+              </Bulletin>
+            </RowColumn>
+            <RowSwitch>
+              <SwitchWithLabel
+                hasError={hasError}
+                defaultChecked={true}
+                {...{ passCode, updatePassCodeAction }}
+                withInput={true}
+                checked={privateStore}
+                onChange={this.handlePrivateSwitch}
+                placeholder={formatMessage(messages.passcode)}
+                label={formatMessage(messages.privateLabel)}
+                subLabel={formatMessage(messages.passFormat)}
+                message={formatMessage(messages.privateMessage)}
+                errorLabel={formatMessage(messages.requiredFieldLabel)}
               />
-              <ImageCropper
-                {...{ formatMessage, open }}
-                requestClose={this.closeModal}
-                setImage={this.setImage}
-                image={imagePreviewUrl}
-              />
-            </Container>
-          )}
+            </RowSwitch>
+            {storeShortId ? (
+              <ButtonOptionsWrapper>
+                <ButtonOptionStyle
+                  {...{ loading }}
+                  size="large"
+                  onClick={this.handleCancelTeamStore}
+                >
+                  {formatMessage(messages.cancel)}
+                </ButtonOptionStyle>
+                <SaveButton
+                  {...{ loading }}
+                  size="large"
+                  onClick={
+                    !datesEdited
+                      ? this.openEditDatesInfo
+                      : this.handleBuildTeamStore
+                  }
+                >
+                  {formatMessage(messages.save)}
+                </SaveButton>
+              </ButtonOptionsWrapper>
+            ) : (
+              <SaveButton
+                {...{ loading }}
+                type="primary"
+                width="316px"
+                size="large"
+                onClick={this.handleBuildTeamStore}
+              >
+                {formatMessage(messages.buttonBuild)}
+              </SaveButton>
+            )}
+            <LockerModal
+              {...{
+                selectedItems,
+                tableItems,
+                currentPage,
+                limit,
+                offset,
+              }}
+              visible={openLocker}
+              onRequestClose={this.handleOnCloseLocker}
+              onSelectItem={setItemSelectedAction}
+              onUnselectItem={onUnselectItemAction}
+              onAddItems={setItemsAddAction}
+              changePage={this.changePage}
+              proDesign={false}
+              userId={user ? user.id : ''}
+            />
+            <ImageCropper
+              {...{ formatMessage, open }}
+              requestClose={this.closeModal}
+              setImage={this.setImage}
+              image={imagePreviewUrl}
+            />
+          </Container>
+        )}
       </Layout>
     )
   }
@@ -927,16 +985,25 @@ const CreateStoreEnhance = compose(
   graphql(profileSettingsQuery, {
     name: 'profileData',
     options: {
-      fetchPolicy: 'network-only'
-    }
+      fetchPolicy: 'network-only',
+    },
   }),
   graphql(cutoffDateSettingsQuery, {
     name: 'cutoffSettings',
     options: {
-      fetchPolicy: 'network-only'
-    }
+      fetchPolicy: 'network-only',
+    },
   }),
-  connect(mapStateToProps, { ...createStoreActions, ...thunkActions })
+  graphql<DesignLab>(getDesignLabInfo, {
+    options: () => ({
+      fetchPolicy: 'network-only',
+    }),
+    name: 'dataDesignLabInfo',
+  }),
+  connect(
+    mapStateToProps,
+    { ...createStoreActions, ...thunkActions }
+  )
 )(CreateStore)
 
 export default CreateStoreEnhance
