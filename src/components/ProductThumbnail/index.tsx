@@ -174,7 +174,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     const { id, product, myLockerList, isStoreThumbnail } = this.props
     if (onlyPro[id] && !myLockerList && !isStoreThumbnail) {
       this.goToProDesign(product)
-    } else {
+    } else if (!isStoreThumbnail && !myLockerList) {
       this.setState({ designModalOpen: true })
     }
   }
