@@ -157,6 +157,9 @@ export const PanelTitle = styled.div`
   flex-flow: column;
   justify-content: flex-end;
   height: 56px;
+  @media(max-width: 546px) {
+    font-size: 10px;
+  }
 `
 
 export const PanelIcon = styled.img`
@@ -1920,7 +1923,7 @@ export const CommentSection = styled.div`
   font-family: Avenir;
   @media (max-width: 1023px) {
     padding: 0;
-    height: calc(100vh - 277px);
+    height: calc(100vh - 200px);
   }
 `
 

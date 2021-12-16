@@ -435,6 +435,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   }
   private commentList: any
   private listMsg: any
+  private commentInput: any
   private chatDiv: any
   private catalogDiv: any
   private emailInput: any
@@ -451,7 +452,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       return
     }
     const search = get(history, 'location.search', '')
-    const { project, product } = queryString.parse(search)
+    const { project, product, tab } = queryString.parse(search)
     if (!!project && !!product) {
       this.handleEditProject(project, product)
     }
@@ -460,6 +461,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     }
     if (window) {
       window.addEventListener('resize', this.resizeRender, false)
+    }
+    if (tab) {
+      setTimeout(() => { this.onTabClickAction(tab) }, 800)
     }
   }
   componentWillUnmount() {
@@ -535,7 +539,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   onTabClickAction = (selectedKey: string) => {
     this.setState({ selectedKey })
     if (selectedKey === COMMENTS) {
-      setTimeout(() => { this.scrollMessagesComment() }, 500)
+      setTimeout(() => { this.scrollMessagesComment() }, 800)
     }
   }
   handleOpenShare = () => {
@@ -750,7 +754,16 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       const item = projectComments.find((comment: ProDesignComment) => comment.id === shortId)  
       if (item && item.id) {
         this.setState({ commentResponding: item })
+        if (this.commentInput) {
+          this.commentInput.focus()
+        }
       }
+    }
+  }
+
+  changeCollapseMobile = (key: string) => {
+    if (key === '2') {
+      setTimeout(() => { this.scrollMessagesComment() }, 800)
     }
   }
 
@@ -1412,6 +1425,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const currency = currentCurrency || config.defaultCurrency
     const fontList: Font[] = get(fontsData, 'fonts', [])
     const { loading = true, projectItem, error } = data || {}
+    const search = get(history, 'location.search', '')
+    const { tab } = queryString.parse(search)
     const incomingMessages = get(projectItem, 'messages', []) as ProDesignMessage[]
     const product = get(projectItem, 'product', {}) as Product
     const design = get(projectItem, 'design', {}) as DesignType
@@ -1951,7 +1966,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       }
                     </MessageFile>
                   }
-                  {!owner &&
+                  {!owner && !isGuest && !!role &&
                     <ReplyComment id={idComment} onClick={this.setReplyComment}>
                       {formatMessage(messages.reply)}
                       <ReplyIcon type="enter" />
@@ -1965,7 +1980,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   <LikeAction>
                     <LikeIcon
                       id={idComment}
-                      onClick={this.updateLike}
+                      onClick={!isGuest && !!role ? this.updateLike : () => {}}
                       type="like"
                       theme={likes.includes(sessionUser) ? 'filled' : 'outlined'}
                     />
@@ -1975,7 +1990,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     <HeartIcon
                       id={idComment}
                       type="heart"
-                      onClick={this.updateHeart}
+                      onClick={!isGuest && !!role ? this.updateHeart : () => {}}
                       theme={hearts.includes(sessionUser) ? 'filled' : 'outlined'}
                     />
                     {hearts.length}
@@ -1985,56 +2000,63 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             </IncomingMessage>
           )}
         </ChatComments>
-        <CommentInput>
-          {commentResponding && commentResponding.id &&
+        {!isGuest && !!role &&
+          <CommentInput>
+            {commentResponding && commentResponding.id &&
+              <FullResponse>
+                <ParentText codeColor={memberColors[Math.floor(commentResponding.userSerialId % 7)]}>
+                  <CommentHeader codeColor={memberColors[Math.floor(commentResponding.userSerialId % 7)]}>
+                    {commentResponding.userName}
+                  </CommentHeader>
+                  {commentResponding.message}
+                </ParentText>
+                <RemoveParent onClick={this.clearReply} type="close" />
+              </FullResponse>
+            }
             <FullResponse>
-              <ParentText codeColor={memberColors[Math.floor(commentResponding.userSerialId % 7)]}>
-                <CommentHeader codeColor={memberColors[Math.floor(commentResponding.userSerialId % 7)]}>
-                  {commentResponding.userName}
-                </CommentHeader>
-                {commentResponding.message}
-              </ParentText>
-              <RemoveParent onClick={this.clearReply} type="close" />
+              <UploadFileComment
+                listType="picture-card"
+                className="avatar-uploader"
+                showUploadList={false}
+                disabled={uploadingFileComment || sendingComment}
+                customRequest={this.uploadCommentFile}
+                beforeUpload={this.beforeUpload}
+              >
+                {uploadingFileComment ? <Spin size="small" /> : <ClipComment type="paper-clip" />}
+              </UploadFileComment>
+              <InputComment
+                innerRef={(commentInput: any) => { this.commentInput = commentInput }}
+                value={commentMessage}
+                disabled={sendingComment}
+                onChange={this.handleInputComment}
+                maxLength={768}
+                placeholder="You can add multiple text here..."
+                autosize={{ minRows: 1, maxRows: 12 }}
+                rows={4}
+              />
+              <SendCommentButton
+                disabled={!commentMessage || sendingComment || uploadingFileComment}
+                onClick={(
+                  !commentMessage || sendingComment || uploadingFileComment) ? 
+                  () => {} : 
+                  this.sendCommentAction
+                }
+              >
+                {sendingComment ? <Spin size="small" /> : formatMessage(messages.send)}
+              </SendCommentButton>
             </FullResponse>
-          }
-          <FullResponse>
-            <UploadFileComment
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              disabled={uploadingFileComment || sendingComment}
-              customRequest={this.uploadCommentFile}
-              beforeUpload={this.beforeUpload}
-            >
-              {uploadingFileComment ? <Spin size="small" /> : <ClipComment type="paper-clip" />}
-            </UploadFileComment>
-            <InputComment
-              value={commentMessage}
-              disabled={sendingComment}
-              onChange={this.handleInputComment}
-              maxLength={768}
-              placeholder="You can add multiple text here..."
-              autosize={{ minRows: 1, maxRows: 12 }}
-              rows={4}
-            />
-            <SendCommentButton
-              disabled={!commentMessage || sendingComment || uploadingFileComment}
-              onClick={(!commentMessage || sendingComment || uploadingFileComment) ? () => {} : this.sendCommentAction}
-            >
-              {sendingComment ? <Spin size="small" /> : formatMessage(messages.send)}
-            </SendCommentButton>
-          </FullResponse>
-          {!!commentFile &&
-            <FileComment>
-              <Clip type="file" />
-              <FileName onClick={this.openFile(commentFile)}>
-                {/* tslint:disable-next-line: max-line-length */}
-                {getFileWithExtension(commentFile || '')}
-              </FileName>
-              <RemoveFileIcon onClick={this.clearFileComment} type="close" />
-            </FileComment>
-          }
-        </CommentInput>
+            {!!commentFile &&
+              <FileComment>
+                <Clip type="file" />
+                <FileName onClick={this.openFile(commentFile)}>
+                  {/* tslint:disable-next-line: max-line-length */}
+                  {getFileWithExtension(commentFile || '')}
+                </FileName>
+                <RemoveFileIcon onClick={this.clearFileComment} type="close" />
+              </FileComment>
+            }
+          </CommentInput>
+        }
       </CommentSection>
 
     return (
@@ -2059,7 +2081,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           </BlackBar>
           <Layouts>
             {!!itemStatus &&
-              <StyledTabs 
+              <StyledTabs
                 secondary={
                   ownerEmail === 'jesus@tailrecursive.co' || 
                   ownerEmail === 'derekw@jakroousa.com' || 
@@ -2313,8 +2335,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           {!!itemStatus &&
             <CollapseWrapper>
               <CollapseMobile
-                defaultActiveKey={chatLog && chatLog.length && highlight ? '1' : ''}
+                defaultActiveKey={chatLog && chatLog.length && highlight && !tab ? 
+                  '1' : (tab && tab === COMMENTS ? '2' : '')
+                }
                 accordion={true}
+                onChange={this.changeCollapseMobile}
                 destroyInactivePanel={true}
               >
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
@@ -2350,6 +2375,21 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 >
                   {chatComponent}
                 </PanelMobile>
+                {(ownerEmail === 'jesus@tailrecursive.co' || 
+                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekrwiseman@gmail.com') &&
+                  <PanelMobile
+                    header={
+                      <PanelTitle>
+                        <PanelIcon src={commentsIcon} />
+                        {formatMessage(messages.comments)}
+                      </PanelTitle>
+                    }
+                    key="2"
+                  >
+                    {commentsComponent}
+                  </PanelMobile>
+                }
                 <PanelMobile
                   header={
                     <PanelTitle>
@@ -2357,7 +2397,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       {formatMessage(messages.colors)}
                     </PanelTitle>
                   }
-                  key="2"
+                  key="3"
                 >
                   {colorComponent}
                 </PanelMobile>
@@ -2368,7 +2408,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       {formatMessage(messages.viewDesigns)}
                     </PanelTitle>
                   }
-                  key="3"
+                  key="4"
                 >
                   {(!loading && product) &&
                     <Products secondary={true}>
