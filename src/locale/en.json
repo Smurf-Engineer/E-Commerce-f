@@ -274,7 +274,7 @@
   "components.signUp.repeatPasswordLabel": "Re-enter Password",
   "components.signUp.newsLetterSignUp": "Sign me up to Jakroo's newsletter",
   "components.signUp.termsAndPolicyLegend": "By creating an account, you agree to Jakroo's Privacy Policy and Terms of Use",
-  "components.signUp.createAccountButtonLabel": "CREATE ACCOUNT",
+  "components.signUp.createAccountButtonLabel": "CREATE YOUR FREE ACCOUNT",
   "compoenents.signUp.haveAccount": "Have an account?",
   "components.signUp.loginLabel": "LOG IN",
   "components.signUp.welcomeMessage": "Hi {name}! Welcome to Jakroo",

@@ -16,7 +16,7 @@ import {
   DividerRow,
   OrLabel,
   StyledInput,
-  SocialMediaContainer,
+  LocationContainer,
   FormContainer,
   RightDivider,
   LeftDivider,
@@ -28,7 +28,7 @@ import {
   HaveAnAccountRow,
   LogInLabel,
   CountryContainer,
-  Label
+  Label,
 } from './styledComponents'
 import messages from './messages'
 import { validateEmail } from '../../utils/utilsFunctions'
@@ -46,7 +46,11 @@ interface Props {
   closeSignUp: () => void
   signUpUser: (variables: {}) => void
   requestClose: () => void
-  setCountryValue: (countryId: string, countryName: string, countryCode: string) => void
+  setCountryValue: (
+    countryId: string,
+    countryName: string,
+    countryCode: string
+  ) => void
   setRegionChange: (name: string, code: string) => void
   formatMessage: (messageDescriptor: any, values?: object) => string
   initialCountryCode: string
@@ -82,7 +86,7 @@ class SignUp extends React.Component<Props, StateProps> {
     selectedCountryName: '',
     selectedCountryId: '',
     selectedRegion: '',
-    selectedRegionCode: ''
+    selectedRegionCode: '',
   }
   render() {
     const {
@@ -94,7 +98,7 @@ class SignUp extends React.Component<Props, StateProps> {
       countryName,
       countryCode,
       regionName,
-      city = ''
+      city = '',
     } = this.props
     const {
       name,
@@ -106,85 +110,63 @@ class SignUp extends React.Component<Props, StateProps> {
       selectedCountry = '',
       selectedCountryId = '',
       selectedCountryName = '',
-      selectedRegion = ''
+      selectedRegion = '',
     } = this.state
 
     const countrySelected = selectedCountryName || countryName
     const countryCodeSelected = selectedCountry || countryCode
     const regionSelected = selectedRegion || regionName
-    const showCountrySelector = !countryName || countryCode === 'US' || countryCode === 'CA'
-    const showProvinceSelector = ((countryCode === 'US' || countryCode === 'CA') && !selectedCountry)
-      || (selectedCountry === 'US' || selectedCountry === 'CA')
-    const showSignupForm = !!countrySelected && (!showProvinceSelector || (showProvinceSelector && !!selectedRegion))
+    const showCountrySelector =
+      !countryName || countryCode === 'US' || countryCode === 'CA'
+    const showProvinceSelector =
+      ((countryCode === 'US' || countryCode === 'CA') && !selectedCountry) ||
+      (selectedCountry === 'US' || selectedCountry === 'CA')
+    const showSignupForm =
+      !!countrySelected &&
+      (!showProvinceSelector || (showProvinceSelector && !!selectedRegion))
 
     return (
       <Container>
-        <SocialMediaContainer>
+        <LocationContainer>
           <SignUpLabel>
             {formatMessage(messages.createAccountLabel)}
           </SignUpLabel>
           <Text>{formatMessage(messages.saveAndAccessLegend)}</Text>
-          {showCountrySelector && <>
-            <CountryContainer>
-              <Label>{formatMessage(messages.countryLabel)}</Label>
-              <CountrySelect
-                {...{ formatMessage }}
-                selectedCountry={
-                  selectedCountry
-                    ? `${selectedCountry}-${selectedCountryId}`
-                    : undefined
-                }
-                loading={data && data.loading}
-                handleCountryChange={this.handleCountryChange}
-                countries={data.countries}
-              />
-            </CountryContainer>
-          </>}
-          {showProvinceSelector && <>
-            <CountryContainer {...{ countrySelected }}>
-              <Label>{formatMessage(messages.regionLabel)}</Label>
-              <RegionSelect
-                {...{ formatMessage }}
-                country={selectedCountryId}
-                countryName={selectedCountryName}
-                region={
-                  selectedRegion
-                    ? `${selectedRegion}`
-                    : undefined
-                }
-                handleRegionChange={this.handleRegionChange}
-              />
-            </CountryContainer>
-          </>}
-          {showSignupForm &&
-            <FacebookGmailLogin
-              signUpView={true}
-              handleLogin={login}
-              {...{
-                requestClose,
-                formatMessage,
-              }}
-              regionName={regionSelected}
-              countryName={countrySelected}
-              initialCountryCode={countryCodeSelected}
-              countryCode={countryCodeSelected}
-              city={regionSelected === regionName ? city : ''}
-            />
-          }
-        </SocialMediaContainer>
-        {showSignupForm &&
+          {showCountrySelector && (
+            <>
+              <CountryContainer>
+                <Label>{formatMessage(messages.countryLabel)}</Label>
+                <CountrySelect
+                  {...{ formatMessage }}
+                  selectedCountry={
+                    selectedCountry
+                      ? `${selectedCountry}-${selectedCountryId}`
+                      : undefined
+                  }
+                  loading={data && data.loading}
+                  handleCountryChange={this.handleCountryChange}
+                  countries={data.countries}
+                />
+              </CountryContainer>
+            </>
+          )}
+          {showProvinceSelector && (
+            <>
+              <CountryContainer {...{ countrySelected }}>
+                <Label>{formatMessage(messages.regionLabel)}</Label>
+                <RegionSelect
+                  {...{ formatMessage }}
+                  country={selectedCountryId}
+                  countryName={selectedCountryName}
+                  region={selectedRegion ? `${selectedRegion}` : undefined}
+                  handleRegionChange={this.handleRegionChange}
+                />
+              </CountryContainer>
+            </>
+          )}
+        </LocationContainer>
+        {showSignupForm && (
           <>
-            <HaveAnAccountRow>
-              {formatMessage(messages.haveAccount)}
-              <LogInLabel onClick={closeSignUp}>
-                {formatMessage(messages.loginLabel)}
-              </LogInLabel>
-            </HaveAnAccountRow>
-            <DividerRow>
-              <LeftDivider />
-              <OrLabel>{formatMessage(messages.orLabel)}</OrLabel>
-              <RightDivider />
-            </DividerRow>
             <FormContainer>
               <StyledInput
                 id="name"
@@ -228,17 +210,39 @@ class SignUp extends React.Component<Props, StateProps> {
                 <CreateAccountText>
                   {formatMessage(messages.termsAndPolicyLegend)}
                 </CreateAccountText>
-                <StyledButton
-                  type="danger"
-                  ghost={true}
-                  onClick={this.handleCreateAccount}
-                >
+                <StyledButton onClick={this.handleCreateAccount}>
                   {formatMessage(messages.createAccountButtonLabel)}
                 </StyledButton>
               </CreateAccountContainer>
             </FormContainer>
+
+            <DividerRow>
+              <LeftDivider />
+              <OrLabel>{formatMessage(messages.orLabel)}</OrLabel>
+              <RightDivider />
+            </DividerRow>
+
+            <FacebookGmailLogin
+              signUpView={true}
+              handleLogin={login}
+              {...{
+                requestClose,
+                formatMessage,
+              }}
+              regionName={regionSelected}
+              countryName={countrySelected}
+              initialCountryCode={countryCodeSelected}
+              countryCode={countryCodeSelected}
+              city={regionSelected === regionName ? city : ''}
+            />
+            <HaveAnAccountRow>
+              {formatMessage(messages.haveAccount)}
+              <LogInLabel onClick={closeSignUp}>
+                {formatMessage(messages.loginLabel)}
+              </LogInLabel>
+            </HaveAnAccountRow>
           </>
-        }
+        )}
       </Container>
     )
   }
@@ -254,12 +258,12 @@ class SignUp extends React.Component<Props, StateProps> {
       selectedCountryId: '',
       selectedCountryName: '',
       selectedRegion: '',
-      selectedRegionCode: ''
+      selectedRegionCode: '',
     })
   }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
-      currentTarget: { id, value }
+      currentTarget: { id, value },
     } = evt
     this.setState({ [id]: value } as any)
   }
@@ -273,19 +277,16 @@ class SignUp extends React.Component<Props, StateProps> {
     this.setState({
       selectedCountry: value,
       selectedCountryId: countryId,
-      selectedCountryName: countryName
+      selectedCountryName: countryName,
     })
     setCountryValue(value, countryId, countryName)
   }
 
-  handleRegionChange = (
-    value: any,
-    regionCode: string
-  ) => {
+  handleRegionChange = (value: any, regionCode: string) => {
     const { setRegionChange } = this.props
     this.setState({
       selectedRegion: value,
-      selectedRegionCode: regionCode
+      selectedRegionCode: regionCode,
     })
     setRegionChange(value, regionCode)
   }
@@ -305,7 +306,7 @@ class SignUp extends React.Component<Props, StateProps> {
       newsLetter,
       selectedCountry = '',
       selectedCountryName = '',
-      selectedRegion = ''
+      selectedRegion = '',
     } = this.state
     const {
       signUpUser,
@@ -315,7 +316,7 @@ class SignUp extends React.Component<Props, StateProps> {
       countryName = '',
       countryCode = '',
       regionName = '',
-      city
+      city,
     } = this.props
 
     if (password.length < 8) {
@@ -336,7 +337,7 @@ class SignUp extends React.Component<Props, StateProps> {
       country_code: selectedCountry || countryCode,
       country_name: selectedCountryName || countryName,
       region_name: selectedRegion || regionName,
-      city: (selectedRegion === regionName && city) ? city : ''
+      city: selectedRegion === regionName && city ? city : '',
     }
 
     if (!validateEmail(email.toLowerCase())) {
@@ -353,11 +354,11 @@ class SignUp extends React.Component<Props, StateProps> {
           name: get(data, 'user.name', ''),
           lastName: get(data, 'user.lastName', ''),
           email: get(data, 'user.email', ''),
-          administrator: get(data, 'user.administrator', false)
+          administrator: get(data, 'user.administrator', false),
         }
         message.success(
           formatMessage(messages.welcomeMessage, {
-            name: get(data, 'user.name', '')
+            name: get(data, 'user.name', ''),
           })
         )
         window.dataLayer.push({ event: NEW_USER, label: 'Form Sign Up' })
@@ -377,8 +378,8 @@ const SingUpEnchance = compose(
   createUser,
   graphql(countriesQuery, {
     options: {
-      fetchPolicy: 'network-only'
-    }
+      fetchPolicy: 'network-only',
+    },
   })
 )(SignUp)
 export default SingUpEnchance

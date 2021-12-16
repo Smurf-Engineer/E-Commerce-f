@@ -6,8 +6,12 @@ import Input from '../Common/CustomInput'
 import Divider from 'antd/lib/divider'
 import Button from 'antd/lib/button'
 import {
+  BLACK,
+  BLUE,
+  BLUE_LIGHT,
+  BLUE_SKY,
   GRAY_DARK,
-  GRAY_LIGHT
+  WHITE,
 } from '../../theme/colors'
 
 interface DivProps {
@@ -16,7 +20,7 @@ interface DivProps {
 
 export const Container = styled.div`
   width: 100%;
-  transition: all .25s;
+  transition: all 0.25s;
 `
 
 export const SignUpLabel = styled.div`
@@ -39,9 +43,9 @@ export const Text = styled.div`
 export const DividerRow = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  margin: 20px 0;
   width: 42%;
-  animation: fade-in-top 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  animation: fade-in-top 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   @keyframes fade-in-top {
     0% {
       transform: translateY(-20px);
@@ -62,7 +66,7 @@ export const LeftDivider = styled(Divider)``
 export const OrLabel = styled.div`
   height: 27px;
   margin: 0 24px;
-  color: ${GRAY_LIGHT};
+  color: ${GRAY_DARK};
   font-size: 18px;
   line-height: 25px;
   text-align: center;
@@ -74,10 +78,11 @@ export const StyledInput = styled(Input)`
   border-radius: 0px;
 `
 
-export const SocialMediaContainer = styled.div`
+export const LocationContainer = styled.div`
+  margin-bottom: 20px;
   padding: 0 81px;
-  transition: all .25s;
-  animation: fade-in-top 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  transition: all 0.25s;
+  animation: fade-in-top 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   @keyframes fade-in-top {
     0% {
       transform: translateY(-20px);
@@ -95,7 +100,7 @@ export const SocialMediaContainer = styled.div`
 
 export const FormContainer = styled.div`
   padding: 0 77px;
-  animation: fade-in-top 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  animation: fade-in-top 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   @keyframes fade-in-top {
     0% {
       transform: translateY(-20px);
@@ -138,13 +143,24 @@ export const CreateAccountText = styled.div`
 export const StyledButton = styled(Button)`
   width: 100%;
   height: 44px;
+  background-color: ${BLUE_SKY};
   border-radius: 0px;
+  border: none;
+  color: ${WHITE};
+
+  &:hover {
+    background-color: ${BLUE_LIGHT};
+    color: ${WHITE};
+    cursor: pointer;
+  }
 `
 
 export const HaveAnAccountRow = styled.div`
+  color: ${BLACK};
   padding: 10px 0 10px;
   text-align: center;
-  animation: fade-in-top 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  font-size: 16px;
+  animation: fade-in-top 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   @keyframes fade-in-top {
     0% {
       transform: translateY(-20px);
@@ -158,6 +174,7 @@ export const HaveAnAccountRow = styled.div`
 `
 
 export const LogInLabel = styled.span`
+  color: ${BLUE};
   font-weight: 600;
   margin-left: 5px;
   &:hover {
@@ -168,8 +185,9 @@ export const LogInLabel = styled.span`
 export const CountryContainer = styled.div`
   width: 100%;
   margin: 0 auto 15px;
-  transition: all .25s;
-  margin-bottom: ${({ countrySelected }: DivProps) => countrySelected ? '32px' : '12px'};
+  transition: all 0.25s;
+  margin-bottom: ${({ countrySelected }: DivProps) =>
+    countrySelected ? '32px' : '12px'};
 `
 
 export const Label = styled.div`
