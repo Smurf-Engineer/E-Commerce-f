@@ -350,4 +350,8 @@ export default defineMessages({
     id: 'screens.DesignApproval.invitationResent',
     defaultMessage: 'Invitation resent!'
   },
+  messageSent: {
+    id: 'screens.DesignApproval.messageSent',
+    defaultMessage: 'Message sent!'
+  },
 })

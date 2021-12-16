@@ -119,6 +119,21 @@ export type ProDesignItem = {
   messages: ProDesignMessage[]
 }
 
+export type ProDesignComment = {
+  id: number
+  createdAt: string
+  message: string
+  file: string
+  userId: string
+  userName: string
+  userSerialId: number
+  parentMessageId: number
+  owner: boolean
+  likes: string[]
+  hearts: string[]
+  parent: ProDesignComment
+}
+
 export type ProDesignProject = {
   id: number
   name: string
