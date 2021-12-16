@@ -29,7 +29,8 @@ import {
   BLUE_SOFT,
   GRAY_SKELETON,
   COLOR_IN_DESIGN,
-  DARKER_GRAY
+  DARKER_GRAY,
+  GRAY_SNOW
 } from '../../theme/colors'
 import TextArea from 'antd/lib/input/TextArea'
 import Button from 'antd/lib/button'
@@ -156,6 +157,9 @@ export const PanelTitle = styled.div`
   flex-flow: column;
   justify-content: flex-end;
   height: 56px;
+  @media(max-width: 546px) {
+    font-size: 10px;
+  }
 `
 
 export const PanelIcon = styled.img`
@@ -823,6 +827,7 @@ export const MessageFile = styled.div`
   font-size: 12px;
   color: ${BLUE};
   text-decoration: underline;
+  align-self: ${({ isAdmin }: RowProps) => isAdmin ? 'flex-end' : 'unset'};
   &:hover {
     cursor: pointer;
   }
@@ -841,6 +846,11 @@ export const FileName = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
 `
 
 export const SaveButton = styled(Button)`
@@ -1155,13 +1165,14 @@ export const MessageBox = styled.div`
 `
 
 export const ParentText = styled.div`
-  border-left: 2px solid ${RED_TRANSPARENT};
+  border-left: 2px solid ${({ codeColor }: RowProps) => codeColor || RED_TRANSPARENT};
   padding: 4px 10px;
   border-radius: 4px;
   margin-bottom: 10px;
   font-size: 12px;
   color: ${GRAY_STRONG};
   background: ${GRAY_LIGHTEST};
+  text-align: left;
 `
 
 export const MessageBody = styled.div`
@@ -1170,6 +1181,15 @@ export const MessageBody = styled.div`
   width: 100%;
   word-break: break-word;
   flex-flow: column;
+`
+
+export const MessageComment = styled.div`
+  display: inline-flex;
+  text-align: start;
+  width: 100%;
+  word-break: break-word;
+  flex-flow: column;
+  min-width: 164px;
 `
 
 export const ColorName = styled.p`
@@ -1467,6 +1487,7 @@ export const Collaboration = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
+  font-family: Avenir;
   overflow-y: scroll;
   overflow-x: hidden;
   @media (max-width: 1023px) {
@@ -1614,6 +1635,7 @@ export const Resend = styled.div`
 
 export const InviteContainer = styled.div`
   margin: 22px 20px;
+  font-family: Avenir;
 `
 
 export const InviteTitle = styled.div`
@@ -1889,4 +1911,250 @@ export const PopoverText = styled.div`
   width: 100%;
   font-size: 12px;
   color: ${BLACK};
+`
+
+export const CommentSection = styled.div`
+  padding: 0 14px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+  font-family: Avenir;
+  @media (max-width: 1023px) {
+    padding: 0;
+    height: calc(100vh - 200px);
+  }
+`
+
+export const ChatComments = styled.div`
+  flex: 1;
+  overflow-y: scroll;
+  @media (min-width: 1024px) {
+    max-height: calc(100% - 45px);
+  }
+`
+
+export const CommentMessage = styled.div`
+  background: ${({ isAdmin }: RowProps) => isAdmin ? WHITE : '#fafff7'};
+  padding: 8px;
+  box-shadow: 0px 2px 7px 0px ${GRAY_LIGHT};
+  display: inline-flex;
+  flex-flow: column;
+  border-radius: 5px;
+  justify-content: space-between;
+  align-items: flex-start;
+  ${({ highlight }: RowProps) => highlight ? `
+    animation: blink-1 1.5s 2s 2 ease-in-out;
+    @keyframes blink-1 {
+      0% {
+        box-shadow: 0 0 0 0 #ff6a6a;
+      }
+      100% {
+        box-shadow: 0 0 0 16px #ffebebb8;
+      }
+    }
+  ` : ''}
+`
+
+export const MemberInitials = styled.div`
+  width: 24px;
+  font-size: 12px;
+  height: 24px;
+  background: ${({ codeColor }: RowProps) => codeColor || BLUE};
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+`
+
+export const CommentHeader = styled.div`
+  margin-left: 2px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Avenir;
+  margin-bottom: 4px;
+  text-align: left;
+  color: ${({ codeColor }: RowProps) => codeColor || BLUE};
+  filter: contrast(0.5);
+`
+
+export const ImageMessage = styled.img`
+  width: 100%;
+  max-height: 278px;
+`
+
+export const ActionsIcons = styled.div`
+  display: flex;
+  margin-top: -11px;
+  margin-left: 8px;
+`
+
+export const LikeAction = styled.div`
+  margin-right: 14px;
+  font-size: 12px;
+`
+
+export const HeartAction = styled.div`
+  margin-right: 12px;
+  font-size: 12px;
+`
+
+export const LikeIcon = styled(Icon)`
+  margin-right: 8px;
+  font-size: 14px;
+  color: ${BLUE};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
+
+export const HeartIcon = styled(Icon)`
+  margin-right: 8px;
+  font-size: 14px;
+  color: ${RED_TRANSPARENT};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
+
+export const CommentInput = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-flow: column;
+  align-items: flex-start;
+  margin-left: -14px;
+  margin-right: -14px;
+  background: ${GRAY_SNOW};
+  margin-top: 0px;
+  margin-bottom: 0;
+  min-height: 45px;
+  padding: 6px 14px;
+  flex-wrap: wrap;
+  transition: all .4s;
+`
+
+export const InputComment = styled(TextArea)`
+  border-radius: 25px;
+  outline: none;
+  box-shadow: none;
+  resize: none;
+  &:hover {
+    border: 1px solid ${GRAY_LIGHT};
+  }
+  &:focus {
+    border: 1px solid ${GRAY_LIGHT};
+    outline: none;
+    box-shadow: none;
+    resize: none;
+  }
+`
+
+export const SendCommentButton = styled.div`
+  font-family: Avenir-Medium;
+  margin-left: 10px;
+  color: ${({ disabled }: RowProps) => disabled ? GRAY : BLUE};
+  transition: all .25s;
+  &:hover {
+    cursor: ${({ disabled }: RowProps) => disabled ? 'not-allowed' : 'pointer'};
+    opacity: 0.7;
+  }
+`
+
+export const ClipComment = styled(Icon)`
+  margin-right: 10px;
+  margin-bottom: 2px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
+
+export const FullResponse = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+`
+
+export const FileComment = styled.div`
+  display: flex;
+  margin-top: 8px;
+  align-items: center;
+  text-decoration: underline;
+  color: ${BLUE};
+  width: 100%;
+  margin-bottom: 6px;
+  transition: all .25s;
+`
+
+export const ReplyComment = styled.div`
+  text-align: right;
+  width: 100%;
+  margin-top: 6px;
+  padding-right: 6px;
+  font-size: 12px;
+  color: ${BLUE};
+  font-style: italic;
+  font-family: Avenir-Medium;
+  font-weight: 500;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
+
+export const ReplyIcon = styled(Icon)`
+  margin-left: 6px;
+`
+
+export const RemoveParent = styled(Icon)`
+  font-size: 12px;
+  margin-left: 11px;
+  flex: 1;
+  text-align: left;
+  margin-bottom: 4px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
+
+export const UploadFileComment = styled(Upload)`
+  .ant-upload-select-picture-card {
+    border: none;
+    width: auto;
+    height: auto;
+    margin: 0;
+    @media (max-width: 767px) {
+      width: 100%;
+    }
+  }
+  span.ant-upload {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .ant-spin-spinning {
+    margin-right: 10px !important;
+  }
+`
+
+export const RemoveFileIcon = styled(Icon)`
+  margin-left: 8px;
+  color: ${RED};
+  font-size: 11px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
 `

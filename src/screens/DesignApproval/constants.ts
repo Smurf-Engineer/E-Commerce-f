@@ -46,3 +46,12 @@ export const memberTypeOptions = [
     COMMENTER_ROLE,
     APPROVER_ROLE
 ]
+
+// Chat Member Colors
+export const chatColors = [
+    '#689ac5',
+    '#c57168',
+    '#68c56f',
+    '#a668c5',
+    '#e9c74b'
+  ]

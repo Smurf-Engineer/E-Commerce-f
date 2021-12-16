@@ -15,6 +15,7 @@ import queryString from 'query-string'
 import AntdMessage from 'antd/lib/message'
 import Button from 'antd/lib/button'
 import Select from 'antd/lib/select'
+import { uploadFileAction as uploadFileComment } from '../../screens/ResellerSignup/api'
 import messageIcon from '../../assets/approval_log.svg'
 import JakRooLogo from '../../assets/Jackroologo.svg'
 import quickView from '../../assets/quickview.svg'
@@ -38,7 +39,10 @@ import {
   sendInvitationsMutation,
   changeMemberRoleMutation,
   deleteMemberMutation,
-  reSendInvitationsMutation
+  reSendInvitationsMutation,
+  getProdesignItemCommentsQuery,
+  sendCommentMutation,
+  updateReactionMutation
 } from './data'
 import {
   openLoginAction
@@ -63,7 +67,8 @@ import {
   MessagePayload,
   ModelVariant,
   Notification,
-  ServicePrice
+  ServicePrice,
+  ProDesignComment
 } from '../../types/common'
 // TODO: Commented all quickview related until confirm it won't be needed
 // import quickView from '../../assets/quickview.svg'
@@ -228,7 +233,30 @@ import {
   MemberOwnerLabel,
   StarIcon,
   StyledPopOver,
-  PopoverText
+  PopoverText,
+  CommentSection,
+  ChatComments,
+  CommentMessage,
+  CommentHeader,
+  MemberInitials,
+  ImageMessage,
+  ActionsIcons,
+  LikeAction,
+  LikeIcon,
+  HeartAction,
+  HeartIcon,
+  CommentInput,
+  InputComment,
+  SendCommentButton,
+  ClipComment,
+  FullResponse,
+  FileComment,
+  ReplyComment,
+  ReplyIcon,
+  RemoveParent,
+  UploadFileComment,
+  RemoveFileIcon,
+  MessageComment
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -257,7 +285,7 @@ import {
 import moment from 'moment'
 import messages from './messages'
 import Spin from 'antd/lib/spin'
-import { getFileWithExtension } from '../../utils/utilsFiles'
+import { getFileExtension, getFileWithExtension } from '../../utils/utilsFiles'
 import { UploadChangeParam } from 'antd/lib/upload'
 import AccessoryColors from './AccessoryColors'
 import SwipeableBottomSheet from 'react-swipeable-clickeable-bottom-sheet'
@@ -274,7 +302,8 @@ import {
   ORANGE,
   GRAY_DARK,
   WHITE,
-  FACEBOOKBLUE
+  FACEBOOKBLUE,
+  BLUE_SOFT
 } from '../../theme/colors'
 import PayModal from '../../components/PayModal'
 import config from '../../config'
@@ -293,6 +322,10 @@ interface DataVariants extends QueryProps {
 
 interface Data extends QueryProps {
   projectItem: ProDesignItem
+}
+
+interface DataComments extends QueryProps {
+  projectComments: ProDesignComment[]
 }
 
 interface EditRequestData extends QueryProps {
@@ -316,6 +349,11 @@ interface StateProps {
   itemToAdd: any
   openAddToStoreModal: boolean
   selectedVariant: number
+  commentMessage: string
+  commentFile: string,
+  commentResponding: any,
+  uploadingFileComment: boolean,
+  sendingComment: boolean
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -330,6 +368,7 @@ interface Props extends RouteComponentProps<any> {
   history: History
   currentCurrency: string
   fontsData: any
+  membersComments: DataComments
   uploadingFile: boolean
   parentMessageId: string
   parentMessage: string
@@ -348,6 +387,8 @@ interface Props extends RouteComponentProps<any> {
     hideSliderButtons?: boolean
   ) => void
   setApproveLoading: (loading: boolean) => void
+  updateReaction: (variables: {}) => Promise<MessagePayload>
+  sendComment: (variables: {}) => Promise<MessagePayload>
   deleteMember: (variables: {}) => Promise<MessagePayload>
   changeMemberRole: (variables: {}) => Promise<MessagePayload>
   reSendInvitation: (variables: {}) => Promise<MessagePayload>
@@ -367,6 +408,11 @@ interface Props extends RouteComponentProps<any> {
 
 export class DesignApproval extends React.Component<Props, StateProps> {
   state = {
+    commentMessage: '',
+    commentFile: '',
+    commentResponding: {},
+    sendingComment: false,
+    uploadingFileComment: false,
     resendingEmail: '',
     showRenderWindow: true,
     selectedKey: APPROVAL,
@@ -387,7 +433,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     showConfirmInvites: false,
     savingInvitations: false
   }
+  private commentList: any
   private listMsg: any
+  private commentInput: any
   private chatDiv: any
   private catalogDiv: any
   private emailInput: any
@@ -404,7 +452,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       return
     }
     const search = get(history, 'location.search', '')
-    const { project, product } = queryString.parse(search)
+    const { project, product, tab } = queryString.parse(search)
     if (!!project && !!product) {
       this.handleEditProject(project, product)
     }
@@ -413,6 +461,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     }
     if (window) {
       window.addEventListener('resize', this.resizeRender, false)
+    }
+    if (tab) {
+      setTimeout(() => { this.onTabClickAction(tab) }, 800)
     }
   }
   componentWillUnmount() {
@@ -431,16 +482,21 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     }
   }
   componentDidUpdate(prevProps: Props) {
-    const { data, user } = this.props
-    const { data: oldData, user: oldUser } = prevProps
+    const { data, user, membersComments } = this.props
+    const { data: oldData, user: oldUser, membersComments: oldCommentsData } = prevProps
     const { retryLoad } = this.state
     const oldMessages = get(oldData, 'projectItem.messages', [])
     const newMessages = get(data, 'projectItem.messages', [])
+    const oldComments = get(oldCommentsData, 'projectComments', [])
+    const newComments = get(membersComments, 'projectComments', [])
     if (user !== oldUser && retryLoad) {
       location.reload()
     }
     if (oldMessages.length !== newMessages.length) {
       setTimeout(() => { this.scrollMessages() }, 2000)
+    }
+    if (oldComments.length !== newComments.length) {
+      setTimeout(() => { this.scrollMessagesComment() }, 2000) 
     }
     if (window._slaask) {
       window._slaask.destroy()
@@ -482,6 +538,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   }
   onTabClickAction = (selectedKey: string) => {
     this.setState({ selectedKey })
+    if (selectedKey === COMMENTS) {
+      setTimeout(() => { this.scrollMessagesComment() }, 800)
+    }
   }
   handleOpenShare = () => {
     this.setState({ openShare: true })
@@ -512,6 +571,17 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const { uploadFileAction } = this.props
     const { file } = event
     uploadFileAction(file)
+  }
+
+  clearFileComment = () => {
+    this.setState({ commentFile: '' })
+  }
+
+  uploadCommentFile = async (event: UploadChangeParam) => {
+    const { file } = event
+    this.setState({ uploadingFileComment: true })
+    const fileUrl = await uploadFileComment(file)
+    this.setState({ uploadingFileComment: false , commentFile: fileUrl })
   }
 
   beforeUpload = (file: any) => {
@@ -666,6 +736,109 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       AntdMessage.error(errorMessage)
     } finally {
       setSendingAction(false)
+    }
+  }
+
+  clearReply = () => {
+    this.setState({ commentResponding: {} })
+  }
+
+  setReplyComment = (evt: React.MouseEvent) => {
+    const {
+      currentTarget: { id }
+    } = evt
+    const shortId = id ? Number(id) : 0
+    if (shortId) {
+      const { membersComments } = this.props
+      const projectComments = get(membersComments, 'projectComments', []) as ProDesignComment[]
+      const item = projectComments.find((comment: ProDesignComment) => comment.id === shortId)  
+      if (item && item.id) {
+        this.setState({ commentResponding: item })
+        if (this.commentInput) {
+          this.commentInput.focus()
+        }
+      }
+    }
+  }
+
+  changeCollapseMobile = (key: string) => {
+    if (key === '2') {
+      setTimeout(() => { this.scrollMessagesComment() }, 800)
+    }
+  }
+
+  handleInputComment = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    this.setState({ commentMessage: value })
+  }
+
+  sendCommentAction = async () => {
+    const {
+      intl: { formatMessage },
+      sendComment,
+      location,
+      user, 
+    } = this.props
+    try {
+      const search = location ? location.search : ''
+      const queryParams = queryString.parse(search)
+      const { id: itemId } = queryParams || {}
+      const { name, lastName } = user || {}
+      if (itemId) {
+        this.setState({ sendingComment: true })
+        const { commentMessage, commentFile, commentResponding = {} } = this.state 
+        const parentMessageId = get(commentResponding, 'id', '')
+        await sendComment({
+          variables: {
+            itemId,
+            message: commentMessage,
+            file: commentFile,
+            parentMessageId
+          },
+          update: (store: any, responseData: ProDesignComment) => {
+            const responseMessage = get(responseData, 'data.messageData', {})
+            const storedData = store.readQuery({
+              query: getProdesignItemCommentsQuery,
+              variables: { shortId: itemId }
+            })
+            const newMessage = {
+              ...responseMessage,
+              userName: `${name} ${lastName}`,
+              owner: true,
+              userSerialId: -1,
+              parentMessageId,
+              parent: {
+                __typename: 'ProDesignComment',
+                id: parentMessageId || null,
+                userSerialId: commentResponding.userSerialId || null,
+                userName: commentResponding.userName || null,
+                message: commentResponding.message || null
+              }
+            }
+            const messagesArray = get(storedData, 'projectComments', [])
+            messagesArray.push(newMessage)
+            setTimeout(() => { this.scrollMessagesComment() }, 1000)
+            store.writeQuery({
+              query: getProdesignItemCommentsQuery,
+              variables: { shortId: itemId },
+              data: storedData,
+              name: 'membersComments'
+            })
+          },
+        })
+        AntdMessage.success(formatMessage(messages.messageSent))
+        const snd = new Audio(messageSent)
+        snd.play()
+        snd.remove()
+        this.setState({ commentMessage: '', commentFile: '', commentResponding: {} })
+      }
+    } catch (e) {
+      const errorMessage = e.graphQLErrors.map((x: any) => x.message)
+      AntdMessage.error(errorMessage)
+    } finally {
+      this.setState({ sendingComment: false })
     }
   }
 
@@ -870,6 +1043,72 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     }
   }
 
+  updateLike = async (evt: React.MouseEvent<HTMLDivElement>) => {
+    const {
+      membersComments,
+      user,
+      updateReaction
+    } = this.props
+    try {
+      const {
+        currentTarget: { id: messageId }
+      } = evt
+      if (!!messageId) {
+        const { id: userId } = user || {}
+        const comments = get(membersComments, 'projectComments', [])
+        const itemIndex = comments.findIndex((comment: ProDesignComment) => comment.id === Number(messageId))
+        const likes = itemIndex !== -1 && comments[itemIndex] ? comments[itemIndex].likes || [] : []
+        let updatedLikes = likes
+        const isDislike = likes.includes(userId)
+        if (isDislike) {
+          updatedLikes = likes.filter((idUser: string) => idUser !== userId) 
+        } else {
+          updatedLikes.push(userId)
+        }
+        set(membersComments, ['projectComments', itemIndex, 'likes'], updatedLikes)
+        this.forceUpdate()
+        await updateReaction(
+          { variables: { messageId, isHeart: false }
+        })
+      }
+    } catch (e) {
+      AntdMessage.error(e.message)
+    }
+  }
+
+  updateHeart = async (evt: React.MouseEvent<HTMLDivElement>) => {
+    const {
+      membersComments,
+      user,
+      updateReaction
+    } = this.props
+    try {
+      const {
+        currentTarget: { id: messageId }
+      } = evt
+      if (!!messageId) {
+        const { id: userId } = user || {}
+        const comments = get(membersComments, 'projectComments', [])
+        const itemIndex = comments.findIndex((comment: ProDesignComment) => comment.id === Number(messageId))
+        const hearts = itemIndex !== -1 && comments[itemIndex] ? comments[itemIndex].hearts || [] : []
+        let updatedHearts = hearts
+        const isDislike = hearts.includes(userId)
+        if (isDislike) {
+          updatedHearts = hearts.filter((idUser: string) => idUser !== userId) 
+        } else {
+          updatedHearts.push(userId)
+        }
+        set(membersComments, ['projectComments', itemIndex, 'hearts'], updatedHearts)
+        this.forceUpdate()
+        await updateReaction(
+          { variables: { messageId, isHeart: true }
+        })
+      }
+    } catch (e) {
+      AntdMessage.error(e.message)
+    }
+  }
+
   approveDesign = async () => {
     const {
       intl: { formatMessage },
@@ -900,6 +1139,15 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   scrollMessages = () => {
     if (window && this.listMsg) {
       const node = document.getElementsByClassName('chatLog')[0] as HTMLElement
+      if (node) {
+        node.scrollTop = node.scrollHeight
+      }
+    }
+  }
+
+  scrollMessagesComment = () => {
+    if (window && this.commentList) {
+      const node = document.getElementsByClassName('commentLog')[0] as HTMLElement
       if (node) {
         node.scrollTop = node.scrollHeight
       }
@@ -1139,8 +1387,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       editRequestData,
       currentCurrency,
       parentMessage,
+      membersComments,
       approveLoading,
       note,
+      user,
       history,
       dataVariants,
       predyedData,
@@ -1152,7 +1402,12 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } = this.props
     const { formatMessage } = intl
     const {
+      commentMessage,
+      commentFile,
+      commentResponding,
       resendingEmail,
+      uploadingFileComment,
+      sendingComment,
       savingInvitations,
       showConfirmInvites,
       openInviteModal,
@@ -1170,6 +1425,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const currency = currentCurrency || config.defaultCurrency
     const fontList: Font[] = get(fontsData, 'fonts', [])
     const { loading = true, projectItem, error } = data || {}
+    const search = get(history, 'location.search', '')
+    const { tab } = queryString.parse(search)
     const incomingMessages = get(projectItem, 'messages', []) as ProDesignMessage[]
     const product = get(projectItem, 'product', {}) as Product
     const design = get(projectItem, 'design', {}) as DesignType
@@ -1180,6 +1437,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const editRequestPrice = get(editRequestData, ['editRequestPrices', currency], 0) as number
     const highlight = get(projectItem, 'showNotification', false) as boolean
     const projectDesigns = get(projectItem, 'project.designs', []) as DesignType[]
+    const projectComments = get(membersComments, 'projectComments', []) as ProDesignComment[]
     const itemStatus = get(projectItem, 'status', '') as string
     const requestsLimit = get(projectItem, 'limitRequests', 0) as number
     const paidRequests = get(projectItem, 'paidRequests', 0) as number
@@ -1188,6 +1446,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const projectMembers = get(projectItem, 'project.members', [])
     const ownerName = get(projectItem, 'project.customer', '')
     const ownerEmail = get(projectItem, 'project.customerEmail', '')
+    const sessionUser = get(user, 'id', '')
     const {
       id: designSerialId,
       predyedName,
@@ -1646,7 +1905,159 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         </Modal>
       </Collaboration> : null
 
-    const commentsComponent = null
+    const commentsComponent = 
+      <CommentSection>
+        <ChatComments className="commentLog" ref={(commentList: any) => { this.commentList = commentList }}>
+          {projectComments.map((
+              {
+                id: idComment,
+                owner,
+                parent,
+                likes = [],
+                hearts = [],
+                createdAt,
+                file: fileComment,
+                message,
+                userName,
+                userSerialId,
+                parentMessageId: parentId
+              }: ProDesignComment
+            , key: number
+            ) =>
+            <IncomingMessage {...{ key }} isAdmin={!owner}>
+              <MessageHeader isAdmin={!owner}>
+                <MemberInitials codeColor={!owner ? memberColors[Math.floor(userSerialId % 7)] : BLUE_SOFT}>
+                  <UserIcon type="user" />
+                </MemberInitials>
+              </MessageHeader>
+              <InfoDiv isAdmin={!owner}>
+                <CommentMessage isAdmin={!owner}>
+                  {!owner &&
+                    <CommentHeader codeColor={memberColors[Math.floor(userSerialId % 7)]}>
+                      {userName}
+                    </CommentHeader>
+                  }
+                  {parentId && parent && parent.message &&
+                    <ParentText codeColor={memberColors[Math.floor(parent.userSerialId % 7)]}>
+                      <CommentHeader codeColor={memberColors[Math.floor(parent.userSerialId % 7)]}>
+                        {parent.userName}
+                      </CommentHeader>
+                      {parent.message}
+                    </ParentText>
+                  }
+                  <MessageComment>
+                    {message}
+                  </MessageComment>
+                  {!!fileComment &&
+                    <MessageFile
+                      isAdmin={!owner}
+                      onClick={this.openFile(fileComment)}
+                    >
+                      {/* tslint:disable-next-line: max-line-length */}
+                      {['.jpg', '.jpeg', '.svg', '.png'].includes(getFileExtension(fileComment) || '') ?
+                        <ImageMessage src={fileComment} /> :
+                        <>
+                          <Clip type="paper-clip" />
+                          <FileName>
+                            {/* tslint:disable-next-line: max-line-length */}
+                            {getFileWithExtension(fileComment || '')}
+                          </FileName>
+                        </>
+                      }
+                    </MessageFile>
+                  }
+                  {!owner && !isGuest && !!role &&
+                    <ReplyComment id={idComment} onClick={this.setReplyComment}>
+                      {formatMessage(messages.reply)}
+                      <ReplyIcon type="enter" />
+                    </ReplyComment>
+                  }
+                </CommentMessage>
+                <DateMessage>
+                  {createdAt ? moment(createdAt).local().format('DD/MM/YYYY HH:mm') : '-'}
+                </DateMessage>
+                <ActionsIcons>
+                  <LikeAction>
+                    <LikeIcon
+                      id={idComment}
+                      onClick={!isGuest && !!role ? this.updateLike : () => {}}
+                      type="like"
+                      theme={likes.includes(sessionUser) ? 'filled' : 'outlined'}
+                    />
+                    {likes.length}
+                  </LikeAction>
+                  <HeartAction>
+                    <HeartIcon
+                      id={idComment}
+                      type="heart"
+                      onClick={!isGuest && !!role ? this.updateHeart : () => {}}
+                      theme={hearts.includes(sessionUser) ? 'filled' : 'outlined'}
+                    />
+                    {hearts.length}
+                  </HeartAction>
+                </ActionsIcons>
+              </InfoDiv>
+            </IncomingMessage>
+          )}
+        </ChatComments>
+        {!isGuest && !!role &&
+          <CommentInput>
+            {commentResponding && commentResponding.id &&
+              <FullResponse>
+                <ParentText codeColor={memberColors[Math.floor(commentResponding.userSerialId % 7)]}>
+                  <CommentHeader codeColor={memberColors[Math.floor(commentResponding.userSerialId % 7)]}>
+                    {commentResponding.userName}
+                  </CommentHeader>
+                  {commentResponding.message}
+                </ParentText>
+                <RemoveParent onClick={this.clearReply} type="close" />
+              </FullResponse>
+            }
+            <FullResponse>
+              <UploadFileComment
+                listType="picture-card"
+                className="avatar-uploader"
+                showUploadList={false}
+                disabled={uploadingFileComment || sendingComment}
+                customRequest={this.uploadCommentFile}
+                beforeUpload={this.beforeUpload}
+              >
+                {uploadingFileComment ? <Spin size="small" /> : <ClipComment type="paper-clip" />}
+              </UploadFileComment>
+              <InputComment
+                innerRef={(commentInput: any) => { this.commentInput = commentInput }}
+                value={commentMessage}
+                disabled={sendingComment}
+                onChange={this.handleInputComment}
+                maxLength={768}
+                placeholder="You can add multiple text here..."
+                autosize={{ minRows: 1, maxRows: 12 }}
+                rows={4}
+              />
+              <SendCommentButton
+                disabled={!commentMessage || sendingComment || uploadingFileComment}
+                onClick={(
+                  !commentMessage || sendingComment || uploadingFileComment) ? 
+                  () => {} : 
+                  this.sendCommentAction
+                }
+              >
+                {sendingComment ? <Spin size="small" /> : formatMessage(messages.send)}
+              </SendCommentButton>
+            </FullResponse>
+            {!!commentFile &&
+              <FileComment>
+                <Clip type="file" />
+                <FileName onClick={this.openFile(commentFile)}>
+                  {/* tslint:disable-next-line: max-line-length */}
+                  {getFileWithExtension(commentFile || '')}
+                </FileName>
+                <RemoveFileIcon onClick={this.clearFileComment} type="close" />
+              </FileComment>
+            }
+          </CommentInput>
+        }
+      </CommentSection>
 
     return (
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true} hideAlerts={true}>
@@ -1670,7 +2081,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           </BlackBar>
           <Layouts>
             {!!itemStatus &&
-              <StyledTabs 
+              <StyledTabs
                 secondary={
                   ownerEmail === 'jesus@tailrecursive.co' || 
                   ownerEmail === 'derekw@jakroousa.com' || 
@@ -1889,7 +2300,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </StyledTooltipMobile>
                 }
               </MobileRequestButtons>
-              {!!itemStatus &&
+              {!!itemStatus && false &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId && showRenderWindow &&
                     <Render3D
@@ -1924,8 +2335,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           {!!itemStatus &&
             <CollapseWrapper>
               <CollapseMobile
-                defaultActiveKey={chatLog && chatLog.length && highlight ? '1' : ''}
+                defaultActiveKey={chatLog && chatLog.length && highlight && !tab ? 
+                  '1' : (tab && tab === COMMENTS ? '2' : '')
+                }
                 accordion={true}
+                onChange={this.changeCollapseMobile}
                 destroyInactivePanel={true}
               >
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
@@ -1961,6 +2375,21 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 >
                   {chatComponent}
                 </PanelMobile>
+                {(ownerEmail === 'jesus@tailrecursive.co' || 
+                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekrwiseman@gmail.com') &&
+                  <PanelMobile
+                    header={
+                      <PanelTitle>
+                        <PanelIcon src={commentsIcon} />
+                        {formatMessage(messages.comments)}
+                      </PanelTitle>
+                    }
+                    key="2"
+                  >
+                    {commentsComponent}
+                  </PanelMobile>
+                }
                 <PanelMobile
                   header={
                     <PanelTitle>
@@ -1968,7 +2397,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       {formatMessage(messages.colors)}
                     </PanelTitle>
                   }
-                  key="2"
+                  key="3"
                 >
                   {colorComponent}
                 </PanelMobile>
@@ -1979,7 +2408,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       {formatMessage(messages.viewDesigns)}
                     </PanelTitle>
                   }
-                  key="3"
+                  key="4"
                 >
                   {(!loading && product) &&
                     <Products secondary={true}>
@@ -2256,6 +2685,20 @@ const DesignsEnhance = compose(
       }
     }
   }),
+  graphql(getProdesignItemCommentsQuery, {
+    options: ({ location }: OwnProps) => {
+      const search = location ? location.search : ''
+      const queryParams = queryString.parse(search)
+      return {
+        variables: { shortId: queryParams.id },
+        fetchPolicy: 'network-only',
+        skip: !queryParams.id
+      }
+    },
+    name: 'membersComments'
+  }),
+  graphql(updateReactionMutation, { name: 'updateReaction' }),
+  graphql(sendCommentMutation, { name: 'sendComment' }),
   graphql(reSendInvitationsMutation, { name: 'reSendInvitation' }),
   graphql(deleteMemberMutation, { name: 'deleteMember' }),
   graphql(changeMemberRoleMutation, { name: 'changeMemberRole' }),

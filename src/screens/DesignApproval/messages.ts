@@ -252,6 +252,10 @@ export default defineMessages({
     id: 'screens.DesignApproval.teamCollaborationTitle',
     defaultMessage: 'Team Collaboration'
   },
+  comments: {
+    id: 'screens.DesignApproval.comments',
+    defaultMessage: 'Comments'
+  },
   teamCollaborationDesc: {
     id: 'screens.DesignApproval.teamCollaborationDesc',
     // tslint:disable-next-line: max-line-length
@@ -349,5 +353,9 @@ export default defineMessages({
   invitationResent: {
     id: 'screens.DesignApproval.invitationResent',
     defaultMessage: 'Invitation resent!'
+  },
+  messageSent: {
+    id: 'screens.DesignApproval.messageSent',
+    defaultMessage: 'Message sent!'
   },
 })

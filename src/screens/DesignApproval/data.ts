@@ -357,3 +357,60 @@ export const getEditRequestPrices = gql`
     }
   }
 `
+
+export const getProdesignItemCommentsQuery = gql`
+  query getProdesignItemComments($shortId: String!) {
+    projectComments: getProdesignItemComments(shortId: $shortId) {
+      id
+      createdAt: created_at
+      message
+      file
+      userName: user_name
+      userSerialId: user_serial_id
+      userId: user_id
+      likes
+      hearts
+      owner
+      parentMessageId: parent_message_id
+      parent {
+        id
+        userSerialId: user_serial_id
+        userName: user_name
+        message
+      }
+    }
+  }
+`
+
+export const sendCommentMutation = gql`
+  mutation sendComment(
+    $itemId: String!,
+    $message: String!,
+    $file: String,
+    $parentMessageId: String
+  ) {
+    messageData: sendComment(
+      itemId: $itemId,
+      message: $message,
+      file: $file,
+      parentMessageId: $parentMessageId
+    ) {
+      id
+      createdAt: created_at
+      message
+      file
+      userName: user_name
+      userId: user_id
+      likes
+      hearts
+    }
+  }
+`
+
+export const updateReactionMutation = gql`
+  mutation updateReaction($messageId: Int!, $isHeart: Boolean) {
+    updateReaction(messageId: $messageId, isHeart: $isHeart) {
+      message
+    }
+  }
+`
