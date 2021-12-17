@@ -127,4 +127,5 @@ export const ScenesFromTitle = styled.div`
   font-weight: bold;
   letter-spacing: 0.25px;
   line-height: 27px;
+  margin-top: 64px;
 `
