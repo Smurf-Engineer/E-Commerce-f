@@ -1954,7 +1954,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       onClick={this.openFile(fileComment)}
                     >
                       {/* tslint:disable-next-line: max-line-length */}
-                      {['.jpg', '.jpeg', '.svg', '.png'].includes(getFileExtension(fileComment) || '') ?
+                      {['.jpg', '.jpeg', '.svg', '.png'].includes((getFileExtension(fileComment) || '').toLowerCase()) ?
                         <ImageMessage src={fileComment} /> :
                         <>
                           <Clip type="paper-clip" />

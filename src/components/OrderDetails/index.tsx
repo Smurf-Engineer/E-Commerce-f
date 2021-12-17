@@ -177,6 +177,11 @@ export class OrderDetails extends React.Component<Props, {}> {
       const img = new Image()
       img.src = JAKROO_LOGO_BASE64
       this.html2pdf.addImage(img, 'JPEG', 0.75, 0.5, 4, 1)
+      this.html2pdf.setFont('Helvetica')
+      this.html2pdf.setFontType('bold')
+      this.html2pdf.setFontSize(13)
+      this.html2pdf.setTextColor('#525252')
+      this.html2pdf.text('Invoice', 18.4, 1.2, { align: 'right' })
       this.html2pdf.addImage(image, 'PNG', 1, 2, pdfWidth, pdfHeight)
       heightLeft -= this.html2pdf.internal.pageSize.height
       while (heightLeft > 18) {
@@ -425,7 +430,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           <ScreenTitle>
             <FormattedMessage {...messages.title} />
           </ScreenTitle>
-          {paymentMethod === PaymentOptions.INVOICE &&
+          {status !== PREORDER &&
             <DownloadInvoice onClick={this.downloadInvoice}>
               {savingPdf ? 
                 <Spin size="small" /> :
@@ -563,6 +568,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 name={`${shippingFirstName} ${shippingLastName}`}
                 city={`${shippingCity}, ${shippingStateProvince}`}
                 street={shippingStreet}
+                simple={savingPdf}
                 phone={shippingPhone}
                 zipCode={shippingZipCode}
                 country={shippingCountry}
