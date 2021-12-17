@@ -18,6 +18,9 @@ const ContactInfo = ({ formatMessage, currentRegion }: Props) => {
     <Container>
       <Title>{formatMessage(messages.title)}</Title>
       <ContactLabel>
+        {formatMessage(isCanada() ? messages.companyCA : messages.company)}
+      </ContactLabel>
+      <ContactLabel>
         <AddressText>
           {formatMessage(isCanada() ? messages.streetCA : messages.street)}
         </AddressText>

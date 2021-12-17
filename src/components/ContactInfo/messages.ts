@@ -9,6 +9,14 @@ export default defineMessages({
     id: 'components.footer.contactInfo.title',
     defaultMessage: 'CONTACT INFO'
   },
+  company: {
+    id: 'components.footer.contactInfo.company',
+    defaultMessage: 'Rider Sportsfashion LLC (dba JAKROO)'
+  },
+  companyCA: {
+    id: 'components.footer.contactInfo.companyCA',
+    defaultMessage: 'Jakroo Canada Inc.'
+  },
   street: {
     id: 'components.footer.contactInfo.street',
     defaultMessage: '5906 Stoneridge Mall Road.'

@@ -189,6 +189,8 @@
   "components.HomeAdmin.sizeError": "Files must be smaller than 20MB!",
   "components.HomeAdmin.save": "Save Changes",
   "components.footer.contactInfo.title": "CONTACT INFO",
+  "components.footer.contactInfo.company": "Rider Sportsfashion LLC (dba JAKROO)",
+  "components.footer.contactInfo.companyCA": "Jakroo Canada Inc.",
   "components.footer.contactInfo.street": "5906 Stoneridge Mall Road.",
   "components.footer.contactInfo.streetCA": "2323 Quebec St #222.",
   "components.footer.contactInfo.suburb": " Pleasanton, CA 94588",
