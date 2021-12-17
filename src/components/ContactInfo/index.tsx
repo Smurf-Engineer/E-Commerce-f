@@ -7,16 +7,27 @@ import messages from './messages'
 interface Props {
   formatMessage: (messageDescriptor: any) => string
   history?: any
+  currentRegion: string
 }
-const ContactInfo = ({ formatMessage }: Props) => {
+const ContactInfo = ({ formatMessage, currentRegion }: Props) => {
+  const isCanada = () => {
+    return currentRegion === 'ca'
+  }
+
   return (
     <Container>
       <Title>{formatMessage(messages.title)}</Title>
       <ContactLabel>
-        <AddressText>{formatMessage(messages.street)}</AddressText>
-        <AddressText>{formatMessage(messages.suburb)}</AddressText>
+        <AddressText>
+          {formatMessage(isCanada() ? messages.streetCA : messages.street)}
+        </AddressText>
+        <AddressText>
+          {formatMessage(isCanada() ? messages.suburbCA : messages.suburb)}
+        </AddressText>
       </ContactLabel>
-      <ContactLabel>{formatMessage(messages.phone)}</ContactLabel>
+      <ContactLabel>
+        {formatMessage(isCanada() ? messages.phoneCA : messages.phone)}
+      </ContactLabel>
       <ContactLabel>{formatMessage(messages.email)}</ContactLabel>
     </Container>
   )
