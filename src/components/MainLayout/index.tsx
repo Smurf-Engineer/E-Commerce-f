@@ -455,7 +455,7 @@ class MainLayout extends React.Component<Props, {}> {
         {!hideFooter && (
           <Footer>
             <ContactAndLinks
-              {...{ history, formatMessage, fakeWidth }}
+              {...{ history, formatMessage, fakeWidth, currentRegion }}
               openReseller={this.handleOpenReseller}
             />
             <SocialMedia formatMessage={intl.formatMessage} />

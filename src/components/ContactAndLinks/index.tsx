@@ -25,12 +25,14 @@ interface Props {
   openReseller?: () => void
   fakeWidth: number
   history?: any
+  currentRegion: string
 }
 
 const ContactAndLinks = ({
   formatMessage,
   fakeWidth,
   history,
+  currentRegion,
   openReseller = () => {},
 }: Props) => {
   return (
@@ -42,7 +44,7 @@ const ContactAndLinks = ({
         if (matches) {
           return (
             <Container>
-              <ContactInfo {...{ history, formatMessage }} />
+              <ContactInfo {...{ history, formatMessage, currentRegion }} />
               <CustomerSupport {...{ history, formatMessage }} />
               <DesignSupport {...{ history, formatMessage }} />
               <AboutUs {...{ history, formatMessage }} />
