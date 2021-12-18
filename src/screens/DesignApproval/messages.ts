@@ -315,7 +315,8 @@ export default defineMessages({
   },
   infoConfirmation: {
     id: 'screens.DesignApproval.infoConfirmation',
-    defaultMessage: 'Invited users will be able to view and comment on your design dashboard.'
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Invited users will be able to view and comment on all designs in the project. You will be able to assign an Approver role to one other member once the invitations have been sent out.'
   },
   addToTeamCollab: {
     id: 'screens.DesignApproval.addToTeamCollab',
@@ -332,6 +333,11 @@ export default defineMessages({
   owner: {
     id: 'screens.DesignApproval.owner',
     defaultMessage: 'Owner'
+  },
+  membersDesc: {
+    id: 'screens.DesignApproval.membersDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>The best ideas come from teamwork!<br/> Members can use the Comments tab to provide feedback and exchange ideas on each design.</p><p>Members with an Approver role will be able to approve or request design edits to the Jakroo Pro Design team.</p>'
   },
   userUpdated: {
     id: 'screens.DesignApproval.userUpdated',

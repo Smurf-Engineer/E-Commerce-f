@@ -46,7 +46,7 @@ export const Container = styled.div`
 
 export const ModalTitle = styled.div`
   color: ${GRAY_DARK};
-  font-family: ${AVENIR_NEXT};
+  font-family: Avenir;
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -245,6 +245,9 @@ export const Header = styled.th`
     line-height: 15px;
     padding-right: 5px;
   }
+  @media (max-width: 604px) {
+    font-size: 10px;
+  }
 `
 
 export const TableRow = styled.tr`
@@ -270,8 +273,16 @@ export const Cell = styled.td`
   &.error {
     color: ${RED};
   }
+  @media (max-width: 1024px) {
+    line-height: 24px;
+  }
   @media (max-width: 768px) {
     font-size: 11px;
+    line-height: 20px;
+  }
+  @media (max-width: 604px) {
+    font-size: 10px;
+    padding-right: 8px;
   }
 `
 
@@ -379,13 +390,14 @@ export const PopOverValue = styled.div`
 `
 
 export const SharedIcon = styled(Icon)`
-  font-size: 14px;
-  display: block;
+  font-size: 13px;
+  display: inline-block;
   z-index: 9;
+  margin-left: 4px;
   margin-right: 8px;
   max-width: 30px;
   width: 100%;
-  color: ${BLUE};
+  color: #81afe5;
   transition: all .25s;
   padding: 8px 0px;
   border-radius: 50%;

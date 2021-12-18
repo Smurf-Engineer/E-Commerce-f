@@ -26,6 +26,10 @@ import messageSent from '../../assets/message_sent.wav'
 import colorIcon from '../../assets/color_white.svg'
 import viewDesignsIcon from '../../assets/view_designs_icon.svg'
 import JakrooProLogo from '../../assets/pro_design_white.png'
+import messageIconSelected from '../../assets/approval_log_selected.svg'
+import teamIconSelected from '../../assets/team_selected.svg'
+import commentsIconSelected from '../../assets/comments_selected.svg'
+import colorIconSelected from '../../assets/color_white_selected.svg'
 import {
   addProMessageMutation,
   addTeamStoreItemMutation,
@@ -1729,18 +1733,24 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           <CollabTitle>
             {formatMessage(messages.teamCollaborationTitle)}
           </CollabTitle>
-          <CollabDescription>
-            {formatMessage(messages.teamCollaborationDesc)}
-          </CollabDescription>
-          <CollabWarning>
-            {formatMessage(messages.teamCollabWarning)}
-          </CollabWarning>
-          <AddMemberButton
-            disabled={projectMembers.length >= 5 || !isOwner}
-            onClick={(projectMembers.length >= 5 || !isOwner) ? () => {} : this.openInviteModal}
-          >
-            {formatMessage(messages.inviteMembers)}
-          </AddMemberButton>
+          <CollabDescription
+            dangerouslySetInnerHTML={{
+              __html: formatMessage(messages[isOwner ? 'teamCollaborationDesc' : 'membersDesc'])
+            }}
+          />
+          {isOwner &&
+            <CollabWarning>
+              {formatMessage(messages.teamCollabWarning)}
+            </CollabWarning>
+          }
+          {isOwner &&
+            <AddMemberButton
+              disabled={projectMembers.length >= 5 || !isOwner}
+              onClick={(projectMembers.length >= 5 || !isOwner) ? () => {} : this.openInviteModal}
+            >
+              {formatMessage(messages.inviteMembers)}
+            </AddMemberButton>
+          }
         </CollabInfo>
         <CollabMembers>
           <CollabTitle>
@@ -2093,13 +2103,31 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
                   ownerEmail === 'derekw@jakroousa.com' || 
                   ownerEmail === 'derekrwiseman@gmail.com') &&
-                  <TabPane tab={<Tab label={COLLAB} icon={teamIcon} />} key={COLLAB}>
+                  <TabPane
+                    tab={
+                      <Tab
+                        selected={selectedKey === COLLAB}
+                        label={COLLAB}
+                        icon={selectedKey === COLLAB ? teamIconSelected : teamIcon}
+                      />
+                    }
+                    key={COLLAB}
+                  >
                     <TabContent>
                       {collabComponent}
                     </TabContent>
                   </TabPane>
                 }
-                <TabPane tab={<Tab label={APPROVAL} icon={messageIcon} />} key={APPROVAL}>
+                <TabPane
+                  tab={
+                    <Tab
+                      selected={selectedKey === APPROVAL}
+                      label={APPROVAL}
+                      icon={selectedKey === APPROVAL ? messageIconSelected : messageIcon}
+                    />
+                  }
+                  key={APPROVAL}
+                >
                   <TabContent>
                     {chatComponent}
                   </TabContent>
@@ -2107,13 +2135,31 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
                   ownerEmail === 'derekw@jakroousa.com' || 
                   ownerEmail === 'derekrwiseman@gmail.com') &&
-                  <TabPane tab={<Tab label={COMMENTS} icon={commentsIcon} />} key={COMMENTS}>
+                  <TabPane
+                    tab={
+                      <Tab
+                        selected={selectedKey === COMMENTS}
+                        label={COMMENTS}
+                        icon={selectedKey === COMMENTS ? commentsIconSelected : commentsIcon}
+                      />
+                    }
+                    key={COMMENTS}
+                  >
                     <TabContent>
                       {commentsComponent}
                     </TabContent>
                   </TabPane>
                 }
-                <TabPane tab={<Tab label={COLOR} icon={colorIcon} />} key={COLOR}>
+                <TabPane
+                  tab={
+                    <Tab
+                      selected={selectedKey === COLOR}
+                      label={COLOR}
+                      icon={selectedKey === COLOR ? colorIconSelected : colorIcon}
+                    />
+                  }
+                  key={COLOR}
+                >
                   <TabContent>
                     {colorComponent}
                   </TabContent>

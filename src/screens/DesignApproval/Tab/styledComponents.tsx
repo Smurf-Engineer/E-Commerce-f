@@ -4,6 +4,10 @@
 import styled from 'styled-components'
 import { GRAY_DARK } from '../../../theme/colors'
 
+interface DivProps {
+  selected?: boolean
+}
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,4 +25,7 @@ export const Icon = styled.img`
   max-height: 28px;
   height: 100%;
   object-fit: contain;
+  ${({ selected }: DivProps) => selected ? `
+    filter: drop-shadow(0px 0px 1px lightgrey);
+  ` : ''}
 `

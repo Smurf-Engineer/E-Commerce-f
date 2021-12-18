@@ -9,12 +9,13 @@ import { Container, Text, Icon } from './styledComponents'
 interface Props {
   label: string
   icon: string
+  selected: boolean
 }
 
-const Tab = ({ label, icon }: Props) => {
+const Tab = ({ label, icon, selected }: Props) => {
   return (
     <Container>
-      <Icon src={icon} />
+      <Icon {...{ selected }} src={icon} />
       <Text>
         <FormattedMessage {...messages[label]} />
       </Text>

@@ -80,6 +80,7 @@ interface Props {
   currentSection: number
   userId: number
   history: History
+  user: User
   carouselImages: HomepageImagesType[]
   deleteProject: (variables: {}) => Promise<MessagePayload>
   formatMessage: (messageDescriptor: Message) => string
@@ -126,7 +127,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
     setCurrentSectionAction(Pages.DETAILS, projectId)
   }
 
-  handleDeleteItem = (event: React.MouseEvent<EventTarget>, projectId: string) => {
+  handleDeleteItem = (event: React.MouseEvent<EventTarget>, projectId: string, shared: boolean) => {
     const { formatMessage } = this.props
     if (event) {
       event.stopPropagation()
@@ -144,7 +145,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
         style: buttonStyle
       },
       onOk: async () => await this.handleDeleteProject(projectId),
-      content: <InfoBody>{formatMessage(messages.promptDelete)}</InfoBody>
+      content: <InfoBody>{formatMessage(messages[shared ? 'deleteShared' : 'promptDelete'])}</InfoBody>
     })
   }
 
@@ -159,7 +160,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
       await deleteProject({
         variables: { projectId }
       })
-      refetch()
+      await refetch()
       message.success(formatMessage(messages.success))
     } catch (e) {
       const errorMessage = e.graphQLErrors.map((x: any) => x.message)
@@ -216,6 +217,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
   render() {
     const {
       list,
+      user,
       carouselImages,
       history,
       currentPage,
@@ -238,6 +240,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
     const fullCount = get(list, 'projectsResult.fullCount', 0)
     const mainHeaderImages = get(carouselImages, 'getHomepageContent.mainHeaderImages', [])
     const carouselSettings = get(carouselImages, 'getHomepageContent.carouselSettings', {})
+    const authorId = get(user, 'id', '')
     const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 604px)').matches
     const {
       slideTransition,
@@ -293,11 +296,12 @@ class ProDesignProjects extends React.Component<Props, {}> {
                   <Row>
                     <Header>{formatMessage(messages.projectName)}</Header>
                     <Header>{formatMessage(messages.access)}</Header>
+                    <Header>{formatMessage(messages.role)}</Header>
                     <Header>{formatMessage(messages.createdDate)}</Header>
                     {!isMobile && <Header>{formatMessage(messages.projectNo)}</Header>}
                     <Header textAlign="center">{formatMessage(messages.products)}</Header>
                     {!isMobile && <Header textAlign="center">{formatMessage(messages.updatedAt)}</Header>}
-                    <Header textAlign="center">{formatMessage(messages.notifications)}</Header>
+                    <Header textAlign="center">{formatMessage(messages[isMobile ? 'notif' : 'notifications'])}</Header>
                     <Header />
                   </Row>
                 </thead>
@@ -317,9 +321,10 @@ class ProDesignProjects extends React.Component<Props, {}> {
                     }: Project,
                     index: number) => {
                     const handleOnClickRow = () => this.handleOnClickProject(id)
-                    const handleDelete = (e) => this.handleDeleteItem(e, shortId)
+                    const handleDelete = (e) => this.handleDeleteItem(e, shortId, shared)
+                    const roleAssigned = get(members.find((memb) => memb.userId === authorId), 'role', '')
                     return (<TableRow key={index} onClick={handleOnClickRow}>
-                      <Cell>{name}</Cell>
+                      <Cell>{name} {shared && <SharedIcon type="team"/>}</Cell>
                       <Cell>
                         {members.length > 0 ?
                           <StyledPopOver
@@ -359,6 +364,9 @@ class ProDesignProjects extends React.Component<Props, {}> {
                         }
                       </Cell>
                       <Cell>
+                        {roleAssigned || formatMessage(messages.owner)}
+                      </Cell>
+                      <Cell>
                         {createdAt ? moment(createdAt).format(DATE_FORMAT) : '-'}
                       </Cell>
                       {!isMobile && <Cell>JV2-{userId}-PD-{((currentPage - 1) * PROJECTS_LIMIT) + (index + 1)}</Cell>}
@@ -372,9 +380,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
                         {totalNotifications > 0 && <StyledBadge count={totalNotifications} />}
                       </Cell>
                       <Cell>
-                        {shared ? 
-                          <SharedIcon type="team"/> : 
-                          <DeleteButton onClick={handleDelete} type="delete"/>}
+                        <DeleteButton onClick={handleDelete} type="delete"/>
                       </Cell>
                     </TableRow>)
                     }
@@ -484,7 +490,14 @@ interface OwnProps {
   sort?: string
 }
 
-const mapStateToProps = (state: any) => state.get('proDesignProjects').toJS()
+const mapStateToProps = (state: any) => {
+  const projectsState = state.get('proDesignProjects').toJS()
+  const app = state.get('app').toJS()
+  return {
+    ...projectsState,
+    ...app
+  }
+}
 
 const ProDesignProjectsEnhance = compose(
   connect(mapStateToProps, { ...AffiliatesActions, openQuickViewAction }),
