@@ -44,5 +44,9 @@ export default defineMessages({
   email: {
     id: 'components.footer.contactInfo.email',
     defaultMessage: 'designlab@jakroousa.com'
+  },
+  emailCA: {
+    id: 'components.footer.contactInfo.email',
+    defaultMessage: 'info@jakroo.ca'
   }
 })

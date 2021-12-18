@@ -31,7 +31,7 @@ const ContactInfo = ({ formatMessage, currentRegion }: Props) => {
       <ContactLabel>
         {formatMessage(isCanada() ? messages.phoneCA : messages.phone)}
       </ContactLabel>
-      <ContactLabel>{formatMessage(messages.email)}</ContactLabel>
+      <ContactLabel>{formatMessage(isCanada() ? messages.emailCA : messages.email)}</ContactLabel>
     </Container>
   )
 }
