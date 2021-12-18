@@ -34,6 +34,18 @@ export default defineMessages({
     id: 'components.ProDesignProjects.access',
     defaultMessage: 'Access'
   },
+  owner: {
+    id: 'components.ProDesignProjects.owner',
+    defaultMessage: 'Owner'
+  },
+  role: {
+    id: 'components.ProDesignProjects.role',
+    defaultMessage: 'Role'
+  },
+  notif: {
+    id: 'components.ProDesignProjects.notif',
+    defaultMessage: 'Notif.'
+  },
   private: {
     id: 'components.ProDesignProjects.private',
     defaultMessage: 'Private'
@@ -127,5 +139,10 @@ export default defineMessages({
     id: 'components.ProDesignProjects.fifthAnswer',
     // tslint:disable-next-line: max-line-length
     defaultMessage: `Jakroo employs a team of passionate, highly creative and professionally trained designers across the United States. All designers have a minimum of five years design experience and are well-versed on design and industry fashion trends. You will be able to communicate with our design team through your very own designated account manager.`
+  },
+  deleteShared: {
+    id: 'components.ProDesignProjects.deleteShared',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Deleting this project will remove you as a member and you will no longer receive any project notifications'
   }
 })

@@ -1519,6 +1519,7 @@ export const AddMemberButton = styled.div`
   background: rgb(68, 104, 249);
   margin-top: 12px;
   color: ${WHITE};
+  min-width: 136px;
   transition: all .25s;
   &:hover {
     opacity: 0.7;
