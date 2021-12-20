@@ -7,6 +7,9 @@ import { WHITE } from '../../theme/colors'
 
 export const Container = styled.div`
   background-color: ${WHITE};
+  @media(max-width: 767px) {
+    position: relative;
+  }
 `
 
 export const Text = styled.div`

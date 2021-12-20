@@ -13,7 +13,7 @@ export const Container = styled.div`
   background-color: ${WHITE};
   align-items: center;
   position: absolute;
-  top: 120px;
+  top: 51px;
   flex-wrap: wrap;
   max-height: 70px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
