@@ -185,22 +185,23 @@ export const CarouselContainer = styled.div`
     margin-right: 20px;
   }
 
+  .slick-dots{
+    bottom: 8px;
+  }
   .slick-dots li button {
     height: 0;
   }
   .slick-dots li button:before {
-    background: none;
+    background: ${WHITE};
     border-radius: 100px;
-    border: 1px solid black;
+    border: 1px solid ${WHITE};
     content: '';
     height: 12px;
     width: 12px;
-    opacity: 1;
     margin-top: 4px;
   }
   .slick-dots li.slick-active button:before {
-    background: black;
-    opacity: 1;
+    background: ${WHITE};
   }
 `
 
