@@ -69,7 +69,7 @@ export const Container = styled.div`
   display: flex;
   flex-flow: column;
   @media (max-width: 1023px) {
-    height: calc(100vh - 70px);
+    height: calc(100vh - 110px);
     position: relative;
     z-index: 11;
   }
@@ -92,8 +92,24 @@ export const CollapseWrapper = styled.div`
     line-height: 16px;
     padding: 14px 0 12px 0;
   }
+  .ant-collapse {
+    @media (max-width: 767px) {
+      ${({ selected }: RowProps) => selected ? `
+        border-top: none;
+      ` : ''}
+    }
+  }
   .ant-collapse .ant-collapse-item {
     border-bottom: none;
+    @media (max-width: 767px) {
+      ${({ selected }: RowProps) => selected ? `
+        border-bottom: none;
+        z-index: 1;
+        background: #fafafa;
+        width: 100%;
+        border-top: 1px solid #d9d9d9;
+      ` : ''}
+    }
   }
   .ant-collapse-item-active {
     display: block;
@@ -104,6 +120,9 @@ export const CollapseWrapper = styled.div`
     width: 100vw;
     height: calc(100vh - 163px);
     background: ${WHITE};
+    @media (max-width: 767px) {
+      height: calc(100% - 85px);
+    }
     .ant-collapse-header {
       background: #ededed;
     }
@@ -116,7 +135,7 @@ export const CollapseWrapper = styled.div`
   }
   .ant-collapse-item-active .ant-collapse-header .arrow {
     position: absolute;
-    left: calc(100% - 40px);
+    left: calc(100% - 56px);
     display: inline-flex;
     border: 1px solid ${GRAY_DARK};
     height: 24px;
@@ -126,11 +145,16 @@ export const CollapseWrapper = styled.div`
     border-radius: 50%;
     color: ${GRAY_DARK};
     top: unset;
-    bottom: 0;
+    bottom: 15px;
   }
 
   .ant-collapse-borderless .ant-collapse-item .ant-collapse-content {
     padding: 0 0 0 0;
+  }
+  .ant-collapse-content-active {
+    @media (max-width: 767px) {
+      height: calc(100% - 81px);
+    }
   }
   @media (max-width: 1023px) {
     display: block;
@@ -956,7 +980,7 @@ export const Products = styled.div`
   flex-wrap: wrap;
   align-items: flex-start;
   ${({ secondary }: RowProps) => secondary ? `
-    height: calc(100vh - 210px);
+    height: calc(100vh - 310px);
     overflow-y: scroll;
   ` : ''}
 `
@@ -1103,7 +1127,7 @@ export const RenderSection = styled.div`
   margin-top: 88px;
   @media (max-width: 1023px) {
     margin-bottom: 168px;
-    height: calc(100% - 207px);
+    height: calc(100% - 257px);
   }
 `
 
@@ -1924,7 +1948,7 @@ export const CommentSection = styled.div`
   font-family: Avenir;
   @media (max-width: 1023px) {
     padding: 0;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 300px);
   }
 `
 
@@ -1933,6 +1957,9 @@ export const ChatComments = styled.div`
   overflow-y: scroll;
   @media (min-width: 1024px) {
     max-height: calc(100% - 45px);
+  }
+  @media (max-width: 1023px) {
+    padding-bottom: 38px;
   }
 `
 
@@ -2038,6 +2065,11 @@ export const CommentInput = styled.div`
   padding: 6px 14px;
   flex-wrap: wrap;
   transition: all .4s;
+  @media (max-width: 1023px) {
+    position: fixed;
+    bottom: 85px;
+    width: 100vw;
+  }
 `
 
 export const InputComment = styled(TextArea)`
