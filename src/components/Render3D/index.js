@@ -435,6 +435,7 @@ class Render3D extends PureComponent {
       isProduct,
       fullHeight,
       isAdmin,
+      proDesign,
       fromShare,
       data = {},
       textColor
@@ -458,7 +459,7 @@ class Render3D extends PureComponent {
     const circleIcon = <Icon type="loading" style={{ fontSize: 64 }} spin />
 
     return (
-      <Container {...{ fullHeight }} designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
+      <Container {...{ fullHeight, proDesign }} designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
         {loadingModel && isProduct && (
           <ProgressProduct type="circle" percent={progress + 1} />
         )}
@@ -491,7 +492,7 @@ class Render3D extends PureComponent {
           </Details>
         )}
         <Render
-          {...{ customProduct, designSearch, fullHeight }}
+          {...{ customProduct, designSearch, fullHeight, proDesign }}
           id="render-3d"
           innerRef={(container) => (this.container = container)}
         >
@@ -500,7 +501,7 @@ class Render3D extends PureComponent {
             <Progress type="circle" percent={progress + 1} />
           )}
         </Render>
-        {showDragmessage && !loading && (
+        {showDragmessage && !loading && !proDesign && (
           <DragText {...{ isProduct, textColor }}>
             <FormattedMessage {...messages.drag} />
           </DragText>

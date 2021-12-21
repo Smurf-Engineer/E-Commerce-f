@@ -354,10 +354,11 @@ interface StateProps {
   openAddToStoreModal: boolean
   selectedVariant: number
   commentMessage: string
-  commentFile: string,
-  commentResponding: any,
-  uploadingFileComment: boolean,
+  commentFile: string
+  commentResponding: any
+  uploadingFileComment: boolean
   sendingComment: boolean
+  selectedKeyMobile: string
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -435,7 +436,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     error: null,
     openInviteModal: false,
     showConfirmInvites: false,
-    savingInvitations: false
+    savingInvitations: false,
+    selectedKeyMobile: false
   }
   private commentList: any
   private listMsg: any
@@ -769,6 +771,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     if (key === '2') {
       setTimeout(() => { this.scrollMessagesComment() }, 800)
     }
+    this.setState({ selectedKeyMobile: key })
   }
 
   handleInputComment = (evt: React.FormEvent<HTMLInputElement>) => {
@@ -1424,7 +1427,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       openAddToStoreModal,
       teamStoreId,
       selectedVariant,
-      openPrintPreview
+      openPrintPreview,
+      selectedKeyMobile
     } = this.state
     const currency = currentCurrency || config.defaultCurrency
     const fontList: Font[] = get(fontsData, 'fonts', [])
@@ -2306,46 +2310,48 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
                 </RequestEdit>
               </RequestButtons>
-              <MobileRequestButtons>
-                <ApproveButton
-                  loading={approveLoading}
-                  disabled={
-                    approveLoading ||
-                    itemStatus !== CUSTOMER_PREVIEW ||
-                    (!!designToApply && outputPng !== designToApply) ||
-                    (!isOwner && !isApprover)
-                  }
-                  onClick={this.handlePromptApprove}
-                >
-                  {formatMessage(messages.approve)}
-                </ApproveButton>
-                <RequestEdit
-                  disabled={itemStatus !== CUSTOMER_PREVIEW || (!isOwner && !isApprover)}
-                  onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
-                >
-                  <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-                    {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
-                  </RequestText>
-                  {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
-                </RequestEdit>
-                {requestedEdits >= limitRequests &&
-                  <StyledTooltipMobile
-                    trigger="click"
-                    content={
-                      <TooltipBody>
-                        <IconTitle theme="filled" type="info-circle" />
-                        <TextBody
-                          dangerouslySetInnerHTML={{
-                            __html: formatMessage(messages.editRequestInfo)
-                          }}
-                        />
-                      </TooltipBody>
+              {(selectedKeyMobile === '1' || !selectedKeyMobile) &&
+                <MobileRequestButtons>
+                  <ApproveButton
+                    loading={approveLoading}
+                    disabled={
+                      approveLoading ||
+                      itemStatus !== CUSTOMER_PREVIEW ||
+                      (!!designToApply && outputPng !== designToApply) ||
+                      (!isOwner && !isApprover)
                     }
+                    onClick={this.handlePromptApprove}
                   >
-                    <InfoIconMobile type="info-circle" />
-                  </StyledTooltipMobile>
-                }
-              </MobileRequestButtons>
+                    {formatMessage(messages.approve)}
+                  </ApproveButton>
+                  <RequestEdit
+                    disabled={itemStatus !== CUSTOMER_PREVIEW || (!isOwner && !isApprover)}
+                    onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
+                  >
+                    <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
+                      {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
+                    </RequestText>
+                    {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
+                  </RequestEdit>
+                  {requestedEdits >= limitRequests &&
+                    <StyledTooltipMobile
+                      trigger="click"
+                      content={
+                        <TooltipBody>
+                          <IconTitle theme="filled" type="info-circle" />
+                          <TextBody
+                            dangerouslySetInnerHTML={{
+                              __html: formatMessage(messages.editRequestInfo)
+                            }}
+                          />
+                        </TooltipBody>
+                      }
+                    >
+                      <InfoIconMobile type="info-circle" />
+                    </StyledTooltipMobile>
+                  }
+                </MobileRequestButtons>
+              }
               {!!itemStatus &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId && showRenderWindow &&
@@ -2379,7 +2385,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             </LayoutRight>
           </Layouts>
           {!!itemStatus &&
-            <CollapseWrapper>
+            <CollapseWrapper selected={!!selectedKeyMobile}>
               <CollapseMobile
                 defaultActiveKey={chatLog && chatLog.length && highlight && !tab ? 
                   '1' : (tab && tab === COMMENTS ? '2' : '')

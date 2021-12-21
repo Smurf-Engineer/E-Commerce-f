@@ -12,6 +12,9 @@ export const Container = styled.div`
   height: ${({ designSearch }) => (designSearch ? '800px' : 'auto')};
   @media (max-width: 375px) {
     height: 25em;
+    ${({ fullHeight, proDesign }) => fullHeight && proDesign ? `
+      height: 100%;
+  ` : ''}
   }
   position: relative;
   ${({ fullHeight }) => fullHeight ? `
@@ -26,6 +29,9 @@ export const Render = styled.div`
   cursor: grab;
   @media (max-width: 375px) {
     height: 25em;
+    ${({ fullHeight, proDesign }) => fullHeight && proDesign ? `
+      height: 100%;
+    ` : ''}
   }
   text-align: center;
   ${({ fullHeight }) => fullHeight ? `

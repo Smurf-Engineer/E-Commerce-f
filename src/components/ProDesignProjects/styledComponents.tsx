@@ -283,6 +283,10 @@ export const Cell = styled.td`
   @media (max-width: 604px) {
     font-size: 10px;
     padding-right: 8px;
+    ${({ secondary }: CellProps) => secondary ? `
+      display: flex;
+      flex-direction: column-reverse;
+    ` : ''} 
   }
 `
 
@@ -401,4 +405,8 @@ export const SharedIcon = styled(Icon)`
   transition: all .25s;
   padding: 8px 0px;
   border-radius: 50%;
+  @media (max-width: 604px) {
+    padding: 2px 0;
+    max-width: 83%;
+  }
 `

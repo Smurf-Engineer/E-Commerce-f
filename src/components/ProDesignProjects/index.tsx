@@ -324,7 +324,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
                     const handleDelete = (e) => this.handleDeleteItem(e, shortId, shared)
                     const roleAssigned = get(members.find((memb) => memb.userId === authorId), 'role', '')
                     return (<TableRow key={index} onClick={handleOnClickRow}>
-                      <Cell>{name} {shared && <SharedIcon type="team"/>}</Cell>
+                      <Cell secondary={shared}>{name} {shared && <SharedIcon type="team"/>}</Cell>
                       <Cell>
                         {members.length > 0 ?
                           <StyledPopOver
