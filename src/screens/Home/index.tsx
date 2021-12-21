@@ -414,6 +414,7 @@ export class Home extends React.Component<Props, {}> {
                 nextArrow={arrowRight}
                 autoplay={true}
                 pauseOnHover={false}
+                dots={true}
               >
                 {secondaryHeaderItems}
               </Carousel>

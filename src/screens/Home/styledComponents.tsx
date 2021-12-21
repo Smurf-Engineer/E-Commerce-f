@@ -184,6 +184,25 @@ export const CarouselContainer = styled.div`
   & .slick-next {
     margin-right: 20px;
   }
+
+  .slick-dots{
+    bottom: 8px;
+  }
+  .slick-dots li button {
+    height: 0;
+  }
+  .slick-dots li button:before {
+    background: ${WHITE};
+    border-radius: 100px;
+    border: 1px solid ${WHITE};
+    content: '';
+    height: 12px;
+    width: 12px;
+    margin-top: 4px;
+  }
+  .slick-dots li.slick-active button:before {
+    background: ${WHITE};
+  }
 `
 
 export const Arrow = styled.img`
