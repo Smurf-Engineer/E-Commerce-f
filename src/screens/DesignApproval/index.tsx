@@ -1496,6 +1496,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       modelObj = obj
       modelMtl = mtl
     }
+    const windowHeight = typeof window !== 'undefined' ? window.innerHeight : ''
     const stylesToApply = typeof window !== 'undefined' &&
       window.innerWidth > 614 ? stylesDraggable : stylesDraggableMobile
     const predyedValue = predyedName || PREDYED_DEFAULT
@@ -2108,7 +2109,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           <BlackBarMobile>
             <BackButton onClick={this.goToHome}>
               <LeftArrow type="left-circle" />
-              {designName || productName}
+              {formatMessage(messages.back)}
             </BackButton>
           </BlackBarMobile>
           <BlackBar>
@@ -2142,7 +2143,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     }
                     key={COLLAB}
                   >
-                    <TabContent>
+                    <TabContent height={windowHeight}>
                       {collabComponent}
                     </TabContent>
                   </TabPane>
@@ -2157,7 +2158,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                   key={APPROVAL}
                 >
-                  <TabContent>
+                  <TabContent height={windowHeight}>
                     {chatComponent}
                   </TabContent>
                 </TabPane>
@@ -2174,7 +2175,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     }
                     key={COMMENTS}
                   >
-                    <TabContent>
+                    <TabContent height={windowHeight}>
                       {commentsComponent}
                     </TabContent>
                   </TabPane>
@@ -2189,7 +2190,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                   key={COLOR}
                 >
-                  <TabContent>
+                  <TabContent height={windowHeight}>
                     {colorComponent}
                   </TabContent>
                 </TabPane>
