@@ -194,7 +194,8 @@ export const CarouselContainer = styled.div`
   .slick-dots li button:before {
     background: ${WHITE};
     border-radius: 100px;
-    border: 1px solid ${WHITE};
+    border: 1px solid ${BLACK};
+    box-shadow: 0 0 1px 4px 2px ${WHITE};
     content: '';
     height: 12px;
     width: 12px;
