@@ -24,6 +24,7 @@ export const getProdesignItemQuery = gql`
       status
       code: design_code
       showNotification
+      commentsNotifications
       limitRequests: limit_requests
       paidRequests: paid_requests
       role

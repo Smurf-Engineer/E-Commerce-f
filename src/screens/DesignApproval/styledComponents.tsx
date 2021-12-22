@@ -86,13 +86,14 @@ export const CollapseWrapper = styled.div`
   .ant-collapse .ant-collapse-item .ant-collapse-header {
     display: flex;
     flex-direction: row;
-    color: ${GRAY_DARK};
+    color: ${WHITE};
     font-size: 12px;
     letter-spacing: 0.15px;
     line-height: 16px;
     padding: 14px 0 12px 0;
   }
   .ant-collapse {
+    background-color: #343434;
     @media (max-width: 767px) {
       ${({ selected }: RowProps) => selected ? `
         border-top: none;
@@ -105,7 +106,7 @@ export const CollapseWrapper = styled.div`
       ${({ selected }: RowProps) => selected ? `
         border-bottom: none;
         z-index: 1;
-        background: #fafafa;
+        background: #343434;
         width: 100%;
         border-top: 1px solid #d9d9d9;
       ` : ''}
@@ -124,7 +125,7 @@ export const CollapseWrapper = styled.div`
       height: calc(100% - 85px);
     }
     .ant-collapse-header {
-      background: #ededed;
+      background-color: #343434;
     }
     .counter {
       right: 40%;
@@ -135,15 +136,15 @@ export const CollapseWrapper = styled.div`
   }
   .ant-collapse-item-active .ant-collapse-header .arrow {
     position: absolute;
-    left: calc(100% - 56px);
+    left: 20px;
     display: inline-flex;
-    border: 1px solid ${GRAY_DARK};
+    border: 1px solid ${WHITE};
     height: 24px;
     align-items: center;
     width: 24px;
     justify-content: center;
     border-radius: 50%;
-    color: ${GRAY_DARK};
+    color: ${WHITE};
     top: unset;
     bottom: 15px;
   }
@@ -181,6 +182,7 @@ export const PanelTitle = styled.div`
   flex-flow: column;
   justify-content: flex-end;
   height: 56px;
+  color: ${WHITE};
   @media(max-width: 546px) {
     font-size: 10px;
   }
@@ -191,7 +193,93 @@ export const PanelIcon = styled.img`
   width: 100%;
   margin-bottom: 8px;
   object-fit: contain;
-  filter: ${({ secondary }: RowProps) => (secondary ? `contrast(0.15) drop-shadow(0px 0px 1px ${GRAY})` : 'unset')};
+  filter: ${({ selected }: RowProps) => selected ? 
+    `grayscale(1) brightness(2.5) saturate(0) contrast(1)` : 'saturate(0) contrast(2) brightness(1.4)'
+  };
+`
+
+export const CollapseStyled = styled(Collapse)`
+  margin-bottom: 12px;
+  &.ant-collapse .ant-collapse-item .ant-collapse-header {
+    display: flex !important;
+    flex-direction: row !important;
+    color: ${GRAY_DARK} !important;
+    font-size: 14px !important;
+    letter-spacing: 0.15px !important;
+    line-height: 16px !important;
+    padding: 0 !important;
+    max-width: 136px !important;
+    width: 100% !important;
+  }
+  &.ant-collapse .ant-collapse-item {
+    border-bottom: none !important;
+  }
+  .ant-collapse-item .ant-collapse-header .arrow {
+    position: absolute !important;
+    left: calc(100% + 16px) !important;
+    display: inline-flex !important;
+    border: 1px solid ${BLUE} !important;
+    height: 24px !important;
+    align-items: center !important;
+    width: 24px !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    color: ${BLUE} !important;
+    bottom: 0 !important;
+    line-height: 46px !important;
+    vertical-align: top !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-style: normal !important;
+    text-align: center !important;
+    text-transform: none !important;
+    text-rendering: optimizeLegibility !important;
+  }
+  .ant-collapse-item .ant-collapse-content-box {
+    padding: 0 !important;
+    padding-top: 12px !important;
+  }
+  .ant-collapse-content-active {
+    height: auto !important;
+  }
+  .ant-collapse-item {
+    border-bottom: none !important;
+    z-index: 1 !important;
+    background: ${WHITE} !important;
+    width: auto !important;
+    border-top: none !important;
+    .ant-collapse-header {
+      background-color: ${WHITE} !important;
+    }
+  }
+  .ant-collapse-item-active {
+    display: unset !important;
+    position: unset !important;
+    left: unset !important;
+    top: unset !important;
+    z-index: 1;
+    width: auto !important;
+    height: unset !important;
+    background: ${WHITE} !important;
+    @media (max-width: 767px) {
+      height: unset !important;
+    }
+    .ant-collapse-header {
+      background-color: ${WHITE} !important;
+    }
+    .counter {
+      right: unset !important;
+    }
+  }
+  &.ant-collapse {
+    background-color: ${WHITE} !important;
+    border-top: none !important;
+  }
+`
+
+export const PanelDiv = styled(Panel)`
+  width: 100%;
+  border-bottom: none !important;
 `
 
 export const ContainerError = styled.div`
@@ -220,7 +308,7 @@ export const ApprovedIcon = styled(Icon)`
 `
 
 export const BlackBar = styled.div`
-  background: ${BLACK};
+  background: #343434;
   color: ${WHITE};
   display: flex;
   height: 38px;
@@ -235,7 +323,7 @@ export const BlackBar = styled.div`
 `
 
 export const BlackBarMobile = styled.div`
-  background: ${BLACK};
+  background: #343434;
   color: ${WHITE};
   display: none;
   height: 38px;
@@ -467,6 +555,7 @@ export const CountCircle = styled.div`
   position: absolute;
   right: 0px;
   top: 6px;
+  background: ${RED};
 `
 
 export const BottomSheetWrapper = styled.div`

@@ -24,7 +24,8 @@ import commentsIcon from '../../assets/comments.svg'
 import printPreviewImg from '../../assets/printpreview.svg'
 import messageSent from '../../assets/message_sent.wav'
 import colorIcon from '../../assets/color_white.svg'
-import viewDesignsIcon from '../../assets/view_designs_icon.svg'
+import viewDesignsIconSelected from '../../assets/view_designs_icon_selected.svg'
+import viewDesignsIconMobile from '../../assets/view_designs_icon_mobile.svg'
 import JakrooProLogo from '../../assets/pro_design_white.png'
 import messageIconSelected from '../../assets/approval_log_selected.svg'
 import teamIconSelected from '../../assets/team_selected.svg'
@@ -260,7 +261,9 @@ import {
   RemoveParent,
   UploadFileComment,
   RemoveFileIcon,
-  MessageComment
+  MessageComment,
+  CollapseStyled,
+  PanelDiv
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -437,7 +440,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     openInviteModal: false,
     showConfirmInvites: false,
     savingInvitations: false,
-    selectedKeyMobile: false
+    selectedKeyMobile: ''
   }
   private commentList: any
   private listMsg: any
@@ -1443,7 +1446,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const itemCode = get(projectItem, 'code', '') as string
     const role = get(projectItem, 'role', GUEST_ROLE) as string
     const editRequestPrice = get(editRequestData, ['editRequestPrices', currency], 0) as number
-    const highlight = get(projectItem, 'showNotification', false) as boolean
+    const highlight = get(projectItem, 'showNotification', 0) as number
+    const commentsNotifications = get(projectItem, 'commentsNotifications', 0) as number
     const projectDesigns = get(projectItem, 'project.designs', []) as DesignType[]
     const projectComments = get(membersComments, 'projectComments', []) as ProDesignComment[]
     const itemStatus = get(projectItem, 'status', '') as string
@@ -1547,7 +1551,6 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       itemDetails: [{ quantity: 1 }]
     }
     let requestedEdits = 0
-    let adminMessages = 0
     const requestMessages = incomingMessages.reduce((arr: ProDesignMessage[], messageItem: ProDesignMessage) => {
       const { type, createdAt, code } = messageItem
       arr.push(messageItem)
@@ -1561,9 +1564,6 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             code
           })
           requestedEdits += 1
-          break
-        case FROM_ADMIN:
-          adminMessages += 1
           break
         case NEW_PRODUCT:
           arr.push({
@@ -1595,7 +1595,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       <DesignChat>
         <ApprovalTitle>{formatMessage(messages.approvalLog)}</ApprovalTitle>
         <ChatMessages
-          highlight={chatLog && chatLog.length && highlight}
+          highlight={chatLog && chatLog.length && highlight > 0}
           className="chatLog"
           ref={(listMsgs: any) => { this.listMsg = listMsgs }}
         >
@@ -1642,7 +1642,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </Initials>
                 </MessageHeader>
                 <InfoDiv isAdmin={fromSystem}>
-                  <MessageBox highlight={chatLog && chatLog.length && highlight}>
+                  <MessageBox highlight={chatLog && chatLog.length && highlight > 0}>
                     {(!!parentId && answer) &&
                       <ParentText>
                         {answer.message}
@@ -1729,23 +1729,48 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           />
         </Accesories>
       </Colors> : null
-
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches
     const collabComponent = !!itemStatus ?
       <Collaboration>
         <ApprovalTitle>{formatMessage(messages.teamMembers)}</ApprovalTitle>
         <CollabInfo>
-          <CollabTitle>
-            {formatMessage(messages.teamCollaborationTitle)}
-          </CollabTitle>
-          <CollabDescription
-            dangerouslySetInnerHTML={{
-              __html: formatMessage(messages[isOwner ? 'teamCollaborationDesc' : 'membersDesc'])
-            }}
-          />
-          {isOwner &&
-            <CollabWarning>
-              {formatMessage(messages.teamCollabWarning)}
-            </CollabWarning>
+          {isMobile ?
+            <CollapseStyled bordered={false}>
+              <PanelDiv 
+                header={
+                  <CollabTitle>
+                    {formatMessage(messages.teamCollaborationTitle)}
+                  </CollabTitle>
+                }
+                key="1"
+              >
+                <CollabDescription
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages[isOwner ? 'teamCollaborationDesc' : 'membersDesc'])
+                  }}
+                />
+                {isOwner &&
+                  <CollabWarning>
+                    {formatMessage(messages.teamCollabWarning)}
+                  </CollabWarning>
+                }
+              </PanelDiv>
+            </CollapseStyled> :
+            <>
+              <CollabTitle>
+                {formatMessage(messages.teamCollaborationTitle)}
+              </CollabTitle>
+              <CollabDescription
+                dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages[isOwner ? 'teamCollaborationDesc' : 'membersDesc'])
+                }}
+              />
+              {isOwner &&
+                <CollabWarning>
+                  {formatMessage(messages.teamCollabWarning)}
+                </CollabWarning>
+              }
+            </>
           }
           {isOwner &&
             <AddMemberButton
@@ -2387,7 +2412,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           {!!itemStatus &&
             <CollapseWrapper selected={!!selectedKeyMobile}>
               <CollapseMobile
-                defaultActiveKey={chatLog && chatLog.length && highlight && !tab ? 
+                defaultActiveKey={chatLog && chatLog.length && highlight > 0 && !tab ? 
                   '1' : (tab && tab === COMMENTS ? '2' : '')
                 }
                 accordion={true}
@@ -2400,7 +2425,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   <PanelMobile
                     header={
                       <PanelTitle>
-                        <PanelIcon src={teamIcon} />
+                        <PanelIcon
+                          selected={selectedKeyMobile === '0'}
+                          src={selectedKeyMobile === '0' ? teamIconSelected : teamIcon}
+                        />
                         {formatMessage(messages.teamMembers)}
                       </PanelTitle>
                     }
@@ -2412,15 +2440,18 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 <PanelMobile
                   header={
                     <PanelTitle ref={e => { this.chatDiv = e }}>
-                      <PanelIcon src={messageIcon} />
+                      <PanelIcon
+                        selected={selectedKeyMobile === '1'}
+                        src={selectedKeyMobile === '1' ? messageIconSelected : messageIcon}
+                      />
                       {formatMessage(messages.approvalLog)}
-                      <ChatCount>
-                        {adminMessages > 0 &&
+                      {highlight > 0 &&
+                        <ChatCount>
                           <CountCircle className="counter">
-                            ({adminMessages})
+                            {highlight}
                           </CountCircle>
-                        }
-                      </ChatCount>
+                        </ChatCount>
+                      }
                     </PanelTitle>
                   }
                   key="1"
@@ -2433,8 +2464,18 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   <PanelMobile
                     header={
                       <PanelTitle>
-                        <PanelIcon src={commentsIcon} />
+                        <PanelIcon
+                          selected={selectedKeyMobile === '2'}
+                          src={selectedKeyMobile === '2' ? commentsIconSelected : commentsIcon}
+                        />
                         {formatMessage(messages.comments)}
+                        {commentsNotifications > 0 &&
+                          <ChatCount>
+                            <CountCircle className="counter">
+                              {commentsNotifications}
+                            </CountCircle>
+                          </ChatCount>
+                        }
                       </PanelTitle>
                     }
                     key="2"
@@ -2445,7 +2486,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 <PanelMobile
                   header={
                     <PanelTitle>
-                      <PanelIcon src={colorIcon} />
+                      <PanelIcon
+                        selected={selectedKeyMobile === '3'}
+                        src={selectedKeyMobile === '3' ? colorIconSelected : colorIcon}
+                      />
                       {formatMessage(messages.colors)}
                     </PanelTitle>
                   }
@@ -2456,7 +2500,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 <PanelMobile
                   header={
                     <PanelTitle ref={e => { this.catalogDiv = e }}>
-                      <PanelIcon secondary={true} src={viewDesignsIcon} />
+                      <PanelIcon
+                        selected={selectedKeyMobile === '4'}
+                        src={selectedKeyMobile === '4' ? viewDesignsIconSelected : viewDesignsIconMobile}
+                      />
                       {formatMessage(messages.viewDesigns)}
                     </PanelTitle>
                   }
