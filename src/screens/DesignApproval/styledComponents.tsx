@@ -1051,7 +1051,7 @@ export const MessageHeader = styled.div`
 
 export const TabContent = styled.div`
   display: flex;
-  height: calc(100vh - 215px);
+  height: calc(${({ height }: RowProps) => height ? `${height}px` : '100vh'} - 215px);
   flex-flow: column;
 `
 
