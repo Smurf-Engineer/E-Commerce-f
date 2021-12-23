@@ -22,6 +22,7 @@ export const ON_CHECK_SMS = `${namespace}/ON_CHECK_SMS`
 export const ON_CHECK_EMAIL = `${namespace}/ON_CHECK_EMAIL`
 export const SET_SAVING_INTAKE = `${namespace}/SET_SAVING_INTAKE`
 export const SET_SUCCESS_MODAL_OPEN = `${namespace}/SET_SUCCESS_MODAL_OPEN`
+export const SET_SMS_ALERTS_MODAL_OPEN = `${namespace}/SET_SMS_ALERTS_MODAL_OPEN`
 export const ON_EXPAND_INSPIRATION = `${namespace}/ON_EXPAND_INSPIRATION`
 export const ON_CLOSE_INSPIRATION = `${namespace}/ON_CLOSE_INSPIRATION`
 export const SET_FROM_SCRATCH = `${namespace}/SET_FROM_SCRATCH`
