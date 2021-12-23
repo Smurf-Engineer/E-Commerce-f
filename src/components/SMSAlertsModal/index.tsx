@@ -40,20 +40,18 @@ interface Props {
   onClose: () => void
 }
 
-const SMSAlertsModal = ({
-  user,
-  notificationData,
-  phoneData,
-  formatMessage,
-  updatePhone,
-  updateNotification,
-  onClose,
-}: Props) => {
-  const updateSetting = async (
-    payload: {},
-    mutation: any,
-    successMessage: any
-  ) => {
+class SMSAlertsModal extends React.Component<Props, {}> {
+  state = {
+    phoneNumber: '',
+  }
+
+  componentDidMount() {
+    const { phoneData } = this.props
+    this.setState({ phoneNumber: phoneData.phone })
+  }
+
+  updateSetting = async (payload: {}, mutation: any, successMessage: any) => {
+    const { formatMessage } = this.props
     try {
       await mutation({
         variables: payload,
@@ -72,7 +70,8 @@ const SMSAlertsModal = ({
       MessageBar.error(errorMessage, 5)
     }
   }
-  const changeNotificationSettings = () => {
+  changeNotificationSettings = () => {
+    const { notificationData, updateNotification } = this.props
     const key = 'notifyProDesign'
     const currentValue = notificationData ? notificationData[key] : 0
     let newValue = -1
@@ -94,7 +93,7 @@ const SMSAlertsModal = ({
           .toLowerCase(),
         value: newValue,
       }
-      updateSetting(
+      this.updateSetting(
         payload,
         updateNotification,
         messages.updateNotificationSuccessMessage
@@ -102,11 +101,12 @@ const SMSAlertsModal = ({
     }
   }
 
-  const updatePhoneSetting = async (
+  updatePhoneSetting = async (
     payload: {},
     mutation: any,
     successMessage: any
   ) => {
+    const { formatMessage } = this.props
     try {
       await mutation({
         variables: payload,
@@ -125,67 +125,68 @@ const SMSAlertsModal = ({
       MessageBar.error(errorMessage, 5)
     }
   }
-  const handlePhoneChange = (phone: string) => {
-    updatePhoneSetting(
+  handlePhoneChange = (phone: string) => {
+    const { user, updatePhone } = this.props
+    this.updatePhoneSetting(
       { userId: user ? user.id : '', phone },
       updatePhone,
       messages.updateNotificationSuccessMessage
     )
   }
-  const debouncePhoneUpdate = debounce(
-    (value) => handlePhoneChange(value),
-    1000
-  )
 
-  const handleConfirm = () => {
-    changeNotificationSettings()
-    onClose()
+  handleConfirm = () => {
+    this.changeNotificationSettings()
+    this.handlePhoneChange(this.state.phoneNumber)
+    this.props.onClose()
   }
 
-  const handleNoThanks = () => {
-    onClose()
+  handleNoThanks = () => {
+    this.props.onClose()
   }
 
-  return (
-    <Modal
-      visible={true}
-      footer={null}
-      closable={false}
-      width={'700px'}
-      bodyStyle={{ padding: 0 }}
-    >
-      <ModalContainer>
-        <Title>{formatMessage(messages.title)}</Title>
-        <Description>{formatMessage(messages.description)}</Description>
-        <BodyContent>
-          <InputContainer>
-            <InputTitleContainer>
-              <Label>{formatMessage(messages.phone)}</Label>
-            </InputTitleContainer>
-            <PhoneInput
-              country={'us'}
-              value={phoneData && phoneData.phone}
-              onChange={(value) => {
-                debouncePhoneUpdate(value)
-              }}
-              inputProps={{ autoComplete: 'jv2' }}
-              inputStyle={{ borderRadius: 0, width: 250 }}
-              copyNumbersOnly={false}
-            />
-            <ButtonGroup>
-              <ConfirmButton onClick={handleConfirm}>
-                {formatMessage(messages.confirm)}
-              </ConfirmButton>
-              <Button onClick={handleNoThanks}>
-                {formatMessage(messages.noThanks)}
-              </Button>
-            </ButtonGroup>
-          </InputContainer>
-          <BannerImage src={SMSBanner} />
-        </BodyContent>
-      </ModalContainer>
-    </Modal>
-  )
+  render() {
+    const { formatMessage } = this.props
+    return (
+      <Modal
+        visible={true}
+        footer={null}
+        closable={false}
+        width={'700px'}
+        bodyStyle={{ padding: 0 }}
+      >
+        <ModalContainer>
+          <Title>{formatMessage(messages.title)}</Title>
+          <Description>{formatMessage(messages.description)}</Description>
+          <BodyContent>
+            <InputContainer>
+              <InputTitleContainer>
+                <Label>{formatMessage(messages.phone)}</Label>
+              </InputTitleContainer>
+              <PhoneInput
+                country={'us'}
+                value={this.state.phoneNumber}
+                onChange={(value) => {
+                  this.setState({ phoneNumber: value })
+                }}
+                inputProps={{ autoComplete: 'jv2' }}
+                inputStyle={{ borderRadius: 0, width: 250 }}
+                copyNumbersOnly={false}
+              />
+              <ButtonGroup>
+                <ConfirmButton onClick={this.handleConfirm}>
+                  {formatMessage(messages.confirm)}
+                </ConfirmButton>
+                <Button onClick={this.handleNoThanks}>
+                  {formatMessage(messages.noThanks)}
+                </Button>
+              </ButtonGroup>
+            </InputContainer>
+            <BannerImage src={SMSBanner} />
+          </BodyContent>
+        </ModalContainer>
+      </Modal>
+    )
+  }
 }
 
 export default SMSAlertsModal
