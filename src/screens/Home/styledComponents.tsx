@@ -202,7 +202,7 @@ export const CarouselContainer = styled.div`
     margin-top: 4px;
   }
   .slick-dots li.slick-active button:before {
-    background: ${WHITE};
+    background: ${BLACK};
   }
 `
 
