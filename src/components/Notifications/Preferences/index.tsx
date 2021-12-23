@@ -32,11 +32,11 @@ import { NotificationOption, NotificationSettings, UserType } from '../../../typ
 import { Message } from '../../../types/common'
 import { SPLIT_BY_CAPITAL_REGEX } from '../constants'
 
-interface NotificationSetting {
+export interface NotificationSetting {
   notificationData: NotificationSettings
 }
 
-interface PhoneSetting {
+export interface PhoneSetting {
   phoneData: {
     phone: String
   }

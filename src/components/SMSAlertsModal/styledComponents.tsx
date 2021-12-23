@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { LEAF, WHITE, BLACK } from '../../theme/colors'
+import { LEAF, WHITE, GRAY_DARK } from '../../theme/colors'
 
 export const ModalContainer = styled.div`
   display: flex;
@@ -32,19 +32,20 @@ export const Strong = styled.div`
   text-align: center;
 `
 
-export const EditButton = styled.div`
-  align-self: center;
-  padding: 13px;
-  margin: 15px 0 20px 0;
+export const PhoneColumn = styled.div`
+  display: block;
+  margin-left: 10px;
+`
+
+export const InputTitleContainer = styled.div`
+  display: flex;
+  margin-bottom: 5px;
+`
+
+export const Label = styled.div`
+  height: 19px;
+  color: ${GRAY_DARK};
   font-size: 14px;
-  width: 100%;
-  text-align: center;
-  color: ${WHITE};
-  background: ${BLACK};
-  transition: all 0.25s ease;
-  &:hover {
-    cursor: pointer;
-    background: ${WHITE};
-    color: ${BLACK};
-  }
+  letter-spacing: 0.18px;
+  line-height: 19px;
 `

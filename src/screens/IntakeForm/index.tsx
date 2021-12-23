@@ -44,6 +44,10 @@ import {
   openLoginAction
 } from '../../components/MainLayout/actions'
 import InspirationModal from '../../components/InspirationModal'
+import { 
+  profileNotificationSettingsQuery, 
+  profilePhoneSettingsQuery, 
+} from '../../components/Notifications/Preferences/data'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   IntakeContainer,
@@ -76,7 +80,8 @@ import {
   ProDesignPalette,
   IProfileSettings,
   User,
-  DesignType
+  DesignType,
+  NotificationOption
 } from '../../types/common'
 import {
   Sections,
@@ -89,6 +94,8 @@ import {
 import ReactDOM from 'react-dom'
 import LockerScreen from './LockerScreen'
 import Helmet from 'react-helmet'
+import { NotificationSetting, PhoneSetting } from '../../components/Notifications/Preferences'
+import SMSAlertsModal from '../../components/SMSAlertsModal'
 
 const { info, confirm } = Modal
 
@@ -159,6 +166,8 @@ interface Props extends RouteComponentProps<any> {
   adminProjectUserId: string
   userToSearch: string
   prepopulateUserText: string
+  notificationSettings: NotificationSetting
+  phoneSettings: PhoneSetting
   setDesignSelectedAction: (id: string, design: DesignType) => void
   setPaginationDataAction: (offset: number, page: number) => void
   setHighlight: (active: boolean) => void
@@ -440,6 +449,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       sendEmail,
       projectCategories,
       adminProjectUserId,
+      notificationSettings: { notificationData },
+      phoneSettings: { phoneData },
       createProject,
       onSetSavingIntake,
       onSetSuccessModalOpen,
@@ -491,11 +502,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       const successMessage = get(results, 'data.createProDesignProject.message')
       message.success(successMessage)
       if (!admProject) {
-        // TODO: open the sms notification modal
-        if (false) {
-          onSetSMSAlertsModalOpen(true)
-        } else {
+        if (notificationData && 
+          (notificationData.notifyProDesign === NotificationOption.BOTH || 
+          notificationData.notifyProDesign === NotificationOption.SMS) &&
+          phoneData.phone) {
           onSetSuccessModalOpen(true)
+        } else {
+          onSetSMSAlertsModalOpen(true)
         }
       } else {
         window.location.href = `/admin/prodesign-dashboard`
@@ -667,13 +680,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     window.location.replace(`/account?option=proDesignProjects`)
   }
 
-  // TODO: receive SMS notification
-  handleOnReceiveSMS = () => {
-    this.handleOnNoThanks()
-  }
-
-  // TODO: not receive SMS notification
-  handleOnNoThanks = () => {
+  handleOnSMSAlertsClose = () => {
     const { onSetSMSAlertsModalOpen, onSetSuccessModalOpen } = this.props
     onSetSMSAlertsModalOpen(false)
     onSetSuccessModalOpen(true)
@@ -1307,8 +1314,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           removeTag={removeTagAction}
           selectedTags={inspirationTags}
         /> : null}
-        {/* TODO: render modal */}
-        {smsAlertsModal ? <div/> : null}
+        {smsAlertsModal ? <SMSAlertsModal
+          user={user}
+          onClose={this.handleOnSMSAlertsClose}
+          formatMessage={formatMessage}
+        /> : null}
       </Layout>)
   }
 }
@@ -1358,7 +1368,19 @@ const IntakeFormPageEnhance = compose(
       }
     },
     name: 'colorsList'
-  })
+  }),
+  graphql(profileNotificationSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'notificationSettings'
+  }),
+  graphql(profilePhoneSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'phoneSettings'
+  }),
 )(IntakeFormPage)
 
 export default IntakeFormPageEnhance
