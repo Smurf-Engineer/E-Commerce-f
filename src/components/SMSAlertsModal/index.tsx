@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { graphql, compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import MessageBar from 'antd/lib/message'
 import PhoneInput from 'react-phone-input-2'
@@ -16,18 +15,20 @@ import {
 import {
   profileNotificationSettingsQuery,
   profilePhoneSettingsQuery,
-  UpdateNotificationSettingMutation,
-  UpdatePhoneSettingMutation,
 } from '../Notifications/Preferences/data'
-import { Message, NotificationOption, UserType } from '../../types/common'
-import { NotificationSetting, PhoneSetting } from '../Notifications/Preferences'
+import {
+  Message,
+  NotificationOption,
+  NotificationSettings,
+  UserType,
+} from '../../types/common'
 import { SPLIT_BY_CAPITAL_REGEX } from '../Notifications/constants'
 import { Button } from 'antd'
 
 interface Props {
   user: UserType
-  notificationSettings: NotificationSetting
-  phoneSettings: PhoneSetting
+  notificationData: NotificationSettings
+  phoneData: { phone: String }
   formatMessage: (messageDescriptor: Message) => string
   updateNotification: (variables: {}) => void
   updatePhone: (variables: {}) => void
@@ -36,8 +37,8 @@ interface Props {
 
 const SMSAlertsModal = ({
   user,
-  notificationSettings: { notificationData },
-  phoneSettings: { phoneData },
+  notificationData,
+  phoneData,
   formatMessage,
   updatePhone,
   updateNotification,
@@ -136,6 +137,10 @@ const SMSAlertsModal = ({
     onClose()
   }
 
+  const handleNoThanks = () => {
+    onClose()
+  }
+
   return (
     <Modal
       visible={true}
@@ -164,27 +169,11 @@ const SMSAlertsModal = ({
             copyNumbersOnly={false}
           />
           <Button onClick={handleConfirm}>Confirm</Button>
+          <Button onClick={handleNoThanks}>No, thanks</Button>
         </BodyContent>
       </ModalContainer>
     </Modal>
   )
 }
 
-const SMSAlertsModalEnhance = compose(
-  graphql(profileNotificationSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only',
-    },
-    name: 'notificationSettings',
-  }),
-  graphql(profilePhoneSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only',
-    },
-    name: 'phoneSettings',
-  }),
-  UpdateNotificationSettingMutation,
-  UpdatePhoneSettingMutation
-)(SMSAlertsModal)
-
-export default SMSAlertsModalEnhance
+export default SMSAlertsModal

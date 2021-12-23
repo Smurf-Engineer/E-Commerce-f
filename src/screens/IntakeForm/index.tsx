@@ -46,7 +46,9 @@ import {
 import InspirationModal from '../../components/InspirationModal'
 import { 
   profileNotificationSettingsQuery, 
-  profilePhoneSettingsQuery, 
+  profilePhoneSettingsQuery,
+  UpdateNotificationSettingMutation,
+  UpdatePhoneSettingMutation, 
 } from '../../components/Notifications/Preferences/data'
 import { RouteComponentProps } from 'react-router-dom'
 import {
@@ -216,6 +218,8 @@ interface Props extends RouteComponentProps<any> {
   setFileTermsAction: (checked: boolean) => void
   setAdminProjectUserIdAction: (userId: string, prepopulateUserText: string) => void
   setUserToSearchAction: (value: string) => void
+  updateNotification: (variables: {}) => void
+  updatePhone: (variables: {}) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {
@@ -502,10 +506,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       const successMessage = get(results, 'data.createProDesignProject.message')
       message.success(successMessage)
       if (!admProject) {
-        if (notificationData && 
+        if (notificationData &&
           (notificationData.notifyProDesign === NotificationOption.BOTH || 
           notificationData.notifyProDesign === NotificationOption.SMS) &&
-          phoneData.phone) {
+          phoneData && phoneData.phone) {
           onSetSuccessModalOpen(true)
         } else {
           onSetSMSAlertsModalOpen(true)
@@ -952,6 +956,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       fileTermsAccepted,
       colorsList,
       validLength,
+      notificationSettings: { notificationData },
+      phoneSettings: { phoneData },
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
@@ -980,7 +986,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       setAdminProjectUserIdAction,
       userToSearch,
       setUserToSearchAction,
-      prepopulateUserText
+      prepopulateUserText,
+      updateNotification,
+      updatePhone
     } = this.props
     const { isMobile, isTablet, richTextEditorReady } = this.state
 
@@ -1314,8 +1322,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           removeTag={removeTagAction}
           selectedTags={inspirationTags}
         /> : null}
-        {smsAlertsModal ? <SMSAlertsModal
+        {smsAlertsModal && notificationData && phoneData ? <SMSAlertsModal
           user={user}
+          notificationData={notificationData}
+          phoneData={phoneData}
+          updateNotification={updateNotification}
+          updatePhone={updatePhone}
           onClose={this.handleOnSMSAlertsClose}
           formatMessage={formatMessage}
         /> : null}
@@ -1346,6 +1358,8 @@ const IntakeFormPageEnhance = compose(
   saveProject,
   renameFile,
   addProductsProjectMutation,
+  UpdateNotificationSettingMutation,
+  UpdatePhoneSettingMutation,
   withApollo,
   injectIntl,
   connect(

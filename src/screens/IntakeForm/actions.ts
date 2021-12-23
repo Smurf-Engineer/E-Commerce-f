@@ -178,7 +178,7 @@ export const onSetSuccessModalOpen = (open: boolean) => ({
   open
 })
 
-export const onSMSAlertsModalOpen = (open: boolean) => ({
+export const onSetSMSAlertsModalOpen = (open: boolean) => ({
   type: SET_SMS_ALERTS_MODAL_OPEN,
   open
 })
