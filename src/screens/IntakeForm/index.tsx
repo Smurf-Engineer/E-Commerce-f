@@ -133,6 +133,7 @@ interface Props extends RouteComponentProps<any> {
   sendEmail: boolean
   savingIntake: boolean
   successModal: boolean
+  smsAlertsModal: boolean
   expandedInspiration: boolean
   expandedInspirationOpen: boolean
   fromScratch: boolean
@@ -183,6 +184,7 @@ interface Props extends RouteComponentProps<any> {
   createProject: (variables: {}) => Promise<MessagePayload>
   onSetSavingIntake: (saving: boolean) => void
   onSetSuccessModalOpen: (open: boolean) => void
+  onSetSMSAlertsModalOpen: (open: boolean) => void
   onExpandInspirationAction:
   (inspirationId: number, image: string, name: string, isSelected: boolean, tags: string[]) => void
   onCloseInspirationAction: () => void
@@ -440,7 +442,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       adminProjectUserId,
       createProject,
       onSetSavingIntake,
-      onSetSuccessModalOpen
+      onSetSuccessModalOpen,
+      onSetSMSAlertsModalOpen
     } = this.props
     onSetSavingIntake(true)
     const primary = selectedPaletteIndex === CUSTOM_PALETTE_INDEX
@@ -488,7 +491,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       const successMessage = get(results, 'data.createProDesignProject.message')
       message.success(successMessage)
       if (!admProject) {
-        onSetSuccessModalOpen(true)
+        // TODO: open the sms notification modal
+        if (false) {
+          onSetSMSAlertsModalOpen(true)
+        } else {
+          onSetSuccessModalOpen(true)
+        }
       } else {
         window.location.href = `/admin/prodesign-dashboard`
       }
@@ -657,6 +665,18 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const { onSetSuccessModalOpen } = this.props
     onSetSuccessModalOpen(false)
     window.location.replace(`/account?option=proDesignProjects`)
+  }
+
+  // TODO: receive SMS notification
+  handleOnReceiveSMS = () => {
+    this.handleOnNoThanks()
+  }
+
+  // TODO: not receive SMS notification
+  handleOnNoThanks = () => {
+    const { onSetSMSAlertsModalOpen, onSetSuccessModalOpen } = this.props
+    onSetSMSAlertsModalOpen(false)
+    onSetSuccessModalOpen(true)
   }
 
   handleOnPressBack = () => {
@@ -905,6 +925,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       sendEmail,
       savingIntake,
       successModal,
+      smsAlertsModal,
       fromDesign,
       lockerDesign,
       expandedInspiration,
@@ -1286,6 +1307,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           removeTag={removeTagAction}
           selectedTags={inspirationTags}
         /> : null}
+        {/* TODO: render modal */}
+        {smsAlertsModal ? <div/> : null}
       </Layout>)
   }
 }
