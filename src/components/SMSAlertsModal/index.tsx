@@ -1,21 +1,15 @@
 import * as React from 'react'
+import { Button } from 'antd'
 import Modal from 'antd/lib/modal'
 import MessageBar from 'antd/lib/message'
 import PhoneInput from 'react-phone-input-2'
 import { debounce } from 'lodash'
 import messages from './messages'
 import {
-  ModalContainer,
-  Title,
-  Description,
-  BodyContent,
-  InputTitleContainer,
-  Label,
-} from './styledComponents'
-import {
   profileNotificationSettingsQuery,
   profilePhoneSettingsQuery,
 } from '../Notifications/Preferences/data'
+import SMSBanner from '../../assets/sms_banner.jpg'
 import {
   Message,
   NotificationOption,
@@ -23,8 +17,19 @@ import {
   UserType,
 } from '../../types/common'
 import { SPLIT_BY_CAPITAL_REGEX } from '../Notifications/constants'
-import { Button } from 'antd'
 
+import {
+  ModalContainer,
+  Title,
+  Description,
+  BodyContent,
+  InputTitleContainer,
+  Label,
+  BannerImage,
+  InputContainer,
+  ButtonGroup,
+  ConfirmButton,
+} from './styledComponents'
 interface Props {
   user: UserType
   notificationData: NotificationSettings
@@ -146,32 +151,37 @@ const SMSAlertsModal = ({
       visible={true}
       footer={null}
       closable={false}
-      width={'600px'}
+      width={'700px'}
       bodyStyle={{ padding: 0 }}
     >
       <ModalContainer>
         <Title>{formatMessage(messages.title)}</Title>
         <Description>{formatMessage(messages.description)}</Description>
         <BodyContent>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.phone)}</Label>
-          </InputTitleContainer>
-          <PhoneInput
-            country={'us'}
-            value={phoneData && phoneData.phone}
-            onChange={(value) => {
-              debouncePhoneUpdate(value)
-            }}
-            inputProps={{ autoComplete: 'jv2' }}
-            inputStyle={{ borderRadius: 0, width: 250 }}
-            copyNumbersOnly={false}
-          />
-          <Button onClick={handleConfirm}>
-            {formatMessage(messages.confirm)}
-          </Button>
-          <Button onClick={handleNoThanks}>
-            {formatMessage(messages.noThanks)}
-          </Button>
+          <InputContainer>
+            <InputTitleContainer>
+              <Label>{formatMessage(messages.phone)}</Label>
+            </InputTitleContainer>
+            <PhoneInput
+              country={'us'}
+              value={phoneData && phoneData.phone}
+              onChange={(value) => {
+                debouncePhoneUpdate(value)
+              }}
+              inputProps={{ autoComplete: 'jv2' }}
+              inputStyle={{ borderRadius: 0, width: 250 }}
+              copyNumbersOnly={false}
+            />
+            <ButtonGroup>
+              <ConfirmButton onClick={handleConfirm}>
+                {formatMessage(messages.confirm)}
+              </ConfirmButton>
+              <Button onClick={handleNoThanks}>
+                {formatMessage(messages.noThanks)}
+              </Button>
+            </ButtonGroup>
+          </InputContainer>
+          <BannerImage src={SMSBanner} />
         </BodyContent>
       </ModalContainer>
     </Modal>
