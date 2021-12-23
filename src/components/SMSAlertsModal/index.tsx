@@ -3,7 +3,6 @@ import { Button } from 'antd'
 import Modal from 'antd/lib/modal'
 import MessageBar from 'antd/lib/message'
 import PhoneInput from 'react-phone-input-2'
-import { debounce } from 'lodash'
 import messages from './messages'
 import {
   profileNotificationSettingsQuery,
@@ -135,9 +134,12 @@ class SMSAlertsModal extends React.Component<Props, {}> {
   }
 
   handleConfirm = () => {
-    this.changeNotificationSettings()
-    this.handlePhoneChange(this.state.phoneNumber)
-    this.props.onClose()
+    const { phoneNumber } = this.state
+    if (phoneNumber) {
+      this.handlePhoneChange(phoneNumber)
+      this.changeNotificationSettings()
+      this.props.onClose()
+    }
   }
 
   handleNoThanks = () => {
