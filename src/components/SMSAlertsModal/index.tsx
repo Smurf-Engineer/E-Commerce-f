@@ -150,10 +150,8 @@ const SMSAlertsModal = ({
       bodyStyle={{ padding: 0 }}
     >
       <ModalContainer>
-        <Title>STAY CONNECTED WITH SMS ALERTS</Title>
-        <Description>
-          Get notified about key events on your design project
-        </Description>
+        <Title>{formatMessage(messages.title)}</Title>
+        <Description>{formatMessage(messages.description)}</Description>
         <BodyContent>
           <InputTitleContainer>
             <Label>{formatMessage(messages.phone)}</Label>
@@ -168,8 +166,12 @@ const SMSAlertsModal = ({
             inputStyle={{ borderRadius: 0, width: 250 }}
             copyNumbersOnly={false}
           />
-          <Button onClick={handleConfirm}>Confirm</Button>
-          <Button onClick={handleNoThanks}>No, thanks</Button>
+          <Button onClick={handleConfirm}>
+            {formatMessage(messages.confirm)}
+          </Button>
+          <Button onClick={handleNoThanks}>
+            {formatMessage(messages.noThanks)}
+          </Button>
         </BodyContent>
       </ModalContainer>
     </Modal>
