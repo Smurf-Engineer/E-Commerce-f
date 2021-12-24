@@ -940,7 +940,7 @@ export const MessageFile = styled.div`
   font-size: 12px;
   color: ${BLUE};
   text-decoration: underline;
-  align-self: ${({ isAdmin }: RowProps) => isAdmin ? 'flex-end' : 'unset'};
+  align-self: ${({ isAdmin }: RowProps) => isAdmin ? 'flex-end' : 'flex-start'};
   &:hover {
     cursor: pointer;
   }
@@ -2098,7 +2098,7 @@ export const CommentHeader = styled.div`
 `
 
 export const ImageMessage = styled.img`
-  width: 100%;
+  max-width: 100%;
   max-height: 278px;
 `
 
