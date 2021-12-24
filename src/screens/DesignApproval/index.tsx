@@ -1662,11 +1662,17 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       </RequiredText>
                     }
                     {files.map((fileString: string, index: number) =>
-                      <MessageFile onClick={this.openFile(fileString)} key={index}>
-                        <Clip type="paper-clip" />
-                        <FileName>
-                          {getFileWithExtension(fileString || '')}
-                        </FileName>
+                      <MessageFile isAdmin={fromSystem} onClick={this.openFile(fileString)} key={index}>
+                        {/* tslint:disable-next-line: max-line-length */}
+                        {['.jpg', '.jpeg', '.svg', '.png'].includes((getFileExtension(fileString) || '').toLowerCase()) ?
+                          <ImageMessage src={fileString} /> :
+                          <>
+                            <Clip type="paper-clip" />
+                            <FileName>
+                              {getFileWithExtension(fileString || '')}
+                            </FileName>
+                          </>
+                        }
                       </MessageFile>
                     )}
                     {messageType === NEW_PRODUCT &&
