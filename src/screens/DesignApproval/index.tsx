@@ -1231,7 +1231,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   changeDesign = (design: string) => () => {
     if (design) {
       const { intl: { formatMessage } } = this.props
-      this.setState({ designToApply: design })
+      this.setState({ designToApply: design, selectedKeyMobile: '' })
+      setTimeout(() => { this.openMessages() }, 1000)
       AntdMessage.success(formatMessage(messages.designApplied))
     }
   }
