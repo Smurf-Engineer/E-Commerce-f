@@ -1504,6 +1504,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       modelObj = obj
       modelMtl = mtl
     }
+    
     const hideAdvertising = typeof window !== 'undefined' ? localStorage.getItem('hideAdvertising') : ''
     const showAdvertising = !hideAdvertising || hideAdvertising !== 'true'
     const windowHeight = typeof window !== 'undefined' ? window.innerHeight : ''
