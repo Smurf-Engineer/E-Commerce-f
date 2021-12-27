@@ -263,7 +263,9 @@ import {
   RemoveFileIcon,
   MessageComment,
   CollapseStyled,
-  PanelDiv
+  PanelDiv,
+  AdvertisingComments,
+  CloseAdvertising
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -768,6 +770,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         }
       }
     }
+  }
+
+  hideAdvertising = () => {
+    localStorage.setItem('hideAdvertising', 'true')
+    setTimeout(() => this.forceUpdate(), 200)
   }
 
   changeCollapseMobile = (key: string) => {
@@ -1497,6 +1504,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       modelObj = obj
       modelMtl = mtl
     }
+    const hideAdvertising = typeof window !== 'undefined' ? localStorage.getItem('hideAdvertising') : ''
+    const showAdvertising = !hideAdvertising || hideAdvertising !== 'true'
     const windowHeight = typeof window !== 'undefined' ? window.innerHeight : ''
     const stylesToApply = typeof window !== 'undefined' &&
       window.innerWidth > 614 ? stylesDraggable : stylesDraggableMobile
@@ -2049,6 +2058,12 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         </ChatComments>
         {!isGuest && !!role &&
           <CommentInput>
+            {showAdvertising && 
+              <AdvertisingComments>
+                {formatMessage(messages.advertisingMessage)}
+                <CloseAdvertising onClick={this.hideAdvertising} type="close" />
+              </AdvertisingComments>
+            }
             {commentResponding && commentResponding.id &&
               <FullResponse>
                 <ParentText codeColor={memberColors[Math.floor(commentResponding.userSerialId % 7)]}>
@@ -2385,7 +2400,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                 </MobileRequestButtons>
               }
-              {!!itemStatus &&
+              {!!itemStatus && false &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId && showRenderWindow &&
                     <Render3D

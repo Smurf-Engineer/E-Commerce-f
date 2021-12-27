@@ -2206,6 +2206,33 @@ export const FullResponse = styled.div`
   flex: 1;
 `
 
+export const AdvertisingComments = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  font-size: 12px;
+  padding: 10px 14px;
+  background: ${RED};
+  color: ${WHITE};
+  margin-left: -14px;
+  margin-right: -14px;
+  margin-top: -5px;
+  margin-bottom: 7px;
+`
+
+export const CloseAdvertising = styled(Icon)`
+  border: 1px solid ${WHITE};
+  border-radius: 25px;
+  padding: 4px;
+  font-size: 10px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
+
 export const FileComment = styled.div`
   display: flex;
   margin-top: 8px;
