@@ -2059,7 +2059,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         </ChatComments>
         {!isGuest && !!role &&
           <CommentInput>
-            {showAdvertising && 
+            {showAdvertising && (isApprover || isOwner) &&
               <AdvertisingComments>
                 {formatMessage(messages.advertisingMessage)}
                 <CloseAdvertising onClick={this.hideAdvertising} type="close" />

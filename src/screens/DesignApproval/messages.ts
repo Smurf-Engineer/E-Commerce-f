@@ -56,7 +56,7 @@ export default defineMessages({
   advertisingMessage: {
     id: 'screens.DesignApproval.advertisingMessage',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: 'The Comments board is ONLY for Team collaborators. Messages are not sent to Jakroo. Please use the Approval Log to request design edits to the Jakroo Design Team.'
+    defaultMessage: 'Comments are ONLY shared among Team Members and are not sent to Jakroo. Please use the REQUEST EDIT button to submit your design edits to the Jakroo design team.'
   },
   editAutoMessage: {
     id: 'screens.DesignApproval.editAutoMessage',
