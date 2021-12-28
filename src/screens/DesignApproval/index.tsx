@@ -2319,47 +2319,48 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </ButtonWrapper>
                 </BottomButtons>
               }
-              <RequestButtons>
-                <ApproveButton
-                  loading={approveLoading}
-                  disabled={
-                    approveLoading ||
-                    itemStatus !== CUSTOMER_PREVIEW ||
-                    (!!designToApply && outputPng !== designToApply) ||
-                    (!isOwner && !isApprover)
-                  }
-                  onClick={this.handlePromptApprove}
-                >
-                  {formatMessage(messages.approve)}
-                </ApproveButton>
-                {requestedEdits >= limitRequests &&
-                  <StyledTooltip
-                    trigger="hover"
-                    content={
-                      <TooltipBody>
-                        <IconTitle theme="filled" type="info-circle" />
-                        <TextBody
-                          dangerouslySetInnerHTML={{
-                            __html: formatMessage(messages.editRequestInfo)
-                          }}
-                        />
-                      </TooltipBody>
+              {(isOwner || isApprover) &&
+                <RequestButtons>
+                  <ApproveButton
+                    loading={approveLoading}
+                    disabled={
+                      approveLoading ||
+                      itemStatus !== CUSTOMER_PREVIEW ||
+                      (!!designToApply && outputPng !== designToApply)
                     }
+                    onClick={this.handlePromptApprove}
                   >
-                    <InfoIcon type="info-circle" />
-                  </StyledTooltip>
-                }
-                <RequestEdit
-                  disabled={itemStatus !== CUSTOMER_PREVIEW || (!isOwner && !isApprover)}
-                  onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
-                >
-                  <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-                    {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
-                  </RequestText>
-                  {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
-                </RequestEdit>
-              </RequestButtons>
-              {(selectedKeyMobile === '1' || !selectedKeyMobile) &&
+                    {formatMessage(messages.approve)}
+                  </ApproveButton>
+                  {requestedEdits >= limitRequests &&
+                    <StyledTooltip
+                      trigger="hover"
+                      content={
+                        <TooltipBody>
+                          <IconTitle theme="filled" type="info-circle" />
+                          <TextBody
+                            dangerouslySetInnerHTML={{
+                              __html: formatMessage(messages.editRequestInfo)
+                            }}
+                          />
+                        </TooltipBody>
+                      }
+                    >
+                      <InfoIcon type="info-circle" />
+                    </StyledTooltip>
+                  }
+                  <RequestEdit
+                    disabled={itemStatus !== CUSTOMER_PREVIEW}
+                    onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
+                  >
+                    <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
+                      {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
+                    </RequestText>
+                    {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
+                  </RequestEdit>
+                </RequestButtons>
+              }
+              {(selectedKeyMobile === '1' || !selectedKeyMobile) && (isOwner || isApprover) &&
                 <MobileRequestButtons>
                   <ApproveButton
                     loading={approveLoading}
