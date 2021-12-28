@@ -3,6 +3,7 @@
  */
 
 export const OVERVIEW = 'overview'
+export const NOTIFICATIONS = 'notifications'
 export const ORDER_HISTORY = 'orderHistory'
 export const ADDRESSES = 'addresses'
 export const CREDIT_CARDS = 'creditCards'
@@ -62,6 +63,10 @@ export const menuOptions = [
 ]
 
 export const resellerOptions = [
+  {
+    title: NOTIFICATIONS,
+    options: []
+  },
   {
     title: ORDER_HISTORY,
     options: []
