@@ -13,6 +13,15 @@ export default defineMessages({
     id: 'components.SMSAlertsModal.description',
     defaultMessage: 'Get notified about key events on your design project',
   },
+  certify: {
+    id: 'components.SMSAlertsModal.certify',
+    defaultMessage:
+      'Select this box to certify that this is your own number and that you agree to receive SMS notifications.',
+  },
+  optOut: {
+    id: 'components.SMSAlertsModal.optOut',
+    defaultMessage: 'You will be able to opt out anytime',
+  },
   confirm: {
     id: 'components.SMSAlertsModal.confirm',
     defaultMessage: 'Confirm',

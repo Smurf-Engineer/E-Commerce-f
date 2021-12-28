@@ -2471,6 +2471,8 @@
   "components.ProductForm.Steps.SecondStep.twoPieces": "2-Piece",
   "components.SMSAlertsModal.title": "STAY CONNECTED WITH SMS ALERTS",
   "components.SMSAlertsModal.description": "Get notified about key events on your design project",
+  "components.SMSAlertsModal.certify": "Select this box to certify that this is your own number and that you agree to receive SMS notifications.",
+  "components.SMSAlertsModal.optOut": "You will be able to opt out anytime",
   "components.SMSAlertsModal.confirm": "Confirm",
   "components.SMSAlertsModal.noThanks": "No, thanks",
   "components.Notifications.title": "Notification Center",

@@ -28,6 +28,8 @@ import {
   InputContainer,
   ButtonGroup,
   ConfirmButton,
+  StyledCheckbox,
+  OptOutMessage,
 } from './styledComponents'
 interface Props {
   user: UserType
@@ -174,6 +176,12 @@ class SMSAlertsModal extends React.Component<Props, {}> {
                 inputStyle={{ borderRadius: 0, width: 250 }}
                 copyNumbersOnly={false}
               />
+              <StyledCheckbox>
+                {formatMessage(messages.certify)}
+              </StyledCheckbox>
+              <OptOutMessage>
+                {formatMessage(messages.optOut)}
+              </OptOutMessage>
               <ButtonGroup>
                 <ConfirmButton onClick={this.handleConfirm}>
                   {formatMessage(messages.confirm)}

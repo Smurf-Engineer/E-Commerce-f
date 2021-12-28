@@ -1,4 +1,4 @@
-import { Button } from 'antd'
+import { Button, Checkbox } from 'antd'
 import styled from 'styled-components'
 import { LEAF, WHITE, BLUE, GRAY_DARK } from '../../theme/colors'
 
@@ -19,7 +19,7 @@ export const BodyContent = styled.div`
 
 export const InputContainer = styled.div`
   flex: 1;
-  padding: 20px;
+  padding: 20px 0;
 `
 
 export const Title = styled.div`
@@ -97,5 +97,21 @@ export const BannerImage = styled.img`
   width: 350px;
   @media (max-width: 480px) {
     width: 100%;
+  }
+`
+
+export const StyledCheckbox = styled(Checkbox)`
+  color: ${GRAY_DARK};
+  text-indent: -24px;
+  margin: 20px 0px 0 24px;
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
+`
+
+export const OptOutMessage = styled.div`
+  margin: 16px 0 0 24px;
+  @media (max-width: 480px) {
+    font-size: 12px;
   }
 `
