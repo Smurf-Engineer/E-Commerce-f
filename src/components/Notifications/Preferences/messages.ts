@@ -11,7 +11,7 @@ export default defineMessages({
   },
   notifyOrderPayments: {
     id: 'components.Notifications.Preferences.notifyOrderPayments',
-    defaultMessage: 'Order/Payment Notifications*'
+    defaultMessage: 'Order/Payment Notifications'
   },
   notifyOrderPaymentsComment: {
     id: 'components.Notifications.Preferences.notifyOrderPaymentsComment',
@@ -19,7 +19,7 @@ export default defineMessages({
   },
   notifyProDesign: {
     id: 'components.Notifications.Preferences.notifyProDesign',
-    defaultMessage: 'Pro Design Notifications*'
+    defaultMessage: 'Pro Design Notifications'
   },
   notifyProDesignComment: {
     id: 'components.Notifications.Preferences.notifyProDesignComment',
@@ -39,7 +39,7 @@ export default defineMessages({
   },
   notifyDesignLab: {
     id: 'components.Notifications.Preferences.notifyDesignLab',
-    defaultMessage: 'DesignLab Notifications'
+    defaultMessage: 'DesignLab Notification'
   },
   notifyDesignLabComment: {
     id: 'components.Notifications.Preferences.notifyDesignLabComment',
