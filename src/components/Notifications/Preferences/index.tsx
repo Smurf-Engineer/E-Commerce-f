@@ -57,6 +57,20 @@ interface Props {
 class Preferences extends React.Component<Props, {}> {
   debouncePhoneUpdate = debounce(value => this.handlePhoneChange(value), 1000)
 
+  state = {
+    isMobile: false,
+    isTablet: false,
+  }
+  componentDidMount() {
+    const isMobile = window.matchMedia(
+      '(min-width: 320px) and (max-width: 480px)'
+    ).matches
+    const isTablet = window.matchMedia(
+      '(min-width: 481px) and (max-width: 1024px)'
+    ).matches
+    this.setState({ isMobile, isTablet })
+  }
+
   updateSetting = async (
     payload: {},
     mutation: any,
@@ -209,6 +223,7 @@ class Preferences extends React.Component<Props, {}> {
       phoneSettings: { phoneData },
       formatMessage
     } = this.props
+    const { isMobile, isTablet } = this.state
 
     const orderPaymentEmailChecked = this.isNotificationSetTo('notifyOrderPayment', NotificationOption.EMAIL)
     const prodesignEmailChecked = this.isNotificationSetTo('notifyProDesign', NotificationOption.EMAIL)
@@ -230,9 +245,30 @@ class Preferences extends React.Component<Props, {}> {
             <Spin />
           </LoadingContainer>
         }
+        {isTablet || isMobile && (
+          <PhoneColumn>
+            <InputTitleContainer>
+              <Label>{formatMessage(messages.phone)}</Label>
+            </InputTitleContainer>
+            <PhoneInput
+              country={'us'}
+              value={phone}
+              onChange={value => {
+                this.debouncePhoneUpdate(value)
+              }}
+              inputProps={{ autoComplete: 'jv2' }}
+              inputStyle={{ borderRadius: 0, width: 250 }}
+              copyNumbersOnly={false}
+              disabled={!orderPaymentSmsChecked && !prodesignSmsChecked
+                && !teamStoreSmsChecked && !designlabSmsChecked
+                && !productServiceSmsChecked
+              }
+            />
+          </PhoneColumn>
+        )}
         <NotificationContainer>
-          <Column>
-            <Header>{formatMessage(messages.title)}</Header>
+          <Column style={(isMobile || isTablet) ? { flex: 1 } : {}}>
+            {!(isMobile || isTablet) && <Header>{formatMessage(messages.title)}</Header>}
             <Title>
               {formatMessage(messages.notifyOrderPayments)}&nbsp;
               <Description>
@@ -266,7 +302,7 @@ class Preferences extends React.Component<Props, {}> {
             </Title>
           </Column>
           <Column marginLeft="50px">
-            <Header>{formatMessage(messages.email)}</Header>
+          {!(isMobile || isTablet) && <Header>{formatMessage(messages.email)}</Header>}
             <CheckBoxStyled
               checked={orderPaymentEmailChecked}
               onChange={this.changeNotificationSettings('notifyOrderPayment', 'email')}
@@ -288,9 +324,11 @@ class Preferences extends React.Component<Props, {}> {
               onChange={this.changeNewsletterSetting} />
           </Column>
           <Column marginLeft="30px">
-            <Header>
-              SMS&nbsp;<Description>{formatMessage(messages.smsComment)}</Description>
-            </Header>
+            {!(isMobile || isTablet) && (
+              <Header>
+                SMS&nbsp;<Description>{formatMessage(messages.smsComment)}</Description>
+              </Header>
+            )}
             <CheckBoxStyled
               checked={orderPaymentSmsChecked}
               onChange={this.changeNotificationSettings('notifyOrderPayment', 'sms')} />
@@ -311,25 +349,27 @@ class Preferences extends React.Component<Props, {}> {
               checked={false}
               onChange={() => { }} />
           </Column>
-          <PhoneColumn>
-            <InputTitleContainer>
-              <Label>{formatMessage(messages.phone)}</Label>
-            </InputTitleContainer>
-            <PhoneInput
-              country={'us'}
-              value={phone}
-              onChange={value => {
-                this.debouncePhoneUpdate(value)
-              }}
-              inputProps={{ autoComplete: 'jv2' }}
-              inputStyle={{ borderRadius: 0, width: 250 }}
-              copyNumbersOnly={false}
-              disabled={!orderPaymentSmsChecked && !prodesignSmsChecked
-                && !teamStoreSmsChecked && !designlabSmsChecked
-                && !productServiceSmsChecked
-              }
-            />
-          </PhoneColumn>
+          {!(isMobile || isTablet) && (
+            <PhoneColumn>
+              <InputTitleContainer>
+                <Label>{formatMessage(messages.phone)}</Label>
+              </InputTitleContainer>
+              <PhoneInput
+                country={'us'}
+                value={phone}
+                onChange={value => {
+                  this.debouncePhoneUpdate(value)
+                }}
+                inputProps={{ autoComplete: 'jv2' }}
+                inputStyle={{ borderRadius: 0, width: 250 }}
+                copyNumbersOnly={false}
+                disabled={!orderPaymentSmsChecked && !prodesignSmsChecked
+                  && !teamStoreSmsChecked && !designlabSmsChecked
+                  && !productServiceSmsChecked
+                }
+              />
+            </PhoneColumn>
+          )}
         </NotificationContainer>
         <Description>{formatMessage(messages.notificationComment)}</Description>
       </Container>

@@ -11,41 +11,51 @@ interface CheckboxProps {
 }
 
 export const Container = styled.div`
-    text-align: left;
-    margin-bottom: 50px;
+  text-align: left;
+  margin-bottom: 50px;
 `
 
 export const NotificationContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+
+  @media (max-width: 767px) {
+    margin: 20px 5px;
+  }
 `
 
 export const Column = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin-left: ${({ marginLeft }: ColumnProps) =>
-    marginLeft ? marginLeft : '0px'}
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: ${({ marginLeft }: ColumnProps) =>
+    marginLeft ? marginLeft : '0px'};
 `
 
 export const Header = styled.div`
-    display: flex;
-    font-weight: 600;
-    margin-bottom: 8px;
-    align-items: baseline;
+  display: flex;
+  font-weight: 600;
+  margin-bottom: 8px;
+  align-items: baseline;
 `
 
 export const Title = styled.div`
-    display: flex;
-    align-items: baseline;
-    margin-bottom: 2px;
-    margin-top: 2px;
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 2px;
+  margin-top: 2px;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    font-weight: bold;
+    margin: 10px 0;
+  }
 `
 
 export const Description = styled.div`
-    font-weight: normal;
-    font-size: 12px;
+  font-weight: normal;
+  font-size: 12px;
 `
 
 export const LoadingContainer = styled.div`
@@ -63,13 +73,20 @@ export const LoadingContainer = styled.div`
 
 export const CheckBoxStyled = styled(Checkbox)`
   margin-left: 8px !important;
-  visibility: ${({ hide }: CheckboxProps) =>
-    hide ? 'hidden' : 'visible'}
+  visibility: ${({ hide }: CheckboxProps) => (hide ? 'hidden' : 'visible')};
+
+  @media (max-width: 767px) {
+    margin: 10px 0;
+  }
 `
 
 export const PhoneColumn = styled.div`
   display: block;
   margin-left: 10px;
+
+  @media (max-width: 767px) {
+    margin-left: 5px;
+  }
 `
 
 export const InputTitleContainer = styled.div`
