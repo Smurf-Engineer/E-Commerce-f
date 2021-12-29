@@ -20,7 +20,7 @@ export const NotificationContainer = styled.div`
   flex-direction: row;
   margin-bottom: 10px;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     margin: 20px 15px 20px 5px;
   }
 `
@@ -47,7 +47,7 @@ export const Title = styled.div`
   margin-bottom: 2px;
   margin-top: 2px;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     font-weight: bold;
     margin: 10px 0;
@@ -76,7 +76,7 @@ export const CheckBoxStyled = styled(Checkbox)`
   margin-left: 8px !important;
   visibility: ${({ hide }: CheckboxProps) => (hide ? 'hidden' : 'visible')};
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     margin: 10px 0;
   }
 `
@@ -85,7 +85,7 @@ export const PhoneColumn = styled.div`
   display: block;
   margin-left: 10px;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     margin-left: 5px;
   }
 `
