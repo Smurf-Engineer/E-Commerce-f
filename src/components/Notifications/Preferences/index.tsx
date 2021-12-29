@@ -268,7 +268,9 @@ class Preferences extends React.Component<Props, {}> {
         )}
         <NotificationContainer>
           <Column style={(isMobile || isTablet) ? { flex: 1 } : {}}>
-            {!(isMobile || isTablet) && <Header>{formatMessage(messages.title)}</Header>}
+            <Header style={(isMobile || isTablet) ? { color: 'transparent' } : {}}>
+              {formatMessage(messages.title)}
+            </Header>
             <Title>
               {formatMessage(messages.notifyOrderPayments)}&nbsp;
               <Description>
@@ -302,7 +304,7 @@ class Preferences extends React.Component<Props, {}> {
             </Title>
           </Column>
           <Column marginLeft="50px">
-          {!(isMobile || isTablet) && <Header>{formatMessage(messages.email)}</Header>}
+            <Header>{formatMessage(messages.email)}</Header>
             <CheckBoxStyled
               checked={orderPaymentEmailChecked}
               onChange={this.changeNotificationSettings('notifyOrderPayment', 'email')}
@@ -324,11 +326,14 @@ class Preferences extends React.Component<Props, {}> {
               onChange={this.changeNewsletterSetting} />
           </Column>
           <Column marginLeft="30px">
-            {!(isMobile || isTablet) && (
-              <Header>
-                SMS&nbsp;<Description>{formatMessage(messages.smsComment)}</Description>
-              </Header>
-            )}
+            <Header>
+              SMS
+              {!(isMobile || isTablet) && (
+                <>
+                  &nbsp;<Description>{formatMessage(messages.smsComment)}</Description>
+                </>
+              )}
+            </Header>
             <CheckBoxStyled
               checked={orderPaymentSmsChecked}
               onChange={this.changeNotificationSettings('notifyOrderPayment', 'sms')} />

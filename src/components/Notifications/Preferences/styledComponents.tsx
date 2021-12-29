@@ -21,7 +21,7 @@ export const NotificationContainer = styled.div`
   margin-bottom: 10px;
 
   @media (max-width: 767px) {
-    margin: 20px 5px;
+    margin: 20px 15px 20px 5px;
   }
 `
 
@@ -38,6 +38,7 @@ export const Header = styled.div`
   font-weight: 600;
   margin-bottom: 8px;
   align-items: baseline;
+  min-height: 17px;
 `
 
 export const Title = styled.div`
