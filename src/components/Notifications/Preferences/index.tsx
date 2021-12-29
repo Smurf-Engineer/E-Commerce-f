@@ -245,7 +245,7 @@ class Preferences extends React.Component<Props, {}> {
             <Spin />
           </LoadingContainer>
         }
-        {isTablet || isMobile && (
+        {(isTablet || isMobile) && (
           <PhoneColumn>
             <InputTitleContainer>
               <Label>{formatMessage(messages.phone)}</Label>
