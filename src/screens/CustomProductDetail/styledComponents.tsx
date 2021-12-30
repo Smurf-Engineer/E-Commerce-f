@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, GRAY_LIGHTEST } from '../../theme/colors'
+import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, GRAY_LIGHTEST, GRAY_STRONG } from '../../theme/colors'
 import Input from 'antd/lib/input'
 
 interface DivProps {
@@ -143,22 +143,22 @@ export const StyledInput = styled(Input)`
 export const HowItFits = styled.div`
   margin: 16px 0;
   margin-bottom: 16px;
-  height: 40px;
-  width: 190px;
-  color: #b1b1b1;;
-  border: 2px solid #dcdcdc;
+  height: 34px;
+  width: 154px;
+  color: ${GRAY_STRONG};
+  border: 1px solid ${GRAY_STRONG};
   border-radius: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 16px;
+  font-size: 14px;
   transition: all 0.2s ease;
   z-index: 2;
   background: transparent;
   cursor: pointer;
   &:hover {
-    background: gainsboro;
-    color: #2b2b2c;
+    background: ${GRAY_STRONG};
+    color: ${WHITE};
     font-weight: bold;
   }
 `
@@ -446,4 +446,39 @@ export const InfoTag = styled.div`
     margin-left: -30px;
     margin-top: -3px;
   }
+`
+
+export const ThreeDButton = styled.img`
+  max-width: 54px;
+  border-radius: 10px;
+  padding: 8px;
+  border: 1px solid #b1b1b1;
+  margin-top: -12px;
+  background: #b1b1b1;
+  box-shadow: 0px 3px 6px -1px #424242;
+  z-index: 2;
+  right: 28px;
+  position: absolute;
+  bottom: 15px;
+  transition: all .5s;
+  ${({ selected }: DivProps) => selected ? `
+    background: #b1b1b1;
+    box-shadow: 0px 3px 8px -2px black inset;
+  ` : ''}
+`
+
+export const InfoMessage = styled.div`
+  display: inline-flex;
+  align-items: center;
+  margin-left: -28px;
+  background: #272727;
+  vertical-align: middle;
+`
+
+export const FingerIcon = styled.img`
+  max-width: 24px;
+  vertical-align: middle;
+  z-index: 2;
+  background: #272727;
+  margin-right: 8px;
 `

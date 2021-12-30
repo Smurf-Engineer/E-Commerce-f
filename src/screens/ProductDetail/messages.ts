@@ -128,5 +128,13 @@ export default defineMessages({
   downloadTemplates: {
     id: 'screens.ProductDetail.downloadTemplates',
     defaultMessage: 'Download Templates'
+  },
+  controlsEnabled: {
+    id: 'screens.ProductDetail.controlsEnabled',
+    defaultMessage: 'Use 1 finger to rotate, 2 fingers to move/zoom'
+  },
+  controlsDisabled: {
+    id: 'screens.ProductDetail.controlsDisabled',
+    defaultMessage: '3D touch controls disabled'
   }
 })

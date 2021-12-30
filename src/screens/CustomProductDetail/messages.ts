@@ -124,5 +124,13 @@ export default defineMessages({
   proAssigned: {
     id: 'screens.CustomProductDetail.proAssigned',
     defaultMessage: 'PRODESIGN'
+  },
+  controlsEnabled: {
+    id: 'screens.CustomProductDetail.controlsEnabled',
+    defaultMessage: 'Use 1 finger to rotate, 2 fingers to move/zoom'
+  },
+  controlsDisabled: {
+    id: 'screens.CustomProductDetail.controlsDisabled',
+    defaultMessage: '3D touch controls disabled'
   }
 })
