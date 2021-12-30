@@ -159,9 +159,19 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     resetDataAction()
   }
 
-  setHideControls = () => {
+  onTouchEndAction = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
+  }
+
+  setHideControls = (e: React.MouseEvent) => {
     const { intl: { formatMessage } } = this.props
     const { hideControls } = this.state
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
     this.setState({ hideControls: !hideControls })
     if (hideControls) {
       message.info(
@@ -677,7 +687,12 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     asImage={phone}
                   />
                   {isMobile &&
-                    <ThreeDButton onClick={this.setHideControls} selected={!hideControls} src={threeDviewIcon} />
+                    <ThreeDButton 
+                      onTouchEnd={this.onTouchEndAction}
+                      onTouchStart={this.setHideControls}
+                      selected={!hideControls} 
+                      src={threeDviewIcon}
+                    />
                   }
                   {
                     infoFlag && <InfoTag>{infoMessage}</InfoTag>

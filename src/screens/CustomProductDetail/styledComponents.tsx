@@ -16,6 +16,9 @@ export const Container = styled.div`
   max-width: 1452px;
   width: 100%;
   margin: 0 auto;
+  @media (max-width: 700px) {
+    user-select: none !important;
+  }
 `
 export const Content = styled.div`
   display: flex;
@@ -461,6 +464,8 @@ export const ThreeDButton = styled.img`
   position: absolute;
   bottom: 15px;
   transition: all .5s;
+  -webkit-touch-callout: none !important;
+  user-select: none !important;
   ${({ selected }: DivProps) => selected ? `
     background: #b1b1b1;
     box-shadow: 0px 3px 8px -2px black inset;

@@ -34,6 +34,9 @@ export const Container = styled.div`
   max-width: 1452px;
   width: 100%;
   margin: 0 auto;
+  @media (max-width: 700px) {
+    user-select: none !important;
+  }
 `
 
 export const Content = styled.div`
@@ -221,6 +224,7 @@ export const ModelContainer = styled.div`
   flex-flow: column;
   border-radius: 3px;
   position: relative;
+  user-select: none !important;
 `
 
 export const StyledBreadCrumb = styled(Breadcrumb)`
@@ -704,6 +708,8 @@ export const ThreeDButton = styled.img`
   position: absolute;
   bottom: 15px;
   transition: all .5s;
+  -webkit-touch-callout: none !important;
+  user-select: none !important;
   ${({ selected }: StyledProps) => selected ? `
     background: #4a4a4a;
     box-shadow: 0px 3px 8px -2px black inset;
