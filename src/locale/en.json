@@ -2495,5 +2495,7 @@
   "components.Notifications.Preferences.notificationComment": "* transactional and service notices may require customer action or response and are required",
   "components.Notifications.Preferences.email": "Email",
   "components.Notifications.Preferences.smsComment": "(rates may apply by your carrier)",
-  "components.Notifications.Preferences.updateNotificationSuccessMessage": "Notification Settings has been updated!"
+  "components.Notifications.Preferences.updateNotificationSuccessMessage": "Notification Settings has been updated!",
+  "components.Notifications.Preferences.flexible": "FLEXIBLE, CONVENIENT, SECURE",
+  "components.Notifications.Preferences.rightTime": "The right information at the right time"
 }

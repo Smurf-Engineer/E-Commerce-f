@@ -73,4 +73,16 @@ export default defineMessages({
     id: 'components.ProfileForm.phone',
     defaultMessage: 'Mobile Number'
   },
+  smsAlerts: {
+    id: 'components.SMSAlertsModal.title',
+    defaultMessage: 'STAY CONNECTED WITH SMS ALERTS',
+  },
+  flexible: {
+    id: 'components.Notifications.Preferences.flexible',
+    defaultMessage: 'FLEXIBLE, CONVENIENT, SECURE',
+  },
+  rightTime: {
+    id: 'components.Notifications.Preferences.rightTime',
+    defaultMessage: 'The right information at the right time',
+  },
 })
