@@ -212,9 +212,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     }
   }
 
-  setHideControls = () => {
+  setHideControls = (e: React.MouseEvent) => {
     const { intl: { formatMessage } } = this.props
     const { hideControls } = this.state
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
     this.setState({ hideControls: !hideControls })
     if (hideControls) {
       message.info(
@@ -236,6 +240,12 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const snd = new Audio(hideControls ? lockSound : enabledSound)
     snd.play()
     snd.remove()
+  }
+
+  onTouchEndAction = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
   }
 
   setTone = (evt: React.MouseEvent) => {
@@ -348,7 +358,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       infoFlag,
       infoMessage,
     } = product
-    const { tone } = this.state
+    const { tone, hideControls } = this.state
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/g, ' ') : ''
 
     let renderPrices
@@ -369,7 +379,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       Object.assign(searchObject, { genderId: parseInt(gender, 10) })
     }
 
-    const { hideControls } = this.state
     const genderIndex = findIndex(imagesArray, searchObject)
     const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 480px)').matches
 
@@ -713,7 +722,12 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                           {...{ product, modelSize }}
                         />
                         {isMobile &&
-                          <ThreeDButton onClick={this.setHideControls} selected={!hideControls} src={threeDviewIcon} />
+                          <ThreeDButton
+                            onTouchEnd={this.onTouchEndAction}
+                            onTouchStart={this.setHideControls}
+                            selected={!hideControls}
+                            src={threeDviewIcon}
+                          />
                         }
                         {infoFlag && <InfoTag>{infoMessage}</InfoTag>}
                         <HowItFits onClick={this.toggleFitsModal(true)}>
