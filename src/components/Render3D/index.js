@@ -78,7 +78,7 @@ class Render3D extends PureComponent {
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     if (this.container) {
-      const { modelSize } = this.props
+      const { modelSize, disableControls } = this.props
       /* Renderer config */
       const { clientWidth = 0, clientHeight = 0 } = this.container
       const precision = 'highp'
@@ -109,6 +109,10 @@ class Render3D extends PureComponent {
       controls.minDistance = 80
       controls.maxDistance = 350
       controls.enableZoom = true
+      controls.enabled = !disableControls
+      if (disableControls) {
+        this.setState({ showDragmessage: false })
+      }
       /* Scene and light */
       const scene = new THREE.Scene()
       const ambient = new THREE.AmbientLight(0xffffff, AMBIENT_LIGHT_INTENSITY)
@@ -210,7 +214,8 @@ class Render3D extends PureComponent {
       product: newProduct,
       modelMtl,
       hidePredyed: newPredyed,
-      light: newLight
+      light: newLight,
+      disableControls: newDisableControls
     } = nextProps
     const {
       product,
@@ -221,7 +226,8 @@ class Render3D extends PureComponent {
       actualImage: oldImage = '',
       colorAccessories: oldColorAccessories,
       hidePredyed,
-      light: oldLight
+      light: oldLight,
+      disableControls
     } = this.props
     const { firstLoad } = this.state
     const imageChanged = !isEqual(actualImage, oldImage)
@@ -257,6 +263,10 @@ class Render3D extends PureComponent {
     }
     if (oldLight !== newLight) {
       this.setAmbientLight(newLight)
+    }
+    if (disableControls !== newDisableControls) {
+      this.controls.enabled = !newDisableControls
+      this.setState({ showDragmessage: !newDisableControls })
     }
   }
 
