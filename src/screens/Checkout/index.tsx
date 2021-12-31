@@ -19,6 +19,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import * as checkoutActions from './actions'
 import * as thunkActions from './thunkActions'
 import invoiceAnimation from '../../assets/invoiceanimation.gif'
+import maintenanceImage from '../../assets/maintenance.png'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
 import {
@@ -28,7 +29,8 @@ import {
   CreatePaymentIntentMutation,
   AddCardMutation,
   isScaPaymentQuery,
-  profileSettingsQuery
+  profileSettingsQuery,
+  getDesignLabInfo
 } from './data'
 import {
   CheckoutTabs,
@@ -68,7 +70,10 @@ import {
   StyledSpin,
   InfoBatch,
   ProcessingDiv,
-  SpinStyled
+  SpinStyled,
+  MaintenanceLayout,
+  MaintenanceImage,
+  MaintenaceLink
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -86,7 +91,8 @@ import {
   CouponCode,
   PaymentIntent,
   QueryProps,
-  IProfileSettings
+  IProfileSettings,
+  DesignLabInfo
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData, getPriceRangeToApply } from '../../utils/utilsShoppingCart'
@@ -104,6 +110,10 @@ type ProductCart = {
   code: string
   yotpoId: string
   name: string
+}
+
+interface DataDesignLabInfo extends QueryProps {
+  designInfo?: DesignLabInfo
 }
 
 interface ProfileData extends QueryProps {
@@ -145,6 +155,7 @@ interface Props extends RouteComponentProps<any> {
   phone: string
   hasError: boolean
   showForm: boolean
+  designLabInfo: DataDesignLabInfo
   showBillingForm: boolean
   indexAddressSelected: number
   billingFirstName: string
@@ -315,6 +326,7 @@ class Checkout extends React.Component<Props, {}> {
       openAddressesModal,
       skip,
       limit,
+      designLabInfo,
       currentPage,
       setSkipValueAction,
       showCardForm,
@@ -327,7 +339,19 @@ class Checkout extends React.Component<Props, {}> {
       deleteCouponCodeAction,
       paymentClientSecret
     } = this.props
-
+    const underMaintenance = get(designLabInfo, 'getDesignLabInfo.underMaintenance', false)
+    if (underMaintenance) {
+      return (
+        <Layout {...{ history, intl }}>
+          <MaintenanceLayout>
+            <MaintenanceImage src={maintenanceImage} />
+            <MaintenaceLink onClick={this.goToHome}>
+              {intl.formatMessage(messages.goToHome)}
+            </MaintenaceLink>
+          </MaintenanceLayout>
+        </Layout>
+      )
+    }
     const shippingAddress: AddressType = {
       firstName,
       lastName,
@@ -834,6 +858,9 @@ class Checkout extends React.Component<Props, {}> {
         }
       }
     }
+  }
+  goToHome = () => {
+    window.location.replace('/')
   }
   confirmOrder = (isPaypal?: boolean, sca?: boolean) => {
     const {
@@ -1342,6 +1369,12 @@ const CheckoutEnhance = compose(
     }),
     name: 'profileData',
   }),
+  graphql(getDesignLabInfo, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'designLabInfo'
+  })
 )(Checkout)
 
 export default CheckoutEnhance

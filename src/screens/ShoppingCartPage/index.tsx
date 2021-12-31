@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
-import { compose, withApollo } from 'react-apollo'
+import { compose, graphql, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import has from 'lodash/has'
@@ -40,7 +40,10 @@ import {
   StoreInfo,
   ButtonContainer,
   ContinueButton,
-  CheckoutIcon
+  CheckoutIcon,
+  MaintenanceLayout,
+  MaintenanceImage,
+  MaintenaceLink
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
 import config from '../../config/index'
@@ -51,18 +54,25 @@ import {
   CartItemDetail,
   ItemDetailType,
   ProductColors,
-  PriceRange
+  PriceRange,
+  QueryProps,
+  DesignLabInfo
 } from '../../types/common'
 import Modal from 'antd/lib/modal/Modal'
 import Checkbox from 'antd/lib/checkbox'
 import closeIcon from '../../assets/cancel-button.svg'
+import maintenanceImage from '../../assets/maintenance.png'
 import { getShoppingCartData, getPriceRangeByItem, getItemQuantity } from '../../utils/utilsShoppingCart'
 import ModalTitle from '../../components/ModalTitle'
 import ModalFooter from '../../components/ModalFooter'
-import { verifyTeamStoreQuery } from './data'
+import { getDesignLabInfo, verifyTeamStoreQuery } from './data'
 import { message } from 'antd'
 
 const { warning } = Modal
+
+interface DataDesignLabInfo extends QueryProps {
+  designInfo?: DesignLabInfo
+}
 
 interface CartItems {
   product: Product
@@ -92,6 +102,7 @@ interface Props extends RouteComponentProps<any> {
   selectedIndex: number
   highlightFields: boolean
   itemsVerified: boolean
+  data: DataDesignLabInfo
   verifyItems: (verified: boolean) => void
   openStoreInfoAction: (open: boolean) => void
   setStoreTerms: (checked: boolean) => void
@@ -462,11 +473,16 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     return true
   }
 
+  goToHome = () => {
+    window.location.replace('/')
+  }
+
   render() {
     const {
       intl,
       history,
       cart,
+      data,
       openStoreInfo,
       storeTerms,
       showDeleteLastItemModal,
@@ -478,7 +494,19 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       highlightFields
     } = this.props
     const { formatMessage } = intl
-
+    const underMaintenance = get(data, 'getDesignLabInfo.underMaintenance', false)
+    if (underMaintenance) {
+      return (
+        <Layout {...{ history, intl }}>
+          <MaintenanceLayout>
+            <MaintenanceImage src={maintenanceImage} />
+            <MaintenaceLink onClick={this.goToHome}>
+              {formatMessage(messages.goToHome)}
+            </MaintenaceLink>
+          </MaintenanceLayout>
+        </Layout>
+      )
+    }
     const shoppingCartData = getShoppingCartData(
       cart,
       currentCurrency || config.defaultCurrency
@@ -706,7 +734,12 @@ const ShoppingCartPageEnhance = compose(
   connect(
     mapStateToProps,
     { ...shoppingCartPageActions, ...thunkActions }
-  )
+  ),
+  graphql(getDesignLabInfo, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  })
 )(ShoppingCartPage)
 
 export default ShoppingCartPageEnhance

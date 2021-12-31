@@ -3,7 +3,8 @@
  */
 import styled from 'styled-components'
 import Carousel from 'antd/lib/carousel'
-import { WHITE, AUBERGINE } from '../../theme/colors'
+import { WHITE, AUBERGINE, BLACK_LABEL } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 const HEADER_TOP_SIZE = 38
 const HEADER_BOTTOM_SIZE = 72
@@ -57,8 +58,36 @@ export const Footer = styled.div`
   }
 `
 
+export const CarouselContainer = styled.div`
+  position: relative;
+`
+
+export const CloseIcon = styled(Icon)`
+  margin-top: -46px;
+  display: flex;
+  z-index: 99999;
+  width: 26px;
+  height: 26px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 10px;
+  font-size: 12px;
+  right: 12px;
+  border: 1px solid ${BLACK_LABEL};
+  color: ${BLACK_LABEL};
+  border-radius: 25px;
+  transition: .25s;
+  background: #fdb532;
+  &:hover {
+    cursor: pointer;
+    background: ${BLACK_LABEL};
+    color: #fdb532;
+  }
+`
+
 export const StyledCarousel = styled(Carousel)`
-  background-color: ORANGE;
+  background-color: #fdb532;
   .slick-dots {
     display: flex !important;
     align-items: center !important;
@@ -99,7 +128,7 @@ export const StyledCarousel = styled(Carousel)`
 export const EditorWrapper = styled.div`
   display: flex;
   align-items: center;
-  background-color: ORANGE;
+  background-color: #fdb532;
   height: auto;
 
   .rdw-editor-wrapper {

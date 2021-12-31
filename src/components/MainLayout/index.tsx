@@ -34,6 +34,8 @@ import {
   Footer,
   EditorWrapper,
   StyledCarousel,
+  CarouselContainer,
+  CloseIcon,
 } from './styledComponents'
 import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
@@ -310,6 +312,11 @@ class MainLayout extends React.Component<Props, {}> {
     }
   }
 
+  hideCarouselAction = () => {
+    sessionStorage.setItem('hideCarouselMobile', 'true')
+    setTimeout(() => this.forceUpdate(), 200)
+  }
+
   render() {
     const {
       children,
@@ -379,30 +386,36 @@ class MainLayout extends React.Component<Props, {}> {
     const numberOfProductsInCart = shoppingCart.cart
       ? numberOfProducts
       : itemsInCart
-
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches
+    const hideCarouselMobileValue = typeof window !== 'undefined' ? sessionStorage.getItem('hideCarouselMobile') : ''
+    const hideCarouselMobile = isMobile ? (hideCarouselMobileValue && hideCarouselMobileValue === 'true') : false
     return (
       <Layout {...{ style }}>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         {/* Carousel for the alerts */}
-        {typeof window !== 'undefined' && readyEditors.length > 0 && !hideAlerts && (
-          <StyledCarousel
-            autoplay={true}
-            autoplaySpeed={5 * 1000}
-            pauseOnHover={true}
-          >
-            {readyEditors.map((editor, index) => {
-              const { editorState, Editor } = editor
-              return (
-                <EditorWrapper key={index}>
-                  <Editor
-                    {...{ editorState }}
-                    toolbarHidden={true}
-                    readOnly={true}
-                  />
-                </EditorWrapper>
-              )
-            })}
-          </StyledCarousel>
+        {typeof window !== 'undefined' && readyEditors.length > 0 && !hideAlerts && !hideCarouselMobile && (
+          <CarouselContainer>
+            <StyledCarousel
+              autoplay={true}
+              autoplaySpeed={5 * 1000}
+              pauseOnHover={true}
+            >
+              {readyEditors.map((editor, index) => {
+                const { editorState, Editor } = editor
+                return (
+                  <EditorWrapper key={index}>
+                    <Editor
+                      {...{ editorState }}
+                      toolbarHidden={true}
+                      readOnly={true}
+                    />
+                  </EditorWrapper>
+                )
+              })}
+            </StyledCarousel>
+            {isMobile && <CloseIcon onClick={this.hideCarouselAction} type="cross" />}
+          </CarouselContainer>
+          
         )}
         <Helmet defaultTitle={MAIN_TITLE} />
         <Header {...{ hideTopHeader, hideBottomHeader }}>
