@@ -31,6 +31,7 @@ import {
 import { NotificationOption, NotificationSettings, UserType } from '../../../types/common'
 import { Message } from '../../../types/common'
 import { SPLIT_BY_CAPITAL_REGEX } from '../constants'
+import { PHONE_MINIMUM } from '../../../constants'
 
 interface NotificationSetting {
   notificationData: NotificationSettings
@@ -115,11 +116,13 @@ class Preferences extends React.Component<Props, {}> {
 
   handlePhoneChange = (phone: string) => {
     const { user, updatePhone } = this.props
-    this.updatePhoneSetting(
-      { userId: user ? user.id : '', phone },
-      updatePhone,
-      messages.updateNotificationSuccessMessage
-    )
+    if (!!phone && phone.length >= PHONE_MINIMUM) {
+      this.updatePhoneSetting(
+        { userId: user ? user.id : '', phone },
+        updatePhone,
+        messages.updateNotificationSuccessMessage
+      )
+    }
   }
 
   changeNotificationSettings = (key: string, selected: string) => () => {
@@ -318,6 +321,7 @@ class Preferences extends React.Component<Props, {}> {
             <PhoneInput
               country={'us'}
               value={phone}
+              countryCodeEditable={false}
               onChange={value => {
                 this.debouncePhoneUpdate(value)
               }}

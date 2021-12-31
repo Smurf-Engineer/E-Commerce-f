@@ -139,5 +139,9 @@ export default defineMessages({
   continue: {
     id: 'screens.ShoppingCartPage.continue',
     defaultMessage: 'Continue'
+  },
+  goToHome: {
+    id: 'screens.ShoppingCartPage.goToHome',
+    defaultMessage: 'Back to home page'
   }
 })

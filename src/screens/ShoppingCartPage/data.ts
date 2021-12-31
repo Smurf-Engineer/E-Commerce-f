@@ -84,3 +84,11 @@ export const getDesignVariables = gql`
     }
   }
 `
+
+export const getDesignLabInfo = gql`
+  query getDesignLabInfo {
+    getDesignLabInfo {
+      underMaintenance: under_maintenance
+    }
+  }
+`

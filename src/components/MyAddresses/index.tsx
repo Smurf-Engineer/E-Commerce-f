@@ -23,6 +23,7 @@ import { addAddressMutation, updateAddressMutation } from './data'
 import { GetAddressListQuery } from '../MyAddressesList/data'
 import { isPoBox, isApoCity, isValidCity, isNumberValue, isValidZip } from '../../utils/utilsAddressValidation'
 import message from 'antd/lib/message'
+import { PHONE_MINIMUM } from '../../constants'
 
 interface Data extends QueryProps {
   addresses: AddressType[]
@@ -270,6 +271,11 @@ class MyAddresses extends React.PureComponent<Props, {}> {
 
     if (!isValidZip(zipCode)) {
       message.error(formatMessage(messages.invalidZip))
+      return
+    }
+
+    if (!phone || (phone && phone.length < PHONE_MINIMUM)) {
+      message.error(formatMessage(messages.invalidPhone))
       return
     }
 

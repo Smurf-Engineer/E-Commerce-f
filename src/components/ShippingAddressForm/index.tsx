@@ -302,6 +302,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               country={'us'}
               value={phone}
               autoComplete="jv2"
+              countryCodeEditable={false}
               onChange={value => {
                 this.handleInputChange({ currentTarget: { id: 'phone', value } })
               }}

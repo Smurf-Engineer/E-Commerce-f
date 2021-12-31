@@ -93,7 +93,7 @@ import designLabWhite from '../../assets/design_lab_white.png'
 import proDesignWhite from '../../assets/pro_design_white.png'
 import directShipWhite from '../../assets/directship_white.png'
 import resellerGuy from '../../assets/reseller-banner-image.jpg'
-import { NEW_USER } from '../../constants'
+import { NEW_USER, PHONE_MINIMUM } from '../../constants'
 import { User, UserType } from '../../types/common'
 import { CA_COUNTRY, CA_CURRENCY, US_COUNTRY, US_CURRENCY } from '../../components/ResellerAbout/constants'
 import { connect } from 'react-redux'
@@ -507,6 +507,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                   <PhoneInput
                     country={'us'}
                     value={phone}
+                    countryCodeEditable={false}
                     onChange={value => {
                       this.handleInputChange({ currentTarget: { id: 'phone', value } })
                     }}
@@ -767,7 +768,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       message.error(formatMessage(messages.requiredFieldsError))
       return
     }
-    if (phone && phone.length < 10) {
+    if (phone && phone.length < PHONE_MINIMUM) {
       message.error(formatMessage(messages.badPhoneFormat))
       return
     }

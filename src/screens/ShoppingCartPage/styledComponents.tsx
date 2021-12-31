@@ -358,3 +358,34 @@ export const buttonStyle = {
   background: BLUE,
   border: 'none'
 }
+
+export const MaintenanceLayout = styled.div`
+  min-height: calc(100vh - 192px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${WHITE};
+  flex-flow: column;
+  padding: 64px 18px;
+`
+
+export const MaintenanceImage = styled.img`
+  max-width: 440px;
+  width: 100%;
+`
+
+export const MaintenaceLink = styled.div`
+  margin-top: 38px;
+  box-shadow: 0px 2px 5px -3px black;
+  border-radius: 53px;
+  padding: 8px 14px;
+  background: white;
+  color: #577395;
+  font-weight: bold;
+  font-family: Avenir;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
