@@ -25,6 +25,7 @@ import {
   ON_CHECK_EMAIL,
   SET_SAVING_INTAKE,
   SET_SUCCESS_MODAL_OPEN,
+  SET_SMS_ALERTS_MODAL_OPEN,
   ON_EXPAND_INSPIRATION,
   ON_CLOSE_INSPIRATION,
   SET_FROM_SCRATCH,
@@ -81,6 +82,7 @@ export const initialState = fromJS({
   savingIntake: false,
   highlight: false,
   successModal: false,
+  smsAlerts: false,
   expandedInspiration: null,
   expandedInspirationOpen: false,
   fromScratch: true,
@@ -216,6 +218,8 @@ const intakeFormReducer: Reducer<any> = (
       return state.set('savingIntake', action.saving)
     case SET_SUCCESS_MODAL_OPEN:
       return state.set('successModal', action.open)
+    case SET_SMS_ALERTS_MODAL_OPEN:
+      return state.set('smsAlertsModal', action.open)
     case ON_EXPAND_INSPIRATION: {
       const { inspirationId, image, name, isSelected, tags } = action
       return state.merge({

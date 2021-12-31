@@ -23,6 +23,7 @@ import {
   ON_CHECK_EMAIL,
   SET_SAVING_INTAKE,
   SET_SUCCESS_MODAL_OPEN,
+  SET_SMS_ALERTS_MODAL_OPEN,
   ON_EXPAND_INSPIRATION,
   ON_CLOSE_INSPIRATION,
   SET_FROM_SCRATCH,
@@ -174,6 +175,11 @@ export const onSetSavingIntake = (saving: boolean) => ({
 
 export const onSetSuccessModalOpen = (open: boolean) => ({
   type: SET_SUCCESS_MODAL_OPEN,
+  open
+})
+
+export const onSetSMSAlertsModalOpen = (open: boolean) => ({
+  type: SET_SMS_ALERTS_MODAL_OPEN,
   open
 })
 

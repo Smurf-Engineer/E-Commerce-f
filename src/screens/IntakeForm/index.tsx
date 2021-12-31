@@ -44,6 +44,12 @@ import {
   openLoginAction
 } from '../../components/MainLayout/actions'
 import InspirationModal from '../../components/InspirationModal'
+import { 
+  profileNotificationSettingsQuery, 
+  profilePhoneSettingsQuery,
+  UpdateNotificationSettingMutation,
+  UpdatePhoneSettingMutation, 
+} from '../../components/Notifications/Preferences/data'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   IntakeContainer,
@@ -76,7 +82,8 @@ import {
   ProDesignPalette,
   IProfileSettings,
   User,
-  DesignType
+  DesignType,
+  NotificationOption
 } from '../../types/common'
 import {
   Sections,
@@ -89,6 +96,8 @@ import {
 import ReactDOM from 'react-dom'
 import LockerScreen from './LockerScreen'
 import Helmet from 'react-helmet'
+import { NotificationSetting, PhoneSetting } from '../../components/Notifications/Preferences'
+import SMSAlertsModal from '../../components/SMSAlertsModal'
 
 const { info, confirm } = Modal
 
@@ -133,6 +142,7 @@ interface Props extends RouteComponentProps<any> {
   sendEmail: boolean
   savingIntake: boolean
   successModal: boolean
+  smsAlertsModal: boolean
   expandedInspiration: boolean
   expandedInspirationOpen: boolean
   fromScratch: boolean
@@ -158,6 +168,8 @@ interface Props extends RouteComponentProps<any> {
   adminProjectUserId: string
   userToSearch: string
   prepopulateUserText: string
+  notificationSettings: NotificationSetting
+  phoneSettings: PhoneSetting
   setDesignSelectedAction: (id: string, design: DesignType) => void
   setPaginationDataAction: (offset: number, page: number) => void
   setHighlight: (active: boolean) => void
@@ -183,6 +195,7 @@ interface Props extends RouteComponentProps<any> {
   createProject: (variables: {}) => Promise<MessagePayload>
   onSetSavingIntake: (saving: boolean) => void
   onSetSuccessModalOpen: (open: boolean) => void
+  onSetSMSAlertsModalOpen: (open: boolean) => void
   onExpandInspirationAction:
   (inspirationId: number, image: string, name: string, isSelected: boolean, tags: string[]) => void
   onCloseInspirationAction: () => void
@@ -205,6 +218,8 @@ interface Props extends RouteComponentProps<any> {
   setFileTermsAction: (checked: boolean) => void
   setAdminProjectUserIdAction: (userId: string, prepopulateUserText: string) => void
   setUserToSearchAction: (value: string) => void
+  updateNotification: (variables: {}) => void
+  updatePhone: (variables: {}) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {
@@ -438,9 +453,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       sendEmail,
       projectCategories,
       adminProjectUserId,
+      notificationSettings: { notificationData },
+      phoneSettings: { phoneData },
       createProject,
       onSetSavingIntake,
-      onSetSuccessModalOpen
+      onSetSuccessModalOpen,
+      onSetSMSAlertsModalOpen
     } = this.props
     onSetSavingIntake(true)
     const primary = selectedPaletteIndex === CUSTOM_PALETTE_INDEX
@@ -488,7 +506,14 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       const successMessage = get(results, 'data.createProDesignProject.message')
       message.success(successMessage)
       if (!admProject) {
-        onSetSuccessModalOpen(true)
+        if (notificationData &&
+          (notificationData.notifyProDesign === NotificationOption.BOTH || 
+          notificationData.notifyProDesign === NotificationOption.SMS) &&
+          phoneData && phoneData.phone) {
+          onSetSuccessModalOpen(true)
+        } else {
+          onSetSMSAlertsModalOpen(true)
+        }
       } else {
         window.location.href = `/admin/prodesign-dashboard`
       }
@@ -657,6 +682,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const { onSetSuccessModalOpen } = this.props
     onSetSuccessModalOpen(false)
     window.location.replace(`/account?option=proDesignProjects`)
+  }
+
+  handleOnSMSAlertsClose = () => {
+    const { onSetSMSAlertsModalOpen, onSetSuccessModalOpen } = this.props
+    onSetSMSAlertsModalOpen(false)
+    onSetSuccessModalOpen(true)
   }
 
   handleOnPressBack = () => {
@@ -905,6 +936,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       sendEmail,
       savingIntake,
       successModal,
+      smsAlertsModal,
       fromDesign,
       lockerDesign,
       expandedInspiration,
@@ -924,6 +956,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       fileTermsAccepted,
       colorsList,
       validLength,
+      notificationSettings: { notificationData },
+      phoneSettings: { phoneData },
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
@@ -952,7 +986,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       setAdminProjectUserIdAction,
       userToSearch,
       setUserToSearchAction,
-      prepopulateUserText
+      prepopulateUserText,
+      updateNotification,
+      updatePhone
     } = this.props
     const { isMobile, isTablet, richTextEditorReady } = this.state
 
@@ -1286,6 +1322,15 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           removeTag={removeTagAction}
           selectedTags={inspirationTags}
         /> : null}
+        {smsAlertsModal && notificationData && phoneData ? <SMSAlertsModal
+          user={user}
+          notificationData={notificationData}
+          phoneData={phoneData}
+          updateNotification={updateNotification}
+          updatePhone={updatePhone}
+          onClose={this.handleOnSMSAlertsClose}
+          formatMessage={formatMessage}
+        /> : null}
       </Layout>)
   }
 }
@@ -1313,6 +1358,8 @@ const IntakeFormPageEnhance = compose(
   saveProject,
   renameFile,
   addProductsProjectMutation,
+  UpdateNotificationSettingMutation,
+  UpdatePhoneSettingMutation,
   withApollo,
   injectIntl,
   connect(
@@ -1335,7 +1382,19 @@ const IntakeFormPageEnhance = compose(
       }
     },
     name: 'colorsList'
-  })
+  }),
+  graphql(profileNotificationSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'notificationSettings'
+  }),
+  graphql(profilePhoneSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'phoneSettings'
+  }),
 )(IntakeFormPage)
 
 export default IntakeFormPageEnhance

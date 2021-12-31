@@ -24,20 +24,31 @@ import {
   Description,
   LoadingContainer,
   CheckBoxStyled,
-  PhoneColumn,
   InputTitleContainer,
-  Label
+  Label,
+  NotificationImage,
+  AlertsTitle,
+  AlertsSubtitle,
+  RightInfo,
+  NotifcationContent,
+  AlertsColumn,
+  DesktopPhoneColumn,
+  MobilePhoneColumn,
+  MobileFlexColumn,
+  DesktopDescription,
+  DesktopHeader
 } from './styledComponents'
 import { NotificationOption, NotificationSettings, UserType } from '../../../types/common'
 import { Message } from '../../../types/common'
 import { SPLIT_BY_CAPITAL_REGEX } from '../constants'
+import Notification from '../../../assets/notification.jpg'
 import { PHONE_MINIMUM } from '../../../constants'
 
-interface NotificationSetting {
+export interface NotificationSetting {
   notificationData: NotificationSettings
 }
 
-interface PhoneSetting {
+export interface PhoneSetting {
   phoneData: {
     phone: String
   }
@@ -233,107 +244,139 @@ class Preferences extends React.Component<Props, {}> {
             <Spin />
           </LoadingContainer>
         }
+        <MobilePhoneColumn>
+          <InputTitleContainer>
+            <Label>{formatMessage(messages.phone)}</Label>
+          </InputTitleContainer>
+          <PhoneInput
+            country={'us'}
+            value={phone}
+            onChange={value => {
+              this.debouncePhoneUpdate(value)
+            }}
+            inputProps={{ autoComplete: 'jv2' }}
+            inputStyle={{ borderRadius: 0, width: 250 }}
+            copyNumbersOnly={false}
+            disabled={!orderPaymentSmsChecked && !prodesignSmsChecked
+              && !teamStoreSmsChecked && !designlabSmsChecked
+              && !productServiceSmsChecked
+            }
+          />
+        </MobilePhoneColumn>
         <NotificationContainer>
-          <Column>
-            <Header>{formatMessage(messages.title)}</Header>
-            <Title>
-              {formatMessage(messages.notifyOrderPayments)}&nbsp;
-              <Description>
-                {formatMessage(messages.notifyOrderPaymentsComment)}
-              </Description>
-            </Title>
-            <Title>
-              {formatMessage(messages.notifyProDesign)}&nbsp;
-              <Description>
-                {formatMessage(messages.notifyProDesignComment)}
-              </Description>
-            </Title>
-            <Title>
-              {formatMessage(messages.notifyTeamStore)}&nbsp;
-              <Description>
-                {formatMessage(messages.notifyTeamStoreComment)}
-              </Description>
-            </Title>
-            <Title>
-              {formatMessage(messages.notifyDesignLab)}&nbsp;
-              <Description>
-                {formatMessage(messages.notifyDesignLabComment)}
-              </Description>
-            </Title>
-            <Title>{formatMessage(messages.notifyProductService)}</Title>
-            <Title>
-              {formatMessage(messages.newsletter)}&nbsp;
-              <Description>
-                {formatMessage(messages.newsletterComment)}
-              </Description>
-            </Title>
-          </Column>
-          <Column marginLeft="50px">
-            <Header>{formatMessage(messages.email)}</Header>
-            <CheckBoxStyled
-              checked={orderPaymentEmailChecked}
-              onChange={this.changeNotificationSettings('notifyOrderPayment', 'email')}
-            />
-            <CheckBoxStyled
-              checked={prodesignEmailChecked}
-              onChange={this.changeNotificationSettings('notifyProDesign', 'email')} />
-            <CheckBoxStyled
-              checked={teamStoreEmailChecked}
-              onChange={this.changeNotificationSettings('notifyTeamStore', 'email')} />
-            <CheckBoxStyled
-              checked={designlabEmailChecked}
-              onChange={this.changeNotificationSettings('notifyDesignLab', 'email')} />
-            <CheckBoxStyled
-              checked={productServiceEmailChecked}
-              onChange={this.changeNotificationSettings('notifyProductService', 'email')} />
-            <CheckBoxStyled
-              checked={notificationData && notificationData.newsletterSubscribed}
-              onChange={this.changeNewsletterSetting} />
-          </Column>
-          <Column marginLeft="30px">
-            <Header>
-              SMS&nbsp;<Description>{formatMessage(messages.smsComment)}</Description>
-            </Header>
-            <CheckBoxStyled
-              checked={orderPaymentSmsChecked}
-              onChange={this.changeNotificationSettings('notifyOrderPayment', 'sms')} />
-            <CheckBoxStyled
-              checked={prodesignSmsChecked}
-              onChange={this.changeNotificationSettings('notifyProDesign', 'sms')} />
-            <CheckBoxStyled
-              checked={teamStoreSmsChecked}
-              onChange={this.changeNotificationSettings('notifyTeamStore', 'sms')} />
-            <CheckBoxStyled
-              checked={designlabSmsChecked}
-              onChange={this.changeNotificationSettings('notifyDesignLab', 'sms')} />
-            <CheckBoxStyled
-              checked={productServiceSmsChecked}
-              onChange={this.changeNotificationSettings('notifyProductService', 'sms')} />
-            <CheckBoxStyled
-              hide={true}
-              checked={false}
-              onChange={() => { }} />
-          </Column>
-          <PhoneColumn>
-            <InputTitleContainer>
-              <Label>{formatMessage(messages.phone)}</Label>
-            </InputTitleContainer>
-            <PhoneInput
-              country={'us'}
-              value={phone}
-              countryCodeEditable={false}
-              onChange={value => {
-                this.debouncePhoneUpdate(value)
-              }}
-              inputProps={{ autoComplete: 'jv2' }}
-              inputStyle={{ borderRadius: 0, width: 250 }}
-              copyNumbersOnly={false}
-              disabled={!orderPaymentSmsChecked && !prodesignSmsChecked
-                && !teamStoreSmsChecked && !designlabSmsChecked
-                && !productServiceSmsChecked
-              }
-            />
-          </PhoneColumn>
+          <MobileFlexColumn >
+            <RightInfo>{formatMessage(messages.rightTime)}</RightInfo>
+            <NotifcationContent>
+              <MobileFlexColumn>
+                <DesktopHeader>
+                  {formatMessage(messages.title)}
+                </DesktopHeader>
+                <Title>
+                  {formatMessage(messages.notifyOrderPayments)}&nbsp;
+                  <Description>
+                    {formatMessage(messages.notifyOrderPaymentsComment)}
+                  </Description>
+                </Title>
+                <Title>
+                  {formatMessage(messages.notifyProDesign)}&nbsp;
+                  <Description>
+                    {formatMessage(messages.notifyProDesignComment)}
+                  </Description>
+                </Title>
+                <Title>
+                  {formatMessage(messages.notifyTeamStore)}&nbsp;
+                  <Description>
+                    {formatMessage(messages.notifyTeamStoreComment)}
+                  </Description>
+                </Title>
+                <Title>
+                  {formatMessage(messages.notifyDesignLab)}&nbsp;
+                  <Description>
+                    {formatMessage(messages.notifyDesignLabComment)}
+                  </Description>
+                </Title>
+                <Title>{formatMessage(messages.notifyProductService)}</Title>
+                <Title>
+                  {formatMessage(messages.newsletter)}&nbsp;
+                  <Description>
+                    {formatMessage(messages.newsletterComment)}
+                  </Description>
+                </Title>
+              </MobileFlexColumn>
+              <Column marginLeft="50px">
+                <Header>{formatMessage(messages.email)}</Header>
+                <CheckBoxStyled
+                  checked={orderPaymentEmailChecked}
+                  onChange={this.changeNotificationSettings('notifyOrderPayment', 'email')}
+                />
+                <CheckBoxStyled
+                  checked={prodesignEmailChecked}
+                  onChange={this.changeNotificationSettings('notifyProDesign', 'email')} />
+                <CheckBoxStyled
+                  checked={teamStoreEmailChecked}
+                  onChange={this.changeNotificationSettings('notifyTeamStore', 'email')} />
+                <CheckBoxStyled
+                  checked={designlabEmailChecked}
+                  onChange={this.changeNotificationSettings('notifyDesignLab', 'email')} />
+                <CheckBoxStyled
+                  checked={productServiceEmailChecked}
+                  onChange={this.changeNotificationSettings('notifyProductService', 'email')} />
+                <CheckBoxStyled
+                  checked={notificationData && notificationData.newsletterSubscribed}
+                  onChange={this.changeNewsletterSetting} />
+              </Column>
+              <Column marginLeft="30px">
+                <Header>
+                  SMS&nbsp;
+                  <DesktopDescription>{formatMessage(messages.smsComment)}</DesktopDescription>
+                </Header>
+                <CheckBoxStyled
+                  checked={orderPaymentSmsChecked}
+                  onChange={this.changeNotificationSettings('notifyOrderPayment', 'sms')} />
+                <CheckBoxStyled
+                  checked={prodesignSmsChecked}
+                  onChange={this.changeNotificationSettings('notifyProDesign', 'sms')} />
+                <CheckBoxStyled
+                  checked={teamStoreSmsChecked}
+                  onChange={this.changeNotificationSettings('notifyTeamStore', 'sms')} />
+                <CheckBoxStyled
+                  checked={designlabSmsChecked}
+                  onChange={this.changeNotificationSettings('notifyDesignLab', 'sms')} />
+                <CheckBoxStyled
+                  checked={productServiceSmsChecked}
+                  onChange={this.changeNotificationSettings('notifyProductService', 'sms')} />
+                <CheckBoxStyled
+                  hide={true}
+                  checked={false}
+                  onChange={() => { }} />
+              </Column>
+              <DesktopPhoneColumn>
+                <InputTitleContainer>
+                  <Label>{formatMessage(messages.phone)}</Label>
+                </InputTitleContainer>
+                <PhoneInput
+                  country={'us'}
+                  value={phone}
+                  countryCodeEditable={false}
+                  onChange={value => {
+                    this.debouncePhoneUpdate(value)
+                  }}
+                  inputProps={{ autoComplete: 'jv2' }}
+                  inputStyle={{ borderRadius: 0, width: 250 }}
+                  copyNumbersOnly={false}
+                  disabled={!orderPaymentSmsChecked && !prodesignSmsChecked
+                    && !teamStoreSmsChecked && !designlabSmsChecked
+                    && !productServiceSmsChecked
+                  }
+                />
+              </DesktopPhoneColumn>
+              </NotifcationContent>
+            </MobileFlexColumn>
+            <AlertsColumn>
+              <AlertsTitle>{formatMessage(messages.smsAlerts)}</AlertsTitle>
+              <AlertsSubtitle>{formatMessage(messages.flexible)}</AlertsSubtitle>
+              <NotificationImage src={Notification} />
+            </AlertsColumn>
         </NotificationContainer>
         <Description>{formatMessage(messages.notificationComment)}</Description>
       </Container>
