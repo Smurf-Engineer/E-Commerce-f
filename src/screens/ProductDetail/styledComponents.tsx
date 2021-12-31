@@ -34,6 +34,9 @@ export const Container = styled.div`
   max-width: 1452px;
   width: 100%;
   margin: 0 auto;
+  @media (max-width: 700px) {
+    user-select: none !important;
+  }
 `
 
 export const Content = styled.div`
@@ -123,15 +126,15 @@ export const Title = styled.div`
 export const HowItFits = styled.div`
   margin: 16px 0;
   margin-bottom: 16px;
-  height: 40px;
-  width: 190px;
+  height: 34px;
+  width: 154px;
   color: ${WHITE};
-  border: 2px solid ${GRAY_LIGHT};
+  border: 1px solid ${GRAY_LIGHT};
   border-radius: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 16px;
+  font-size: 14px;
   transition: all 0.2s ease;
   z-index: 2;
   background: transparent;
@@ -221,6 +224,7 @@ export const ModelContainer = styled.div`
   flex-flow: column;
   border-radius: 3px;
   position: relative;
+  user-select: none !important;
 `
 
 export const StyledBreadCrumb = styled(Breadcrumb)`
@@ -689,4 +693,41 @@ export const Download = styled(Icon)`
   stroke: ${BLUE};
   stroke-width: 30px;
   font-size: 17px;
+`
+
+export const ThreeDButton = styled.img`
+  max-width: 54px;
+  border-radius: 10px;
+  padding: 8px;
+  border: 1px solid #7c7c7c;
+  margin-top: -12px;
+  background: #525252;
+  box-shadow: 0px 3px 6px -1px black;
+  z-index: 2;
+  right: 28px;
+  position: absolute;
+  bottom: 15px;
+  transition: all .5s;
+  -webkit-touch-callout: none !important;
+  user-select: none !important;
+  ${({ selected }: StyledProps) => selected ? `
+    background: #4a4a4a;
+    box-shadow: 0px 3px 8px -2px black inset;
+  ` : ''}
+`
+
+export const InfoMessage = styled.div`
+  display: inline-flex;
+  align-items: center;
+  margin-left: -28px;
+  background: #272727;
+  vertical-align: middle;
+`
+
+export const FingerIcon = styled.img`
+  max-width: 24px;
+  vertical-align: middle;
+  z-index: 2;
+  background: #272727;
+  margin-right: 8px;
 `

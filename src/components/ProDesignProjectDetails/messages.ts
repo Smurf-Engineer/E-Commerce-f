@@ -97,5 +97,63 @@ export default defineMessages({
   back: {
     id: 'components.ReviewProject.back',
     defaultMessage: 'Back to Pro Design Project List'
-  }
+  },
+  teamMembers: {
+    id: 'components.ReviewProject.teamMembers',
+    defaultMessage: 'Team Members'
+  },
+  private: {
+    id: 'components.ReviewProject.private',
+    defaultMessage: 'Private'
+  },
+  inviteMembers: {
+    id: 'components.ReviewProject.inviteMembers',
+    defaultMessage: '+ Invite Members'
+  },
+  inviteToTeam: {
+    id: 'components.ReviewProject.inviteToTeam',
+    defaultMessage: 'Invite to JAKROO Team'
+  },
+  emails: {
+    id: 'components.ReviewProject.emails',
+    defaultMessage: 'Emails'
+  },
+  sendInvitations: {
+    id: 'components.ReviewProject.sendInvitations',
+    defaultMessage: 'Send Invitations'
+  },
+  teamInviteLink: {
+    id: 'components.ReviewProject.teamInviteLink',
+    defaultMessage: 'Team invite link'
+  },
+  copyLink: {
+    id: 'components.ReviewProject.copyLink',
+    defaultMessage: 'Copy link'
+  },
+  linkInfo: {
+    id: 'components.ReviewProject.linkInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'People with this link will have <strong>read only</strong> access to your project and be able to see all information on the project'
+  },
+  copiedLink: {
+    id: 'components.ReviewProject.copiedLink',
+    defaultMessage: 'Link copied!'
+  },
+  confirmTitle: {
+    id: 'components.ReviewProject.confirmTitle',
+    defaultMessage: 'Invite people to collaborate on your Pro Design project.'
+  },
+  infoConfirmation: {
+    id: 'components.ReviewProject.infoConfirmation',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Invited users will be able to view and comment on all designs in the project. You will be able to assign an Approver role to one other member once the invitations have been sent out.'
+  },
+  addToTeamCollab: {
+    id: 'components.ReviewProject.addToTeamCollab',
+    defaultMessage: 'Add to team'
+  },
+  invitationsSent: {
+    id: 'components.ReviewProject.invitationsSent',
+    defaultMessage: 'Invitations sent!'
+  },
 })

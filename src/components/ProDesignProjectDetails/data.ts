@@ -14,6 +14,18 @@ export const getProDesignProject = gql`
       deliveryDate: delivery_date
       phone
       shared
+      members {
+        id
+        shortId: short_id
+        userId: user_id
+        firstName: first_name
+        lastName: last_name
+        dateInvited: date_invited
+        dateAdded: date_added
+        role
+        projectId: project_id
+        email
+      }
       notes
       locker {
         id
@@ -141,6 +153,22 @@ export const GetColorsQuery = gql`
 export const deleteProItemMutation = gql`
   mutation deleteProItem($itemId: String!) {
     deleteProItem(itemId: $itemId) {
+      message
+    }
+  }
+`
+
+export const sendInvitationsMutation = gql`
+  mutation sendInvitations(
+    $projectId: String!
+    $emails: [String]!
+    $projectItemId: String!
+  ) {
+    sendInvitations(
+      projectId: $projectId
+      emails: $emails
+      projectItemId: $projectItemId
+    ) {
       message
     }
   }

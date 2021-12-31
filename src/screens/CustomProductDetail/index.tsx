@@ -53,6 +53,9 @@ import {
   SizeChart,
   InfoTag,
   StyledInput,
+  InfoMessage,
+  FingerIcon,
+  ThreeDButton,
   // ColorButtons,
   // ToneButton
 } from './styledComponents'
@@ -68,6 +71,10 @@ import {
   UserType,
   BreadRoute, IProfileSettings
 } from '../../types/common'
+import lockSound from '../../assets/lock.wav'
+import enabledSound from '../../assets/enabled.wav'
+import fingerIcon from '../../assets/fingericon.png'
+import threeDviewIcon from '../../assets/3dview.svg'
 import sizeChartSvg from '../../assets/sizechart.svg'
 // import sunny from '../../assets/sunny.png'
 // import cloudy from '../../assets/cloudy.png'
@@ -90,6 +97,7 @@ import { threeDScripts } from '../../utils/scripts'
 import Spin from 'antd/lib/spin'
 import { APPROVED, PREDYED_TRANSPARENT } from '../../constants'
 import { getRangeLabel } from '../../utils/utilsShoppingCart'
+import message from 'antd/lib/message'
 
 const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
@@ -138,7 +146,8 @@ interface Props extends RouteComponentProps<any> {
 
 export class CustomProductDetail extends React.Component<Props, {}> {
   state = {
-    tone: ''
+    tone: '',
+    hideControls: true,
   }
   async componentDidMount() {
     await LoadScripts(threeDScripts)
@@ -148,6 +157,42 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
+  }
+
+  onTouchEndAction = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
+  }
+
+  setHideControls = (e: React.MouseEvent) => {
+    const { intl: { formatMessage } } = this.props
+    const { hideControls } = this.state
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    this.setState({ hideControls: !hideControls })
+    if (hideControls) {
+      message.info(
+        <InfoMessage>
+          <FingerIcon src={fingerIcon} />
+          {formatMessage(messages.controlsEnabled)}
+        </InfoMessage>
+      , 4)
+    } else {
+      message.info(formatMessage(messages.controlsDisabled))
+    }
+    if (window.navigator && window.navigator.vibrate) {
+      if (hideControls) {
+        navigator.vibrate([80, 50, 40, 50])
+      } else {
+        navigator.vibrate([70, 50, 20])
+      }
+    }
+    const snd = new Audio(hideControls ? lockSound : enabledSound)
+    snd.play()
+    snd.remove()
   }
 
   setTone = (evt: React.MouseEvent) => {
@@ -194,7 +239,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       selectedBottomSize
     } = this.props
     const { formatMessage } = intl
-
+    const { hideControls } = this.state
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 480px)').matches
     const queryParams = queryString.parse(search)
     const { comission = 0, margin = 0, status: resellerStatus } = get(profileData, 'profileData.reseller', {})
     const ownedDesign = get(design, 'canEdit', false)
@@ -633,12 +679,21 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   <Render3D
                     customProduct={true}
                     textColor="white"
+                    disableControls={isMobile ? hideControls : false}
                     hidePredyed={predyedName === PREDYED_TRANSPARENT}
                     {...{ designId, modelSize }}
                     zoomedIn={true}
                     light={tone}
                     asImage={phone}
                   />
+                  {isMobile &&
+                    <ThreeDButton 
+                      onTouchEnd={this.onTouchEndAction}
+                      onTouchStart={this.setHideControls}
+                      selected={!hideControls} 
+                      src={threeDviewIcon}
+                    />
+                  }
                   {
                     infoFlag && <InfoTag>{infoMessage}</InfoTag>
                   }

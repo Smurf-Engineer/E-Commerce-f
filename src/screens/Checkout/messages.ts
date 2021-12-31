@@ -49,7 +49,7 @@ export default defineMessages({
   },
   phoneError: {
     id: 'screens.Checkout.phoneError',
-    defaultMessage: 'Phone number must be at least 7 digits'
+    defaultMessage: 'Phone number must be at least 11 digits'
   },
   goBack: {
     id: 'screens.Checkout.goBack',
@@ -90,5 +90,9 @@ export default defineMessages({
   invalidZip: {
     id: 'screens.Checkout.invalidZip',
     defaultMessage: 'Enter a valid ZIP Code'
+  },
+  goToHome: {
+    id: 'screens.Checkout.goToHome',
+    defaultMessage: 'Back to home page'
   }
 })

@@ -1,8 +1,13 @@
 import Collapse from 'antd/lib/collapse'
 import Icon from 'antd/lib/icon'
+import Spin from 'antd/lib/spin'
+import Tooltip from 'antd/lib/tooltip'
 import styled from 'styled-components'
 import {
+  BLACK,
   BLUE,
+  COLOR_IN_DESIGN,
+  GRAY,
   GRAY_DARK,
   GRAY_LIGHT,
   GRAY_LIGHTEST,
@@ -22,6 +27,9 @@ interface ImagePreviewProps {
 
 interface DivProps {
   fullWidth?: boolean
+  disabled?: boolean
+  secondary?: boolean
+  codeColor?: string
 }
 
 export const Container = styled.div`
@@ -132,7 +140,22 @@ export const ProjectContainer = styled.div`
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '190px'};
+  margin-right: 12px;
+  max-width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '230px'};
+  width: auto;
+  min-width: 178px;
+  @media (max-width: 768px) {
+    flex-direction: row;
+    max-width: 100%;
+    flex: unset;
+  }
+`
+
+export const ColumnSmall = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 12px;
+  max-width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '130px'};
   width: 100%;
   flex: 1;
   @media (max-width: 768px) {
@@ -393,3 +416,321 @@ export const cancelButtonStyle = {
   borderColor: GRAY_LIGHT,
   boxShadow: 'none'
 }
+
+export const MemberList = styled.div`
+  display: inline-flex;
+  align-items: center;
+`
+
+export const CircleMember = styled.div`
+  color: ${WHITE};
+  padding-top: 1px;
+  padding-left: 1px;
+  font-weight: bold;
+  font-family: Avenir;
+  border-radius: 25px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  margin-left: ${({ secondary }: DivProps) => secondary ? '-7px' : '0'};
+  background: ${({ codeColor }: DivProps) => codeColor || COLOR_IN_DESIGN};
+`
+
+export const StyledPopOver = styled(Tooltip)`
+  cursor: pointer;
+`
+
+export const PopoverText = styled.div`
+  font-size: 12px;
+  color: ${BLACK};
+`
+
+export const PopOverValue = styled.div`
+  margin: 7px 4px;
+`
+
+export const SharedIcon = styled(Icon)`
+  font-size: 13px;
+  display: inline-block;
+  z-index: 9;
+  margin-left: 4px;
+  margin-right: 8px;
+  max-width: 30px;
+  width: 100%;
+  color: #81afe5;
+  transition: all .25s;
+  padding: 8px 0px;
+  border-radius: 50%;
+  @media (max-width: 604px) {
+    padding: 2px 0;
+    max-width: 83%;
+  }
+`
+
+export const AddMemberButton = styled.div`
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: 25px;
+  border: 1px dashed rgb(68, 104, 249);
+  color: rgb(68, 104, 249);
+  min-width: 122px;
+  transition: all .25s;
+  font-size: 12px;
+  font-weight: normal;
+  margin-top: -7px;
+  margin-left: 14px;
+  &:hover {
+    background: rgb(68, 104, 249);
+    color: ${WHITE};
+    border: 1px solid rgb(68, 104, 249);
+    cursor: pointer;
+  }
+`
+
+export const InviteContainer = styled.div`
+  margin: 22px 20px;
+  font-family: Avenir;
+`
+
+export const InviteTitle = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  font-family: Avenir;
+`
+
+export const MailsContainer = styled.div`
+  margin-top: 22px;
+`
+
+export const EmailsLabel = styled.div`
+  font-weight: bold;
+`
+
+export const StyledEmailTags = styled.div`
+  margin-top: 16px;
+  border: 1px solid #d4d5d6;
+  padding: 10px 8px;
+  border-radius: 5px;
+  min-height: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  &:hover {
+    cursor: text;
+  }
+  .input {
+    display: inline-block;
+    width: ${({ secondary }: DivProps) => secondary ? 'auto' : '100%'};
+    height: 28px;
+    flex: 1;
+    box-sizing: border-box;
+    font: inherit;
+    border-radius: 0.2rem;
+    border: none;
+    color: #565656;
+    -webkit-appearance: none;
+  }
+
+  .input:focus {
+    border-color: cornflowerblue;
+    outline: none;
+  }
+
+  .input.has-error {
+    border-color: tomato;
+  }
+
+  .input:disabled {
+    background: unset;
+  }
+
+  .error {
+    margin: 0;
+    font-size: 90%;
+    color: tomato;
+  }
+
+  .tag-item {
+    background-color: #d4d5d6;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 30px;
+    height: 30px;
+    padding: 0 4px 0 1rem;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0.3rem 0.3rem 0;
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  .tag-item > .button {
+    background-color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    margin-left: 10px;
+    font-weight: bold;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`
+
+export const SendInvitationButton = styled.div`
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 4px;
+  background: rgb(68, 104, 249);
+  margin-top: 18px;
+  color: ${WHITE};
+  transition: all .25s;
+  &:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+  ${({ disabled }: DivProps) => disabled ? `
+    background: ${GRAY_LIGHT};
+    &:hover {
+      opacity: 1;
+      cursor: not-allowed;
+    }
+  ` : ''}
+`
+
+export const BottomSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid ${GRAY_LIGHT};
+`
+
+export const InviteLink = styled.div`
+  display: flex;
+  font-weight: bold;
+  align-items: center;
+`
+
+export const InviteLinkLabel = styled.div`
+  margin-left: 10px;
+  transition: all .25s;
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`
+
+export const CopyLinkButton = styled.div`
+  display: inline-block;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  color: rgb(68,104,249);
+  background: ${WHITE};
+  border: 1px solid rgb(68,104,249);
+  transition: all .25s;
+  &:hover {
+    background: rgb(68,104,249);
+    color: ${WHITE};
+    cursor: pointer;
+  }
+`
+
+export const GearIcon = styled(Icon)`
+  color: ${BLACK};
+  transition: all .25s;
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`
+
+export const InfoIconLink = styled(Icon)`
+  margin-left: 10px;
+  color: ${GRAY};
+`
+
+export const ConfirmEmailTags = styled.div`
+  margin: 20px 0;
+  display: flex;
+  align-items: flex-start;
+  flex-flow: column;
+  flex-wrap: wrap;
+  max-height: 256px;
+  .tag-item {
+    background-color: #d4d5d6;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 30px;
+    height: 30px;
+    padding: 0 4px 0 1rem;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0.3rem 0.3rem 0;
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  .tag-item > .button {
+    background-color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    margin-left: 10px;
+    font-weight: bold;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`
+
+export const InfoConfirmation = styled.div`
+  margin: 0 4px;
+`
+
+export const ConfirmBottom = styled.div`
+  display: flex;
+`
+
+export const CancelInvitation = styled.div`
+  margin-top: 18px;
+  margin-left: 16px;
+  display: flex;
+  align-items: center;
+  padding: 7px 18px;
+  border-radius: 4px;
+  color: rgb(68,104,249);
+  background: ${WHITE};
+  border: 1px solid rgb(68,104,249);
+  transition: all .25s;
+  &:hover {
+    background: rgb(68,104,249);
+    color: ${WHITE};
+    cursor: pointer;
+  }
+`
+
+export const StyledSpinInvitation = styled(Spin)`
+  width: 79px;
+  height: 15px;
+`

@@ -36,5 +36,9 @@ export default defineMessages({
   invalidZip: {
     id: 'components.MyAddresses.invalidZip',
     defaultMessage: 'Enter a valid ZIP Code'
+  },
+  invalidPhone: {
+    id: 'components.MyAddresses.invalidPhone',
+    defaultMessage: 'Phone number must be at least 11 digits'
   }
 })

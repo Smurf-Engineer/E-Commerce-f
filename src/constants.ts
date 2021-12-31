@@ -28,7 +28,7 @@ export const DIRECTIONAL_LIGHT_INTENSITY = 0
 export const ILLUSTRATOR_PIXELS_PER_CM = 28.346
 export const TABLET_RES = 768
 export const DESKTOP_RES = 1024
-export const PHONE_MINIMUM = 7
+export const PHONE_MINIMUM = 11
 
 /* Date formats */
 export const DATE_FORMAT = 'MM/DD/YYYY'

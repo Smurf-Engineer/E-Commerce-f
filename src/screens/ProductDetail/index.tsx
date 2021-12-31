@@ -72,9 +72,16 @@ import {
   ButtonTemplate,
   Download,
   YouthLabel,
+  ThreeDButton,
+  FingerIcon,
+  InfoMessage,
 } from './styledComponents'
+import lockSound from '../../assets/lock.wav'
+import enabledSound from '../../assets/enabled.wav'
 import sizeChartSvg from '../../assets/sizechart.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
+import threeDviewIcon from '../../assets/3dview.svg'
+import fingerIcon from '../../assets/fingericon.png'
 // import sunny from '../../assets/sunny.png'
 // import cloudy from '../../assets/cloudy.png'
 // import moon from '../../assets/moonlight.png'
@@ -108,6 +115,7 @@ import Helmet from 'react-helmet'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import BreadCrumbs from '../../components/BreadCrumbs'
+import message from 'antd/lib/message'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['FONDO', 'NOVA PRO', 'FORZA', 'ULTRA']
@@ -169,6 +177,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     showDetails: false,
     showFits: false,
     tone: '',
+    hideControls: true,
   }
 
   componentWillUnmount() {
@@ -200,6 +209,42 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const { loadingImage, setLoadingImageAction } = this.props
     if (loadingImage) {
       setLoadingImageAction(false)
+    }
+  }
+
+  setHideControls = (e: React.MouseEvent) => {
+    const { intl: { formatMessage } } = this.props
+    const { hideControls } = this.state
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    this.setState({ hideControls: !hideControls })
+    if (hideControls) {
+      message.info(
+        <InfoMessage>
+          <FingerIcon src={fingerIcon} />
+          {formatMessage(messages.controlsEnabled)}
+        </InfoMessage>
+      , 4)
+    } else {
+      message.info(formatMessage(messages.controlsDisabled))
+    }
+    if (window.navigator && window.navigator.vibrate) {
+      if (hideControls) {
+        navigator.vibrate([80, 50, 40, 50])
+      } else {
+        navigator.vibrate([70, 50, 20])
+      }
+    }
+    const snd = new Audio(hideControls ? lockSound : enabledSound)
+    snd.play()
+    snd.remove()
+  }
+
+  onTouchEndAction = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
     }
   }
 
@@ -313,7 +358,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       infoFlag,
       infoMessage,
     } = product
-    const { tone } = this.state
+    const { tone, hideControls } = this.state
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/g, ' ') : ''
 
     let renderPrices
@@ -333,7 +378,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     if (gender) {
       Object.assign(searchObject, { genderId: parseInt(gender, 10) })
     }
+
     const genderIndex = findIndex(imagesArray, searchObject)
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 480px)').matches
 
     let images = null
     let moreImages = []
@@ -667,12 +714,21 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                         <Render3D
                           customProduct={true}
                           designId={0}
+                          disableControls={isMobile ? hideControls : false}
                           textColor="white"
                           isProduct={true}
                           asImage={phone}
                           light={tone}
                           {...{ product, modelSize }}
                         />
+                        {isMobile &&
+                          <ThreeDButton
+                            onTouchEnd={this.onTouchEndAction}
+                            onTouchStart={this.setHideControls}
+                            selected={!hideControls}
+                            src={threeDviewIcon}
+                          />
+                        }
                         {infoFlag && <InfoTag>{infoMessage}</InfoTag>}
                         <HowItFits onClick={this.toggleFitsModal(true)}>
                           <FormattedMessage {...messages.howItFits} />

@@ -263,7 +263,9 @@ import {
   RemoveFileIcon,
   MessageComment,
   CollapseStyled,
-  PanelDiv
+  PanelDiv,
+  AdvertisingComments,
+  CloseAdvertising
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -770,6 +772,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     }
   }
 
+  hideAdvertising = () => {
+    localStorage.setItem('hideAdvertising', 'true')
+    setTimeout(() => this.forceUpdate(), 200)
+  }
+
   changeCollapseMobile = (key: string) => {
     if (key === '2') {
       setTimeout(() => { this.scrollMessagesComment() }, 800)
@@ -1231,7 +1238,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   changeDesign = (design: string) => () => {
     if (design) {
       const { intl: { formatMessage } } = this.props
-      this.setState({ designToApply: design })
+      this.setState({ designToApply: design, selectedKeyMobile: '' })
+      setTimeout(() => { this.openMessages() }, 1000)
       AntdMessage.success(formatMessage(messages.designApplied))
     }
   }
@@ -1496,6 +1504,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       modelObj = obj
       modelMtl = mtl
     }
+    
+    const hideAdvertising = typeof window !== 'undefined' ? localStorage.getItem('hideAdvertising') : ''
+    const showAdvertising = !hideAdvertising || hideAdvertising !== 'true'
     const windowHeight = typeof window !== 'undefined' ? window.innerHeight : ''
     const stylesToApply = typeof window !== 'undefined' &&
       window.innerWidth > 614 ? stylesDraggable : stylesDraggableMobile
@@ -1662,11 +1673,17 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       </RequiredText>
                     }
                     {files.map((fileString: string, index: number) =>
-                      <MessageFile onClick={this.openFile(fileString)} key={index}>
-                        <Clip type="paper-clip" />
-                        <FileName>
-                          {getFileWithExtension(fileString || '')}
-                        </FileName>
+                      <MessageFile isAdmin={fromSystem} onClick={this.openFile(fileString)} key={index}>
+                        {/* tslint:disable-next-line: max-line-length */}
+                        {['.jpg', '.jpeg', '.svg', '.png'].includes((getFileExtension(fileString) || '').toLowerCase()) ?
+                          <ImageMessage src={fileString} /> :
+                          <>
+                            <Clip type="paper-clip" />
+                            <FileName>
+                              {getFileWithExtension(fileString || '')}
+                            </FileName>
+                          </>
+                        }
                       </MessageFile>
                     )}
                     {messageType === NEW_PRODUCT &&
@@ -2042,6 +2059,12 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         </ChatComments>
         {!isGuest && !!role &&
           <CommentInput>
+            {showAdvertising && (isApprover || isOwner) &&
+              <AdvertisingComments>
+                {formatMessage(messages.advertisingMessage)}
+                <CloseAdvertising onClick={this.hideAdvertising} type="close" />
+              </AdvertisingComments>
+            }
             {commentResponding && commentResponding.id &&
               <FullResponse>
                 <ParentText codeColor={memberColors[Math.floor(commentResponding.userSerialId % 7)]}>
@@ -2296,47 +2319,48 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </ButtonWrapper>
                 </BottomButtons>
               }
-              <RequestButtons>
-                <ApproveButton
-                  loading={approveLoading}
-                  disabled={
-                    approveLoading ||
-                    itemStatus !== CUSTOMER_PREVIEW ||
-                    (!!designToApply && outputPng !== designToApply) ||
-                    (!isOwner && !isApprover)
-                  }
-                  onClick={this.handlePromptApprove}
-                >
-                  {formatMessage(messages.approve)}
-                </ApproveButton>
-                {requestedEdits >= limitRequests &&
-                  <StyledTooltip
-                    trigger="hover"
-                    content={
-                      <TooltipBody>
-                        <IconTitle theme="filled" type="info-circle" />
-                        <TextBody
-                          dangerouslySetInnerHTML={{
-                            __html: formatMessage(messages.editRequestInfo)
-                          }}
-                        />
-                      </TooltipBody>
+              {(isOwner || isApprover) &&
+                <RequestButtons>
+                  <ApproveButton
+                    loading={approveLoading}
+                    disabled={
+                      approveLoading ||
+                      itemStatus !== CUSTOMER_PREVIEW ||
+                      (!!designToApply && outputPng !== designToApply)
                     }
+                    onClick={this.handlePromptApprove}
                   >
-                    <InfoIcon type="info-circle" />
-                  </StyledTooltip>
-                }
-                <RequestEdit
-                  disabled={itemStatus !== CUSTOMER_PREVIEW || (!isOwner && !isApprover)}
-                  onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
-                >
-                  <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-                    {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
-                  </RequestText>
-                  {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
-                </RequestEdit>
-              </RequestButtons>
-              {(selectedKeyMobile === '1' || !selectedKeyMobile) &&
+                    {formatMessage(messages.approve)}
+                  </ApproveButton>
+                  {requestedEdits >= limitRequests &&
+                    <StyledTooltip
+                      trigger="hover"
+                      content={
+                        <TooltipBody>
+                          <IconTitle theme="filled" type="info-circle" />
+                          <TextBody
+                            dangerouslySetInnerHTML={{
+                              __html: formatMessage(messages.editRequestInfo)
+                            }}
+                          />
+                        </TooltipBody>
+                      }
+                    >
+                      <InfoIcon type="info-circle" />
+                    </StyledTooltip>
+                  }
+                  <RequestEdit
+                    disabled={itemStatus !== CUSTOMER_PREVIEW}
+                    onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
+                  >
+                    <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
+                      {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
+                    </RequestText>
+                    {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
+                  </RequestEdit>
+                </RequestButtons>
+              }
+              {(selectedKeyMobile === '1' || !selectedKeyMobile) && (isOwner || isApprover) &&
                 <MobileRequestButtons>
                   <ApproveButton
                     loading={approveLoading}

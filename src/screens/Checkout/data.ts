@@ -85,3 +85,11 @@ export const profileSettingsQuery = gql`
     }
   }
 `
+
+export const getDesignLabInfo = gql`
+  query getDesignLabInfo {
+    getDesignLabInfo {
+      underMaintenance: under_maintenance
+    }
+  }
+`
