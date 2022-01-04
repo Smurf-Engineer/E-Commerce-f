@@ -386,6 +386,7 @@ export class Review extends React.Component<Props, {}> {
     const teamSize = get(data, 'project.teamSize', '')
     const lockerDesign = get(data, 'project.locker', {})
     const deliveryDate = get(data, 'project.deliveryDate', '')
+    const ownerMail = get(data, 'project.user.email', '')
     const accountManager = get(data, 'project.user.accountManager', {})
     const {
       id: designId,
@@ -443,54 +444,59 @@ export class Review extends React.Component<Props, {}> {
                   {accountManager.firstName ? `${accountManager.firstName} ${accountManager.lastName}` : '-'}
                 </MailLink>
               </Column>
-              <Column>
-                <Text>{formatMessage(messages.teamMembers)}</Text>
-                <StrongText>
-                  {members.length > 0 ?
-                    <StyledPopOver
-                      onClick={this.preventDefault}
-                      overlayClassName="innerClassTooltip"
-                      title={
-                        <PopoverText onClick={this.preventDefault}>
-                          {members.map((member: User, key: number) => 
-                            <PopOverValue
-                              {...{ key }}
-                              dangerouslySetInnerHTML={{
-                                __html: member.firstName ? 
-                                `👤<b>${member.firstName} ${member.lastName}</b> - ${member.role}
-                                  <br/>(${member.email})` :
-                                `✉️<i>Pending</i><br/>(${member.email})`
-                              }}
-                            />
-                          )}
-                        </PopoverText>
-                      }
-                    >
-                      <MemberList>
-                        {members.map((member: User, key: number) => 
-                          <CircleMember
-                            {...{ key }}
-                            secondary={key > 0}
-                            codeColor={memberColors[Math.floor(key % 7)]}
-                          >
-                            {this.getInitials(member.firstName ? 
-                              `${member.firstName} ${member.lastName}` : member.email
+              {isOwner && 
+                (ownerMail === 'jesus@tailrecursive.co' || 
+                  ownerMail === 'derekw@jakroousa.com' || 
+                  ownerMail === 'derekrwiseman@gmail.com') &&
+                <Column>
+                  <Text>{formatMessage(messages.teamMembers)}</Text>
+                  <StrongText>
+                    {members.length > 0 ?
+                      <StyledPopOver
+                        onClick={this.preventDefault}
+                        overlayClassName="innerClassTooltip"
+                        title={
+                          <PopoverText onClick={this.preventDefault}>
+                            {members.map((member: User, key: number) => 
+                              <PopOverValue
+                                {...{ key }}
+                                dangerouslySetInnerHTML={{
+                                  __html: member.firstName ? 
+                                  `👤<b>${member.firstName} ${member.lastName}</b> - ${member.role}
+                                    <br/>(${member.email})` :
+                                  `✉️<i>Pending</i><br/>(${member.email})`
+                                }}
+                              />
                             )}
-                          </CircleMember>
-                        )}
-                      </MemberList>
-                    </StyledPopOver> :
-                    formatMessage(messages.private)
-                  }
-                  {isOwner && members && members.length < 5 &&
-                    <AddMemberButton
-                      onClick={this.openInviteModal}
-                    >
-                      {formatMessage(messages.inviteMembers)}
-                    </AddMemberButton>
-                  }
-                </StrongText>
-              </Column>
+                          </PopoverText>
+                        }
+                      >
+                        <MemberList>
+                          {members.map((member: User, key: number) => 
+                            <CircleMember
+                              {...{ key }}
+                              secondary={key > 0}
+                              codeColor={memberColors[Math.floor(key % 7)]}
+                            >
+                              {this.getInitials(member.firstName ? 
+                                `${member.firstName} ${member.lastName}` : member.email
+                              )}
+                            </CircleMember>
+                          )}
+                        </MemberList>
+                      </StyledPopOver> :
+                      formatMessage(messages.private)
+                    }
+                    {isOwner && members && members.length < 5 &&
+                      <AddMemberButton
+                        onClick={this.openInviteModal}
+                      >
+                        {formatMessage(messages.inviteMembers)}
+                      </AddMemberButton>
+                    }
+                  </StrongText>
+                </Column>
+              }
             </Row>
           </Notes>
           <CollapsePanel bordered={false}>
