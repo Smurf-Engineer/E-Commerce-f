@@ -202,3 +202,15 @@ export const acceptButtonStyle = {
   marginLeft: '0',
   background: BLUE,
 }
+
+export const popupStyle = {
+  left: '0 !important',
+  top: '0 !important',
+  width: '100%',
+  height: '100vh',
+  background: '#0000003d',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  position: 'fixed'
+}
