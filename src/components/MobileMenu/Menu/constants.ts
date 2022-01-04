@@ -28,6 +28,10 @@ export const PRO_DESIGN_PROJECTS = 'proDesignProjects'
 // USE UNIQUE KEYS
 export const menuOptions = [
   {
+    title: NOTIFICATIONS,
+    options: []
+  },
+  {
     title: ORDER_HISTORY,
     options: []
   },
