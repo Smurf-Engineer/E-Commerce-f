@@ -147,6 +147,7 @@ export const Column = styled.div`
   @media (max-width: 768px) {
     flex-direction: row;
     max-width: 100%;
+    width: 100%;
     flex: unset;
   }
 `
@@ -488,6 +489,10 @@ export const AddMemberButton = styled.div`
     color: ${WHITE};
     border: 1px solid rgb(68, 104, 249);
     cursor: pointer;
+  }
+  @media (max-width: 480px) {
+    margin-top: 10px;
+    margin-left: 4px;
   }
 `
 
