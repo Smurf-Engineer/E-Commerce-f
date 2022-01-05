@@ -2147,14 +2147,16 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               <StyledTabs
                 secondary={
                   ownerEmail === 'jesus@tailrecursive.co' || 
-                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekw@jakroousa.com' ||
+                  ownerEmail === 'acaurora@comcast.net' || 
                   ownerEmail === 'derekrwiseman@gmail.com'
                 }
                 activeKey={selectedKey}
                 onTabClick={this.onTabClickAction}
               >
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
-                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekw@jakroousa.com' ||
+                  ownerEmail === 'acaurora@comcast.net' ||
                   ownerEmail === 'derekrwiseman@gmail.com') &&
                   <TabPane
                     tab={
@@ -2186,7 +2188,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </TabContent>
                 </TabPane>
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
-                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekw@jakroousa.com' ||
+                  ownerEmail === 'acaurora@comcast.net' ||
                   ownerEmail === 'derekrwiseman@gmail.com') &&
                   <TabPane
                     tab={
@@ -2445,7 +2448,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 destroyInactivePanel={true}
               >
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
-                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekw@jakroousa.com' ||
+                  ownerEmail === 'acaurora@comcast.net' ||
                   ownerEmail === 'derekrwiseman@gmail.com') &&
                   <PanelMobile
                     header={
@@ -2484,7 +2488,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   {chatComponent}
                 </PanelMobile>
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
-                  ownerEmail === 'derekw@jakroousa.com' || 
+                  ownerEmail === 'derekw@jakroousa.com' ||
+                  ownerEmail === 'acaurora@comcast.net' ||
                   ownerEmail === 'derekrwiseman@gmail.com') &&
                   <PanelMobile
                     header={

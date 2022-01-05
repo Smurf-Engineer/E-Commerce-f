@@ -446,7 +446,8 @@ export class Review extends React.Component<Props, {}> {
               </Column>
               {isOwner && 
                 (ownerMail === 'jesus@tailrecursive.co' || 
-                  ownerMail === 'derekw@jakroousa.com' || 
+                  ownerMail === 'derekw@jakroousa.com' ||
+                  ownerMail === 'acaurora@comcast.net' ||
                   ownerMail === 'derekrwiseman@gmail.com') &&
                 <Column>
                   <Text>{formatMessage(messages.teamMembers)}</Text>

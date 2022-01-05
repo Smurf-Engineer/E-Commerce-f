@@ -511,7 +511,7 @@ class Render3D extends PureComponent {
             <Progress type="circle" percent={progress + 1} />
           )}
         </Render>
-        {showDragmessage && !loading && !proDesign && (
+        {showDragmessage && !loading && !proDesign && false && (
           <DragText {...{ isProduct, textColor }}>
             <FormattedMessage {...messages.drag} />
           </DragText>
