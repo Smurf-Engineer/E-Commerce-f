@@ -299,7 +299,7 @@ class Render3D extends PureComponent {
         <Render innerRef={container => (this.container = container)}>
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
-        {showDragmessage && (
+        {showDragmessage && false && (
           <DragText>
             <FormattedMessage {...messages.drag} />
           </DragText>

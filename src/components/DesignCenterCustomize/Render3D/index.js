@@ -1653,7 +1653,7 @@ class Render3D extends PureComponent {
           >
             {loadingModel && <Progress type="circle" percent={progress + 1} />}
           </Render>
-          {showDragmessage && (
+          {showDragmessage && false && (
             <DragText>
               <FormattedMessage {...messages.drag} />
             </DragText>
@@ -1762,7 +1762,7 @@ class Render3D extends PureComponent {
         >
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
-        {showDragmessage && (
+        {showDragmessage && false && (
           <DragText>
             <FormattedMessage {...messages.drag} />
           </DragText>
