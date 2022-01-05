@@ -309,15 +309,65 @@ body {
 }
 
 .hide-date-input {
-  left: 0 !important;
-  top: 0 !important;
-  width: 100%;
-  height: 100vh;
-  background: #0000003d;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
+	left: 0 !important;
+	top: 0 !important;
+	width: 100%;
+	height: 100vh;
+	background: #0000003d;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	.ant-calendar {
+		width: 100%;
+		max-width: 640px;
+		box-shadow: 0px 2px 8px -1px #505050 !important;
+		border-radius: 11px !important;
+		margin: 0 12px !important;
+	}
+	.ant-calendar-cell {
+		height: 40px !important;
+		padding: 0px !important;
+	}
+	.ant-calendar-date {
+		&:before {
+			left: unset !important;
+			top: unset !important;
+			border-radius: 25px !important;
+		}
+		display: flex !important;
+		align-items: center;
+		justify-content: center;
+		height: 40px !important;
+		width: 40px !important;
+		border-radius: 25px;
+	}
+	.ant-calendar-disabled-cell {
+		.ant-calendar-date {
+			width: 100% !important;
+			border-radius: 0px !important;
+		}
+	}
+	.ant-calendar-selected-date {
+		.ant-calendar-date {
+			height: 32px !important;
+			width: 32px !important;
+		}
+	}
+	.ant-calendar-column-header {
+		.ant-calendar-column-header-inner {
+			font-weight: bold !important;
+		}
+	}
+	.ant-calendar-header {
+		border-bottom: none !important;
+		.ant-calendar-month-select {
+			font-weight: bold !important;
+		}
+	}
+	.ant-calendar-footer {
+		border-top: none !important;
+	}
 }
 
 .ant-popover.notifications {

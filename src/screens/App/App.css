@@ -98,6 +98,7 @@ body {
   max-width: 640px;
   box-shadow: 0px 2px 8px -1px #505050 !important;
   border-radius: 11px !important;
+  margin: 0 12px !important;
 }
 
 .hide-date-input .ant-calendar-cell {
@@ -106,8 +107,8 @@ body {
 }
 
 .hide-date-input .ant-calendar-date:before {
-  left: 30px !important;
-  top: 6px !important;
+  left: unset !important;
+  top: unset !important;
   border-radius: 25px !important;
 }
 
@@ -132,6 +133,14 @@ body {
 
 .hide-date-input .ant-calendar-column-header .ant-calendar-column-header-inner {
   font-weight: bold !important;
+}
+
+.hide-date-input .ant-calendar-header {
+  border-bottom: none !important;
+}
+
+.hide-date-input .ant-calendar-footer {
+  border-top: none !important;
 }
 
 .hide-date-input .ant-calendar-header .ant-calendar-month-select {
