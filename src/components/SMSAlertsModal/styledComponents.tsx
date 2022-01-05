@@ -79,13 +79,13 @@ export const ButtonGroup = styled.div`
 `
 
 export const ConfirmButton = styled(Button)`
-  &.ant-btn {
+  &.ant-btn:not([disabled]):not(.disabled) {
     background-color: ${BLUE};
     border-color: ${BLUE};
     color: ${WHITE};
   }
-  &.ant-btn:hover,
-  &.ant-btn:focus {
+  &.ant-btn:not([disabled]):not(.disabled):hover,
+  &.ant-btn:not([disabled]):not(.disabled):focus {
     background-color: ${WHITE};
     border-color: ${BLUE};
     color: ${BLUE};

@@ -44,6 +44,7 @@ interface Props {
 class SMSAlertsModal extends React.Component<Props, {}> {
   state = {
     phoneNumber: '',
+    checked: false,
   }
 
   componentDidMount() {
@@ -135,6 +136,10 @@ class SMSAlertsModal extends React.Component<Props, {}> {
     )
   }
 
+  handleCertifyChange = (e) => {
+    this.setState({ checked: e.target.checked })
+  }
+
   handleConfirm = () => {
     const { phoneNumber } = this.state
     if (phoneNumber) {
@@ -149,6 +154,7 @@ class SMSAlertsModal extends React.Component<Props, {}> {
   }
 
   render() {
+    const { checked } = this.state
     const { formatMessage } = this.props
     return (
       <Modal
@@ -176,14 +182,14 @@ class SMSAlertsModal extends React.Component<Props, {}> {
                 inputStyle={{ borderRadius: 0, width: 250 }}
                 copyNumbersOnly={false}
               />
-              <StyledCheckbox>
+              <StyledCheckbox checked={checked} onChange={this.handleCertifyChange}>
                 {formatMessage(messages.certify)}
               </StyledCheckbox>
               <OptOutMessage>
                 {formatMessage(messages.optOut)}
               </OptOutMessage>
               <ButtonGroup>
-                <ConfirmButton onClick={this.handleConfirm}>
+                <ConfirmButton disabled={!checked} onClick={this.handleConfirm}>
                   {formatMessage(messages.confirm)}
                 </ConfirmButton>
                 <Button onClick={this.handleNoThanks}>
