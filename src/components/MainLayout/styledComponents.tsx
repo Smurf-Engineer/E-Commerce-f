@@ -140,6 +140,7 @@ export const EditorWrapper = styled.div`
   }
   span {
     background-color: transparent !important;
+    font-size: 14px !important;
   }
   @media (max-width: 768px) {
     padding: 0 13px;
