@@ -4,7 +4,8 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
-import { AutoComplete } from 'antd'
+import { AutoComplete, Icon, Tooltip } from 'antd'
+import { BLACK, GRAY_STRONG } from '../../theme/colors'
 
 interface InputProps {
   inputhWidth?: string
@@ -105,4 +106,23 @@ export const ErrorMsg = styled.div`
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
+`
+
+export const StyledPopOver = styled(Tooltip)`
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 2px;
+  margin-left: 11px;
+`
+
+export const PopoverText = styled.div`
+  max-width: 256px;
+  width: 100%;
+  font-size: 12px;
+  color: ${BLACK};
+`
+
+export const InfoIconLink = styled(Icon)`
+  margin-left: 10px;
+  color: ${GRAY_STRONG};
 `

@@ -289,7 +289,8 @@ import {
   PREDYED_TRANSPARENT,
   PREFLIGHT_STATUS,
   PROJECT_MESSAGE,
-  PROJECT_REVIEW
+  PROJECT_REVIEW,
+  TIME_FORMAT
 } from '../../constants'
 import moment from 'moment'
 import messages from './messages'
@@ -1707,7 +1708,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     }
                   </MessageBox>
                   <DateMessage>
-                    {createdMessage ? moment(createdMessage).format('DD/MM/YYYY HH:mm') : '-'}
+                    {createdMessage ? moment(createdMessage).format(TIME_FORMAT) : '-'}
                   </DateMessage>
                 </InfoDiv>
               </IncomingMessage>
@@ -2031,7 +2032,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                 </CommentMessage>
                 <DateMessage>
-                  {createdAt ? moment(createdAt).local().format('DD/MM/YYYY HH:mm') : '-'}
+                  {createdAt ? moment(createdAt).local().format(TIME_FORMAT) : '-'}
                 </DateMessage>
                 <ActionsIcons>
                   <LikeAction>

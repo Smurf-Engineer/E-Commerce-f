@@ -251,6 +251,8 @@ class Preferences extends React.Component<Props, {}> {
           <PhoneInput
             country={'us'}
             value={phone}
+            autoComplete="jv2"
+            countryCodeEditable={false}
             onChange={value => {
               this.debouncePhoneUpdate(value)
             }}
