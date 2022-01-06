@@ -49,7 +49,7 @@ export default defineMessages({
   },
   phoneError: {
     id: 'screens.Checkout.phoneError',
-    defaultMessage: 'Phone number must be at least 11 digits'
+    defaultMessage: 'Phone number must be at least 11 characters including the country code'
   },
   goBack: {
     id: 'screens.Checkout.goBack',

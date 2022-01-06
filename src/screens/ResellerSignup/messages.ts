@@ -27,7 +27,7 @@ export default defineMessages({
   },
   badPhoneFormat: {
     id: 'components.ResellerSignup.badPhoneFormat',
-    defaultMessage: 'Phone number must be at least 10 digits'
+    defaultMessage: 'Phone number must be at least 11 characters including the country code'
   },
   create: {
     id: 'components.ResellerSignup.create',

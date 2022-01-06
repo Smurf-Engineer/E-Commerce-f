@@ -124,7 +124,9 @@ const StoreForm = ({
     date.hour(0)
     date.minute(0)
     date.second(0)
-
+    if (current.month() === 1 && current.date() > 1 && current.date() < 19) {
+      return true
+    }
     const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
     date.add(15, 'days')
 

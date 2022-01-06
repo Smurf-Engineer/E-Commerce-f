@@ -32,6 +32,7 @@ export const PHONE_MINIMUM = 11
 
 /* Date formats */
 export const DATE_FORMAT = 'MM/DD/YYYY'
+export const TIME_FORMAT = 'MM/DD/YYYY HH:mm'
 export const DATE_FORMAT_STARTING_YEAR = 'YYYY-MM-DD'
 
 /* Accesories color */

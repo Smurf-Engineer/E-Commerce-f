@@ -72,5 +72,14 @@ export default defineMessages({
   phoneLabel: {
     id: 'components.ShippingAddressForm.phoneLabel',
     defaultMessage: 'Phone'
-  }
+  },
+  whyNeedThis: {
+    id: 'components.ShippingAddressForm.whyNeedThis',
+    defaultMessage: 'Why we need this?',
+  },
+  whyExplanation: {
+    id: 'components.ShippingAddressForm.whyExplanation',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Phone numbers are required by FedEx for package processing, customs clearance or customer notification in the event of any delays or address verification.',
+  },
 })

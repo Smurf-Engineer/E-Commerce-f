@@ -23,7 +23,10 @@ import {
   InputTitleContainer,
   ErrorMsg,
   ShipTopPoAPO,
-  StyledCityInput
+  StyledCityInput,
+  StyledPopOver,
+  PopoverText,
+  InfoIconLink
 } from './styledComponents'
 import { ClickParam } from '../../types/common'
 import CountrySelect from '../CountrySelect'
@@ -297,6 +300,19 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             <InputTitleContainer>
               <Label>{formatMessage(messages.phoneLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
+              <StyledPopOver
+                overlayClassName="innerClassTooltip"
+                title={
+                  <PopoverText
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.whyExplanation)
+                    }}
+                  />
+                }
+              >
+                {formatMessage(messages.whyNeedThis)}
+                <InfoIconLink type="question-circle" theme="filled" />
+              </StyledPopOver>
             </InputTitleContainer>
             <PhoneInput
               country={'us'}

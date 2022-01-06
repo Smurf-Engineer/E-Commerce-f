@@ -84,7 +84,7 @@ export default defineMessages({
   },
   phoneError: {
     id: 'components.PayModal.phoneError',
-    defaultMessage: 'Phone number must be at least 7 digits'
+    defaultMessage: 'Phone number must be at least 11 characters including the country code'
   },
   downloadInvoice: {
     id: 'components.PayModal.downloadInvoice',
