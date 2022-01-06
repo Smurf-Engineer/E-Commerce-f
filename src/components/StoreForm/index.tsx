@@ -124,6 +124,16 @@ const StoreForm = ({
     date.hour(0)
     date.minute(0)
     date.second(0)
+    if (
+      startDate && 
+      ((startDate.month() === 0 && startDate.date() > 18) || (startDate.month() === 1 && startDate.date() < 10))
+    ) {
+      if ((current.month() !== 1 || (current.month() === 1 && current.date() !== 23))) {
+        return true
+      } else if (current.month() === 1 && current.date() === 23) {
+        return false
+      }
+    }
     if (current.month() === 1 && current.date() > 1 && current.date() < 19) {
       return true
     }
