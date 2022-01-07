@@ -54,6 +54,7 @@ interface Props {
   small?: boolean
   shipping?: boolean
   simple?: boolean
+  multiButtons?: boolean
   changePage: (pageNumber: number) => void
   formatMessage: (messageDescriptor: any) => string
   showAddressFormAction: (show: boolean, index?: number) => void
@@ -87,6 +88,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
     const {
       showForm,
       shipping,
+      multiButtons,
       formatMessage,
       listForMyAccount = false,
       showAddressFormAction,
@@ -156,6 +158,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
             small,
             shipping,
             simple,
+            multiButtons,
             defaultBilling,
             defaultShipping
           }}

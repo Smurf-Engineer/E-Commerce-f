@@ -21,7 +21,8 @@ import {
   ForgotPasswordLabel,
   LoginFailedView,
   LoginFailed,
-  OkButton
+  OkButton,
+  InputIcon
 } from './styledComponents'
 import JakrooModal from '../Common/JakrooModal'
 import FacebookGmailLogin from '../FacebookGmailLogin'
@@ -127,12 +128,14 @@ export class Login extends React.Component<Props, StateProps> {
               id="email"
               placeholder={formatMessage(messages.emailLabel)}
               value={email}
+              prefix={<InputIcon type="mail" theme="twoTone" />}
               onChange={this.handleInputChange}
             />
             <StyledInput
               id="password"
               type={formatMessage(messages.passwordLabel)}
               placeholder="Password"
+              prefix={<InputIcon type="lock" theme="twoTone" />}
               value={password}
               onChange={this.handleInputChange}
             />
@@ -156,6 +159,7 @@ export class Login extends React.Component<Props, StateProps> {
               city={regionSelected === regionName ? city : ''}
               {...{
                 requestClose,
+                isLoginIn,
                 formatMessage
               }}
             />
@@ -187,6 +191,7 @@ export class Login extends React.Component<Props, StateProps> {
     return (
       <JakrooModal
         open={open}
+        width="450px"
         requestClose={this.onClosemodal}
         style={{ top: 20 }}
       >

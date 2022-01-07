@@ -19,6 +19,7 @@ export const Header = styled.div`
 export const CloseIcon = styled.img`
   position: absolute;
   right: 20px;
+  max-width: 18px;
   &:hover {
     cursor: pointer;
   }

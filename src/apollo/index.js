@@ -26,7 +26,7 @@ const errorLink = onError(({ response, operation }) => {
       response.errors.length &&
       head(response.errors.map(error => error.message))
     if (errorMessage.length && unauthorizedExp.test(errorMessage)) {
-      const isProDesign = operation.operationName === 'getProdesignItem' || operation.operationName === 'getEditRequestPrices'
+      const isProDesign = operation.operationName === 'getProdesignItem' || operation.operationName === 'getEditRequestPrices' || operation.operationName === 'getProdesignItemComments'
       message.error(isProDesign && operation.operationName !== 'getEditRequestPrices' ? 'You must login to view your design!' : 'User session has expired!')
       setTimeout(() => {
         try {

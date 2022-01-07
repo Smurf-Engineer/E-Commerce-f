@@ -18,7 +18,7 @@ interface Props {
   style?: any
   maskStyle?: any
   class?: boolean
-  wrapClassName?: strig
+  wrapClassName?: string
 }
 
 const CustomModal = ({

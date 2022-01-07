@@ -27,6 +27,7 @@ interface Props {
   skip: number
   limit: number
   currentPage: number
+  multiButtons?: boolean
   formatMessage: (messageDescriptor: any) => string
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
@@ -74,6 +75,7 @@ export class Shipping extends React.PureComponent<Props, {}> {
       hasError,
       formatMessage,
       showForm,
+      multiButtons,
       selectDropdownAction,
       inputChangeAction,
       setSelectedAddress,
@@ -134,6 +136,7 @@ export class Shipping extends React.PureComponent<Props, {}> {
           {...{
             withPagination,
             showForm,
+            multiButtons,
             indexAddressSelected,
             currentPage,
             skip

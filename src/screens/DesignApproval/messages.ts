@@ -296,7 +296,7 @@ export default defineMessages({
   },
   inviteToTeam: {
     id: 'screens.DesignApproval.inviteToTeam',
-    defaultMessage: 'Invite to JAKROO Team'
+    defaultMessage: 'Invite people to join your team:'
   },
   emails: {
     id: 'screens.DesignApproval.emails',
@@ -333,7 +333,7 @@ export default defineMessages({
   },
   teamCollabWarning: {
     id: 'screens.DesignApproval.teamCollabWarning',
-    defaultMessage: 'Only members with the approval role will be able to approve or request edits.'
+    defaultMessage: 'Only the Approver and Owner can approve or Request edits to designs.'
   },
   owner: {
     id: 'screens.DesignApproval.owner',
