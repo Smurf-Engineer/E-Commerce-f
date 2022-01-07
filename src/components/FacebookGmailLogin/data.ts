@@ -8,14 +8,16 @@ export const facebooklLogin = graphql(
       $countryCode: String!,
       $countryName: String, 
       $regionName: String,
-      $city: String
+      $city: String,
+      $isLoginIn: Boolean
     ) {
       facebookSignIn(
         token: $token,
         countryCode: $countryCode,
         countryName: $countryName,
         regionName: $regionName,
-        city: $city
+        city: $city,
+        isLoginIn: $isLoginIn
       ) {
         user {
           id
@@ -44,6 +46,7 @@ export const googleLogin = graphql(
       $countryName: String
       $regionName: String
       $city: String
+      $isLoginIn: Boolean
     ) {
       googleSignIn(
         token: $token
@@ -52,6 +55,7 @@ export const googleLogin = graphql(
         countryName: $countryName
         regionName: $regionName
         city: $city
+        isLoginIn: $isLoginIn
       ) {
         user {
           id

@@ -31,6 +31,7 @@ interface Props {
   handleLogin: (user: object) => void
   initialCountryCode: string
   signUpView: boolean
+  isLoginIn?: boolean
   adminLogin?: boolean
   countryName: string
   countryCode: string
@@ -40,7 +41,7 @@ interface Props {
 
 class FacebookGmailLogin extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, signUpView, adminLogin, countryCode, handleJoinNow } = this.props
+    const { formatMessage, signUpView, adminLogin } = this.props
     const googleLabel = signUpView
       ? formatMessage(messages.googleSignUpLabel)
       : formatMessage(messages.googleLoginLabel)
@@ -56,7 +57,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
           onSuccess={this.googleLoginSuccess}
           onFailure={this.googleLoginFailure}
           render={({ onClick }) => 
-            <GoogleRenderButton onClick={countryCode ? onClick : handleJoinNow}>
+            <GoogleRenderButton onClick={onClick}>
               <SocialIcon>
                 <img src={googleIcon} />
               </SocialIcon>
@@ -81,7 +82,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
               callback={this.responseFacebook}
               scope="public_profile, email"
               render={({ onClick }) => (
-                <button className="login-facebook" onClick={countryCode ? onClick : handleJoinNow}>
+                <button className="login-facebook" onClick={onClick}>
                   {facebookLabel}
                 </button>
               )}
@@ -101,6 +102,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       requestClose,
       handleLogin,
       formatMessage,
+      isLoginIn,
       countryName,
       countryCode,
       regionName,
@@ -112,6 +114,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       const response = await loginWithFacebook({
         variables: {
           token,
+          isLoginIn,
           countryCode,
           countryName,
           regionName,
@@ -151,6 +154,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       adminLogin = false,
       countryName,
       countryCode,
+      isLoginIn,
       regionName,
       city
     } = this.props
@@ -161,6 +165,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         variables: {
           token,
           countryCode,
+          isLoginIn,
           isAdmin: adminLogin,
           countryName,
           regionName,

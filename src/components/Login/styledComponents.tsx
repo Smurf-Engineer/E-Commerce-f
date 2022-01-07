@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import { GRAY_DARK, RED, BLUE, WHITE } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
   display: flex;
@@ -105,4 +106,8 @@ export const OkButton = styled(Button)`
   color: ${WHITE};
   margin-top: 10px;
   align-items: center;
+`
+
+export const InputIcon = styled(Icon)`
+  margin-left: -3px;
 `

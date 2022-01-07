@@ -502,6 +502,7 @@ class Checkout extends React.Component<Props, {}> {
                     currentPage,
                     setSkipValueAction
                   }}
+                  multiButtons={false}
                   buttonToRender={continueButton}
                   showContent={currentStep === ShippingTab}
                   setSelectedAddress={this.handleOnSelectAddress}

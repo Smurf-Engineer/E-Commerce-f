@@ -38,6 +38,7 @@ interface Props {
   isSelected?: boolean
   showSecondaryButtons?: boolean
   hideBottomButtons?: boolean
+  multiButtons?: boolean
   small?: boolean
   formatMessage: (messageDescriptor: any) => string
   selectAddressAction?: (index: number) => void
@@ -58,6 +59,7 @@ const MyAddress = ({
   simple,
   addressIndex,
   phone,
+  multiButtons,
   formatMessage,
   showSecondaryButtons,
   hideBottomButtons,
@@ -76,8 +78,8 @@ const MyAddress = ({
   const handleOnSelectAddress = () => {
     selectAddressAction(addressIndex as number)
   }
-  const buttons = !showSecondaryButtons ? (
-    <StyledCheckbox {...{ small }}checked={isSelected} onChange={handleOnSelectAddress}>
+  let buttons = !showSecondaryButtons ? (
+    <StyledCheckbox {...{ small }} checked={isSelected} onChange={handleOnSelectAddress}>
       {formatMessage(messages.useThisAddress)}
     </StyledCheckbox>
   ) : (
@@ -90,6 +92,21 @@ const MyAddress = ({
         </EditButton>
       </SecondaryButtons>
     )
+  if (multiButtons) {
+    buttons = <>
+      <StyledCheckbox {...{ small }} checked={isSelected} onChange={handleOnSelectAddress}>
+        {formatMessage(messages.useThisAddress)}
+      </StyledCheckbox>
+      <SecondaryButtons>
+        <StyledButton onClick={handleOnDelete}>
+          <ButtonIcon type="delete" />{formatMessage(messages.delete)}
+        </StyledButton>
+        <EditButton onClick={handleOnEdit}>
+          <ButtonIcon type="edit" />{formatMessage(messages.edit)}
+        </EditButton>
+      </SecondaryButtons>
+      </>
+  }
   let footerMessageText
   if (defaultBilling && defaultShipping) {
     footerMessageText = messages.defaultBillingAndShipping

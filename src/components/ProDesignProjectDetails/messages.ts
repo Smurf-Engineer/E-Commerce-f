@@ -112,7 +112,7 @@ export default defineMessages({
   },
   inviteToTeam: {
     id: 'components.ReviewProject.inviteToTeam',
-    defaultMessage: 'Invite to JAKROO Team'
+    defaultMessage: 'Invite people to join your team:'
   },
   emails: {
     id: 'components.ReviewProject.emails',
