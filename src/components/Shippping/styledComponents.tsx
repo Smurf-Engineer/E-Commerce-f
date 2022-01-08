@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Checkbox from 'antd/lib/checkbox'
+import { GRAY_DARK } from '../../theme/colors'
 
 export const Container = styled.div`
   padding-top: 30px;
@@ -17,11 +18,9 @@ export const Text = styled.div`
   color: #fff;
 `
 export const Title = styled.div`
-  height: 22px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
-  letter-spacing: 0.11px;
   line-height: 22px;
 `
 
@@ -57,3 +56,5 @@ export const ViewAllAddresses = styled.div`
   text-align: right;
   cursor: pointer;
 `
+
+export const modalStyle = { top: 20, paddingBottom: '96px' }

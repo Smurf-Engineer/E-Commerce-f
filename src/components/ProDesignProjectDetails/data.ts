@@ -168,6 +168,7 @@ export const sendInvitationsMutation = gql`
       projectId: $projectId
       emails: $emails
       projectItemId: $projectItemId
+      isProject: true
     ) {
       message
     }

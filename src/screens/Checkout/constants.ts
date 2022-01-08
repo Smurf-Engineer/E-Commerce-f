@@ -27,6 +27,7 @@ export const SET_STRIPE_IBAN_DATA = `${namespace}/SET_STRIPE_IBAN_DATA`
 export const SHOW_CARD_FORM = `${namespace}/SHOW_CARD_FORM`
 export const SET_SELECTED_CARD_TO_PAY = `${namespace}/SET_SELECTED_CARD_TO_PAY`
 export const SHOW_BILLING_ADDRESS_FORM = `${namespace}/SHOW_BILLING_ADDRESS_FORM`
+export const SET_ADDRESS_EDIT = `${namespace}/SET_ADDRESS_EDIT`
 // Review
 export const SET_LOADING_PLACE_ORDER = `${namespace}/SET_LOADING_PLACE_ORDER`
 export const SET_PAYMENT_METHOD = `${namespace}/SET_PAYMENT_METHOD`

@@ -64,6 +64,24 @@ export const StyledCheckbox = styled(Checkbox)`
   }
 `
 
+export const StyledCheckboxMulti = styled(Checkbox)`
+  color: #5f6062;
+  letter-spacing: 0.2px;
+  margin-top: 16px;
+  font-size: 14px;
+  text-align: right;
+
+  .ant-checkbox-wrapper:hover,
+  .ant-checkbox:hover .ant-checkbox-inner,
+  .ant-checkbox-input:focus + .ant-checkbox-inner {
+    border-color: #4a90e2;
+  }
+  .ant-checkbox-checked .ant-checkbox-inner,
+  .ant-checkbox-indeterminate .ant-checkbox-inner {
+    background-color: #4a90e2;
+  }
+`
+
 export const StyledButton = styled.div`
   color: #f97272;
   font-size: 13px;
@@ -87,12 +105,49 @@ export const EditButton = styled.div`
   }
 `
 
+export const StyledButtonMulti = styled.div`
+  color: #f97272;
+  font-size: 13px;
+  border: none;
+  transition: all .25s;
+  margin-top: 12px;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+`
+
+export const EditButtonMulti = styled.div`
+  color: #3191b5;
+  font-size: 13px;
+  border: none;
+  margin-top: 16px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+`
+
 export const SecondaryButtons = styled.div`
   display: flex;
   margin-top: 8px;
   justify-content: space-between;
   align-items: flex-end;
   flex: 1;
+`
+
+export const MultiButtonsDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`
+
+export const SecondaryButtonsMulti = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 `
 
 export const ButtonIcon = styled(Icon)`

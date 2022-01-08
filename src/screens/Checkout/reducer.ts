@@ -36,7 +36,8 @@ import {
   SET_SELECTED_ADDRESSES,
   SET_PAYMENT_ID,
   REMOVE_CLIENT_SECRET,
-  PaymentOptions
+  PaymentOptions,
+  SET_ADDRESS_EDIT
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -64,6 +65,8 @@ export const initialState = fromJS({
   skip: 0,
   currentPage: 1,
   limit: ADDRESSES_TO_SHOW,
+  defaultBilling: false,
+  defaultShipping: false,
   // Billing
   billingFirstName: '',
   billingLastName: '',
@@ -109,6 +112,36 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         currentStep: action.step,
         loadingBilling: false
       })
+    case SET_ADDRESS_EDIT: {
+      const {
+        firstName,
+        lastName,
+        street,
+        apartment,
+        country,
+        stateProvince,
+        stateProvinceCode,
+        city,
+        zipCode,
+        phone,
+        defaultBilling,
+        defaultShipping
+      } = action.address
+      return state.merge({
+        firstName: firstName || '',
+        lastName: lastName || '',
+        street: street || '',
+        apartment: apartment || '',
+        country: country || '',
+        stateProvince: stateProvince || '',
+        stateProvinceCode: stateProvinceCode || '',
+        city: city || '',
+        zipCode: zipCode || '',
+        phone: phone || '',
+        defaultBilling: defaultBilling || -1,
+        defaultShipping: defaultShipping || -1
+      }) 
+    }
     case VALID_FORM:
       return state.set('hasError', action.hasError)
     case SET_STRIPE_ERROR:

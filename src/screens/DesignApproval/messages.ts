@@ -333,7 +333,7 @@ export default defineMessages({
   },
   teamCollabWarning: {
     id: 'screens.DesignApproval.teamCollabWarning',
-    defaultMessage: 'Only the Approver and Owner can approve or Request edits to designs.'
+    defaultMessage: 'Only the Approver and Owner can approve or request edits to designs.'
   },
   owner: {
     id: 'screens.DesignApproval.owner',

@@ -19,7 +19,12 @@ import {
   TitleDiv,
   ValueDiv,
   PinIcon,
-  ButtonIcon
+  ButtonIcon,
+  StyledCheckboxMulti,
+  MultiButtonsDiv,
+  SecondaryButtonsMulti,
+  StyledButtonMulti,
+  EditButtonMulti
 } from './styledComponents'
 
 interface Props {
@@ -93,19 +98,19 @@ const MyAddress = ({
       </SecondaryButtons>
     )
   if (multiButtons) {
-    buttons = <>
-      <StyledCheckbox {...{ small }} checked={isSelected} onChange={handleOnSelectAddress}>
-        {formatMessage(messages.useThisAddress)}
-      </StyledCheckbox>
-      <SecondaryButtons>
-        <StyledButton onClick={handleOnDelete}>
+    buttons = <MultiButtonsDiv>
+      <SecondaryButtonsMulti>
+        <StyledButtonMulti onClick={handleOnDelete}>
           <ButtonIcon type="delete" />{formatMessage(messages.delete)}
-        </StyledButton>
-        <EditButton onClick={handleOnEdit}>
+        </StyledButtonMulti>
+        <EditButtonMulti onClick={handleOnEdit}>
           <ButtonIcon type="edit" />{formatMessage(messages.edit)}
-        </EditButton>
-      </SecondaryButtons>
-      </>
+        </EditButtonMulti>
+      </SecondaryButtonsMulti>
+      <StyledCheckboxMulti {...{ small }} checked={isSelected} onChange={handleOnSelectAddress}>
+        {formatMessage(messages.useThisAddress)}
+      </StyledCheckboxMulti>
+      </MultiButtonsDiv>
   }
   let footerMessageText
   if (defaultBilling && defaultShipping) {
