@@ -78,7 +78,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
     } = this.props
 
     const addresses: AddressType[] = get(data, 'userAddresses.addresses', [])
-    if (!addresses.length && !listForMyAccount) {
+    if (!addresses.length && !data.loading && !listForMyAccount) {
       showAddressFormAction(true)
     }
   }
