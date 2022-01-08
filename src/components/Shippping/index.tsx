@@ -4,19 +4,20 @@
 
 // TODO: REMOVE COMENTED CODE AFTER TEST
 import * as React from 'react'
-import zenscroll from 'zenscroll'
-import AnimateHeight from 'react-animate-height'
 // import Modal from 'antd/lib/modal'
 
 import messages from './messages'
 // TODO uncomment ViewAllAddresses when flow for addresses modal gets defined
-import { Container, Title /* ViewAllAddresses */ } from './styledComponents'
+import { Container, modalStyle, Title /* ViewAllAddresses */ } from './styledComponents'
 
 import MyAddresses from '../MyAddressesList'
 import ShippingAddressForm from '../ShippingAddressForm'
 
 import { AddressType, ClickParam } from '../../types/common'
-import ReactDOM from 'react-dom'
+import Modal from 'antd/lib/modal'
+import message from 'antd/lib/message'
+import { isApoCity, isNumberValue, isPoBox, isValidCity, isValidZip } from '../../utils/utilsAddressValidation'
+import { PHONE_MINIMUM } from '../../constants'
 
 interface Props {
   shippingAddress: AddressType
@@ -28,6 +29,9 @@ interface Props {
   limit: number
   currentPage: number
   multiButtons?: boolean
+  nextStep: () => void
+  updateAddress: (variables: {}) => void
+  setAddressEdit: (address: AddressType | {}) => void
   formatMessage: (messageDescriptor: any) => string
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
@@ -42,21 +46,136 @@ interface Props {
 }
 
 export class Shipping extends React.PureComponent<Props, {}> {
-  private listRef: any
-
+  state = {
+    addressIdToMutate: -1,
+    showDeleteAddressConfirm: false,
+    showAddressModal: false,
+    modalLoading: false,
+    hasError: false
+  }
+  private addressListRef: any
   showAddressForm = (show: boolean) => {
     const { showAddressFormAction } = this.props
     showAddressFormAction(show)
-    setTimeout(() => this.scrollBotom(), 700)
   }
 
-  scrollBotom = () => {
-    if (window) {
-      const node = ReactDOM.findDOMNode(this.listRef) as HTMLElement
-      zenscroll.center(node, 250)
+  setAddressToUpdateAction = (address: AddressType) => {
+    const { setAddressEdit } = this.props
+    const { id } = address || {}
+    this.setState({ addressIdToMutate: id, showAddressModal: true })
+    setAddressEdit(address)
+  }
+
+  saveNewAddress = () => {
+    const { nextStep } = this.props
+    this.setState({ showAddressModal: false, modalLoading: false, addressIdToMutate: -1 })
+    nextStep()
+  }
+
+  handleOnResetData = () => {
+    const { setAddressEdit, showAddressFormAction } = this.props
+    setAddressEdit({})
+    this.setState({
+      showAddressModal: false,
+      modalLoading: false,
+      addressIdToMutate: -1,
+      showDeleteAddressConfirm: false
+    })
+    showAddressFormAction(false)
+  }
+
+  showDeleteAddressConfirmAction = (index: number) => {
+    this.setState({ showDeleteAddressConfirm: true, addressIdToMutate: index })
+  }
+
+  hideDeleteAddressConfirmAction = () => {
+    this.setState({ showDeleteAddressConfirm: false, addressIdToMutate: -1 })
+  }
+
+  handleOnSaveAddress = async () => {
+    const {
+      shippingAddress: {
+        firstName,
+        lastName,
+        street,
+        apartment,
+        country,
+        stateProvince,
+        stateProvinceCode,
+        city,
+        zipCode,
+        phone,
+        defaultBilling,
+        defaultShipping,
+      },
+      formatMessage
+    } = this.props
+    const { addressIdToMutate } = this.state
+    if (addressIdToMutate !== -1) {
+      const error =
+      !firstName ||
+      !lastName ||
+      !street ||
+      !country ||
+      !stateProvince ||
+      !stateProvinceCode ||
+      !city ||
+      !zipCode ||
+      !phone ||
+      (isPoBox(street) && defaultShipping) ||
+      isApoCity(city)
+
+      if (!isValidCity(city) || isNumberValue(city)) {
+        message.error(formatMessage(messages.invalidCity))
+        return
+      }
+
+      if (!isValidZip(zipCode)) {
+        message.error(formatMessage(messages.invalidZip))
+        return
+      }
+
+      if (!phone || (phone && phone.length < PHONE_MINIMUM)) {
+        message.error(formatMessage(messages.invalidPhone))
+        return
+      }
+
+      if (error) {
+        this.setState({ hasError: error })
+        return
+      }
+
+      const address = {
+        id: addressIdToMutate,
+        firstName,
+        lastName,
+        street,
+        apartment,
+        country,
+        stateProvince,
+        stateProvinceCode,
+        city,
+        zipCode: zipCode.trim(),
+        phone,
+        defaultBilling,
+        defaultShipping
+      }
+      this.setState({ modalLoading: true })
+      await this.updateAddAddress(address)
+      this.handleOnResetData()
     }
   }
-  
+
+  updateAddAddress = async (address: AddressType) => {
+    const { updateAddress } = this.props
+    await updateAddress({ variables: { address } })
+    if (this.addressListRef && this.addressListRef.getWrappedInstance) {
+      const wrapper = this.addressListRef.getWrappedInstance()
+      const editButton = wrapper.getWrappedInstance()
+      await editButton.reloadAddress()
+    }
+  }
+
   render() {
     const {
       showContent,
@@ -85,6 +204,14 @@ export class Shipping extends React.PureComponent<Props, {}> {
       skip,
       currentPage
     } = this.props
+
+    const {
+      showDeleteAddressConfirm,
+      hasError: hasErrorState,
+      addressIdToMutate,
+      showAddressModal,
+      modalLoading
+    } = this.state
 
     if (!showContent) {
       return <div />
@@ -125,17 +252,27 @@ export class Shipping extends React.PureComponent<Props, {}> {
     ) => {
       return (
         <MyAddresses
+          ref={(addressListRef: any) => {
+            this.addressListRef = addressListRef
+          }}
           formatMessage={formatMessage}
           itemsNumber={adressesToShow}
           selectAddressAction={setSelectedAddress}
           renderForModal={renderInModal}
           changePage={this.handlechangePage}
           listForMyAccount={false}
+          hideDeleteAddressConfirmAction={this.hideDeleteAddressConfirmAction}
+          showDeleteAddressConfirmAction={this.showDeleteAddressConfirmAction}
+          resetReducerDataAction={this.handleOnResetData}
+          setAddressToUpdateAction={this.setAddressToUpdateAction}
           showAddressFormAction={this.showAddressForm}
           shipping={true}
           {...{
             withPagination,
             showForm,
+            showDeleteAddressConfirm,
+            showAddressModal,
+            addressIdToMutate,
             multiButtons,
             indexAddressSelected,
             currentPage,
@@ -162,16 +299,21 @@ export class Shipping extends React.PureComponent<Props, {}> {
           <Icon type="right" />
         </ViewAllAddresses> */}
         {renderAddresses(4, false, false)}
-        <AnimateHeight
-          ref={(listObject: any) => {
-            this.listRef = listObject
-          }}
-          duration={500}
-          height={showForm ? 'auto' : 0}
+        {/* TODO: uncomment if needed {shippingMethod} */}
+        {buttonToRender}
+        <Modal
+          visible={showAddressModal || showForm}
+          closable={false}
+          maskClosable={false}
+          okText={formatMessage(messages.saveAddress)}
+          onOk={showForm && !showAddressModal ? this.saveNewAddress : this.handleOnSaveAddress}
+          confirmLoading={modalLoading}
+          style={modalStyle}
+          onCancel={this.handleOnResetData}
+          destroyOnClose={true}
+          width="864px"
         >
-          <Title>
-            {formatMessage(messages.title)}
-          </Title>
+          <Title>{formatMessage(messages.title)}</Title>
           <ShippingAddressForm
             {...{
               firstName,
@@ -184,15 +326,13 @@ export class Shipping extends React.PureComponent<Props, {}> {
               city,
               zipCode,
               phone,
-              hasError,
               selectDropdownAction,
               inputChangeAction,
               formatMessage
             }}
+            hasError={hasError || hasErrorState}
           />
-        </AnimateHeight>
-        {/* TODO: uncomment if needed {shippingMethod} */}
-        {buttonToRender}
+        </Modal>
       </Container>
     )
   }

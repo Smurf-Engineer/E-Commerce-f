@@ -102,6 +102,7 @@ import { getTaxQuery } from './CheckoutSummary/data'
 import { DEFAULT_ROUTE, PHONE_MINIMUM } from '../../constants'
 import { message } from 'antd'
 import some from 'lodash/some'
+import { updateAddressMutation } from '../../components/MyAddresses/data'
 
 const { info } = Modal
 
@@ -224,6 +225,8 @@ interface Props extends RouteComponentProps<any> {
     address: AddressType,
     indexAddress: number
   ) => void
+  updateAddress: (variables: {}) => void
+  setAddressEditAction: (address: AddressType | {}) => void
   sameBillingAndAddressCheckedAction: () => void
   sameBillingAndAddressUncheckedAction: () => void
   saveToStorage: (cart: CartItems[]) => void
@@ -307,6 +310,7 @@ class Checkout extends React.Component<Props, {}> {
       stripeError,
       loadingBilling,
       loadingPlaceOrder,
+      updateAddress,
       smsCheckAction,
       emailCheckAction,
       inputChangeAction,
@@ -497,13 +501,16 @@ class Checkout extends React.Component<Props, {}> {
                     indexAddressSelected,
                     openAddressesModalAction,
                     openAddressesModal,
+                    updateAddress,
                     skip,
                     limit,
                     currentPage,
                     setSkipValueAction
                   }}
-                  multiButtons={false}
+                  multiButtons={true}
+                  setAddressEdit={this.setAddressEdit}
                   buttonToRender={continueButton}
+                  nextStep={this.nextStep}
                   showContent={currentStep === ShippingTab}
                   setSelectedAddress={this.handleOnSelectAddress}
                   formatMessage={intl.formatMessage}
@@ -821,6 +828,11 @@ class Checkout extends React.Component<Props, {}> {
     // The main Paypal's script cannot be loaded or somethings block the loading of that script!
     console.error('Error!', err)
     Message.error(err, 5)
+  }
+
+  setAddressEdit = (address: AddressType | {}) => {
+    const { setAddressEditAction } = this.props
+    setAddressEditAction(address)
   }
 
   handleOnPlaceOrder = async (event: any, sca?: boolean) => {
@@ -1354,6 +1366,7 @@ const CheckoutEnhance = compose(
   PlaceOrderMutation,
   CreatePaymentIntentMutation,
   AddCardMutation,
+  updateAddressMutation,
   withApollo,
   connect(
     mapStateToProps,

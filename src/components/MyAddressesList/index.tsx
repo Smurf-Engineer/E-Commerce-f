@@ -8,8 +8,6 @@ import { compose, graphql } from 'react-apollo'
 import Pagination from 'antd/lib/pagination'
 import Modal from 'antd/lib/modal'
 import { GetAddressListQuery, deleteAddressMutation } from './data'
-import withError from '../../components/WithError'
-import withLoading from '../../components/WithLoading'
 
 import { setDeleteLoadingAction } from '../MyAddresses/actions'
 
@@ -42,6 +40,7 @@ interface Props {
   items: AddressType[]
   listForMyAccount?: boolean
   showForm?: boolean
+  showAddressModal?: boolean
   indexAddressSelected?: number
   renderForModal?: boolean
   withPagination?: boolean
@@ -84,9 +83,15 @@ export class MyAddressesList extends React.Component<Props, {}> {
     }
   }
 
+  reloadAddress = async () => {
+    const { data } = this.props
+    await data.refetch()
+  }
+
   render() {
     const {
       showForm,
+      showAddressModal,
       shipping,
       multiButtons,
       formatMessage,
@@ -130,10 +135,10 @@ export class MyAddressesList extends React.Component<Props, {}> {
         defaultShipping
       } = address
       const isSelected =
-        !showForm &&
+        (!showForm && !showAddressModal) &&
         ((defaultShipping && indexAddressSelected === -1) ||
           indexAddressSelected === key)
-      if (!showForm && isSelected) {
+      if ((!showForm && !showAddressModal) && isSelected) {
         this.handleOnSelectAddress(key)
         atLeastOneIsSelected = true
       }
@@ -141,7 +146,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
         key === addresses.length - 1 &&
         !atLeastOneIsSelected &&
         addresses &&
-        !showForm
+        (!showForm && !showAddressModal)
       ) {
         this.handleOnSelectAddress(0)
       }
@@ -338,6 +343,7 @@ type OwnProps = {
 }
 
 const MyadressesListEnhanced = compose(
+  deleteAddressMutation,
   graphql(GetAddressListQuery, {
     options: ({ itemsNumber, skip }: OwnProps) => {
       return {
@@ -347,11 +353,9 @@ const MyadressesListEnhanced = compose(
           offset: skip
         }
       }
-    }
-  }),
-  withLoading,
-  withError,
-  deleteAddressMutation
+    },
+    withRef: true
+  })
 )(MyAddressesList)
 
 export default MyadressesListEnhanced

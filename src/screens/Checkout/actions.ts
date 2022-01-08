@@ -33,7 +33,8 @@ import {
   DELETE_COUPON_CODE,
   OPEN_CURRENCY_WARNING,
   SET_PAYMENT_ID,
-  REMOVE_CLIENT_SECRET
+  REMOVE_CLIENT_SECRET,
+  SET_ADDRESS_EDIT
 } from './constants'
 import {
   AnyAction,
@@ -121,6 +122,11 @@ export const setSelectedAddressesAction = (
   type: SET_SELECTED_ADDRESSES,
   address,
   index
+})
+
+export const setAddressEditAction = (address: AddressType): AnyAction => ({
+  type: SET_ADDRESS_EDIT,
+  address
 })
 
 export const setStripeErrorAction = (error: string): AnyAction => ({

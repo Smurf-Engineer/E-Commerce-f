@@ -33,6 +33,7 @@ export const deleteAddressMutation = graphql(
     }
   `,
   {
-    name: 'deleteAddress'
+    name: 'deleteAddress',
+    withRef: true
   }
 )
