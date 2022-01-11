@@ -67,6 +67,11 @@ export const getShoppingCartData = (
           const priceTotal = price * itemDetail.quantity
           sum += priceTotal
         }
+        if (itemDetail.thirdUpgrade) {
+          const price = itemDetail.thirdUpgrade[currency] || 0
+          const priceTotal = price * itemDetail.quantity
+          sum += priceTotal
+        }
         return sum
       // tslint:disable-next-line: align
       }, 0)

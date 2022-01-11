@@ -153,7 +153,8 @@ interface Props extends RouteComponentProps<any> {
     index: number,
     detailIndex: number,
     isFirst: boolean,
-    upgrade: ItemDetailType
+    upgrade: ItemDetailType,
+    isThird: boolean
   ) => void
   setInitialData: (query: any) => void
   clearCart: () => void
@@ -380,10 +381,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     index: number,
     detailIndex: number,
     isFirst: boolean,
-    upgrade: ItemDetailType
+    upgrade: ItemDetailType,
+    isThird: boolean
   ) => {
     const { setUpgradeItemDetailAction } = this.props
-    setUpgradeItemDetailAction(index, detailIndex, isFirst, upgrade)
+    setUpgradeItemDetailAction(index, detailIndex, isFirst, upgrade, isThird)
   }
   handleSetDetailColor = (
     index: number,

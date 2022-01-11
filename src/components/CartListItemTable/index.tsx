@@ -90,6 +90,7 @@ interface Props {
     detailIndex: number,
     isFirst: boolean,
     upgrade: ItemDetailType,
+    isThird: boolean
   ) => void
   setDetailColor: (
     index: number,
@@ -220,29 +221,30 @@ class CartListItemTable extends React.Component<Props, State> {
     setDetailGender(itemIndex, detail, selectedGender)
     const youthCombined = get(cartItem, 'product.youthCombined', false)
     if (youthCombined && selectedGender && selectedGender.name === 'Youth') {
-      setUpgradeOption(itemIndex, detail, true, null)
-      setUpgradeOption(itemIndex, detail, false, null)
+      setUpgradeOption(itemIndex, detail, true, null, false)
+      setUpgradeOption(itemIndex, detail, false, null, false)
+      setUpgradeOption(itemIndex, detail, false, null, true)
     } else if (selectedGender && selectedGender.name !== 'Youth') {
       const upgradeOne = get(cartItem, 'product.upgradeOne', {})
       const { options = [] } = upgradeOne || {}
       const defaultUpgradeOne = upgradeOne.defaultOption !== -1 ? options[upgradeOne.defaultOption] : {}
       const firstUpgrade = get(cartItem, ['itemDetails', detail, 'firstUpgrade'], {})
       if (!firstUpgrade || !firstUpgrade.shortId) {
-        setUpgradeOption(itemIndex, detail, true, defaultUpgradeOne)
+        setUpgradeOption(itemIndex, detail, true, defaultUpgradeOne, false)
       }
       const upgradeTwo = get(cartItem, 'product.upgradeTwo', {})
       const { options: optionsTwo = [] } = upgradeTwo || {}
       const defaultUpgradeTwo = upgradeTwo.defaultOption !== -1 ? optionsTwo[upgradeTwo.defaultOption] : {}
       const secondUpgrade = get(cartItem, ['itemDetails', detail, 'secondUpgrade'], {})
       if (!secondUpgrade || !secondUpgrade.shortId) {
-        setUpgradeOption(itemIndex, detail, false, defaultUpgradeTwo)
+        setUpgradeOption(itemIndex, detail, false, defaultUpgradeTwo, false)
       }
       const upgradeThree = get(cartItem, 'product.upgradeThree', {})
       const { options: optionsThree = [] } = upgradeThree || {}
       const defaultUpgradeThree = upgradeThree.defaultOption !== -1 ? optionsThree[upgradeThree.defaultOption] : {}
       const thirdUpgrade = get(cartItem, ['itemDetails', detail, 'thirdUpgrade'], {})
       if (!thirdUpgrade || !thirdUpgrade.shortId) {
-        setUpgradeOption(itemIndex, detail, false, defaultUpgradeThree)
+        setUpgradeOption(itemIndex, detail, false, defaultUpgradeThree, true)
       }
     }
   }
@@ -254,7 +256,7 @@ class CartListItemTable extends React.Component<Props, State> {
     const upgradeSelected = get(cartItem, ['product', isFirst ? 'upgradeOne' : (isThird ? 'upgradeThree' : 'upgradeTwo'), 'options'], [])
     const selectedOption = find(upgradeSelected, { name: value }) as ItemDetailType
 
-    setUpgradeOption(itemIndex, detail, isFirst, selectedOption)
+    setUpgradeOption(itemIndex, detail, isFirst, selectedOption, isThird)
   }
 
   handleSizeChange = (value: any, detail: number) => {

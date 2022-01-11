@@ -120,7 +120,8 @@ const shoppingCartPageReducer: Reducer<any> = (
       return state.updateIn(
         ['cart', action.index, 'itemDetails', action.detailIndex],
         (detailItem: any) => {
-          const updateItem = detailItem.set(action.isFirst ? 'firstUpgrade' : 'secondUpgrade', action.upgrade)
+          // tslint:disable-next-line: max-line-length
+          const updateItem = detailItem.set(action.isFirst ? 'firstUpgrade' : (action.isThird ? 'thirdUpgrade' : 'secondUpgrade'), action.upgrade)
           return updateItem
         }
       )
