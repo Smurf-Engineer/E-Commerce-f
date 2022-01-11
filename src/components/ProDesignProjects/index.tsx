@@ -197,7 +197,10 @@ class ProDesignProjects extends React.Component<Props, {}> {
   }
 
   goToList = () => {
-    const { setCurrentSectionAction, list } = this.props
+    const { setCurrentSectionAction, list, history } = this.props
+    history.push(`/account?option=proDesignProjects`)
+    // tslint:disable-next-line: max-line-length
+    // window.history.pushState({ path: `${config.baseUrl}account?option=proDesignProjects`}, '', `${config.baseUrl}account?option=proDesignProjects`)
     setCurrentSectionAction(Pages.LIST)
     list.refetch()
   }
@@ -223,6 +226,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
       currentPage,
       projectId,
       userId,
+      resetDataAction,
       currentSection,
       formatMessage,
     } = this.props
@@ -472,7 +476,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
           </div>
           <div>
             <Review
-              {...{ formatMessage, history }}
+              {...{ formatMessage, history, resetDataAction }}
               project={projectId}
               onOpenQuickView={this.handleOnOpenQuickView}
               goBack={this.goToList}
