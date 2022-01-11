@@ -107,6 +107,7 @@ interface Props extends RouteComponentProps<any> {
   project: number
   data: any
   colorsList: ColorsDataResult
+  resetDataAction: () => void
   sendInvitations: (variables: {}) => Promise<MessagePayload>
   deleteProItem: (variables: {}) => Promise<MessagePayload>
   formatMessage: (messageDescriptor: Message, values?: {}) => string
@@ -126,6 +127,12 @@ export class Review extends React.Component<Props, {}> {
     savingInvitations: false
   }
   private emailInput: any
+
+  componentWillUnmount() {
+    const { resetDataAction } = this.props
+    resetDataAction()
+  }
+
   handleGoItem = (id: number) => {
     const { history } = this.props
     history.push(`/approval?id=${id}`)
