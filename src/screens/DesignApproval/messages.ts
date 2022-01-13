@@ -33,6 +33,39 @@ export default defineMessages({
     id: 'screens.DesignApproval.paid',
     defaultMessage: 'PAID'
   },
+  whatsThis: {
+    id: 'screens.DesignApproval.whatsThis',
+    defaultMessage: 'What does this mean?'
+  },
+  statusTitle: {
+    id: 'screens.DesignApproval.statusTitle',
+    defaultMessage: 'JAKROO PRO DESIGN STAGES'
+  },
+  statusSubTitle: {
+    id: 'screens.DesignApproval.statusSubTitle',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'With Jakroo Pro Design, each product travels through a series of design stages on their way to becoming a certified Jakroo Pro Design. This is to ensure that each design turns out just right and represents the highest levels of quality and creativity.'
+  },
+  pendingDesc: {
+    id: 'screens.DesignApproval.pendingDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>The product has been added to the project and the design specifications as well as any related art files are under review by the Jakroo Design Team.</p> <p>Once the instructions and files have been cleared, the product will be scheduled for design.</p>'
+  },
+  inDesignDesc: {
+    id: 'screens.DesignApproval.inDesignDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>The product has been added to the design queue and is being worked on by the Pro Design Team. Design drafts are typically processed in 48-72 hours.</p> <p>Designs with <strong>Edit Requests</strong> will also display this status while edit changes are being applied.</p>'
+  },
+  reviewDesc: {
+    id: 'screens.DesignApproval.reviewDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>Your design concept or edit request has been completed and the design is available for review.</p> <p><strong>Only Project Owners and Approvers are able to Approve or submit Edit Requests.</strong> Team collaborators will be able to view and comment.</p>'
+  },
+  approvedDesc: {
+    id: 'screens.DesignApproval.approvedDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `<p>The design has been fully approved and is now available in the owner's Locker.</p> <p>From the Locker the design can be added to cart for quick checkout OR added to a Team Store that can be shared with others to purchase.</p>`
+  },
   teamMembers: {
     id: 'screens.DesignApproval.teamMembers',
     defaultMessage: 'Team Members'
@@ -118,6 +151,10 @@ export default defineMessages({
   approvedCode: {
     id: 'screens.DesignApproval.approvedCode',
     defaultMessage: 'APPROVED'
+  },
+  readyToReview: {
+    id: 'screens.DesignApproval.readyToReview',
+    defaultMessage: 'Ready to review'
   },
   inDesign: {
     id: 'screens.DesignApproval.inDesign',
