@@ -400,6 +400,177 @@ export const StatusLabel = styled.div`
   width: 100%;
 `
 
+export const WhatsThis = styled.div`
+  font-size: 10.5px;
+  color: ${BLUE};
+  position: absolute;
+  font-weight: normal;
+  font-family: Avenir;
+  bottom: -22px;
+  left: 0;
+  width: 100%;
+  text-transform: none;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+`
+
+export const StatusTitle = styled.div`
+  font-size: 17px;
+  font-weight: 900;
+  font-family: Avenir-Medium;
+  text-align: center;
+  margin-bottom: 24px;
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+  }
+`
+
+export const StatusSubTitle = styled.div`
+  margin-bottom: 28px;
+  padding: 0 10px;
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+  }
+`
+
+export const StatusCardsSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  padding: 0 10px;
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+    flex-flow: column;
+  }
+`
+
+export const StatusCard = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid ${GRAY_LIGHT};
+  border-top: none;
+  margin-right: 12px;
+  &:last-child {
+    margin-right: 0px;
+  }
+  @media (max-width: 1023px) {
+    display: none;
+  }
+`
+
+export const StatusCardMobile = styled.div`
+  display: none;
+  flex-flow: column;
+  align-items: center;
+  justify-content: flex-start;
+  @media (max-width: 1023px) {
+    display: flex;
+  }
+`
+
+export const StatusMobileBody = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-top: 16px;
+  margin-bottom: 26px;
+`
+
+export const StatusCardLabel = styled.div`
+  color: white;
+  background: ${({ color }: ColorProps) => color || GRAY_STRONG};
+  width: calc(100% + 2px);
+  height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: Avenir;
+  font-size: 12px;
+`
+
+export const StatusImage = styled.img`
+  max-width: 188px;
+  width: 100%;
+  margin: 32px 0;
+  padding: 0 11px;
+  @media (max-width: 1023px) {
+    background: ${WHITE};
+    border-radius: 14px;
+    max-width: 115px;
+    margin: 0;
+    margin-right: 10px;
+  }
+  @media (max-width: 640px) {
+    max-width: 100px;
+  }
+`
+
+export const StatusDescription = styled.div`
+  padding: 0 14px;
+  @media (min-width: 1024px) {
+    font-size: 13px;
+  }
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+  }
+`
+
+export const ArrowStatus = styled.img`
+  max-width: 24px;
+  margin-right: 12px;
+  align-self: center;
+  margin-bottom: 78px;
+  @media (max-width: 1023px) {
+    display: none;
+  }
+`
+
+export const BottomSectionStatus = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-flow: column;
+  align-items: center;
+`
+
+export const ArrowLong = styled.img`
+  max-width: 168px;
+  margin-top: -24px;
+  @media (max-width: 1023px) {
+    display: none;
+  }
+`
+
+export const CloseButtonStatus = styled.div`
+  border: 1px solid ${GRAY};
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-top: 17px;
+  font-size: 12px;
+  color: ${GRAY_STRONG};
+  box-shadow: 0px 2px 4px -1px ${GRAY};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  @media (max-width: 1023px) {
+    box-shadow: none;
+    border: 1px solid ${WHITE};
+    color: ${WHITE};
+    background: ${BLACK};
+    margin-top: 0px;
+  }
+`
+
 export const PrintPreviewLabel = styled.div`
   z-index: 8;
   max-width: 124px;
@@ -1750,6 +1921,9 @@ export const Resend = styled.div`
 export const InviteContainer = styled.div`
   margin: 22px 20px;
   font-family: Avenir;
+  @media (max-width: 560px) {
+    margin: 22px 0;
+  }
 `
 
 export const InviteTitle = styled.div`

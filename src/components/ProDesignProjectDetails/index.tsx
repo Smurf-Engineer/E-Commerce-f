@@ -69,18 +69,23 @@ import {
   MailsContainer,
   SendInvitationButton,
   StyledEmailTags,
-  StyledSpinInvitation
+  StyledSpinInvitation,
+  InfoIcon,
+  ColumnTiny
 } from './styledComponents'
 import { getFileExtension, getFileNameFromUrl } from '../../utils/utilsFiles'
 import ColorBar from '../ColorBar'
 import messages from './messages'
 import { Message, InspirationType, ColorsDataResult, ProDesignItem, MessagePayload, User } from '../../types/common'
 import {
+  COMMENTER_ROLE,
   CUSTOMER_APPROVED,
   CUSTOMER_PREVIEW,
   DATE_FORMAT,
   DOCX_TYPE,
   DOC_TYPE,
+  GUEST_ROLE,
+  OWNER_ROLE,
   PDF_TYPE,
   POSTSCRIPT_TYPE,
   ZIP_TYPE
@@ -107,6 +112,7 @@ interface Props extends RouteComponentProps<any> {
   project: number
   data: any
   colorsList: ColorsDataResult
+  authorId: string
   resetDataAction: () => void
   sendInvitations: (variables: {}) => Promise<MessagePayload>
   deleteProItem: (variables: {}) => Promise<MessagePayload>
@@ -134,7 +140,13 @@ export class Review extends React.Component<Props, {}> {
   }
 
   handleGoItem = (id: number) => {
-    const { history } = this.props
+    const { history, data, authorId } = this.props
+    const members = get(data, 'project.members', [])
+    const userMember = members.find((member) => member.userId === authorId)
+    if (userMember && (userMember.role === COMMENTER_ROLE || userMember.role === GUEST_ROLE || !userMember.role)) {
+      history.push(`/approval?id=${id}&tab=comments`)
+      return
+    }
     history.push(`/approval?id=${id}`)
   }
   addNewProduct = () => {
@@ -378,6 +390,7 @@ export class Review extends React.Component<Props, {}> {
       data,
       colorsList,
       project,
+      authorId,
       onOpenQuickView,
       goBack
     } = this.props
@@ -393,6 +406,7 @@ export class Review extends React.Component<Props, {}> {
     const teamSize = get(data, 'project.teamSize', '')
     const lockerDesign = get(data, 'project.locker', {})
     const deliveryDate = get(data, 'project.deliveryDate', '')
+    const createdAtProject = get(data, 'project.createdAt', '')
     const ownerMail = get(data, 'project.user.email', '')
     const accountManager = get(data, 'project.user.accountManager', {})
     const {
@@ -417,6 +431,8 @@ export class Review extends React.Component<Props, {}> {
       return obj
       // tslint:disable-next-line: align
     }, {})
+    const userMember = members.find((member) => member.userId === authorId)
+    const userRole = get(userMember, 'role', '')
     return (
       <MainContainer>
         {deleting &&
@@ -433,17 +449,29 @@ export class Review extends React.Component<Props, {}> {
                 <Text>{formatMessage(messages.name)}</Text>
                 <StrongText>{projectName || '-'}</StrongText>
               </Column>
-              <ColumnSmall>
+              <ColumnTiny>
                 <Text>{formatMessage(messages.teamSize)}</Text>
                 <StrongText>{teamSize || '-'}</StrongText>
-              </ColumnSmall>
+              </ColumnTiny>
               <ColumnSmall>
-                <Text>{formatMessage(messages.deliveryDate)}</Text>
+                <Text>
+                  {formatMessage(messages.deliveryDate)}
+                  <StyledPopOver
+                    overlayClassName="innerClassTooltip"
+                    title={
+                      <PopoverText onClick={this.preventDefault}>
+                        {formatMessage(messages.deliveryDesc)}
+                      </PopoverText>
+                    }
+                  >
+                    <InfoIcon type="info-circle" />
+                  </StyledPopOver>
+                </Text>
                 <StrongText>{deliveryDate ? moment(deliveryDate).format(DATE_FORMAT) : '-'}</StrongText>
               </ColumnSmall>
               <ColumnSmall>
                 <Text>{formatMessage(messages.dateCreated)}</Text>
-                <StrongText>{moment(new Date()).format(DATE_FORMAT)}</StrongText>
+                <StrongText>{moment(createdAtProject).format(DATE_FORMAT)}</StrongText>
               </ColumnSmall>
               <Column>
                 <Text>{formatMessage(messages.accountManager)}</Text>
@@ -451,11 +479,10 @@ export class Review extends React.Component<Props, {}> {
                   {accountManager.firstName ? `${accountManager.firstName} ${accountManager.lastName}` : '-'}
                 </MailLink>
               </Column>
-              {isOwner && 
-                (ownerMail === 'jesus@tailrecursive.co' || 
-                  ownerMail === 'derekw@jakroousa.com' ||
-                  ownerMail === 'acaurora@comcast.net' ||
-                  ownerMail === 'derekrwiseman@gmail.com') &&
+              {(ownerMail === 'jesus@tailrecursive.co' || 
+                ownerMail === 'derekw@jakroousa.com' ||
+                ownerMail === 'acaurora@comcast.net' ||
+                ownerMail === 'derekrwiseman@gmail.com') &&
                 <Column>
                   <Text>{formatMessage(messages.teamMembers)}</Text>
                   <StrongText>
@@ -505,6 +532,10 @@ export class Review extends React.Component<Props, {}> {
                   </StrongText>
                 </Column>
               }
+              <Column>
+                <Text>{formatMessage(messages.myRole)}</Text>
+                <StrongText>{!isOwner ? userRole : OWNER_ROLE}</StrongText>
+              </Column>
             </Row>
           </Notes>
           <CollapsePanel bordered={false}>

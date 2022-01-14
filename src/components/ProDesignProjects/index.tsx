@@ -476,7 +476,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
           </div>
           <div>
             <Review
-              {...{ formatMessage, history, resetDataAction }}
+              {...{ formatMessage, history, resetDataAction, authorId }}
               project={projectId}
               onOpenQuickView={this.handleOnOpenQuickView}
               goBack={this.goToList}

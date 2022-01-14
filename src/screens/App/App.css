@@ -121,6 +121,26 @@ body {
   border-radius: 25px;
 }
 
+.transparentMask .ant-modal-content {
+  background: transparent;
+  width: 100%;
+  max-width: 1024px;
+}
+
+.transparentMask .ant-modal {
+  width: 100%;
+  max-width: 1024px;
+  @media (max-width: 1023px) {
+    top: 15px;
+  }
+}
+
+.transparentMask .ant-modal-body {
+  @media (max-width: 648px) {
+    padding: 0 12px;
+  }
+}
+
 .hide-date-input .ant-calendar-disabled-cell .ant-calendar-date {
   width: 100% !important;
   border-radius: 0px !important;

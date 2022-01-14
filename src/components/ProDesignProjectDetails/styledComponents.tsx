@@ -76,15 +76,16 @@ export const Container = styled.div`
 export const StrongText = styled.div`
   color: ${GRAY_DARK};
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 10px;
   width: 100%;
 `
 
 export const MailLink = styled.a`
   color: ${BLUE};
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 10px;
+  margin-right: 8px;
   width: 100%;
 `
 
@@ -114,7 +115,7 @@ export const InspirationName = styled.div`
 `
 
 export const Text = styled.div`
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 10px;
   word-break: break-word;
   width: 100%;
@@ -124,7 +125,7 @@ export const Text = styled.div`
 `
 
 export const ProjectDescriptor = styled.div`
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 10px;
   word-break: break-word;
   width: 100%;
@@ -143,7 +144,8 @@ export const Column = styled.div`
   margin-right: 12px;
   max-width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '230px'};
   width: auto;
-  min-width: 178px;
+  min-width: 140px;
+  margin-bottom: 18px;
   @media (max-width: 768px) {
     flex-direction: row;
     max-width: 100%;
@@ -152,11 +154,28 @@ export const Column = styled.div`
   }
 `
 
+export const ColumnTiny = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 12px;
+  margin-bottom: 18px;
+  max-width: 92px;
+  min-width: 90px;
+  flex: 1;
+  @media (max-width: 768px) {
+    flex-direction: row;
+    max-width: 100%;
+    flex: unset;
+  }
+`
+
 export const ColumnSmall = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 12px;
-  max-width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '130px'};
+  min-width: 86px;
+  margin-bottom: 18px;
+  max-width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '148px'};
   width: 100%;
   flex: 1;
   @media (max-width: 768px) {
@@ -176,7 +195,7 @@ export const Row = styled.div`
 `
 
 export const Notes = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 12px;
   display: flex;
   flex-direction: column;
 `
@@ -199,7 +218,7 @@ export const PanelDiv = styled(Panel)`
 export const TitleDiv = styled.div`
   font-weight: bold;
   color: ${GRAY_DARK} !important;
-  font-size: 16px;
+  font-size: 15px;
 `
 
 export const Ideas = styled.div`
@@ -448,6 +467,8 @@ export const StyledPopOver = styled(Tooltip)`
 export const PopoverText = styled.div`
   font-size: 12px;
   color: ${BLACK};
+  font-family: Avenir;
+  font-weight: normal;
 `
 
 export const PopOverValue = styled.div`
@@ -474,16 +495,17 @@ export const SharedIcon = styled(Icon)`
 
 export const AddMemberButton = styled.div`
   display: inline-flex;
-  padding: 6px 12px;
+  padding: 4px 8px;
   border-radius: 25px;
   border: 1px dashed rgb(68, 104, 249);
   color: rgb(68, 104, 249);
-  min-width: 122px;
+  min-width: 110px;
   transition: all .25s;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: normal;
   margin-top: -7px;
   margin-left: 14px;
+  justify-content: center;
   &:hover {
     background: rgb(68, 104, 249);
     color: ${WHITE};
@@ -492,13 +514,26 @@ export const AddMemberButton = styled.div`
   }
   @media (max-width: 480px) {
     margin-top: 10px;
-    margin-left: 4px;
+    margin-left: 12px;
   }
 `
 
 export const InviteContainer = styled.div`
   margin: 22px 20px;
   font-family: Avenir;
+  @media (max-width: 560px) {
+    margin: 22px 0;
+  }
+`
+
+export const InfoIcon = styled(Icon)`
+  color: ${BLUE};
+  transition: all .25s;
+  margin-left: 8px;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
 `
 
 export const InviteTitle = styled.div`

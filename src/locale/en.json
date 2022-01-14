@@ -1783,7 +1783,7 @@
   "components.ReviewProject.projectDetails": "Project Details",
   "components.ReviewProject.teamSize": "Team Size",
   "components.ReviewProject.addProduct": "<p>+</p>Add Product",
-  "components.ReviewProject.deliveryDate": "Delivery Date",
+  "components.ReviewProject.deliveryDate": "Est. Delivery Date",
   "components.ReviewProject.dateCreated": "Date Created",
   "components.ReviewProject.accountManager": "Account Manager",
   "components.ReviewProject.designNotes": "Design Notes",

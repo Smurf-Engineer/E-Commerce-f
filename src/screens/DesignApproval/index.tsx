@@ -19,6 +19,10 @@ import { uploadFileAction as uploadFileComment } from '../../screens/ResellerSig
 import messageIcon from '../../assets/approval_log.svg'
 import JakRooLogo from '../../assets/Jackroologo.svg'
 import quickView from '../../assets/quickview.svg'
+import novaBlank from '../../assets/novablank.jpg'
+import novaFull from '../../assets/novafull.jpg'
+import arrowLong from '../../assets/arrowlong.svg'
+import arrowShort from '../../assets/arrowshort.svg'
 import teamIcon from '../../assets/team.svg'
 import commentsIcon from '../../assets/comments.svg'
 import printPreviewImg from '../../assets/printpreview.svg'
@@ -265,7 +269,22 @@ import {
   CollapseStyled,
   PanelDiv,
   AdvertisingComments,
-  CloseAdvertising
+  CloseAdvertising,
+  WhatsThis,
+  StatusTitle,
+  StatusSubTitle,
+  StatusCardsSection,
+  StatusCard,
+  StatusCardLabel,
+  StatusImage,
+  StatusDescription,
+  ArrowStatus,
+  BottomSectionStatus,
+  ArrowLong,
+  ArrowLong,
+  CloseButtonStatus,
+  StatusCardMobile,
+  StatusMobileBody
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -365,6 +384,7 @@ interface StateProps {
   uploadingFileComment: boolean
   sendingComment: boolean
   selectedKeyMobile: string
+  openStatusInfo: boolean
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -443,7 +463,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     openInviteModal: false,
     showConfirmInvites: false,
     savingInvitations: false,
-    selectedKeyMobile: ''
+    selectedKeyMobile: '',
+    openStatusInfo: false
   }
   private commentList: any
   private listMsg: any
@@ -621,7 +642,21 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     changeNoteAction(value)
   }
 
+  openStatusModal = () => {
+    this.setState({ openStatusInfo: true })
+  }
+
+  closeStatusModal = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
+    this.setState({ openStatusInfo: false })
+  }
+
   openInviteModal = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
     this.setState({ openInviteModal: true, showConfirmInvites: false })
   }
 
@@ -1421,6 +1456,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } = this.props
     const { formatMessage } = intl
     const {
+      openStatusInfo,
       commentMessage,
       commentFile,
       commentResponding,
@@ -2239,6 +2275,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               {!!itemStatus &&
                 <StatusLabel color={statusColor}>
                   {itemLabels[itemStatus] || formatMessage(messages.inDesign)}
+                  <WhatsThis onClick={this.openStatusModal}>{formatMessage(messages.whatsThis)}</WhatsThis>
                 </StatusLabel>
               }
               {(!!designToApply || readyToShow) &&
@@ -2756,6 +2793,128 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </SaveButton>
               </ButtonContainer>
             </DraggableModalStyled>}
+            <Modal
+              visible={openStatusInfo}
+              footer={null}
+              closable={false}
+              width={isMobile ? '100%' : '1024px'}
+              wrapClassName={isMobile ? 'transparentMask' : ''}
+              maskStyle={isMobile ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' } : {}}
+            >
+              <StatusTitle>
+                {formatMessage(messages.statusTitle)}
+              </StatusTitle>
+              <StatusSubTitle>
+                {formatMessage(messages.statusSubTitle)}
+              </StatusSubTitle>
+              <StatusCardsSection>
+                <StatusCard>
+                  <StatusCardLabel color={BLACK}>
+                    {formatMessage(messages.pending)}
+                  </StatusCardLabel>
+                  <StatusImage src={novaBlank} />
+                  <StatusDescription
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.pendingDesc)
+                    }}
+                  />
+                </StatusCard>
+                <StatusCardMobile>
+                  <StatusCardLabel color={BLACK}>
+                    {formatMessage(messages.pending)}
+                  </StatusCardLabel>
+                  <StatusMobileBody>
+                    <StatusImage src={novaBlank} />
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.pendingDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
+                <ArrowStatus src={arrowShort} />
+                <StatusCard>
+                  <StatusCardLabel color={BLUE_STATUS}>
+                    {formatMessage(messages.inDesign)}
+                  </StatusCardLabel>
+                  <StatusImage src={novaBlank} />
+                  <StatusDescription
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.inDesignDesc)
+                    }}
+                  />
+                </StatusCard>
+                <StatusCardMobile>
+                  <StatusCardLabel color={BLUE_STATUS}>
+                    {formatMessage(messages.inDesign)}
+                  </StatusCardLabel>
+                  <StatusMobileBody>
+                    <StatusImage src={novaBlank} />
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.inDesignDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
+                <ArrowStatus src={arrowShort} />
+                <StatusCard>
+                  <StatusCardLabel color={ORANGE_STATUS}>
+                    {formatMessage(messages.readyToReview)}
+                  </StatusCardLabel>
+                  <StatusImage src={novaFull} />
+                  <StatusDescription
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.reviewDesc)
+                    }}
+                  />
+                </StatusCard>
+                <StatusCardMobile>
+                  <StatusCardLabel color={ORANGE_STATUS}>
+                    {formatMessage(messages.readyToReview)}
+                  </StatusCardLabel>
+                  <StatusMobileBody>
+                    <StatusImage src={novaFull} />
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.reviewDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
+                <ArrowStatus src={arrowShort} />
+                <StatusCard>
+                  <StatusCardLabel color={GREEN_STATUS}>
+                    {formatMessage(messages.approvedCode)}
+                  </StatusCardLabel>
+                  <StatusImage src={novaFull} />
+                  <StatusDescription
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.approvedDesc)
+                    }}
+                  />
+                </StatusCard>
+                <StatusCardMobile>
+                  <StatusCardLabel color={GREEN_STATUS}>
+                    {formatMessage(messages.approvedCode)}
+                  </StatusCardLabel>
+                  <StatusMobileBody>
+                    <StatusImage src={novaFull} />
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.approvedDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
+              </StatusCardsSection>
+              <BottomSectionStatus>
+                <ArrowLong src={arrowLong} />
+                <CloseButtonStatus onClick={this.closeStatusModal}>
+                  {formatMessage(messages.close)}
+                </CloseButtonStatus>
+              </BottomSectionStatus>
+            </Modal>
           <PayModal
             open={openPurchase}
             callback={this.successPurchase}
