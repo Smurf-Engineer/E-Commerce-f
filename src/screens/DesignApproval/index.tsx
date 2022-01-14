@@ -2185,7 +2185,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 secondary={
                   ownerEmail === 'jesus@tailrecursive.co' || 
                   ownerEmail === 'derekw@jakroousa.com' ||
-                  ownerEmail === 'acaurora@comcast.net' || 
+                  ownerEmail === 'acaurora@comcast.net' ||
+                  ownerEmail === 'bbtester1@jakroousa.com' || 
                   ownerEmail === 'derekrwiseman@gmail.com'
                 }
                 activeKey={selectedKey}
@@ -2194,6 +2195,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
                   ownerEmail === 'derekw@jakroousa.com' ||
                   ownerEmail === 'acaurora@comcast.net' ||
+                  ownerEmail === 'bbtester1@jakroousa.com' ||
                   ownerEmail === 'derekrwiseman@gmail.com') &&
                   <TabPane
                     tab={
@@ -2227,6 +2229,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
                   ownerEmail === 'derekw@jakroousa.com' ||
                   ownerEmail === 'acaurora@comcast.net' ||
+                  ownerEmail === 'bbtester1@jakroousa.com' ||
                   ownerEmail === 'derekrwiseman@gmail.com') &&
                   <TabPane
                     tab={
@@ -2488,6 +2491,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
                   ownerEmail === 'derekw@jakroousa.com' ||
                   ownerEmail === 'acaurora@comcast.net' ||
+                  ownerEmail === 'bbtester1@jakroousa.com' ||
                   ownerEmail === 'derekrwiseman@gmail.com') &&
                   <PanelMobile
                     header={
@@ -2528,6 +2532,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 {(ownerEmail === 'jesus@tailrecursive.co' || 
                   ownerEmail === 'derekw@jakroousa.com' ||
                   ownerEmail === 'acaurora@comcast.net' ||
+                  ownerEmail === 'bbtester1@jakroousa.com' ||
                   ownerEmail === 'derekrwiseman@gmail.com') &&
                   <PanelMobile
                     header={
