@@ -423,11 +423,17 @@ export const StatusTitle = styled.div`
   font-family: Avenir-Medium;
   text-align: center;
   margin-bottom: 24px;
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+  }
 `
 
 export const StatusSubTitle = styled.div`
   margin-bottom: 28px;
   padding: 0 10px;
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+  }
 `
 
 export const StatusCardsSection = styled.div`
@@ -436,6 +442,10 @@ export const StatusCardsSection = styled.div`
   align-items: flex-start;
   margin-bottom: 28px;
   padding: 0 10px;
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+    flex-flow: column;
+  }
 `
 
 export const StatusCard = styled.div`
@@ -449,6 +459,27 @@ export const StatusCard = styled.div`
   &:last-child {
     margin-right: 0px;
   }
+  @media (max-width: 1023px) {
+    display: none;
+  }
+`
+
+export const StatusCardMobile = styled.div`
+  display: none;
+  flex-flow: column;
+  align-items: center;
+  justify-content: flex-start;
+  @media (max-width: 1023px) {
+    display: flex;
+  }
+`
+
+export const StatusMobileBody = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-top: 16px;
+  margin-bottom: 26px;
 `
 
 export const StatusCardLabel = styled.div`
@@ -470,10 +501,26 @@ export const StatusImage = styled.img`
   width: 100%;
   margin: 32px 0;
   padding: 0 11px;
+  @media (max-width: 1023px) {
+    background: ${WHITE};
+    border-radius: 14px;
+    max-width: 115px;
+    margin: 0;
+    margin-right: 10px;
+  }
+  @media (max-width: 640px) {
+    max-width: 100px;
+  }
 `
 
 export const StatusDescription = styled.div`
   padding: 0 14px;
+  @media (min-width: 1024px) {
+    font-size: 13px;
+  }
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+  }
 `
 
 export const ArrowStatus = styled.img`
@@ -481,6 +528,9 @@ export const ArrowStatus = styled.img`
   margin-right: 12px;
   align-self: center;
   margin-bottom: 78px;
+  @media (max-width: 1023px) {
+    display: none;
+  }
 `
 
 export const BottomSectionStatus = styled.div`
@@ -494,6 +544,9 @@ export const BottomSectionStatus = styled.div`
 export const ArrowLong = styled.img`
   max-width: 168px;
   margin-top: -24px;
+  @media (max-width: 1023px) {
+    display: none;
+  }
 `
 
 export const CloseButtonStatus = styled.div`
@@ -508,6 +561,13 @@ export const CloseButtonStatus = styled.div`
   &:hover {
     cursor: pointer;
     opacity: 0.7;
+  }
+  @media (max-width: 1023px) {
+    box-shadow: none;
+    border: 1px solid ${WHITE};
+    color: ${WHITE};
+    background: ${BLACK};
+    margin-top: 0px;
   }
 `
 
@@ -1861,6 +1921,9 @@ export const Resend = styled.div`
 export const InviteContainer = styled.div`
   margin: 22px 20px;
   font-family: Avenir;
+  @media (max-width: 560px) {
+    margin: 22px 0;
+  }
 `
 
 export const InviteTitle = styled.div`

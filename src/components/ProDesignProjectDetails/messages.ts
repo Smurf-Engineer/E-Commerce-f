@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.ReviewProject.areYouSure',
     defaultMessage: 'Are you sure?'
   },
+  myRole: {
+    id: 'components.ReviewProject.myRole',
+    defaultMessage: 'My Role'
+  },
   projectDetails: {
     id: 'components.ReviewProject.projectDetails',
     defaultMessage: 'Project Details'
@@ -60,11 +64,16 @@ export default defineMessages({
   },
   deliveryDate: {
     id: 'components.ReviewProject.deliveryDate',
-    defaultMessage: 'Delivery Date'
+    defaultMessage: 'Est. Delivery Date'
   },
   dateCreated: {
     id: 'components.ReviewProject.dateCreated',
     defaultMessage: 'Date Created'
+  },
+  deliveryDesc: {
+    id: 'components.ReviewProject.deliveryDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '🗓 The estimated delivery date is the date requested at time of project submission and is used for design planning purposes and may not reflect the actual delivery date of any orders.'
   },
   accountManager: {
     id: 'components.ReviewProject.accountManager',

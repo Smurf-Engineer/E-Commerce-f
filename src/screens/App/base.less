@@ -98,6 +98,25 @@
   }
 }
 
+.transparentMask {
+  .ant-modal-content {
+    background: transparent;
+  }
+  .ant-modal {
+    width: 100%;
+    max-width: 1024px;
+    @media (max-width: 1023px) {
+      top: 15px;
+    }
+  }
+  .ant-modal-body {
+    @media (max-width: 648px) {
+      padding: 0 12px;
+    }
+  }
+}
+
+
 .rc-drawer-overlay {
   z-index: 1;
   position: absolute;

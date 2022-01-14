@@ -282,7 +282,9 @@ import {
   BottomSectionStatus,
   ArrowLong,
   ArrowLong,
-  CloseButtonStatus
+  CloseButtonStatus,
+  StatusCardMobile,
+  StatusMobileBody
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -645,10 +647,16 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   }
 
   closeStatusModal = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
     this.setState({ openStatusInfo: false })
   }
 
   openInviteModal = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
     this.setState({ openInviteModal: true, showConfirmInvites: false })
   }
 
@@ -2435,7 +2443,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                 </MobileRequestButtons>
               }
-              {!!itemStatus && false &&
+              {!!itemStatus &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId && showRenderWindow &&
                     <Render3D
@@ -2789,9 +2797,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               visible={openStatusInfo}
               footer={null}
               closable={false}
-              width="1024px"
-              wrapClassName="pears"
-              style={{ background: isMobile ? 'transparent' : WHITE }}
+              width={isMobile ? '100%' : '1024px'}
+              wrapClassName={isMobile ? 'transparentMask' : ''}
+              maskStyle={isMobile ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' } : {}}
             >
               <StatusTitle>
                 {formatMessage(messages.statusTitle)}
@@ -2811,6 +2819,19 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     }}
                   />
                 </StatusCard>
+                <StatusCardMobile>
+                  <StatusCardLabel color={BLACK}>
+                    {formatMessage(messages.pending)}
+                  </StatusCardLabel>
+                  <StatusMobileBody>
+                    <StatusImage src={novaBlank} />
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.pendingDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
                 <ArrowStatus src={arrowShort} />
                 <StatusCard>
                   <StatusCardLabel color={BLUE_STATUS}>
@@ -2823,6 +2844,19 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     }}
                   />
                 </StatusCard>
+                <StatusCardMobile>
+                  <StatusCardLabel color={BLUE_STATUS}>
+                    {formatMessage(messages.inDesign)}
+                  </StatusCardLabel>
+                  <StatusMobileBody>
+                    <StatusImage src={novaBlank} />
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.inDesignDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
                 <ArrowStatus src={arrowShort} />
                 <StatusCard>
                   <StatusCardLabel color={ORANGE_STATUS}>
@@ -2835,6 +2869,19 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     }}
                   />
                 </StatusCard>
+                <StatusCardMobile>
+                  <StatusCardLabel color={ORANGE_STATUS}>
+                    {formatMessage(messages.readyToReview)}
+                  </StatusCardLabel>
+                  <StatusMobileBody>
+                    <StatusImage src={novaFull} />
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.reviewDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
                 <ArrowStatus src={arrowShort} />
                 <StatusCard>
                   <StatusCardLabel color={GREEN_STATUS}>
@@ -2847,6 +2894,19 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     }}
                   />
                 </StatusCard>
+                <StatusCardMobile>
+                  <StatusCardLabel color={GREEN_STATUS}>
+                    {formatMessage(messages.approvedCode)}
+                  </StatusCardLabel>
+                  <StatusMobileBody>
+                    <StatusImage src={novaFull} />
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.approvedDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
               </StatusCardsSection>
               <BottomSectionStatus>
                 <ArrowLong src={arrowLong} />
@@ -2855,7 +2915,6 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </CloseButtonStatus>
               </BottomSectionStatus>
             </Modal>
-          }
           <PayModal
             open={openPurchase}
             callback={this.successPurchase}
