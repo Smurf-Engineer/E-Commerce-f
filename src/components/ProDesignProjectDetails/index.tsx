@@ -482,6 +482,7 @@ export class Review extends React.Component<Props, {}> {
               {(ownerMail === 'jesus@tailrecursive.co' || 
                 ownerMail === 'derekw@jakroousa.com' ||
                 ownerMail === 'acaurora@comcast.net' ||
+                ownerMail === 'bbtester1@jakroousa.com' || 
                 ownerMail === 'derekrwiseman@gmail.com') &&
                 <Column>
                   <Text>{formatMessage(messages.teamMembers)}</Text>
