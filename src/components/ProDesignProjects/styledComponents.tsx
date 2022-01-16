@@ -7,8 +7,10 @@ import {
   BLACK,
   BLUE,
   COLOR_IN_DESIGN,
+  GRAY,
   GRAY_DARK,
   GRAY_LIGHT,
+  GRAY_STRONG,
   RED,
   RED_TRANSPARENT,
   WHITE,
@@ -17,6 +19,7 @@ import {
 import Icon from 'antd/lib/icon'
 import { AVENIR_NEXT } from '../../theme/fonts'
 import Tooltip from 'antd/lib/tooltip'
+import Checkbox from 'antd/lib/checkbox/Checkbox'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -112,7 +115,7 @@ export const AddButton = styled.div`
 `
 
 export const CarouselContainer = styled.div`
-  margin-top: -87px;
+  margin-top: 38px;
   margin-bottom: 28px;
   margin-right: 34px;
   @media (max-width: 768px) {
@@ -208,7 +211,7 @@ export const FaqTitle = styled.div`
 export const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 34px;
+  margin-top: 8px;
   align-items: flex-end;
   padding-right: ${({ withoutPadding }: ContainerProps) =>
     withoutPadding ? '0' : '32px'};
@@ -408,5 +411,242 @@ export const SharedIcon = styled(Icon)`
   @media (max-width: 604px) {
     padding: 2px 0;
     max-width: 83%;
+  }
+`
+
+export const StatusTitleIcon = styled.img`
+  max-width: 60px;
+  @media (max-width: 1023px) {
+    max-width: 54px;
+    margin-top: -8px;
+    margin-bottom: 12px;
+  }
+`
+
+export const CardIcon = styled.img`
+  max-width: 30px;
+  margin-right: 12px;
+`
+
+export const IconDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+`
+
+export const StatusTitle = styled.div`
+  font-size: 17px;
+  font-weight: 900;
+  font-family: Avenir-Medium;
+  text-align: center;
+  margin-bottom: 24px;
+  color: ${BLACK};
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+  }
+`
+
+export const StatusSubTitle = styled.div`
+  margin-bottom: 28px;
+  padding: 0 10px;
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+    margin-bottom: 50px;
+    padding: 0 20px;
+    margin-top: 26px;
+  }
+  @media (max-width: 767px) {
+    margin-bottom: 30px;
+  }
+`
+
+export const CheckboxStyled = styled(Checkbox)`
+  color: ${GRAY_STRONG};
+  display: flex;
+  width: 100%;
+  font-size: 12px !important;
+  justify-content: center;
+  &.ant-checkbox-wrapper {
+    margin-left: 0px;
+  }
+  .ant-checkbox {
+    font-size: 12px;
+  }
+  .ant-checkbox-inner {
+    width: 14px;
+    height: 14px;
+  }
+  .ant-checkbox-inner:after {
+    left: 3px;
+    top: 1px;
+  }
+  @media (max-width: 1023px) {
+    margin-left: 0px;
+    margin-bottom: 30px;
+    color: ${WHITE};
+  }
+`
+
+export const AboutCollab = styled.div`
+  margin-top: 34px;
+  display: flex;
+  align-items: center;
+  color: ${BLUE};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    img {
+      opacity: 0.5;
+    }
+  }
+`
+
+export const CollabIcon = styled.img`
+  max-width: 20px;
+  margin-right: 8px;
+  opacity: 0.7;
+  filter: brightness(1.25);
+`
+
+export const StatusCardsSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  padding: 0 10px;
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+    flex-flow: column;
+    margin-bottom: 12px;
+  }
+`
+
+export const StatusCard = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-right: 12px;
+  max-width: 286px;
+  &:last-child {
+    margin-right: 0px;
+  }
+  @media (max-width: 1023px) {
+    display: none;
+  }
+`
+
+export const StatusCardMobile = styled.div`
+  display: none;
+  flex-flow: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-left: 8px;
+  @media (max-width: 1023px) {
+    display: flex;
+  }
+`
+
+export const StatusMobileBody = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 0;
+  margin-bottom: 26px;
+`
+
+export const StatusCardLabel = styled.div`
+  width: 100%;
+  height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: Avenir;
+  font-size: 12px;
+  @media (max-width: 1023px) {
+    justify-content: flex-start;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+`
+
+export const StatusImage = styled.img`
+  max-width: 258px;
+  width: 100%;
+  margin: 22px 0;
+  padding: 0 11px;
+  box-shadow: 0px 3px 7px 2px ${GRAY_LIGHT};
+  @media (max-width: 1023px) {
+    margin: 0;
+    margin-right: 10px;
+    max-width: 90px;
+    align-self: flex-start;
+    box-shadow: none;
+  }
+  @media (max-width: 640px) {
+    max-width: 100px;
+  }
+`
+
+export const StatusDescription = styled.div`
+  padding: 0 14px;
+  @media (min-width: 1024px) {
+    font-size: 11px;
+  }
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+    padding: 0;
+  }
+`
+
+export const ArrowStatus = styled.img`
+  max-width: 24px;
+  margin-right: 12px;
+  align-self: center;
+  margin-bottom: 78px;
+  @media (max-width: 1023px) {
+    display: none;
+  }
+`
+
+export const BottomSectionStatus = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-flow: column;
+  align-items: center;
+`
+
+export const ArrowLong = styled.img`
+  max-width: 265px;
+  margin-top: -24px;
+  @media (max-width: 1023px) {
+    display: none;
+  }
+`
+
+export const CloseButtonStatus = styled.div`
+  border: 1px solid ${GRAY};
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-top: 17px;
+  font-size: 12px;
+  color: ${GRAY_STRONG};
+  box-shadow: 0px 2px 4px -1px ${GRAY};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  @media (max-width: 1023px) {
+    box-shadow: none;
+    border: 1px solid ${WHITE};
+    color: ${WHITE};
+    background: ${BLACK};
+    margin-top: 0px;
   }
 `

@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.ReviewProject.myRole',
     defaultMessage: 'My Role'
   },
+  aboutCollab: {
+    id: 'components.ReviewProject.aboutCollab',
+    defaultMessage: 'About Team Collaboration'
+  },
   projectDetails: {
     id: 'components.ReviewProject.projectDetails',
     defaultMessage: 'Project Details'
@@ -105,7 +109,7 @@ export default defineMessages({
   },
   back: {
     id: 'components.ReviewProject.back',
-    defaultMessage: 'Back to Pro Design Project List'
+    defaultMessage: 'Back to My Project List'
   },
   teamMembers: {
     id: 'components.ReviewProject.teamMembers',

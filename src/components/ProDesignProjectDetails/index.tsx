@@ -71,7 +71,11 @@ import {
   StyledEmailTags,
   StyledSpinInvitation,
   InfoIcon,
-  ColumnTiny
+  ColumnTiny,
+  ScreenTitle,
+  ProjectHome,
+  AboutCollab,
+  CollabIcon
 } from './styledComponents'
 import { getFileExtension, getFileNameFromUrl } from '../../utils/utilsFiles'
 import ColorBar from '../ColorBar'
@@ -92,6 +96,8 @@ import {
 } from '../../constants'
 import aiLogo from '../../assets/ailogo.png'
 import epsLogo from '../../assets/epslogo.png'
+import teamBlue from '../../assets/team_blue.svg'
+import projectHomeIcon from '../../assets/project_home.svg'
 import { InspirationTag } from '../../screens/IntakeForm/constants'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
@@ -114,6 +120,7 @@ interface Props extends RouteComponentProps<any> {
   colorsList: ColorsDataResult
   authorId: string
   resetDataAction: () => void
+  openStatusModal: () => void
   sendInvitations: (variables: {}) => Promise<MessagePayload>
   deleteProItem: (variables: {}) => Promise<MessagePayload>
   formatMessage: (messageDescriptor: Message, values?: {}) => string
@@ -391,6 +398,7 @@ export class Review extends React.Component<Props, {}> {
       colorsList,
       project,
       authorId,
+      openStatusModal,
       onOpenQuickView,
       goBack
     } = this.props
@@ -443,36 +451,11 @@ export class Review extends React.Component<Props, {}> {
             <Icon type="left" />
             <span>{formatMessage(messages.back)}</span>
           </BackContainer>
+          <ScreenTitle>
+            <ProjectHome src={projectHomeIcon} /> {projectName}
+          </ScreenTitle>
           <Notes>
-            <Row>
-              <Column>
-                <Text>{formatMessage(messages.name)}</Text>
-                <StrongText>{projectName || '-'}</StrongText>
-              </Column>
-              <ColumnTiny>
-                <Text>{formatMessage(messages.teamSize)}</Text>
-                <StrongText>{teamSize || '-'}</StrongText>
-              </ColumnTiny>
-              <ColumnSmall>
-                <Text>
-                  {formatMessage(messages.deliveryDate)}
-                  <StyledPopOver
-                    overlayClassName="innerClassTooltip"
-                    title={
-                      <PopoverText onClick={this.preventDefault}>
-                        {formatMessage(messages.deliveryDesc)}
-                      </PopoverText>
-                    }
-                  >
-                    <InfoIcon type="info-circle" />
-                  </StyledPopOver>
-                </Text>
-                <StrongText>{deliveryDate ? moment(deliveryDate).format(DATE_FORMAT) : '-'}</StrongText>
-              </ColumnSmall>
-              <ColumnSmall>
-                <Text>{formatMessage(messages.dateCreated)}</Text>
-                <StrongText>{moment(createdAtProject).format(DATE_FORMAT)}</StrongText>
-              </ColumnSmall>
+            <Row secondary={true}>
               <Column>
                 <Text>{formatMessage(messages.accountManager)}</Text>
                 <MailLink href={`mailto:${accountManager.email}`}>
@@ -538,6 +521,10 @@ export class Review extends React.Component<Props, {}> {
                 <StrongText>{!isOwner ? userRole : OWNER_ROLE}</StrongText>
               </Column>
             </Row>
+            <AboutCollab onClick={openStatusModal}>
+              <CollabIcon src={teamBlue} />
+              {formatMessage(messages.aboutCollab)}
+            </AboutCollab>
           </Notes>
           <CollapsePanel bordered={false}>
             <PanelDiv 
@@ -549,6 +536,32 @@ export class Review extends React.Component<Props, {}> {
               key="1"
             >
               <Ideas>
+                <Row>
+                  <ColumnTiny>
+                    <Text>{formatMessage(messages.teamSize)}</Text>
+                    <StrongText>{teamSize || '-'}</StrongText>
+                  </ColumnTiny>
+                  <ColumnSmall>
+                    <Text>
+                      {formatMessage(messages.deliveryDate)}
+                      <StyledPopOver
+                        overlayClassName="innerClassTooltip"
+                        title={
+                          <PopoverText onClick={this.preventDefault}>
+                            {formatMessage(messages.deliveryDesc)}
+                          </PopoverText>
+                        }
+                      >
+                        <InfoIcon type="info-circle" />
+                      </StyledPopOver>
+                    </Text>
+                    <StrongText>{deliveryDate ? moment(deliveryDate).format(DATE_FORMAT) : '-'}</StrongText>
+                  </ColumnSmall>
+                  <ColumnSmall>
+                    <Text>{formatMessage(messages.dateCreated)}</Text>
+                    <StrongText>{moment(createdAtProject).format(DATE_FORMAT)}</StrongText>
+                  </ColumnSmall>
+                </Row>
                 <Row>
                   <Column>
                     <StrongText>{formatMessage(messages.designNotes)}</StrongText>

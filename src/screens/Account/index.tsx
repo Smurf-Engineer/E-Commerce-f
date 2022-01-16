@@ -451,17 +451,19 @@ export class Account extends React.Component<Props, {}> {
                   <Layout {...{ history, intl }}>
                     <Container>
                       <Content width={'100%'}>
-                        <ScreenTitle show={noOrderScreenFlag}>
-                          {!excludeBack[currentScreenValue] &&
-                            <BackButton onClick={this.handleGoBack}>
-                              <Icon type="left" />
-                              {intl.formatMessage(messages.goBack)}
-                            </BackButton>
-                          }
-                          {!!messages[currentScreenValue] && (
-                            <FormattedMessage {...messages[currentScreenValue]} />
-                          )}
-                        </ScreenTitle>
+                        {currentScreenValue !== PRO_DESIGN_PROJECTS &&
+                          <ScreenTitle show={noOrderScreenFlag}>
+                            {!excludeBack[currentScreenValue] &&
+                              <BackButton onClick={this.handleGoBack}>
+                                <Icon type="left" />
+                                {intl.formatMessage(messages.goBack)}
+                              </BackButton>
+                            }
+                            {!!messages[currentScreenValue] && (
+                              <FormattedMessage {...messages[currentScreenValue]} />
+                            )}
+                          </ScreenTitle>
+                        }
                         {currentScreenValue === CREDIT_CARDS && (
                           <ScreenTitleDescription
                             dangerouslySetInnerHTML={{
@@ -503,18 +505,20 @@ export class Account extends React.Component<Props, {}> {
                     {logoutButton}
                   </SideBar>
                   <Content>
-                    <ScreenTitle show={noOrderScreenFlag}>
-                      {!!messages[currentScreenValue] && (
-                        <FormattedMessage {...messages[currentScreenValue]} />
-                      )}
-                      {currentScreenValue === CREDIT_CARDS && (
-                        <ScreenTitleDescription
-                          dangerouslySetInnerHTML={{
-                            __html: intl.formatMessage(messages.creditCardsDescription)
-                          }}
-                        />
-                      )}
-                    </ScreenTitle>
+                    {currentScreenValue !== PRO_DESIGN_PROJECTS &&
+                      <ScreenTitle show={noOrderScreenFlag}>
+                        {!!messages[currentScreenValue] && (
+                          <FormattedMessage {...messages[currentScreenValue]} />
+                        )}
+                        {currentScreenValue === CREDIT_CARDS && (
+                          <ScreenTitleDescription
+                            dangerouslySetInnerHTML={{
+                              __html: intl.formatMessage(messages.creditCardsDescription)
+                            }}
+                          />
+                        )}
+                      </ScreenTitle>
+                    }
                     {currentScreen}
                   </Content>
                   <ShareDesignModal

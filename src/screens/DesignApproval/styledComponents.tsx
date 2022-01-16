@@ -456,6 +456,7 @@ export const StatusCard = styled.div`
   border: 1px solid ${GRAY_LIGHT};
   border-top: none;
   margin-right: 12px;
+  min-height: 451px;
   &:last-child {
     margin-right: 0px;
   }
@@ -516,7 +517,7 @@ export const StatusImage = styled.img`
 export const StatusDescription = styled.div`
   padding: 0 14px;
   @media (min-width: 1024px) {
-    font-size: 13px;
+    font-size: 11px;
   }
   @media (max-width: 1023px) {
     color: ${WHITE};
@@ -542,7 +543,7 @@ export const BottomSectionStatus = styled.div`
 `
 
 export const ArrowLong = styled.img`
-  max-width: 168px;
+  max-width: 265px;
   margin-top: -24px;
   @media (max-width: 1023px) {
     display: none;

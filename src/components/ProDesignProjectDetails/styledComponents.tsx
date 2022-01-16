@@ -105,6 +105,10 @@ export const MainContainer = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  margin-top: 54px;
+  @media (max-width: 768px) {
+    margin-top: 24px;
+  }
 `
 
 export const InspirationName = styled.div`
@@ -192,6 +196,42 @@ export const Row = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap:wrap;
+  ${({ secondary }: DivProps) => secondary ? `
+    position: absolute;
+    right: -18px;
+    top: 46px;
+    @media (max-width: 960px) {
+      position: unset;
+    }
+  ` : ''}
+`
+
+export const AboutCollab = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${BLUE};
+  transition: all .25s;
+  position: absolute;
+  top: 16px;
+  right: 80px;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    img {
+      opacity: 0.5;
+    }
+  }
+  @media (max-width: 768px) {
+    position: unset;
+    margin-bottom: 20px;
+  }
+`
+
+export const CollabIcon = styled.img`
+  max-width: 20px;
+  margin-right: 8px;
+  opacity: 0.7;
+  filter: brightness(1.25);
 `
 
 export const Notes = styled.div`
@@ -371,13 +411,35 @@ export const Designs = styled.div`
 export const BackContainer = styled.div`
   display: flex;
   align-items: center;
-  margin: 24px 0;
+  margin: 14px 0;
+  color: ${BLUE};
+  transition: all .25s;
   @media (max-width: 768px) {
     display: none;
   }
   &:hover {
     cursor: pointer;
+    opacity: 0.7;
   }
+`
+
+export const ScreenTitle = styled.div`
+  color: ${GRAY_DARK};
+  display: flex;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  margin-bottom: 28px;
+  align-items: center;
+  @media (max-width: 768px) and (min-width: 320px) {
+    justify-content: flex-start;
+  }
+`
+
+export const ProjectHome = styled.img`
+  max-width: 40px;
+  margin-left: -6px;
+  margin-right: 6px;
 `
 
 export const SpinContainer = styled.div`

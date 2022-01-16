@@ -281,7 +281,6 @@ import {
   ArrowStatus,
   BottomSectionStatus,
   ArrowLong,
-  ArrowLong,
   CloseButtonStatus,
   StatusCardMobile,
   StatusMobileBody
@@ -643,6 +642,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   }
 
   openStatusModal = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
     this.setState({ openStatusInfo: true })
   }
 
@@ -654,9 +656,6 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   }
 
   openInviteModal = () => {
-    if (window.navigator && window.navigator.vibrate) {
-      navigator.vibrate([70, 50, 20])
-    }
     this.setState({ openInviteModal: true, showConfirmInvites: false })
   }
 
@@ -2276,9 +2275,13 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </NameLabel>
               }
               {!!itemStatus &&
-                <StatusLabel color={statusColor}>
+                <StatusLabel onClick={isMobile ? this.openStatusModal : () => {}} color={statusColor}>
                   {itemLabels[itemStatus] || formatMessage(messages.inDesign)}
-                  <WhatsThis onClick={this.openStatusModal}>{formatMessage(messages.whatsThis)}</WhatsThis>
+                  {!isMobile && 
+                    <WhatsThis onClick={this.openStatusModal}>
+                      {formatMessage(messages.whatsThis)}
+                    </WhatsThis>
+                  }
                 </StatusLabel>
               }
               {(!!designToApply || readyToShow) &&

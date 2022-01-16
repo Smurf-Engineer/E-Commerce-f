@@ -23,7 +23,7 @@ export const NotificationContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 10px;
-
+  justify-content: space-between;
   @media (max-width: 768px) {
     margin: 20px 15px 20px 5px;
   }
@@ -132,11 +132,13 @@ export const MobileFlexColumn = styled(Column)`
 
 export const AlertsColumn = styled(Column)`
   justify-content: flex-start;
-  margin-left: 20px;
+  margin-right: 70px;
   margin-top: -30px;
-
+  @media (max-width: 1520px) {
+    margin-right: 0px;
+  }
   @media (max-width: 768px) {
-    display: none;
+    display: none !important;
   }
   @media (min-width: 769px) and (max-width: 1280px) {
     margin-top: 40px;
@@ -151,6 +153,8 @@ export const MobilePhoneColumn = styled(PhoneColumn)`
 `
 
 export const DesktopPhoneColumn = styled(PhoneColumn)`
+  margin-left: 0px;
+  margin-bottom: 24px;
   @media (max-width: 768px) {
     display: none;
   }

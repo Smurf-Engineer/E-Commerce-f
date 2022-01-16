@@ -88,7 +88,6 @@ export const Cell = styled.div`
   content: '';
   display: flex;
   position: absolute;
-  left: 30px;
   width: 12px;
   height: 12px;
   background: ${RED};
@@ -97,7 +96,6 @@ export const Cell = styled.div`
   border: none;
  }
  @media (min-width: 425px) and (max-width: 768px) {
-  width ${({ tabletWidth }: CellProps) => (tabletWidth ? tabletWidth : 10)}%;
   &.badge::after {
     display: none;
   }
@@ -167,6 +165,9 @@ export const DeleteButton = styled(Icon)`
   transition: all .25s;
   &:hover {
     opacity: 0.4;
+  }
+  @media (max-width: 767px) {
+    margin-left: 18px;
   }
 `
 
