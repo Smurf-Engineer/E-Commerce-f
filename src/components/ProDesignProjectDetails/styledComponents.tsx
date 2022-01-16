@@ -415,7 +415,8 @@ export const BackContainer = styled.div`
   color: ${BLUE};
   transition: all .25s;
   @media (max-width: 768px) {
-    display: none;
+    margin-top: 0;
+    margin-bottom: 20px;
   }
   &:hover {
     cursor: pointer;
