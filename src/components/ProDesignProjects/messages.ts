@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.ProDesignProjects.title',
-    defaultMessage: 'My Projects'
+    defaultMessage: 'My Project List'
   },
   subtitle: {
     id: 'components.ProDesignProjects.subtitle',
@@ -144,5 +144,53 @@ export default defineMessages({
     id: 'components.ProDesignProjects.deleteShared',
     // tslint:disable-next-line: max-line-length
     defaultMessage: 'Deleting this project will remove you as a member and you will no longer receive any project notifications'
-  }
+  },
+  welcomeToCollab: {
+    id: 'components.ProDesignProjects.welcomeToCollab',
+    defaultMessage: 'WELCOME TO TEAM COLLABORATION'
+  },
+  welcomeToCollabDesc: {
+    id: 'components.ProDesignProjects.welcomeToCollabDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p><strong>The best ideas come from teamwork!</strong> Collaborate with your team members using the Comments Board and work with the Jakroo Pro Design team to bring your design ideas into reality.</p>'
+  },
+  close: {
+    id: 'components.ProDesignProjects.close',
+    defaultMessage: 'Close'
+  },
+  projectHome: {
+    id: 'components.ProDesignProjects.projectHome',
+    defaultMessage: 'Project Home'
+  },
+  projectHomeDesc: {
+    id: 'components.ProDesignProjects.projectHomeDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>The project home screen displays all the information related to the design project including design instructions and the list of all products in the project.</p> <p><strong>Click</strong> the product thumbnail to access the Design Approval Center.</p>'
+  },
+  comments: {
+    id: 'components.ProDesignProjects.comments',
+    defaultMessage: 'Comments Board'
+  },
+  commentsDesc: {
+    id: 'components.ProDesignProjects.commentsDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>A dedicated space where <strong>all invited members</strong> can add comments and exchange ideas with each other about the design.</p> <p>Each product will have it own unique Comment board. <strong>Comments are not sent to the Jakroo design team.</strong></p>'
+  },
+  approval: {
+    id: 'components.ProDesignProjects.approval',
+    defaultMessage: 'Approval Log'
+  },
+  approvalDesc: {
+    id: 'components.ProDesignProjects.approvalDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>The Approval log tracks the details of edit requests and approvals. Project owners and assigned approvers may also communicate with the Jakroo Design Team through the Approval Log.</p> <p>Commenters have <strong>read only</strong> access on the Approval Log.</p>'
+  },
+  dontShowAgain: {
+    id: 'components.ProDesignProjects.dontShowAgain',
+    defaultMessage: `Don't show this again`
+  },
+  aboutCollab: {
+    id: 'components.ProDesignProjects.aboutCollab',
+    defaultMessage: 'About Team Collaboration'
+  },
 })

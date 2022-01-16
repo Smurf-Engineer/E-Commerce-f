@@ -33,7 +33,6 @@ import {
   NotifcationContent,
   AlertsColumn,
   DesktopPhoneColumn,
-  MobilePhoneColumn,
   MobileFlexColumn,
   DesktopDescription,
   DesktopHeader
@@ -244,30 +243,30 @@ class Preferences extends React.Component<Props, {}> {
             <Spin />
           </LoadingContainer>
         }
-        <MobilePhoneColumn>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.phone)}</Label>
-          </InputTitleContainer>
-          <PhoneInput
-            country={'us'}
-            value={phone}
-            autoComplete="jv2"
-            countryCodeEditable={false}
-            onChange={value => {
-              this.debouncePhoneUpdate(value)
-            }}
-            inputProps={{ autoComplete: 'jv2' }}
-            inputStyle={{ borderRadius: 0, width: 250 }}
-            copyNumbersOnly={false}
-            disabled={!orderPaymentSmsChecked && !prodesignSmsChecked
-              && !teamStoreSmsChecked && !designlabSmsChecked
-              && !productServiceSmsChecked
-            }
-          />
-        </MobilePhoneColumn>
         <NotificationContainer>
           <MobileFlexColumn >
             <RightInfo>{formatMessage(messages.rightTime)}</RightInfo>
+            <DesktopPhoneColumn>
+              <InputTitleContainer>
+                <Label>{formatMessage(messages.phone)}</Label>
+              </InputTitleContainer>
+              <PhoneInput
+                country={'us'}
+                value={phone}
+                autoComplete="jv2"
+                countryCodeEditable={false}
+                onChange={value => {
+                  this.debouncePhoneUpdate(value)
+                }}
+                inputProps={{ autoComplete: 'jv2' }}
+                inputStyle={{ borderRadius: 0, width: 250 }}
+                copyNumbersOnly={false}
+                disabled={!orderPaymentSmsChecked && !prodesignSmsChecked
+                  && !teamStoreSmsChecked && !designlabSmsChecked
+                  && !productServiceSmsChecked
+                }
+              />
+            </DesktopPhoneColumn>
             <NotifcationContent>
               <MobileFlexColumn>
                 <DesktopHeader>
@@ -352,26 +351,6 @@ class Preferences extends React.Component<Props, {}> {
                   checked={false}
                   onChange={() => { }} />
               </Column>
-              <DesktopPhoneColumn>
-                <InputTitleContainer>
-                  <Label>{formatMessage(messages.phone)}</Label>
-                </InputTitleContainer>
-                <PhoneInput
-                  country={'us'}
-                  value={phone}
-                  countryCodeEditable={false}
-                  onChange={value => {
-                    this.debouncePhoneUpdate(value)
-                  }}
-                  inputProps={{ autoComplete: 'jv2' }}
-                  inputStyle={{ borderRadius: 0, width: 250 }}
-                  copyNumbersOnly={false}
-                  disabled={!orderPaymentSmsChecked && !prodesignSmsChecked
-                    && !teamStoreSmsChecked && !designlabSmsChecked
-                    && !productServiceSmsChecked
-                  }
-                />
-              </DesktopPhoneColumn>
               </NotifcationContent>
             </MobileFlexColumn>
             <AlertsColumn>

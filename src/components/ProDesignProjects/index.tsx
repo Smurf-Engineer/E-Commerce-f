@@ -39,7 +39,24 @@ import {
   StyledPopOver,
   PopoverText,
   PopOverValue,
-  SharedIcon
+  SharedIcon,
+  StatusTitle,
+  StatusSubTitle,
+  StatusCardsSection,
+  StatusCard,
+  StatusCardLabel,
+  CardIcon,
+  StatusTitleIcon,
+  StatusImage,
+  StatusDescription,
+  StatusCardMobile,
+  StatusMobileBody,
+  BottomSectionStatus,
+  CloseButtonStatus,
+  IconDiv,
+  CheckboxStyled,
+  AboutCollab,
+  CollabIcon
 } from './styledComponents'
 import messages from './messages'
 import {
@@ -54,6 +71,18 @@ import {
 } from '../../types/common'
 import EmptyContainer from '../EmptyContainer'
 import Pagination from 'antd/lib/pagination/Pagination'
+import projectHomeIcon from '../../assets/project_home.svg'
+import projectHomeWhite from '../../assets/project_home_white.svg'
+import teamWhite from '../../assets/team_white.svg'
+import teamBlack from '../../assets/team_black.svg'
+import teamBlue from '../../assets/team_blue.svg'
+import approvalWhite from '../../assets/approval_whtie.svg'
+import approvalBlack from '../../assets/approval_black.svg'
+import commentsWhite from '../../assets/comments_white.svg'
+import commentsBlack from '../../assets/comments_black.svg'
+import projectScreenshot from '../../assets/project_screenshot.jpg'
+import commentsScreenshot from '../../assets/comments_screenshot.jpg'
+import approvalScreenshot from '../../assets/approval_screenshot.jpg'
 import moment from 'moment'
 import get from 'lodash/get'
 import { PROJECTS_LIMIT, Pages, memberColors } from './constants'
@@ -66,6 +95,7 @@ import Modal from 'antd/lib/modal'
 import Carousel from 'antd/lib/carousel'
 import CarouselItem from '../CarouselItem'
 import ProductInfo from '../ProductInfo'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const { confirm } = Modal
 
@@ -97,7 +127,9 @@ class ProDesignProjects extends React.Component<Props, {}> {
     showSecond: false,
     showThird: false,
     showFourth: false,
-    showFifth: false
+    showFifth: false,
+    openStatusInfo: false,
+    hasShown: false
   }
   componentDidMount() {
     const {
@@ -115,6 +147,29 @@ class ProDesignProjects extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
+  }
+
+  openStatusModal = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
+    this.setState({ openStatusInfo: true, hasShown: true })
+  }
+
+  closeStatusModal = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
+    this.setState({ openStatusInfo: false })
+  }
+
+  changeModalShow = ({ target: { checked }}: CheckboxChangeEvent) => {
+    if (checked) {
+      localStorage.setItem('hideCollabModal', 'true')
+    } else {
+      localStorage.removeItem('hideCollabModal')
+    }
+    setTimeout(() => this.forceUpdate(), 500)
   }
 
   handleOnChangePage = (page: number) => {
@@ -238,7 +293,9 @@ class ProDesignProjects extends React.Component<Props, {}> {
       showSecond,
       showThird,
       showFourth,
-      showFifth
+      showFifth,
+      openStatusInfo,
+      hasShown
     } = this.state
     const projects = get(list, 'projectsResult.projects', [])
     const fullCount = get(list, 'projectsResult.fullCount', 0)
@@ -246,6 +303,11 @@ class ProDesignProjects extends React.Component<Props, {}> {
     const carouselSettings = get(carouselImages, 'getHomepageContent.carouselSettings', {})
     const authorId = get(user, 'id', '')
     const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 604px)').matches
+    const isMobileModal = typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches
+    const hideCollabModal = typeof window !== 'undefined' ? localStorage.getItem('hideCollabModal') : 'true'
+    if (hideCollabModal !== 'true' && !openStatusInfo && !hasShown) {
+      this.openStatusModal()
+    }
     const {
       slideTransition,
       slideDuration
@@ -294,6 +356,10 @@ class ProDesignProjects extends React.Component<Props, {}> {
               </Subtitle>
               <AddButton onClick={this.goToCreate}><FormattedMessage {...messages.addProject} /></AddButton>
             </Head>
+            <AboutCollab onClick={this.openStatusModal}>
+              <CollabIcon src={teamBlue} />
+              {formatMessage(messages.aboutCollab)}
+            </AboutCollab>
             <ListContainer>
               <Table>
                 <thead>
@@ -478,11 +544,120 @@ class ProDesignProjects extends React.Component<Props, {}> {
             <Review
               {...{ formatMessage, history, resetDataAction, authorId }}
               project={projectId}
+              openStatusModal={this.openStatusModal}
               onOpenQuickView={this.handleOnOpenQuickView}
               goBack={this.goToList}
             />
           </div>
         </SwipeableViews>
+        <Modal
+          visible={openStatusInfo}
+          footer={null}
+          closable={false}
+          width={isMobileModal ? '100%' : '1024px'}
+          wrapClassName={isMobileModal ? 'transparentMask' : ''}
+          maskStyle={isMobileModal ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' } : {}}
+        >
+          <IconDiv>
+            <StatusTitleIcon src={isMobileModal ? teamWhite : teamBlack} />
+          </IconDiv>
+          <StatusTitle>
+            {formatMessage(messages.welcomeToCollab)}
+          </StatusTitle>
+          <StatusSubTitle
+            dangerouslySetInnerHTML={{
+              __html: formatMessage(messages.welcomeToCollabDesc)
+            }}
+          />
+          <StatusCardsSection>
+            <StatusCard>
+              <StatusCardLabel>
+                <CardIcon src={projectHomeIcon} />
+                {formatMessage(messages.projectHome)}
+              </StatusCardLabel>
+              <StatusImage src={projectScreenshot} />
+              <StatusDescription
+                dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.projectHomeDesc)
+                }}
+              />
+            </StatusCard>
+            <StatusCardMobile>
+              <StatusImage src={projectHomeWhite} />
+              <StatusMobileBody>
+                <StatusCardLabel>
+                  {formatMessage(messages.projectHome)}
+                </StatusCardLabel>
+                <StatusDescription
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.projectHomeDesc)
+                  }}
+                />
+              </StatusMobileBody>
+            </StatusCardMobile>
+            <StatusCard>
+              <StatusCardLabel>
+                <CardIcon src={commentsBlack} />
+                {formatMessage(messages.comments)}
+              </StatusCardLabel>
+              <StatusImage src={commentsScreenshot} />
+              <StatusDescription
+                dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.commentsDesc)
+                }}
+              />
+            </StatusCard>
+            <StatusCardMobile>
+              <StatusImage src={commentsWhite} />
+              <StatusMobileBody>
+                <StatusCardLabel>
+                  {formatMessage(messages.comments)}
+                </StatusCardLabel>
+                <StatusDescription
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.commentsDesc)
+                  }}
+                />
+              </StatusMobileBody>
+            </StatusCardMobile>
+            <StatusCard>
+              <StatusCardLabel>
+                <CardIcon src={approvalBlack} />
+                {formatMessage(messages.approval)}
+              </StatusCardLabel>
+              <StatusImage src={approvalScreenshot} />
+              <StatusDescription
+                dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.approvalDesc)
+                }}
+              />
+            </StatusCard>
+            <StatusCardMobile>
+              <StatusImage src={approvalWhite} />
+              <StatusMobileBody>
+                <StatusCardLabel>
+                  {formatMessage(messages.approval)}
+                </StatusCardLabel>
+                <StatusDescription
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.approvalDesc)
+                  }}
+                />
+              </StatusMobileBody>
+            </StatusCardMobile>
+          </StatusCardsSection>
+          <BottomSectionStatus>
+            <CheckboxStyled
+              checked={hideCollabModal === 'true'}
+              onChange={this.changeModalShow}
+            >
+              {formatMessage(messages.dontShowAgain)}
+            </CheckboxStyled>
+            <CloseButtonStatus onClick={this.closeStatusModal}>
+              {formatMessage(messages.close)}
+            </CloseButtonStatus>
+          </BottomSectionStatus>
+        </Modal>
       </Container>
     )
   }
