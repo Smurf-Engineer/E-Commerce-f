@@ -130,16 +130,20 @@ body {
 .transparentMask .ant-modal {
   width: 100%;
   max-width: 1024px;
-  @media (max-width: 1023px) {
+}
+
+@media (max-width: 1023px) {
+  .transparentMask .ant-modal {
     top: 15px;
   }
 }
 
-.transparentMask .ant-modal-body {
-  @media (max-width: 648px) {
-    padding: 0 12px;
+@media (max-width: 648px) {
+  .transparentMask .ant-modal-body {
+      padding: 0 12px;
   }
 }
+
 
 .hide-date-input .ant-calendar-disabled-cell .ant-calendar-date {
   width: 100% !important;

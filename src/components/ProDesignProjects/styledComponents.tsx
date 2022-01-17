@@ -434,6 +434,17 @@ export const IconDiv = styled.div`
   align-items: flex-start;
 `
 
+export const MobileContainer = styled.div`
+  height: calc(100vh - 30px);
+  position: fixed;
+  @media (max-height: 1023px) {
+    font-size: 14px !important;
+  }
+  @media (max-height: 768px) {
+    font-size: 11px !important;
+  }
+`
+
 export const StatusTitle = styled.div`
   font-size: 17px;
   font-weight: 900;
@@ -457,6 +468,9 @@ export const StatusSubTitle = styled.div`
   }
   @media (max-width: 767px) {
     margin-bottom: 30px;
+  }
+  @media (max-width: 648px) {
+    margin-top: 0px;
   }
 `
 
@@ -588,7 +602,9 @@ export const StatusImage = styled.img`
     box-shadow: none;
   }
   @media (max-width: 640px) {
-    max-width: 100px;
+    max-width: 74px;
+    margin-right: 0;
+    margin-left: -14px;
   }
 `
 
@@ -619,6 +635,11 @@ export const BottomSectionStatus = styled.div`
   justify-content: space-between;
   flex-flow: column;
   align-items: center;
+  @media (max-width: 1023px) {
+    position: fixed;
+    bottom: 16px;
+    z-index: 999;
+  }
 `
 
 export const ArrowLong = styled.img`
