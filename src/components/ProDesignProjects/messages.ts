@@ -165,7 +165,7 @@ export default defineMessages({
   projectHomeDesc: {
     id: 'components.ProDesignProjects.projectHomeDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: '<p>The project home screen displays all the information related to the design project including design instructions and the list of all products in the project.</p> <p><strong>Click</strong> the product thumbnail to access the Design Approval Center.</p>'
+    defaultMessage: '<p>The project home screen displays all the info related to the design project including design instructions and the list of all products in the project.</p> <p><strong>Click</strong> the product thumbnail to access the Design Approval Center.</p>'
   },
   comments: {
     id: 'components.ProDesignProjects.comments',
@@ -174,7 +174,7 @@ export default defineMessages({
   commentsDesc: {
     id: 'components.ProDesignProjects.commentsDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: '<p>A dedicated space where <strong>all invited members</strong> can add comments and exchange ideas with each other about the design.</p> <p>Each product will have it own unique Comment board. <strong>Comments are not sent to the Jakroo design team.</strong></p>'
+    defaultMessage: '<p>A dedicated space where <strong>all invited members</strong> can add comments and exchange ideas with each other about the design.</p> <p>Each product will have its own unique Comment board. <strong>Comments are not sent to the Jakroo design team.</strong></p>'
   },
   approval: {
     id: 'components.ProDesignProjects.approval',
