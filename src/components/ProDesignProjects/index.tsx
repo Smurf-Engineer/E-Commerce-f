@@ -54,9 +54,9 @@ import {
   BottomSectionStatus,
   CloseButtonStatus,
   IconDiv,
-  CheckboxStyled,
   AboutCollab,
-  CollabIcon
+  CollabIcon,
+  MobileContainer
 } from './styledComponents'
 import messages from './messages'
 import {
@@ -95,7 +95,6 @@ import Modal from 'antd/lib/modal'
 import Carousel from 'antd/lib/carousel'
 import CarouselItem from '../CarouselItem'
 import ProductInfo from '../ProductInfo'
-import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const { confirm } = Modal
 
@@ -128,8 +127,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
     showThird: false,
     showFourth: false,
     showFifth: false,
-    openStatusInfo: false,
-    hasShown: false
+    openStatusInfo: false
   }
   componentDidMount() {
     const {
@@ -153,7 +151,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
     if (window.navigator && window.navigator.vibrate) {
       navigator.vibrate([70, 50, 20])
     }
-    this.setState({ openStatusInfo: true, hasShown: true })
+    this.setState({ openStatusInfo: true })
   }
 
   closeStatusModal = () => {
@@ -161,15 +159,6 @@ class ProDesignProjects extends React.Component<Props, {}> {
       navigator.vibrate([70, 50, 20])
     }
     this.setState({ openStatusInfo: false })
-  }
-
-  changeModalShow = ({ target: { checked }}: CheckboxChangeEvent) => {
-    if (checked) {
-      localStorage.setItem('hideCollabModal', 'true')
-    } else {
-      localStorage.removeItem('hideCollabModal')
-    }
-    setTimeout(() => this.forceUpdate(), 500)
   }
 
   handleOnChangePage = (page: number) => {
@@ -294,8 +283,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
       showThird,
       showFourth,
       showFifth,
-      openStatusInfo,
-      hasShown
+      openStatusInfo
     } = this.state
     const projects = get(list, 'projectsResult.projects', [])
     const fullCount = get(list, 'projectsResult.fullCount', 0)
@@ -304,10 +292,6 @@ class ProDesignProjects extends React.Component<Props, {}> {
     const authorId = get(user, 'id', '')
     const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 604px)').matches
     const isMobileModal = typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches
-    const hideCollabModal = typeof window !== 'undefined' ? localStorage.getItem('hideCollabModal') : 'true'
-    if (hideCollabModal !== 'true' && !openStatusInfo && !hasShown) {
-      this.openStatusModal()
-    }
     const {
       slideTransition,
       slideDuration
@@ -558,105 +542,198 @@ class ProDesignProjects extends React.Component<Props, {}> {
           wrapClassName={isMobileModal ? 'transparentMask' : ''}
           maskStyle={isMobileModal ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' } : {}}
         >
-          <IconDiv>
-            <StatusTitleIcon src={isMobileModal ? teamWhite : teamBlack} />
-          </IconDiv>
-          <StatusTitle>
-            {formatMessage(messages.welcomeToCollab)}
-          </StatusTitle>
-          <StatusSubTitle
-            dangerouslySetInnerHTML={{
-              __html: formatMessage(messages.welcomeToCollabDesc)
-            }}
-          />
-          <StatusCardsSection>
-            <StatusCard>
-              <StatusCardLabel>
-                <CardIcon src={projectHomeIcon} />
-                {formatMessage(messages.projectHome)}
-              </StatusCardLabel>
-              <StatusImage src={projectScreenshot} />
-              <StatusDescription
+          {isMobileModal ? 
+            <MobileContainer>
+              <IconDiv>
+                <StatusTitleIcon src={isMobileModal ? teamWhite : teamBlack} />
+              </IconDiv>
+              <StatusTitle>
+                {formatMessage(messages.welcomeToCollab)}
+              </StatusTitle>
+              <StatusSubTitle
                 dangerouslySetInnerHTML={{
-                  __html: formatMessage(messages.projectHomeDesc)
+                  __html: formatMessage(messages.welcomeToCollabDesc)
                 }}
               />
-            </StatusCard>
-            <StatusCardMobile>
-              <StatusImage src={projectHomeWhite} />
-              <StatusMobileBody>
-                <StatusCardLabel>
-                  {formatMessage(messages.projectHome)}
-                </StatusCardLabel>
-                <StatusDescription
-                  dangerouslySetInnerHTML={{
-                    __html: formatMessage(messages.projectHomeDesc)
-                  }}
-                />
-              </StatusMobileBody>
-            </StatusCardMobile>
-            <StatusCard>
-              <StatusCardLabel>
-                <CardIcon src={commentsBlack} />
-                {formatMessage(messages.comments)}
-              </StatusCardLabel>
-              <StatusImage src={commentsScreenshot} />
-              <StatusDescription
+              <StatusCardsSection>
+                <StatusCard>
+                  <StatusCardLabel>
+                    <CardIcon src={projectHomeIcon} />
+                    {formatMessage(messages.projectHome)}
+                  </StatusCardLabel>
+                  <StatusImage src={projectScreenshot} />
+                  <StatusDescription
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.projectHomeDesc)
+                    }}
+                  />
+                </StatusCard>
+                <StatusCardMobile>
+                  <StatusImage src={projectHomeWhite} />
+                  <StatusMobileBody>
+                    <StatusCardLabel>
+                      {formatMessage(messages.projectHome)}
+                    </StatusCardLabel>
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.projectHomeDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
+                <StatusCard>
+                  <StatusCardLabel>
+                    <CardIcon src={commentsBlack} />
+                    {formatMessage(messages.comments)}
+                  </StatusCardLabel>
+                  <StatusImage src={commentsScreenshot} />
+                  <StatusDescription
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.commentsDesc)
+                    }}
+                  />
+                </StatusCard>
+                <StatusCardMobile>
+                  <StatusImage src={commentsWhite} />
+                  <StatusMobileBody>
+                    <StatusCardLabel>
+                      {formatMessage(messages.comments)}
+                    </StatusCardLabel>
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.commentsDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
+                <StatusCard>
+                  <StatusCardLabel>
+                    <CardIcon src={approvalBlack} />
+                    {formatMessage(messages.approval)}
+                  </StatusCardLabel>
+                  <StatusImage src={approvalScreenshot} />
+                  <StatusDescription
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.approvalDesc)
+                    }}
+                  />
+                </StatusCard>
+                <StatusCardMobile>
+                  <StatusImage src={approvalWhite} />
+                  <StatusMobileBody>
+                    <StatusCardLabel>
+                      {formatMessage(messages.approval)}
+                    </StatusCardLabel>
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.approvalDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
+              </StatusCardsSection>
+              <BottomSectionStatus>
+                <CloseButtonStatus onClick={this.closeStatusModal}>
+                  {formatMessage(messages.close)}
+                </CloseButtonStatus>
+              </BottomSectionStatus>
+            </MobileContainer> :
+            <>
+              <IconDiv>
+                <StatusTitleIcon src={isMobileModal ? teamWhite : teamBlack} />
+              </IconDiv>
+              <StatusTitle>
+                {formatMessage(messages.welcomeToCollab)}
+              </StatusTitle>
+              <StatusSubTitle
                 dangerouslySetInnerHTML={{
-                  __html: formatMessage(messages.commentsDesc)
+                  __html: formatMessage(messages.welcomeToCollabDesc)
                 }}
               />
-            </StatusCard>
-            <StatusCardMobile>
-              <StatusImage src={commentsWhite} />
-              <StatusMobileBody>
-                <StatusCardLabel>
-                  {formatMessage(messages.comments)}
-                </StatusCardLabel>
-                <StatusDescription
-                  dangerouslySetInnerHTML={{
-                    __html: formatMessage(messages.commentsDesc)
-                  }}
-                />
-              </StatusMobileBody>
-            </StatusCardMobile>
-            <StatusCard>
-              <StatusCardLabel>
-                <CardIcon src={approvalBlack} />
-                {formatMessage(messages.approval)}
-              </StatusCardLabel>
-              <StatusImage src={approvalScreenshot} />
-              <StatusDescription
-                dangerouslySetInnerHTML={{
-                  __html: formatMessage(messages.approvalDesc)
-                }}
-              />
-            </StatusCard>
-            <StatusCardMobile>
-              <StatusImage src={approvalWhite} />
-              <StatusMobileBody>
-                <StatusCardLabel>
-                  {formatMessage(messages.approval)}
-                </StatusCardLabel>
-                <StatusDescription
-                  dangerouslySetInnerHTML={{
-                    __html: formatMessage(messages.approvalDesc)
-                  }}
-                />
-              </StatusMobileBody>
-            </StatusCardMobile>
-          </StatusCardsSection>
-          <BottomSectionStatus>
-            <CheckboxStyled
-              checked={hideCollabModal === 'true'}
-              onChange={this.changeModalShow}
-            >
-              {formatMessage(messages.dontShowAgain)}
-            </CheckboxStyled>
-            <CloseButtonStatus onClick={this.closeStatusModal}>
-              {formatMessage(messages.close)}
-            </CloseButtonStatus>
-          </BottomSectionStatus>
+              <StatusCardsSection>
+                <StatusCard>
+                  <StatusCardLabel>
+                    <CardIcon src={projectHomeIcon} />
+                    {formatMessage(messages.projectHome)}
+                  </StatusCardLabel>
+                  <StatusImage src={projectScreenshot} />
+                  <StatusDescription
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.projectHomeDesc)
+                    }}
+                  />
+                </StatusCard>
+                <StatusCardMobile>
+                  <StatusImage src={projectHomeWhite} />
+                  <StatusMobileBody>
+                    <StatusCardLabel>
+                      {formatMessage(messages.projectHome)}
+                    </StatusCardLabel>
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.projectHomeDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
+                <StatusCard>
+                  <StatusCardLabel>
+                    <CardIcon src={commentsBlack} />
+                    {formatMessage(messages.comments)}
+                  </StatusCardLabel>
+                  <StatusImage src={commentsScreenshot} />
+                  <StatusDescription
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.commentsDesc)
+                    }}
+                  />
+                </StatusCard>
+                <StatusCardMobile>
+                  <StatusImage src={commentsWhite} />
+                  <StatusMobileBody>
+                    <StatusCardLabel>
+                      {formatMessage(messages.comments)}
+                    </StatusCardLabel>
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.commentsDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
+                <StatusCard>
+                  <StatusCardLabel>
+                    <CardIcon src={approvalBlack} />
+                    {formatMessage(messages.approval)}
+                  </StatusCardLabel>
+                  <StatusImage src={approvalScreenshot} />
+                  <StatusDescription
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.approvalDesc)
+                    }}
+                  />
+                </StatusCard>
+                <StatusCardMobile>
+                  <StatusImage src={approvalWhite} />
+                  <StatusMobileBody>
+                    <StatusCardLabel>
+                      {formatMessage(messages.approval)}
+                    </StatusCardLabel>
+                    <StatusDescription
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.approvalDesc)
+                      }}
+                    />
+                  </StatusMobileBody>
+                </StatusCardMobile>
+              </StatusCardsSection>
+              <BottomSectionStatus>
+                <CloseButtonStatus onClick={this.closeStatusModal}>
+                  {formatMessage(messages.close)}
+                </CloseButtonStatus>
+              </BottomSectionStatus>
+            </>
+          }
         </Modal>
       </Container>
     )
