@@ -14,6 +14,7 @@ interface Props {
   upgrade: UpgradeItem
   upgradeTitle: string
   allowClear?: boolean
+  disabled?: boolean
   upgradeOptions: UpgradeOptions[]
   formatMessage: (messageDescriptor: Message) => string
   openUpgrade: () => void
@@ -35,6 +36,7 @@ class SelectUpgrade extends React.PureComponent<Props> {
       upgradeTitle,
       startColumn,
       endColumn,
+      disabled = false,
       upgradeOptions,
       formatMessage,
       selectedUpgrade,
@@ -48,7 +50,7 @@ class SelectUpgrade extends React.PureComponent<Props> {
           <QuestionSpan onClick={this.handleOpenUpgrade} />
         </UpgradeTitle>
         <StyledSelect
-          {...{ allowClear }}
+          {...{ allowClear, disabled }}
           onChange={this.handleUpgradeChange}
           showSearch={false}
           placeholder={formatMessage(messages[upgradeTitle])}

@@ -26,6 +26,9 @@ export const Cell = styled.div`
   grid-column-end: ${({ end }: CellProps) => end || 'unset'};
   flex-flow: ${({ align }: CellProps) => align || 'row'};
   width: ${({ width }: CellProps) => (width ? width : 100)}%;
+  @media (min-width: 1024px) {
+    margin-top: 14px;
+  }
 `
 
 export const UpgradeTitle = styled.div`

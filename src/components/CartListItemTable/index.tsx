@@ -402,7 +402,8 @@ class CartListItemTable extends React.Component<Props, State> {
         (index === 3 || index === 4) && !withTwoPieces || 
         (index === 6 && (!upgradeOne || !upgradeOne.enabled || isMobile)) ||
         (index === 7 && (!upgradeTwo || !upgradeTwo.enabled || isMobile)) ||
-        (index === 8 && (!upgradeThree || !upgradeThree.enabled || isMobile))
+        (index === 8 && (!upgradeThree || !upgradeThree.enabled || isMobile)) ||
+        (index === 8 && ((upgradeTwo && upgradeThree && upgradeTwo.enabled && upgradeThree.enabled) || isMobile))
       ) return
       return (
         <HeaderCell key={index} {...{ width }}>
@@ -416,7 +417,10 @@ class CartListItemTable extends React.Component<Props, State> {
               {index === 6 && upgradeOne && upgradeOne.enabled ? upgradeOne.name : ''}
               {message && (index !== 6 && index !== 7 && index !== 8) ? formatMessage(messages[message]) : ''}
               {index === 7 && upgradeTwo && upgradeTwo.enabled ? upgradeTwo.name : ''}
-              {index === 8 && upgradeThree && upgradeThree.enabled ? upgradeThree.name : ''}
+              {index === 8 && 
+                (upgradeThree && upgradeThree.enabled && (!upgradeTwo || !upgradeTwo.enabled)) ? 
+                upgradeThree.name : ''
+              }
             </Title>
             {index === 6 && upgradeOne.enabled &&
               <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeOne)} />
@@ -427,7 +431,7 @@ class CartListItemTable extends React.Component<Props, State> {
             {index === 7 && upgradeTwo.enabled &&
               <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeTwo)} />
             }
-            {index === 8 && upgradeThree.enabled &&
+            {index === 8 && upgradeThree.enabled && (!upgradeTwo || !upgradeTwo.enabled) &&
               <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeThree)} />
             }
           </CellContainer>
@@ -521,7 +525,7 @@ class CartListItemTable extends React.Component<Props, State> {
             withTwoPieces={withTwoPieces}
             upgradeOne={upgradeOne && upgradeOne.enabled}
             upgradeTwo={upgradeTwo && upgradeTwo.enabled}
-            upgradeThree={upgradeThree && upgradeThree.enabled}
+            upgradeThree={upgradeThree && upgradeThree.enabled && (!upgradeTwo || !upgradeTwo.enabled)}
           >
             <Cell>
               <StyledSelect
@@ -649,21 +653,70 @@ class CartListItemTable extends React.Component<Props, State> {
                 </StyledSelect>
               </Cell>
             }
-            {upgradeThree.enabled && !isMobile &&
+            {upgradeThree.enabled && upgradeTwo.enabled && !isMobile &&
+              <>
               <Cell>
-                <StyledSelect
-                  onChange={(e) => this.handleUpgradeChange(e, index, false, true)}
-                  showSearch={false}
-                  placeholder={formatMessage(messages.upgradeThree)}
-                  optionFilterProp="children"
-                  disabled={youthCombined && youthSelected}
-                  value={thirdUpgrade ? thirdUpgrade.name : undefined}
-                  selectWidth={fitSelectWidth}
-                  allowClear={upgradeThree.defaultOption === -1}
-                >
-                  {upgradeThreeOptions}
-                </StyledSelect>
+                <StyledInputNumber
+                  key={index}
+                  onChange={(e) => this.handleQuantityChange(e, index)}
+                  min={1}
+                  max={249}
+                  value={quantity || undefined}
+                  disabled={cartItem.fixedCart}
+                />
+                {!cartItem.fixedCart && (
+                  <DeleteItem onClick={this.handleRemove(itemIndex, index)}>
+                    —
+                  </DeleteItem>
+                )}
               </Cell>
+                <SelectUpgrade
+                  {...{ formatMessage }}
+                  startColumn={1}
+                  endColumn={3}
+                  disabled={youthCombined && youthSelected}
+                  allowClear={upgradeThree.defaultOption === -1}
+                  upgrade={upgradeThree}
+                  upgradeTitle="upgradeThree"
+                  upgradeOptions={upgradeThreeOptions}
+                  openUpgrade={this.handleOpenUpgrade(upgradeThree)}
+                  upgradeChange={(e) => this.handleUpgradeChange(e, index, false, true)}
+                  selectedUpgrade={thirdUpgrade}
+                />
+              </>
+            }
+            {upgradeThree.enabled && !upgradeTwo.enabled && !isMobile &&
+              <>
+                <Cell>
+                  <StyledSelect
+                    onChange={(e) => this.handleUpgradeChange(e, index, false, true)}
+                    showSearch={false}
+                    placeholder={formatMessage(messages.upgradeThree)}
+                    optionFilterProp="children"
+                    disabled={youthCombined && youthSelected}
+                    value={thirdUpgrade ? thirdUpgrade.name : undefined}
+                    selectWidth={fitSelectWidth}
+                    allowClear={upgradeThree.defaultOption === -1}
+                  >
+                    {upgradeThreeOptions}
+                  </StyledSelect>
+                </Cell>
+                <Cell>
+                  <StyledInputNumber
+                    key={index}
+                    onChange={(e) => this.handleQuantityChange(e, index)}
+                    min={1}
+                    max={249}
+                    value={quantity || undefined}
+                    disabled={cartItem.fixedCart}
+                  />
+                  {!cartItem.fixedCart && (
+                    <DeleteItem onClick={this.handleRemove(itemIndex, index)}>
+                      —
+                    </DeleteItem>
+                  )}
+                </Cell>
+              </>
             }
             {/* TODO: Delete after confirm label won't be necessary in table
               <Cell>
@@ -674,21 +727,23 @@ class CartListItemTable extends React.Component<Props, State> {
                   onChange={e => this.handleLabelChange(e, index)}
                 />
               </Cell> */}
-            <Cell>
-              <StyledInputNumber
-                key={index}
-                onChange={(e) => this.handleQuantityChange(e, index)}
-                min={1}
-                max={249}
-                value={quantity || undefined}
-                disabled={cartItem.fixedCart}
-              />
-              {!cartItem.fixedCart && (
-                <DeleteItem onClick={this.handleRemove(itemIndex, index)}>
-                  —
-                </DeleteItem>
-              )}
-            </Cell>
+            {(!upgradeThree.enabled || isMobile) &&
+              <Cell>
+                <StyledInputNumber
+                  key={index}
+                  onChange={(e) => this.handleQuantityChange(e, index)}
+                  min={1}
+                  max={249}
+                  value={quantity || undefined}
+                  disabled={cartItem.fixedCart}
+                />
+                {!cartItem.fixedCart && (
+                  <DeleteItem onClick={this.handleRemove(itemIndex, index)}>
+                    —
+                  </DeleteItem>
+                )}
+              </Cell>
+            }
             {upgradeOne.enabled && isMobile &&
               <SelectUpgrade
                 {...{ formatMessage }}
@@ -696,6 +751,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 endColumn={3}
                 allowClear={upgradeOne.defaultOption === -1}
                 upgrade={upgradeOne}
+                disabled={youthCombined && youthSelected}
                 upgradeTitle="upgradeOne"
                 upgradeOptions={upgradeOneOptions}
                 openUpgrade={this.handleOpenUpgrade(upgradeOne)}
@@ -710,6 +766,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 endColumn={5}
                 allowClear={upgradeTwo.defaultOption === -1}
                 upgrade={upgradeTwo}
+                disabled={youthCombined && youthSelected}
                 upgradeTitle="upgradeTwo"
                 upgradeOptions={upgradeTwoOptions}
                 openUpgrade={this.handleOpenUpgrade(upgradeTwo)}
@@ -720,10 +777,11 @@ class CartListItemTable extends React.Component<Props, State> {
             {upgradeThree.enabled && isMobile &&
               <SelectUpgrade
                 {...{ formatMessage }}
-                startColumn={5}
-                endColumn={7}
+                startColumn={1}
+                endColumn={3}
                 allowClear={upgradeThree.defaultOption === -1}
                 upgrade={upgradeThree}
+                disabled={youthCombined && youthSelected}
                 upgradeTitle="upgradeThree"
                 upgradeOptions={upgradeThreeOptions}
                 openUpgrade={this.handleOpenUpgrade(upgradeThree)}
@@ -773,7 +831,7 @@ class CartListItemTable extends React.Component<Props, State> {
               {...{ onlyRead, withTwoPieces, isMobile }}
               upgradeOne={upgradeOne && upgradeOne.enabled}
               upgradeTwo={upgradeTwo && upgradeTwo.enabled}
-              upgradeThree={upgradeThree && upgradeThree.enabled}
+              upgradeThree={upgradeThree && upgradeThree.enabled && (!upgradeTwo || !upgradeTwo.enabled)}
             >
               <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
               {((withColorColumn && !!colorObject) || colorImage) && (
@@ -856,7 +914,7 @@ class CartListItemTable extends React.Component<Props, State> {
           withColor={withColorColumn}
           upgradeOne={upgradeOne && upgradeOne.enabled && !isMobile}
           upgradeTwo={upgradeTwo && upgradeTwo.enabled && !isMobile}
-          upgradeThree={upgradeThree && upgradeThree.enabled && !isMobile}
+          upgradeThree={upgradeThree && upgradeThree.enabled && (!upgradeTwo || !upgradeTwo.enabled) && !isMobile}
         >
           {header}
         </HeaderRow>
