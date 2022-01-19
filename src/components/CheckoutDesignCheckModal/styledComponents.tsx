@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { GRAY_DARK, WHITE, RED } from '../../theme/colors'
+import { GRAY_DARK, WHITE, RED, GREEN_BRIGHT } from '../../theme/colors'
 
 export const Container = styled.div``
 
@@ -16,14 +16,11 @@ export const OptionalLabel = styled.span`
   font-weight: normal;
 `
 
-export const ProReviewTitle = styled.div`
-  margin-top: 25px;
-  color: ${GRAY_DARK};
-  font-size: 20px;
-  font-weight: bold;
-  line-height: 27px;
+export const ProReviewTitle = styled.img`
+  margin: 25px 0 6px -4px;
+  height: 24px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 `
 
 export const ProDesignReviewContent = styled.div`
@@ -90,14 +87,14 @@ export const ReviewButton = styled(Button)`
   width: 220px;
   font-size: 16px;
   font-weight: bold;
-  background-color: ${RED};
+  background-color: ${GREEN_BRIGHT};
   color: ${WHITE};
   border-radius: 5px;
 
   &:hover {
-    background-color: ${RED};
+    background-color: ${GREEN_BRIGHT};
     color: ${WHITE};
-    border-color: ${RED};
+    border-color: ${GREEN_BRIGHT};
   }
 
   @media (max-width: 550px) {
