@@ -1,12 +1,12 @@
 /**
- * CheckoutDesignCheckModal -  Messages
+ * MyLockerInfoModal -  Messages
  */
 
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   reviewDesignModalText: {
-    id: 'components.CheckoutDesignCheckModal.reviewDesignModalText',
+    id: 'components.MyLocker.MyLockerInfoModal.reviewDesignModalText',
     defaultMessage: `
     <p>For an additional fee of $15.00, 
     <strong>all products </strong> on your order will be reviewed by a Pro Designer at Jakroo.</p>
@@ -21,28 +21,28 @@ export default defineMessages({
     <p>You will receive a review notification by email typically within 24 hours (excluding holidays/weekends) upon completion of your review. </p>`
   },
   proDesignerReviewLabel: {
-    id: 'components.CheckoutDesignCheckModal.proDesignerReviewLabel',
+    id: 'components.MyLocker.MyLockerInfoModal.proDesignerReviewLabel',
     defaultMessage: 'DESIGN CHECK'
   },
   optionalLabel: {
-    id: 'components.CheckoutDesignCheckModal.optionalLabel',
+    id: 'components.MyLocker.MyLockerInfoModal.optionalLabel',
     defaultMessage: 'Optional'
   },
   helpLabel: {
-    id: 'components.CheckoutDesignCheckModal.helpLabel',
+    id: 'components.MyLocker.MyLockerInfoModal.helpLabel',
     defaultMessage:
       'Having trouble getting your design just right? <strong>We´re here to help!</strong> It´s important to us that every design turns out just right.'
   },
   pleaseReadLabel: {
-    id: 'components.CheckoutDesignCheckModal.pleaseReadLabel',
+    id: 'components.MyLocker.MyLockerInfoModal.pleaseReadLabel',
     defaultMessage: 'PLEASE READ'
   },
   reviewMyOrderLabel: {
-    id: 'components.CheckoutDesignCheckModal.reviewMyOrderLabel',
+    id: 'components.MyLocker.MyLockerInfoModal.reviewMyOrderLabel',
     defaultMessage: 'REVIEW MY ORDER'
   },
   dontReview: {
-    id: 'components.CheckoutDesignCheckModal.dontReview',
+    id: 'components.MyLocker.MyLockerInfoModal.dontReview',
     defaultMessage: 'Continue without review'
   }
 })
