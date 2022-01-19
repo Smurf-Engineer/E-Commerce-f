@@ -144,6 +144,17 @@ body {
   }
 }
 
+@media (min-width: 1441px) {
+  .bigModal .ant-modal {
+    width: 1320px !important;
+  }
+}
+
+@media (min-width: 1800px) {
+  .bigModal .ant-modal {
+    width: 1440px !important;
+  }
+}
 
 .hide-date-input .ant-calendar-disabled-cell .ant-calendar-date {
   width: 100% !important;

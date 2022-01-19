@@ -460,6 +460,12 @@ export const StatusTitle = styled.div`
 export const StatusSubTitle = styled.div`
   margin-bottom: 28px;
   padding: 0 10px;
+  @media (min-width: 1441px) {
+    font-size: 16px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 18px;
+  }
   @media (max-width: 1023px) {
     color: ${WHITE};
     margin-bottom: 50px;
@@ -529,6 +535,9 @@ export const StatusCardsSection = styled.div`
   align-items: flex-start;
   margin-bottom: 28px;
   padding: 0 10px;
+  @media (min-width: 1441px) {
+    justify-content: space-around;
+  }
   @media (max-width: 1023px) {
     color: ${WHITE};
     flex-flow: column;
@@ -545,6 +554,9 @@ export const StatusCard = styled.div`
   max-width: 286px;
   &:last-child {
     margin-right: 0px;
+  }
+  @media (min-width: 1800px) {
+    max-width: 330px;
   }
   @media (max-width: 1023px) {
     display: none;
@@ -581,6 +593,12 @@ export const StatusCardLabel = styled.div`
   font-weight: bold;
   font-family: Avenir;
   font-size: 12px;
+  @media (min-width: 1441px) {
+    font-size: 14px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 16px;
+  }
   @media (max-width: 1023px) {
     justify-content: flex-start;
     font-size: 18px;
@@ -594,6 +612,14 @@ export const StatusImage = styled.img`
   margin: 22px 0;
   padding: 0 11px;
   box-shadow: 0px 3px 7px 2px ${GRAY_LIGHT};
+  @media (min-width: 1441px) {
+    max-width: 280px;
+  }
+  @media (min-width: 1800px) {
+    max-width: 330px;
+    width: 330px;
+    margin-bottom: 40px;
+  }
   @media (max-width: 1023px) {
     margin: 0;
     margin-right: 10px;
@@ -612,6 +638,13 @@ export const StatusDescription = styled.div`
   padding: 0 14px;
   @media (min-width: 1024px) {
     font-size: 11px;
+  }
+  @media (min-width: 1441px) {
+    font-size: 14px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 16px;
+    padding: 0;
   }
   @media (max-width: 1023px) {
     color: ${WHITE};
@@ -662,6 +695,12 @@ export const CloseButtonStatus = styled.div`
   &:hover {
     cursor: pointer;
     opacity: 0.7;
+  }
+  @media (min-width: 1441px) {
+    font-size: 14px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 16px;
   }
   @media (max-width: 1023px) {
     box-shadow: none;

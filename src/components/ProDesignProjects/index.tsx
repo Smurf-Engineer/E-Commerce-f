@@ -539,7 +539,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
           footer={null}
           closable={false}
           width={isMobileModal ? '100%' : '1024px'}
-          wrapClassName={isMobileModal ? 'transparentMask' : ''}
+          wrapClassName={isMobileModal ? 'transparentMask' : 'bigModal'}
           maskStyle={isMobileModal ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' } : {}}
         >
           {isMobileModal ? 

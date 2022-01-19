@@ -2806,7 +2806,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               footer={null}
               closable={false}
               width={isMobile ? '100%' : '1024px'}
-              wrapClassName={isMobile ? 'transparentMask' : ''}
+              wrapClassName={isMobile ? 'transparentMask' : 'bigModal'}
               maskStyle={isMobile ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' } : {}}
             >
               <StatusTitle>

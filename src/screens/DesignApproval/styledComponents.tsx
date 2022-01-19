@@ -431,6 +431,12 @@ export const StatusTitle = styled.div`
 export const StatusSubTitle = styled.div`
   margin-bottom: 28px;
   padding: 0 10px;
+  @media (min-width: 1441px) {
+    font-size: 16px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 18px;
+  }
   @media (max-width: 1023px) {
     color: ${WHITE};
   }
@@ -459,6 +465,9 @@ export const StatusCard = styled.div`
   min-height: 451px;
   &:last-child {
     margin-right: 0px;
+  }
+  @media (min-width: 1441px) {
+    min-height: 471px;
   }
   @media (max-width: 1023px) {
     display: none;
@@ -495,6 +504,13 @@ export const StatusCardLabel = styled.div`
   font-weight: bold;
   font-family: Avenir;
   font-size: 12px;
+  @media (min-width: 1441px) {
+    font-size: 13px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 14px;
+    height: 35px;
+  }
 `
 
 export const StatusImage = styled.img`
@@ -518,6 +534,12 @@ export const StatusDescription = styled.div`
   padding: 0 14px;
   @media (min-width: 1024px) {
     font-size: 11px;
+  }
+  @media (min-width: 1441px) {
+    font-size: 14px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 15px;
   }
   @media (max-width: 1023px) {
     color: ${WHITE};
