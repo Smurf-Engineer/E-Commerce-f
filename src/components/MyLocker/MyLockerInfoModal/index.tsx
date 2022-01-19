@@ -3,6 +3,7 @@
  *  Component
  */
 import * as React from 'react'
+import { Modal } from 'antd'
 import messages from './messages'
 import {
   Title,
@@ -11,7 +12,6 @@ import {
   IconTitle,
   Content,
 } from './styledComponents'
-import CustomModal from '../../Common/JakrooModal'
 import DesignCheckLogo from '../../../assets/Design-Check-Logo.svg'
 import ProAssistLogo from '../../../assets/Pro-Assist-Logo.svg'
 
@@ -24,17 +24,23 @@ interface Props {
 export class MyLockerInfoModal extends React.Component<Props, {}> {
   render() {
     const { formatMessage, visible, requestClose } = this.props
-    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
+    const isMobile =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 1023px)').matches
 
     return (
       <Container>
-        <CustomModal
-          open={visible}
-          withLogo={false}
-          requestClose={requestClose}
-          width={isMobile ? '100%' : '768px'}
+        <Modal
+          visible={visible}
+          footer={null}
+          onCancel={requestClose}
+          width={isMobile ? '100%' : '1024px'}
           wrapClassName={isMobile ? 'transparentMask' : 'horizontal-padding'}
-          maskStyle={isMobile ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' } : {}}
+          maskStyle={
+            isMobile
+              ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' }
+              : {}
+          }
         >
           <Title
             dangerouslySetInnerHTML={{
@@ -52,13 +58,13 @@ export class MyLockerInfoModal extends React.Component<Props, {}> {
               __html: formatMessage(messages.proAssistInfo),
             }}
           />
-          <IconTitle src={DesignCheckLogo} />
+          <IconTitle src={DesignCheckLogo} height="24px" />
           <Content
             dangerouslySetInnerHTML={{
               __html: formatMessage(messages.designCheckInfo),
             }}
           />
-        </CustomModal>
+        </Modal>
       </Container>
     )
   }

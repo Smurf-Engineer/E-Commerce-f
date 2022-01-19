@@ -10,7 +10,8 @@ export const Title = styled.div`
   font-size: 18px;
   line-height: 32px;
   text-align: center;
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
+    font-size: 16px;
     color: ${WHITE};
   }
 `
@@ -19,7 +20,8 @@ export const SubTitle = styled.div`
   font-size: 16px;
   line-height: 28px;
   text-align: center;
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
+    font-size: 14px;
     color: ${WHITE};
   }
 `
@@ -29,10 +31,13 @@ export const IconTitle = styled.img`
   height: ${({ height }) => height || '24px'};
   display: flex;
   align-items: flex-start;
+  @media (max-width: 1023px) {
+    margin-top: 15px;
+  }
 `
 
 export const Content = styled.div`
-  margin: 20px 0 55px;
+  margin: 20px 0 40px;
   color: ${GRAY_DARK};
   font-size: 14px;
   letter-spacing: 0.2px;
@@ -62,7 +67,9 @@ export const Content = styled.div`
     padding-left: 0;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     color: ${WHITE};
+    font-size: 12px;
+    margin: 15px 0 30px;
   }
 `
