@@ -179,6 +179,10 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       if (upgradeTwo && upgradeTwo.enabled) {
         set(item, 'product.upgradeTwo', upgradeTwo)
       }
+      const upgradeThree = get(response, 'data.product.upgradeThree', {})
+      if (upgradeThree && upgradeThree.enabled) {
+        set(item, 'product.upgradeThree', upgradeThree)
+      }
     }
     if (designId) {
       const response = await query({
@@ -333,6 +337,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     const details = [] as CartItemDetail[]
     const upgradeOne = get(item, 'product.upgradeOne', {})
     const upgradeTwo = get(item, 'product.upgradeTwo', {})
+    const upgradeThree = get(item, 'product.upgradeThree', {})
     const youthCombined = get(item, 'product.youthCombined', false)
     const detail: CartItemDetail = {
       quantity: 1
@@ -366,6 +371,22 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         }) 
       } else {
         detail.secondUpgrade = defaultUpgradeTwo
+      }
+    }
+
+    if (upgradeThree.enabled) {
+      const { options = [] } = upgradeThree || {}
+      const defaultUpgradeThree = upgradeThree.defaultOption !== -1 ? options[upgradeThree.defaultOption] : {}
+      if (itemProdPage) {
+        item.itemDetails.forEach((detailItem) => {
+          const isYouth = youthCombined && detailItem.gender && detailItem.gender.name === 'Youth'
+          if (!isYouth) {
+            const upgradeItem = options.find(({ name }) => detailItem.upgradeThree === name)
+            detailItem.thirdUpgrade = upgradeItem || defaultUpgradeThree
+          }
+        }) 
+      } else {
+        detail.thirdUpgrade = defaultUpgradeThree
       }
     }
     

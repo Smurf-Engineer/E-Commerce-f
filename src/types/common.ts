@@ -827,6 +827,7 @@ export type CartItemDetail = {
   bottomSize?: ItemDetailType
   firstUpgrade?: ItemDetailType
   secondUpgrade?: ItemDetailType
+  thirdUpgrade?: ItemDetailType
 }
 
 export interface AddressType {

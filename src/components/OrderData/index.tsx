@@ -297,8 +297,9 @@ class OrderData extends React.Component<Props, {}> {
 
         totalWithoutDiscount += quantitySum * (currencyPrices && currencyPrices[0] ? currencyPrices[0].price : 0)
 
-        const subUpgrade = itemDetails.reduce((sum, { quantity, upgradeOnePrice = 0, upgradeTwoPrice = 0}) =>
-          sum + (upgradeOnePrice * quantity) + (quantity * upgradeTwoPrice)
+        // tslint:disable-next-line: max-line-length
+        const subUpgrade = itemDetails.reduce((sum, { quantity, upgradeOnePrice = 0, upgradeTwoPrice = 0, upgradeThreePrice = 0}) =>
+          sum + (upgradeOnePrice * quantity) + (quantity * upgradeTwoPrice) + (quantity * upgradeThreePrice)
         // tslint:disable-next-line: align
         , 0)
         const productId = get(cartItem, 'product.id', '')

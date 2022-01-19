@@ -1277,7 +1277,8 @@ class Checkout extends React.Component<Props, {}> {
               variableOneValue,
               variableTwoValue,
               firstUpgrade: firstUpObj,
-              secondUpgrade: secondUpObj
+              secondUpgrade: secondUpObj,
+              thirdUpgrade: thirdObj
             }: CartItemDetail) => {
               const fitId = get(fit, 'id', 0)
               const fitName = get(fit, 'name', '')
@@ -1287,6 +1288,7 @@ class Checkout extends React.Component<Props, {}> {
               }
               const firstUpgrade = get(firstUpObj, 'name', '')
               const secondUpgrade = get(secondUpObj, 'name', '')
+              const thirdUpgrade = get(thirdObj, 'name', '')
               unset(gender, '__typename')
               unset(quantity, '__typename')
               unset(size, '__typename')
@@ -1304,6 +1306,7 @@ class Checkout extends React.Component<Props, {}> {
                 bottomSize,
                 firstUpgrade,
                 secondUpgrade,
+                thirdUpgrade,
                 variableOneValue,
                 variableTwoValue
               }

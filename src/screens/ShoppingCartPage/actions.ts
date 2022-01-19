@@ -115,13 +115,15 @@ export const setUpgradeItemDetailAction = (
   index: number,
   detailIndex: number,
   isFirst: boolean,
-  upgrade: ItemDetailType
+  upgrade: ItemDetailType,
+  isThird: boolean
 ): AnyAction => ({
   type: SET_UPGRADE_ITEM_DETAIL_ACTION,
   index,
   detailIndex,
   isFirst,
-  upgrade
+  upgrade,
+  isThird
 })
 
 export const setColorItemDetailAction = (

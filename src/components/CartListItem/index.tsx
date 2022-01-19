@@ -91,7 +91,8 @@ interface Props {
     index: number,
     detailIndex: number,
     isFirst: boolean,
-    upgrade: ItemDetailType
+    upgrade: ItemDetailType,
+    isThird: boolean
   ) => void
   setDetailSize?: (
     index: number,

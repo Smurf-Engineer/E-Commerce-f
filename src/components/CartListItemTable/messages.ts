@@ -30,6 +30,10 @@ export default defineMessages({
     id: 'components.CartListItemTable.upgradeTwo',
     defaultMessage: 'Upgrade #2'
   },
+  upgradeThree: {
+    id: 'components.CartListItemTable.upgradeThree',
+    defaultMessage: 'Upgrade #3'
+  },
   topSize: {
     id: 'components.CartListItemTable.topSize',
     defaultMessage: 'Top Size'

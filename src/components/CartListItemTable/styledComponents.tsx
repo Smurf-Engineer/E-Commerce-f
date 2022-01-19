@@ -46,16 +46,28 @@ type RowProps = {
   upgradeOne?: boolean
   isMobile?: boolean
   upgradeTwo?: boolean
+  upgradeThree?: boolean
 }
 
 export const Row = styled.div`
   display: grid;
-  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces, upgradeOne, upgradeTwo, isMobile }: RowProps) => {
+  grid-template-columns: ${({
+      withColor,
+      onlyRead,
+      withTwoPieces,
+      upgradeOne,
+      upgradeTwo,
+      upgradeThree,
+      isMobile
+    }: RowProps) => {
     let upgrade = 0
     if (upgradeOne && !isMobile) {
       upgrade += 1 
     }
     if (upgradeTwo && !isMobile) {
+      upgrade += 1
+    }
+    if (upgradeThree && !isMobile) {
       upgrade += 1
     }
     if (withColor) {
@@ -86,12 +98,15 @@ export const Row = styled.div`
 
 export const HeaderRow = styled.div`
   display: grid;
-  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces, upgradeOne, upgradeTwo }: RowProps) => {
+  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces, upgradeOne, upgradeTwo, upgradeThree }: RowProps) => {
     let upgrade = 0
     if (upgradeOne) {
       upgrade += 1 
     }
     if (upgradeTwo) {
+      upgrade += 1
+    }
+    if (upgradeThree) {
       upgrade += 1
     }
     if (withColor) {
@@ -325,4 +340,5 @@ export const QuestionSpan = styled.span`
 export const CellContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: ${({ align }: CellProps) => align || 'flex-start'};
 `

@@ -67,6 +67,26 @@ export const getProductQuery = gql`
           eur
         }
       }
+      upgradeThree: upgrade_three {
+        id
+        shortId: short_id
+        enabled
+        name
+        url
+        defaultOption: default_option
+        modalImage: modal_image
+        mobileImage: mobile_image
+        options {
+          aud
+          id
+          cad
+          shortId: short_id
+          gbp
+          name
+          usd
+          eur
+        }
+      }
     }
   }
 `
