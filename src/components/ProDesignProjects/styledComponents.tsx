@@ -710,3 +710,42 @@ export const CloseButtonStatus = styled.div`
     margin-top: 0px;
   }
 `
+
+export const DesktopCloseButton = styled.div`
+  font-size: 12px;
+  box-shadow: -2px 2px 4px -1px #a7a7a7;
+  transition: all .25s;
+  position: absolute;
+  top: -12px;
+  right: -9px;
+  border-radius: 100%;
+  background: #4c4c4c;
+  height: 28px;
+  width: 28px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border: 1px solid #dbdbdb;
+  color: ${WHITE};
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+  @media (max-width: 1042px) {
+    right: 1px;
+  }
+  @media (min-width: 1441px) {
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 16px;
+    height: 32px;
+    width: 32px;
+  }
+`
+
+export const CloseIcon = styled(Icon)``
