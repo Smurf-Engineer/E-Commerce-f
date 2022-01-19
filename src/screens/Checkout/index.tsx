@@ -1288,7 +1288,7 @@ class Checkout extends React.Component<Props, {}> {
               }
               const firstUpgrade = get(firstUpObj, 'name', '')
               const secondUpgrade = get(secondUpObj, 'name', '')
-              const thirdUpgrade = get(thirObj, 'name', '')
+              const thirdUpgrade = get(thirdObj, 'name', '')
               unset(gender, '__typename')
               unset(quantity, '__typename')
               unset(size, '__typename')

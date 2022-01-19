@@ -407,7 +407,7 @@ class CartListItemTable extends React.Component<Props, State> {
       ) return
       return (
         <HeaderCell key={index} {...{ width }}>
-          <CellContainer>
+          <CellContainer align={index === 9 ? 'center' : 'flex-start'}>
             <Title
               titleWidth={index === 0 && !onlyRead ? genderSelectWidth : ''}
               align={
@@ -868,7 +868,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   {secondUpgrade && secondUpgrade.name ? secondUpgrade.name : (defaultUpgradeTwo || '-')}
                 </InfoCell>
               }
-              {upgradeThree && upgradeThree.enabled &&
+              {upgradeThree && upgradeThree.enabled && !upgradeTwo.enabled &&
                 <InfoCell start={isMobile ? 5 : 0} end={isMobile ? 7 : 0}>
                   {isMobile && 
                     <UpgradeTitle>
@@ -880,6 +880,15 @@ class CartListItemTable extends React.Component<Props, State> {
                 </InfoCell>
               }
               {!isMobile && <InfoCell align={'center'}>{quantity || '-'}</InfoCell>}
+              {upgradeThree && upgradeThree.enabled && upgradeTwo.enabled &&
+                <InfoCell start={1} end={3}>
+                  <UpgradeTitle>
+                    {upgradeThree.name}
+                    <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeThree)} />
+                  </UpgradeTitle>
+                  {thirdUpgrade && thirdUpgrade.name ? thirdUpgrade.name : (defaultUpgradeThree || '-')}
+                </InfoCell>
+              }
               {variableOne && 
                 <InfoCell start={1} end={(upgradeOne.enabled || isMobile) ? 3 : 2} align="column">
                   <VariableTitle>

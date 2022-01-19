@@ -340,4 +340,5 @@ export const QuestionSpan = styled.span`
 export const CellContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: ${({ align }: CellProps) => align || 'flex-start'};
 `
