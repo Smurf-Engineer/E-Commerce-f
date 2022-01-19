@@ -476,15 +476,15 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             <Spin size="large" />
           </TransparentLoader>
         )}
+        <HelpWrapper>
+          <HelpMessage>{formatMessage(messages.helpMessage)}</HelpMessage>
+          <HelpLink>{formatMessage(messages.helpLink)}</HelpLink>
+        </HelpWrapper>
         <MessageText {...{ admin }}>
           {admin
             ? formatMessage(messages.userLocker, { userName })
             : formatMessage(messages.message)}
         </MessageText>
-        <HelpWrapper>
-          <HelpMessage>{formatMessage(messages.helpMessage)}</HelpMessage>
-          <HelpLink>{formatMessage(messages.helpLink)}</HelpLink>
-        </HelpWrapper>
         {!admin && <MessagePrevent>{formatMessage(messages.messagePrevent)}</MessagePrevent>}
         <Filters>
           <FilterTitle>{formatMessage(messages.filters)}</FilterTitle>

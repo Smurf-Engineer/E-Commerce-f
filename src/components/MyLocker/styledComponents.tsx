@@ -106,9 +106,6 @@ export const MessageText = styled.div`
       opacity: 1;
     }
   }
-  @media (min-width: 320px) and (max-width: 768px) {
-    margin-top: -24px;
-  }
 `
 
 export const MessagePrevent = styled.div`
@@ -312,12 +309,12 @@ export const ButtonWrapper = styled.div`
 
 export const HelpWrapper = styled.div`
   position: absolute;
-  margin-top: -132px;
+  margin-top: -90px;
   right: 50px;
   font-size: 16px;
   @media (min-width: 320px) and (max-width: 768px) {
     position: inherit;
-    margin-top: 0;
+    margin-top: -20px;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
