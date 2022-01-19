@@ -1,6 +1,7 @@
 /**
  * Styled Components - Created by eduardoquintero on 13/09/19.
  */
+import { Button } from 'antd'
 import styled from 'styled-components'
 import { GRAY_DARK, RED, WHITE } from '../../../theme/colors'
 
@@ -70,6 +71,22 @@ export const Content = styled.div`
   @media (max-width: 1023px) {
     color: ${WHITE};
     font-size: 12px;
-    margin: 15px 0 30px;
+    margin: 10px 0 20px;
   }
+`
+
+export const CloseButton = styled(Button)`
+  background: black;
+  color: white;
+
+  &:hover {
+    background: black;
+    color: white;
+    border-color: white;
+  }
+`
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `

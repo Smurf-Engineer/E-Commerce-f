@@ -11,6 +11,8 @@ import {
   Container,
   IconTitle,
   Content,
+  CloseButton,
+  ButtonContainer,
 } from './styledComponents'
 import DesignCheckLogo from '../../../assets/Design-Check-Logo.svg'
 import ProAssistLogo from '../../../assets/Pro-Assist-Logo.svg'
@@ -31,6 +33,7 @@ export class MyLockerInfoModal extends React.Component<Props, {}> {
     return (
       <Container>
         <Modal
+          closable={!isMobile}
           visible={visible}
           footer={null}
           onCancel={requestClose}
@@ -64,6 +67,11 @@ export class MyLockerInfoModal extends React.Component<Props, {}> {
               __html: formatMessage(messages.designCheckInfo),
             }}
           />
+          {isMobile && (
+            <ButtonContainer>
+              <CloseButton onClick={requestClose}>Close</CloseButton>
+            </ButtonContainer>
+          )}
         </Modal>
       </Container>
     )
