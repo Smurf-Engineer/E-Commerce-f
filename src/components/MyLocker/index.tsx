@@ -47,7 +47,10 @@ import {
   ButtonWrapper,
   StyledButton,
   SearchInput,
-  SubOptions
+  SubOptions,
+  HelpLink,
+  HelpMessage,
+  HelpWrapper
 } from './styledComponents'
 import {
   DesignResultType,
@@ -478,6 +481,10 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             ? formatMessage(messages.userLocker, { userName })
             : formatMessage(messages.message)}
         </MessageText>
+        <HelpWrapper>
+          <HelpMessage>{formatMessage(messages.helpMessage)}</HelpMessage>
+          <HelpLink>{formatMessage(messages.helpLink)}</HelpLink>
+        </HelpWrapper>
         {!admin && <MessagePrevent>{formatMessage(messages.messagePrevent)}</MessagePrevent>}
         <Filters>
           <FilterTitle>{formatMessage(messages.filters)}</FilterTitle>

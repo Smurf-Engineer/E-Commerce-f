@@ -106,6 +106,9 @@ export const MessageText = styled.div`
       opacity: 1;
     }
   }
+  @media (min-width: 320px) and (max-width: 768px) {
+    margin-top: -24px;
+  }
 `
 
 export const MessagePrevent = styled.div`
@@ -122,6 +125,9 @@ export const MessagePrevent = styled.div`
       transform: translateX(0);
       opacity: 1;
     }
+  }
+  @media (min-width: 320px) and (max-width: 768px) {
+    font-size: 12px;
   }
 `
 
@@ -301,5 +307,39 @@ export const ButtonWrapper = styled.div`
   @media (min-width: 320px) and (max-width: 768px) {
     margin: 1%;
     width: 100%;
+  }
+`
+
+export const HelpWrapper = styled.div`
+  position: absolute;
+  margin-top: -132px;
+  right: 50px;
+  font-size: 16px;
+  @media (min-width: 320px) and (max-width: 768px) {
+    position: inherit;
+    margin-top: 0;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    text-align: end;
+  }
+`
+
+export const HelpMessage = styled.span`
+  margin-right: 8px;
+  @media (min-width: 320px) and (max-width: 768px) {
+    margin-right: 0;
+  }
+`
+
+export const HelpLink = styled.span`
+  color: ${BLUE};
+  font-weight: bold;
+  &:hover {
+    cursor: pointer;
+  }
+  @media (min-width: 320px) and (max-width: 768px) {
+    margin-top: 4px;
   }
 `
