@@ -56,7 +56,9 @@ import {
   IconDiv,
   AboutCollab,
   CollabIcon,
-  MobileContainer
+  MobileContainer,
+  DesktopCloseButton,
+  CloseIcon
 } from './styledComponents'
 import messages from './messages'
 import {
@@ -727,11 +729,9 @@ class ProDesignProjects extends React.Component<Props, {}> {
                   </StatusMobileBody>
                 </StatusCardMobile>
               </StatusCardsSection>
-              <BottomSectionStatus>
-                <CloseButtonStatus onClick={this.closeStatusModal}>
-                  {formatMessage(messages.close)}
-                </CloseButtonStatus>
-              </BottomSectionStatus>
+              <DesktopCloseButton onClick={this.closeStatusModal}>
+                <CloseIcon type="close" />
+              </DesktopCloseButton>
             </>
           }
         </Modal>

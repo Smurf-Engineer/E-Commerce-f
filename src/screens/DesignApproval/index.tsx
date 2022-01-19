@@ -283,7 +283,9 @@ import {
   ArrowLong,
   CloseButtonStatus,
   StatusCardMobile,
-  StatusMobileBody
+  StatusMobileBody,
+  DesktopCloseButton,
+  CloseModalIcon
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -2921,6 +2923,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 <CloseButtonStatus onClick={this.closeStatusModal}>
                   {formatMessage(messages.close)}
                 </CloseButtonStatus>
+                <DesktopCloseButton onClick={this.closeStatusModal}>
+                  <CloseModalIcon type="close" />
+                </DesktopCloseButton>
               </BottomSectionStatus>
             </Modal>
           <PayModal
