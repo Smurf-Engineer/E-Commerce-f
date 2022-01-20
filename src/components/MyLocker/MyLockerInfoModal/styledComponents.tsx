@@ -3,14 +3,18 @@
  */
 import { Button } from 'antd'
 import styled from 'styled-components'
-import { GRAY_DARK, RED, WHITE } from '../../../theme/colors'
+import { BLACK, GRAY_DARK, RED, WHITE } from '../../../theme/colors'
 
 export const Container = styled.div``
 
 export const Title = styled.div`
-  font-size: 18px;
-  line-height: 32px;
+  font-size: 20px;
+  line-height: 36px;
   text-align: center;
+  @media (max-width: 1919px) {
+    font-size: 18px;
+    line-height: 32px;
+  }
   @media (max-width: 1023px) {
     font-size: 16px;
     color: ${WHITE};
@@ -18,9 +22,13 @@ export const Title = styled.div`
 `
 
 export const SubTitle = styled.div`
-  font-size: 16px;
-  line-height: 28px;
+  font-size: 18px;
+  line-height: 32px;
   text-align: center;
+  @media (max-width: 1919px) {
+    font-size: 16px;
+    line-height: 28px;
+  }
   @media (max-width: 1023px) {
     font-size: 14px;
     color: ${WHITE};
@@ -40,9 +48,9 @@ export const IconTitle = styled.img`
 export const Content = styled.div`
   margin: 20px 0 40px;
   color: ${GRAY_DARK};
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 0.2px;
-  line-height: 22px;
+  line-height: 26px;
 
   .important {
     color: ${RED};
@@ -68,21 +76,32 @@ export const Content = styled.div`
     padding-left: 0;
   }
 
+  @media (max-width: 1919px) {
+    font-size: 14px;
+    line-height: 22px;
+  }
   @media (max-width: 1023px) {
     color: ${WHITE};
-    font-size: 12px;
     margin: 10px 0 20px;
+  }
+  @media (max-width: 767px) {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  @media (max-width: 424px) {
+    font-size: 10px;
+    line-height: 16px;
   }
 `
 
 export const CloseButton = styled(Button)`
-  background: black;
-  color: white;
+  background: ${BLACK};
+  color: ${WHITE};
 
   &:hover {
-    background: black;
-    color: white;
-    border-color: white;
+    background: ${BLACK};
+    color: ${WHITE};
+    border-color: ${WHITE};
   }
 `
 

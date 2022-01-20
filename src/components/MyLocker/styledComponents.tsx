@@ -312,7 +312,7 @@ export const HelpWrapper = styled.div`
   margin-top: -90px;
   right: 50px;
   font-size: 16px;
-  @media (min-width: 320px) and (max-width: 768px) {
+  @media (min-width: 320px) and (max-width: 1023px) {
     position: inherit;
     margin-top: -20px;
     margin-bottom: 20px;
