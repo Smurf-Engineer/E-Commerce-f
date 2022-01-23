@@ -826,9 +826,27 @@ export const StyledTitle = styled.div`
   text-align: center;
 `
 
+export const DragIcon = styled(Icon)`
+  display: flex;
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  font-size: 12px;
+  transform: rotate(45deg);
+  background: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+  color: gray;
+  box-shadow: 1px 1px 4px -1px grey;
+  cursor: col-resize;
+`
+
 export const StyledTabs = styled(AntdTabs)`
   text-align: center;
-  max-width: 400px;
   width: 100%;
   box-shadow: 2px 0px 8px 0px ${GRAY_LIGHT};
   .ant-tabs-nav {

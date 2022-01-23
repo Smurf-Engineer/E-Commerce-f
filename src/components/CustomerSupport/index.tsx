@@ -6,7 +6,7 @@ import { Container, Title, Text } from './styledComponents'
 import messages from './messages'
 import Span from '../Common/UnderlinedLink'
 
-const PRICING_LINK = 'http://www.jakroo.com/JV2PRICING.pdf'
+const PRICING_LINK = 'https://storage.googleapis.com/jakroo/homepage/JV2PRICING.pdf'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
