@@ -15,6 +15,7 @@ import queryString from 'query-string'
 import AntdMessage from 'antd/lib/message'
 import Button from 'antd/lib/button'
 import Select from 'antd/lib/select'
+import { Resizable } from 're-resizable'
 import { uploadFileAction as uploadFileComment } from '../../screens/ResellerSignup/api'
 import messageIcon from '../../assets/approval_log.svg'
 import JakRooLogo from '../../assets/Jackroologo.svg'
@@ -285,7 +286,8 @@ import {
   StatusCardMobile,
   StatusMobileBody,
   DesktopCloseButton,
-  CloseModalIcon
+  CloseModalIcon,
+  DragIcon
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -293,12 +295,15 @@ import Tab from './Tab'
 import Modal from 'antd/lib/modal'
 import { COLOR, APPROVAL, COLLAB, COMMENTS, memberColors, memberTypeOptions } from './constants'
 import {
+  ALERT_APPROVED,
+  ALERT_REQUEST,
   APPROVER_ROLE,
   COMMENTER_ROLE,
   CUSTOMER_APPROVED,
   CUSTOMER_PREVIEW,
   DATE_FORMAT,
   EDIT,
+  EDITING,
   FROM_ADMIN,
   GUEST_ROLE,
   IN_DESIGN,
@@ -308,6 +313,7 @@ import {
   PREDYED_DEFAULT,
   PREDYED_TRANSPARENT,
   PREFLIGHT_STATUS,
+  PROJECT_COMMENT,
   PROJECT_MESSAGE,
   PROJECT_REVIEW,
   TIME_FORMAT
@@ -473,6 +479,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   private chatDiv: any
   private catalogDiv: any
   private emailInput: any
+  private dragger: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     if (navigator && navigator.serviceWorker) {
@@ -544,9 +551,27 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const { data: notificationData } = notification
     const payload = get(notificationData, 'firebase-messaging-msg-data.data', notificationData)
     const { notification_type } = payload
+    if (notification_type === PROJECT_COMMENT) {
+      const { membersComments } = this.props
+      await membersComments.refetch()
+      setTimeout(() => { this.scrollMessagesComment() }, 250) 
+    }
+    if (notification_type === ALERT_REQUEST) {
+      const { data } = this.props
+      set(data, 'projectItem.status', EDITING)
+    }
+    if (notification_type === ALERT_APPROVED) {
+      const { data } = this.props
+      set(data, 'projectItem.status', CUSTOMER_APPROVED)
+    }
     if (notification_type === PROJECT_MESSAGE || notification_type === PROJECT_REVIEW) {
       const { data } = this.props
       await data.refetch()
+    }
+  }
+  mouseLeave = () => {
+    if (this.dragger) {
+      this.dragger.setState({ isResizing: false })
     }
   }
   openPurchaseModal = () => {
@@ -2136,9 +2161,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 rows={4}
               />
               <SendCommentButton
-                disabled={!commentMessage || sendingComment || uploadingFileComment}
+                disabled={(!commentMessage && !commentFile) || sendingComment || uploadingFileComment}
                 onClick={(
-                  !commentMessage || sendingComment || uploadingFileComment) ? 
+                  (!commentMessage && !commentFile) || sendingComment || uploadingFileComment) ? 
                   () => {} : 
                   this.sendCommentAction
                 }
@@ -2181,87 +2206,106 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             <JakrooProDesign src={JakrooProLogo} />
           </BlackBar>
           <Layouts>
-            {!!itemStatus &&
-              <StyledTabs
-                secondary={
-                  ownerEmail === 'jesus@tailrecursive.co' || 
-                  ownerEmail === 'derekw@jakroousa.com' ||
-                  ownerEmail === 'acaurora@comcast.net' ||
-                  ownerEmail === 'bbtester1@jakroousa.com' || 
-                  ownerEmail === 'derekrwiseman@gmail.com'
-                }
-                activeKey={selectedKey}
-                onTabClick={this.onTabClickAction}
+            {!!itemStatus && !isMobile &&
+              <Resizable
+                ref={(dragger) => { this.dragger = dragger }} 
+                defaultSize={{ width: '400px' }}
+                minWidth="400px"
+                maxWidth="1024px"
+                onMouseUp={this.mouseLeave}
+                handleComponent={{ right: <DragIcon type="arrows-alt" />}}
+                enable={{
+                  top: false,
+                  right: true,
+                  bottom: false,
+                  left: false,
+                  topRight: false,
+                  bottomRight: false,
+                  bottomLeft: false,
+                  topLeft: false
+                }}
               >
-                {(ownerEmail === 'jesus@tailrecursive.co' || 
-                  ownerEmail === 'derekw@jakroousa.com' ||
-                  ownerEmail === 'acaurora@comcast.net' ||
-                  ownerEmail === 'bbtester1@jakroousa.com' ||
-                  ownerEmail === 'derekrwiseman@gmail.com') &&
+                <StyledTabs
+                  secondary={
+                    ownerEmail === 'jesus@tailrecursive.co' || 
+                    ownerEmail === 'derekw@jakroousa.com' ||
+                    ownerEmail === 'acaurora@comcast.net' ||
+                    ownerEmail === 'bbtester1@jakroousa.com' || 
+                    ownerEmail === 'derekrwiseman@gmail.com'
+                  }
+                  activeKey={selectedKey}
+                  onTabClick={this.onTabClickAction}
+                >
+                  {(ownerEmail === 'jesus@tailrecursive.co' || 
+                    ownerEmail === 'derekw@jakroousa.com' ||
+                    ownerEmail === 'acaurora@comcast.net' ||
+                    ownerEmail === 'bbtester1@jakroousa.com' ||
+                    ownerEmail === 'derekrwiseman@gmail.com') &&
+                    <TabPane
+                      tab={
+                        <Tab
+                          selected={selectedKey === COLLAB}
+                          label={COLLAB}
+                          icon={selectedKey === COLLAB ? teamIconSelected : teamIcon}
+                        />
+                      }
+                      key={COLLAB}
+                    >
+                      <TabContent height={windowHeight}>
+                        {collabComponent}
+                      </TabContent>
+                    </TabPane>
+                  }
                   <TabPane
                     tab={
                       <Tab
-                        selected={selectedKey === COLLAB}
-                        label={COLLAB}
-                        icon={selectedKey === COLLAB ? teamIconSelected : teamIcon}
+                        selected={selectedKey === APPROVAL}
+                        label={APPROVAL}
+                        icon={selectedKey === APPROVAL ? messageIconSelected : messageIcon}
                       />
                     }
-                    key={COLLAB}
+                    key={APPROVAL}
                   >
                     <TabContent height={windowHeight}>
-                      {collabComponent}
+                      {chatComponent}
                     </TabContent>
                   </TabPane>
-                }
-                <TabPane
-                  tab={
-                    <Tab
-                      selected={selectedKey === APPROVAL}
-                      label={APPROVAL}
-                      icon={selectedKey === APPROVAL ? messageIconSelected : messageIcon}
-                    />
+                  {(ownerEmail === 'jesus@tailrecursive.co' || 
+                    ownerEmail === 'derekw@jakroousa.com' ||
+                    ownerEmail === 'acaurora@comcast.net' ||
+                    ownerEmail === 'bbtester1@jakroousa.com' ||
+                    ownerEmail === 'derekrwiseman@gmail.com') &&
+                    <TabPane
+                      tab={
+                        <Tab
+                          selected={selectedKey === COMMENTS}
+                          label={COMMENTS}
+                          icon={selectedKey === COMMENTS ? commentsIconSelected : commentsIcon}
+                        />
+                      }
+                      key={COMMENTS}
+                    >
+                      <TabContent height={windowHeight}>
+                        {commentsComponent}
+                      </TabContent>
+                    </TabPane>
                   }
-                  key={APPROVAL}
-                >
-                  <TabContent height={windowHeight}>
-                    {chatComponent}
-                  </TabContent>
-                </TabPane>
-                {(ownerEmail === 'jesus@tailrecursive.co' || 
-                  ownerEmail === 'derekw@jakroousa.com' ||
-                  ownerEmail === 'acaurora@comcast.net' ||
-                  ownerEmail === 'bbtester1@jakroousa.com' ||
-                  ownerEmail === 'derekrwiseman@gmail.com') &&
                   <TabPane
                     tab={
                       <Tab
-                        selected={selectedKey === COMMENTS}
-                        label={COMMENTS}
-                        icon={selectedKey === COMMENTS ? commentsIconSelected : commentsIcon}
+                        selected={selectedKey === COLOR}
+                        label={COLOR}
+                        icon={selectedKey === COLOR ? colorIconSelected : colorIcon}
                       />
                     }
-                    key={COMMENTS}
+                    key={COLOR}
                   >
                     <TabContent height={windowHeight}>
-                      {commentsComponent}
+                      {colorComponent}
                     </TabContent>
                   </TabPane>
-                }
-                <TabPane
-                  tab={
-                    <Tab
-                      selected={selectedKey === COLOR}
-                      label={COLOR}
-                      icon={selectedKey === COLOR ? colorIconSelected : colorIcon}
-                    />
-                  }
-                  key={COLOR}
-                >
-                  <TabContent height={windowHeight}>
-                    {colorComponent}
-                  </TabContent>
-                </TabPane>
-              </StyledTabs>
+                </StyledTabs>
+              </Resizable>
             }
             <LayoutRight>
               {readyToShow &&

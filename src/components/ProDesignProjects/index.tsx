@@ -91,7 +91,7 @@ import { PROJECTS_LIMIT, Pages, memberColors } from './constants'
 import { deleteProjectMutation, getHomepageInfo, getProDesignProjects } from './data'
 import Spin from 'antd/lib/spin'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
-import { DATE_FORMAT } from '../../constants'
+import { ALERT_APPROVED, ALERT_REQUEST, DATE_FORMAT, PROJECT_COMMENT } from '../../constants'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import Carousel from 'antd/lib/carousel'
@@ -142,11 +142,30 @@ class ProDesignProjects extends React.Component<Props, {}> {
     if (!!id) {
       this.handleOnClickProject(parseInt(id, 10))
     }
+    if (navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.addEventListener('message', this.reloadMessages)
+    }
   }
 
   componentWillUnmount() {
     const { resetDataAction } = this.props
+    if (navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.removeEventListener('message', this.reloadMessages)
+    }
     resetDataAction()
+  }
+
+  reloadMessages = async (notification: Notification) => {
+    const { data: notificationData } = notification
+    const payload = get(notificationData, 'firebase-messaging-msg-data.data', notificationData)
+    const { notification_type } = payload
+    if (notification_type === PROJECT_COMMENT || 
+        notification_type === ALERT_REQUEST || 
+        notification_type === ALERT_APPROVED
+      ) {
+      const { list } = this.props
+      await list.refetch()
+    }
   }
 
   openStatusModal = () => {

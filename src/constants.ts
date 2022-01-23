@@ -50,6 +50,9 @@ export const NEW_PRODUCT = 'new'
 export const FROM_ADMIN = 'admin'
 export const PROJECT_MESSAGE = 'PROJECT_MESSAGE'
 export const PROJECT_REVIEW = 'PROJECT_REVIEW'
+export const PROJECT_COMMENT = 'PROJECT_COMMENT'
+export const ALERT_APPROVED = 'ALERT_APPROVED'
+export const ALERT_REQUEST = 'ALERT_REQUEST'
 
 /* Prodesign Design status */
 export const PREFLIGHT_STATUS = 'preflight'

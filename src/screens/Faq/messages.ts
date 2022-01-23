@@ -34,7 +34,7 @@ export default defineMessages({
   getStartedAnswer: {
     id: 'screens.Faq.getStartedAnswer',
     defaultMessage:
-      '<p>We need all logos and artwork to be Vector format. That way we can scale it, pull color from it and change it as needed for the design. The files are either eps or ai, created in Adobe Illustrator or similar vector program. If you cannot get Vector art, a high resolution Raster image may work for us, preferably a psd, tiff, or png file with transparent background. Please consult JAKROO to see if your artwork is usable. In most cases, we can convert logos into Vector format for an additional charge. To Learn More about <a href="https://www.jakroo.com/us/art-specs.html">JAKROO Art Specs</a>, please go <a href="https://www.jakroo.com/us/art-specs.html">here</a>.</p><br/>'
+      '<p>We need all logos and artwork to be Vector format. That way we can scale it, pull color from it and change it as needed for the design. The files are either eps or ai, created in Adobe Illustrator or similar vector program. If you cannot get Vector art, a high resolution Raster image may work for us, preferably a psd, tiff, or png file with transparent background. Please consult JAKROO to see if your artwork is usable. In most cases, we can convert logos into Vector format for an additional charge. To Learn More about <a href="https://designlab.jakroo.com/artwork-specs">JAKROO Art Specs</a>, please go <a href="https://designlab.jakroo.com/artwork-specs">here</a>.</p><br/>'
   },
   canYouHelpQuestion: {
     id: 'screens.Faq.canYouHelpQuestion',
