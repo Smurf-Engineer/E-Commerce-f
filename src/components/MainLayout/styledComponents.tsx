@@ -65,7 +65,7 @@ export const CarouselContainer = styled.div`
 export const CloseIcon = styled(Icon)`
   margin-top: -46px;
   display: flex;
-  z-index: 99999;
+  z-index: 990;
   width: 26px;
   height: 26px;
   align-items: center;

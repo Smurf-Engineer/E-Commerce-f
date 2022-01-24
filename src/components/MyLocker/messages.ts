@@ -14,6 +14,14 @@ export default defineMessages({
     // tslint:disable-next-line: max-line-length
     defaultMessage: 'If you have saved a design that is not displaying, please try logging out and back in to refresh your locker.'
   },
+  helpMessage: {
+    id: 'components.MyLocker.helpMessage',
+    defaultMessage: 'It’s important to us that every design turns out just right!'
+  },
+  helpLink: {
+    id: 'components.MyLocker.helpLink',
+    defaultMessage: 'We’re here to help.'
+  },
   titleError: {
     id: 'components.MyLocker.titleError',
     defaultMessage: 'Oops!'

@@ -47,7 +47,10 @@ import {
   ButtonWrapper,
   StyledButton,
   SearchInput,
-  SubOptions
+  SubOptions,
+  HelpLink,
+  HelpMessage,
+  HelpWrapper
 } from './styledComponents'
 import {
   DesignResultType,
@@ -66,6 +69,7 @@ import {
   DATE_FORMAT_STARTING_YEAR
 } from '../../constants'
 import { designExistsOnCart } from '../../utils/utilsShoppingCart'
+import InfoModal from './MyLockerInfoModal'
 
 interface Props {
   history: any
@@ -130,6 +134,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     filterDate: '',
     startDateFilter: null,
     endDateFilter: null,
+    showInfoModal: false,
   }
   raiseSearchWhenUserStopsTyping = debounce(
     () => this.props.setSearchTextAction(this.state.searchValue),
@@ -384,6 +389,14 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     onGoBack('')
   }
 
+  handleOpenInfoModal = () => {
+    this.setState({ showInfoModal: true })
+  }
+
+  handleCloseInfoModal = () => {
+    this.setState({ showInfoModal: false })
+  }
+
   componentWillUnmount() {
     const { resetFiltersAction } = this.props
     resetFiltersAction()
@@ -421,7 +434,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       filterType: stateFilterType,
       filterDate: stateFilterDate,
       startDateFilter,
-      endDateFilter
+      endDateFilter,
+      showInfoModal
     } = this.state
 
     let alternativeContent = null
@@ -473,6 +487,10 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             <Spin size="large" />
           </TransparentLoader>
         )}
+        <HelpWrapper>
+          <HelpMessage>{formatMessage(messages.helpMessage)}</HelpMessage>
+          <HelpLink onClick={this.handleOpenInfoModal}>{formatMessage(messages.helpLink)}</HelpLink>
+        </HelpWrapper>
         <MessageText {...{ admin }}>
           {admin
             ? formatMessage(messages.userLocker, { userName })
@@ -625,6 +643,11 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             }}
           />
         </Modal>
+        <InfoModal
+          requestClose={this.handleCloseInfoModal}
+          visible={showInfoModal}
+          {...{ formatMessage }}
+        />
       </Container>
     )
   }
