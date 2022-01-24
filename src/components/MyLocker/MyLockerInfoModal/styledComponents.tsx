@@ -89,7 +89,7 @@ export const Content = styled.div`
     line-height: 18px;
   }
   @media (max-width: 424px) {
-    font-size: 10px;
+    font-size: 11px;
     line-height: 16px;
   }
 `
@@ -108,4 +108,7 @@ export const CloseButton = styled(Button)`
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
+  position: fixed;
+  bottom: 30px;
+  width: 100%;
 `

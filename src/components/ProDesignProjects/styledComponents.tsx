@@ -438,10 +438,10 @@ export const MobileContainer = styled.div`
   height: calc(100vh - 30px);
   position: fixed;
   @media (max-height: 1023px) {
-    font-size: 14px !important;
+    font-size: 12.5px !important;
   }
   @media (max-height: 768px) {
-    font-size: 11px !important;
+    font-size: 10.5px !important;
   }
 `
 
@@ -602,7 +602,7 @@ export const StatusImage = styled.img`
     box-shadow: none;
   }
   @media (max-width: 640px) {
-    max-width: 74px;
+    max-width: 68px;
     margin-right: 0;
     margin-left: -14px;
   }
