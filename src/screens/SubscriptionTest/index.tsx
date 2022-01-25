@@ -40,7 +40,8 @@ export class SubscriptionTest extends React.Component<Props, {}> {
       subscribeToMore({
         document: commentsSubscription,
         updateQuery: (prev: any, { subscriptionData }: any) => {
-          // const { data } = subscriptionData
+          const { data } = subscriptionData
+          console.log('🔴data:', data)
           return prev
         }
       })
