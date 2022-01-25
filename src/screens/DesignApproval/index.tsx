@@ -853,6 +853,18 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     this.setState({ commentMessage: value })
   }
 
+  inputPressKey = async (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    const { commentMessage, commentFile, uploadingFileComment, sendingComment } = this.state
+    if (evt && evt.key === 'Enter' && 
+        !evt.shiftKey &&
+        (commentMessage || commentFile) &&
+        !sendingComment &&
+        !uploadingFileComment
+    ) {
+      await this.sendCommentAction()
+    }
+  }
+
   sendCommentAction = async () => {
     const {
       intl: { formatMessage },
@@ -912,6 +924,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         snd.play()
         snd.remove()
         this.setState({ commentMessage: '', commentFile: '', commentResponding: {} })
+        if (this.commentInput && this.commentInput.textAreaRef) {
+          this.commentInput.textAreaRef.value = ''
+        }
       }
     } catch (e) {
       const errorMessage = e.graphQLErrors.map((x: any) => x.message)
@@ -2152,13 +2167,22 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               </UploadFileComment>
               <InputComment
                 innerRef={(commentInput: any) => { this.commentInput = commentInput }}
-                value={commentMessage}
                 disabled={sendingComment}
                 onChange={this.handleInputComment}
-                maxLength={768}
+                onKeyPress={this.inputPressKey}
                 placeholder="You can add multiple text here..."
                 autosize={{ minRows: 1, maxRows: 12 }}
-                rows={4}
+                autocomplete="off" 
+                autocorrect="off" 
+                autofocus={false}
+                autocapitalize="off" 
+                spellcheck={false}
+                autoComplete="off" 
+                autoCorrect="off" 
+                autoFocus={false}
+                autoCapitalize="off" 
+                spellCheck={false}
+                rows={1}
               />
               <SendCommentButton
                 disabled={(!commentMessage && !commentFile) || sendingComment || uploadingFileComment}
