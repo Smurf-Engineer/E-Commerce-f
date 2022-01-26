@@ -517,10 +517,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         document: commentsSubscription,
         updateQuery: (prev: any, { subscriptionData }: any) => {
           const itemId = get(subscriptionData, 'data.messageAdded.text', '')
-          if (id === itemId) {
-            membersComments.refetch()
-            data.refetch()
-          }
+          console.log('🔴itemId:', itemId)
+          console.log('🔴Id:', id)
+          membersComments.refetch()
+          data.refetch()
           return prev
         }
       })
