@@ -393,6 +393,7 @@ interface StateProps {
   sendingComment: boolean
   selectedKeyMobile: string
   openStatusInfo: boolean
+  reloadData: boolean
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -472,7 +473,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     showConfirmInvites: false,
     savingInvitations: false,
     selectedKeyMobile: '',
-    openStatusInfo: false
+    openStatusInfo: false,
+    reloadData: false
   }
   private commentList: any
   private listMsg: any
@@ -494,7 +496,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       return
     }
     const search = get(history, 'location.search', '')
-    const { project, product, tab, id } = queryString.parse(search)
+    const { project, product, tab } = queryString.parse(search)
     if (!!project && !!product) {
       this.handleEditProject(project, product)
     }
@@ -508,19 +510,15 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       setTimeout(() => { this.onTabClickAction(tab) }, 800)
     }
     const isBrowser = typeof window !== 'undefined'
-    const { membersComments, data } = this.props
+    const { membersComments } = this.props
     if (isBrowser && membersComments && 
         membersComments.subscribeToMore && 
         /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
     ) {
       membersComments.subscribeToMore({
         document: commentsSubscription,
-        updateQuery: (prev: any, { subscriptionData }: any) => {
-          const itemId = get(subscriptionData, 'data.messageAdded.text', '')
-          console.log('🔴itemId:', itemId)
-          console.log('🔴Id:', id)
-          membersComments.refetch()
-          data.refetch()
+        updateQuery: (prev: any) => {
+          this.setState({ reloadData: true })
           return prev
         }
       })
@@ -562,6 +560,12 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     if (window._slaask) {
       window._slaask.destroy()
     }
+  }
+  reloadQueries = () => {
+    const { membersComments, data } = this.props
+    this.setState({ reloadData: false })
+    membersComments.refetch()
+    data.refetch()
   }
   handleEditProject = (project?: number, product?: number) => {
     const { setEditProject } = this.props
@@ -1541,7 +1545,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       teamStoreId,
       selectedVariant,
       openPrintPreview,
-      selectedKeyMobile
+      selectedKeyMobile,
+      reloadData
     } = this.state
     const currency = currentCurrency || config.defaultCurrency
     const fontList: Font[] = get(fontsData, 'fonts', [])
@@ -1605,6 +1610,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       const { obj, mtl } = variants[selectedVariant]
       modelObj = obj
       modelMtl = mtl
+    }
+    const isSafari = typeof window !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+
+    if (reloadData && isSafari) {
+      this.reloadQueries()
     }
     
     const hideAdvertising = typeof window !== 'undefined' ? localStorage.getItem('hideAdvertising') : ''
