@@ -415,3 +415,12 @@ export const updateReactionMutation = gql`
     }
   }
 `
+
+export const commentsSubscription = gql`
+  subscription comments {
+    messageAdded {
+      id
+      text
+    }
+  }
+`

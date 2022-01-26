@@ -52,7 +52,8 @@ import {
   reSendInvitationsMutation,
   getProdesignItemCommentsQuery,
   sendCommentMutation,
-  updateReactionMutation
+  updateReactionMutation,
+  commentsSubscription
 } from './data'
 import {
   openLoginAction
@@ -493,7 +494,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       return
     }
     const search = get(history, 'location.search', '')
-    const { project, product, tab } = queryString.parse(search)
+    const { project, product, tab, id } = queryString.parse(search)
     if (!!project && !!product) {
       this.handleEditProject(project, product)
     }
@@ -506,6 +507,24 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     if (tab) {
       setTimeout(() => { this.onTabClickAction(tab) }, 800)
     }
+    const isBrowser = typeof window !== 'undefined'
+    const { membersComments, data } = this.props
+    if (isBrowser && membersComments && 
+        membersComments.subscribeToMore && 
+        /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+    ) {
+      membersComments.subscribeToMore({
+        document: commentsSubscription,
+        updateQuery: (prev: any, { subscriptionData }: any) => {
+          const itemId = get(subscriptionData, 'data.messageAdded.text', '')
+          if (id === itemId) {
+            membersComments.refetch()
+            data.refetch()
+          }
+          return prev
+        }
+      })
+    }
   }
   componentWillUnmount() {
     if (navigator && navigator.serviceWorker) {
@@ -517,7 +536,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   }
   componentWillMount() {
     const { user, client } = this.props
-    if (typeof window !== 'undefined' && !user) {
+    const isBrowser = typeof window !== 'undefined'
+    if (isBrowser && !user) {
       const { restoreUserSessionAction } = this.props
       restoreUserSessionAction(client)
     }
@@ -920,12 +940,16 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           },
         })
         AntdMessage.success(formatMessage(messages.messageSent))
-        const snd = new Audio(messageSent)
-        snd.play()
-        snd.remove()
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+        if (!isSafari) {
+          const snd = new Audio(messageSent)
+          snd.play()
+          snd.remove()
+        }
         this.setState({ commentMessage: '', commentFile: '', commentResponding: {} })
-        if (this.commentInput && this.commentInput.textAreaRef) {
-          this.commentInput.textAreaRef.value = ''
+        const node = document.querySelector('#commentInput')
+        if (node) {
+          node.value = ''
         }
       }
     } catch (e) {
@@ -2166,6 +2190,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 {uploadingFileComment ? <Spin size="small" /> : <ClipComment type="paper-clip" />}
               </UploadFileComment>
               <InputComment
+                id="commentInput"
                 innerRef={(commentInput: any) => { this.commentInput = commentInput }}
                 disabled={sendingComment}
                 onChange={this.handleInputComment}
