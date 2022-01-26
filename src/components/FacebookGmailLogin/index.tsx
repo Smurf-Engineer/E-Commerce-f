@@ -12,7 +12,8 @@ import {
   GoogleButton,
   SocialIcon,
   GoogleLabel,
-  GoogleRenderButton
+  GoogleRenderButton,
+  LoadingContainer
 } from './styledComponents'
 import { NEW_USER } from '../../constants'
 import config from '../../config'
@@ -20,6 +21,7 @@ import messages from './messages'
 import { facebooklLogin, googleLogin } from './data'
 import googleIcon from '../../assets/google.svg'
 import fbIcon from '../../assets/fb-icon.svg'
+import Spin from 'antd/lib/spin'
 const unauthorizedExp = /\balready an account\b/
 
 interface Props {
@@ -40,7 +42,11 @@ interface Props {
 }
 
 class FacebookGmailLogin extends React.Component<Props, {}> {
+  state = {
+    loading: false
+  }
   render() {
+    const { loading } = this.state
     const { formatMessage, signUpView, adminLogin } = this.props
     const googleLabel = signUpView
       ? formatMessage(messages.googleSignUpLabel)
@@ -52,6 +58,11 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
 
     return (
       <Container>
+        {loading &&
+          <LoadingContainer>
+            <Spin size="large" />
+          </LoadingContainer>
+        }
         <GoogleButton
           clientId={config.googleId || ''}
           onSuccess={this.googleLoginSuccess}
@@ -79,6 +90,9 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
               appId={config.facebookId || ''}
               autoLoad={false}
               fields="name,email,picture"
+              cookie={true}
+              version="12.0"
+              xfbml={true}
               callback={this.responseFacebook}
               scope="public_profile, email"
               render={({ onClick }) => (
@@ -109,7 +123,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       city
     } = this.props
     const token = get(facebookResp, 'accessToken')
-
+    this.setState({ loading: true })
     try {
       const response = await loginWithFacebook({
         variables: {
@@ -142,6 +156,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         message.error(formatMessage(messages.userExistsError))
       }
       console.error(error)
+    } finally {
+      this.setState({ loading: false })
     }
   }
 
@@ -159,7 +175,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       city
     } = this.props
     const token = get(resp, 'tokenId', false)
-
+    this.setState({ loading: true })
     try {
       const response = await loginWithGoogle({
         variables: {
@@ -194,6 +210,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       } else {
         message.error(errorMessage)
       }
+    } finally {
+      this.setState({ loading: false })
     }
   }
 
