@@ -11,10 +11,11 @@ const renderHtml = (styleTags: any, html: any, helmet: any) => {
           <script>
             window.fbAsyncInit = function() {
               FB.init({
-                appId            : ${config.facebookId},
-                autoLogAppEvents : true,
-                xfbml            : true,
-                version          : 'v12.0'
+                appId: ${config.facebookId},
+                autoLogAppEvents: true,
+                cookie: true,
+                xfbml: true,
+                version: 'v12.0'
               });
             };
 
