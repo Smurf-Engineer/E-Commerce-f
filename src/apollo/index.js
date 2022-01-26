@@ -72,7 +72,7 @@ const wsLink = process.browser
   ? new WebSocketLink({
     uri: config.paypalEnv === 'production' ? 'wss://api-express.jakroo.com/api/subscriptions' : 'ws://localhost:4040/api/subscriptions',
     options: {
-      reconnect: true // TODO: CHANGE TO TRUE LATER
+      reconnect: config.paypalEnv === 'production' // TODO: CHANGE TO TRUE LATER
     }
   })
   : null
