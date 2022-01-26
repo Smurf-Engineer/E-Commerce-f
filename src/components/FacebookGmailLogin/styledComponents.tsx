@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import GoogleLogin from 'react-google-login'
-import { FACEBOOKBLUE, WHITE, GOOGLERED } from '../../theme/colors'
+import { FACEBOOKBLUE, WHITE, GOOGLERED, WHITE_TRANSPARENT } from '../../theme/colors'
 export const Container = styled.div`
   width: 100%;
   margin-bottom: 30px;
@@ -75,4 +75,17 @@ export const SocialIcon = styled.i`
 `
 export const GoogleLabel = styled.span`
   margin-left: 10px;
+`
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 10000;
+  height: 100vh;
+  background: ${WHITE_TRANSPARENT};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
