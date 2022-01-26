@@ -14,7 +14,7 @@ const renderHtml = (styleTags: any, html: any, helmet: any) => {
                 appId            : ${config.facebookId},
                 autoLogAppEvents : true,
                 xfbml            : true,
-                version          : 'v2.12'
+                version          : 'v12.0'
               });
             };
 
