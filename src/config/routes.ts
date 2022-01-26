@@ -25,7 +25,6 @@ import TeamstoreProductPage from '../screens/TeamstoreProductPage'
 import Account from '../screens/Account'
 import FitWidget from '../screens/FitWidget'
 import Designs from '../screens/Designs'
-import SubscriptionTest from '../screens/SubscriptionTest'
 import DesignApproval from '../screens/DesignApproval'
 import ProductDetail from '../screens/ProductDetail'
 import ProductCatalog from '../screens/ProductCatalogue'
@@ -47,11 +46,6 @@ const routes = [
     path: '/admin/publishing-tool',
     name: 'publishingTool',
     component: PublishingTool
-  },
-  {
-    path: '/subs',
-    name: 'subscriptionTest',
-    component: SubscriptionTest
   },
   {
     path: '/admin/design-tools',

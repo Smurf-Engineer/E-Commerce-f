@@ -15,7 +15,6 @@ import account from '../screens/Account/reducer'
 import home from '../screens/Home/reducer'
 import reset from '../screens/ResetPassword/reducer'
 import storeFront from '../screens/StoreFront/reducer'
-import subscriptionTest from '../screens/SubscriptionTest/reducer'
 import teamstoreProductPage from '../screens/TeamstoreProductPage/reducer'
 import searchTeamstores from '../screens/SearchTeamstores/reducer'
 import checkout from '../screens/Checkout/reducer'
@@ -110,7 +109,6 @@ export interface ReducersObject {
   teamstoreProductPage: any
   account: any
   payModal: any
-  subscriptionTest: any
   fitWidget: any
   resellers: any
   designs: any
@@ -254,7 +252,6 @@ const rootReducer = combineReducers({
   searchTeamstores,
   teamstoreProductPage,
   account,
-  subscriptionTest,
   fitWidget,
   designs,
   designSearchAdmin,
