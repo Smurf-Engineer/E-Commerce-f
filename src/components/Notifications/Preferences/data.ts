@@ -9,6 +9,7 @@ export const profileNotificationSettingsQuery = gql`
       notifyProductService: notify_product_service
       notifyTeamStore: notify_team_store
       notifyDesignLab: notify_design_lab
+      notifyComments: notify_comments
       newsletterSubscribed: newsletter_subscribed
     }
   }

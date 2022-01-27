@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'components.Notifications.Preferences.notifyProDesignComment',
     defaultMessage: '( design reviews, messages, alerts )'
   },
+  notifyComments: {
+    id: 'components.Notifications.Preferences.notifyComments',
+    defaultMessage: 'Comments Notifications'
+  },
+  notifyCommentsComment: {
+    id: 'components.Notifications.Preferences.notifyCommentsComment',
+    defaultMessage: '( Team Comments, collaboration alerts )'
+  },
   notifyProductService: {
     id: 'components.Notifications.Preferences.notifyProductService',
     defaultMessage: 'Important Product & Service notices'

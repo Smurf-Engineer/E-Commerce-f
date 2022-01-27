@@ -35,7 +35,7 @@ export const NotificationContainer = styled.div`
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-left: ${({ marginLeft }: ColumnProps) =>
     marginLeft ? marginLeft : '0px'};
 `
@@ -55,8 +55,8 @@ export const Header = styled.div`
 export const Title = styled.div`
   display: flex;
   align-items: baseline;
-  margin-bottom: 2px;
-  margin-top: 2px;
+  margin-bottom: 4px;
+  margin-top: 4px;
 
   @media (max-width: 768px) {
     flex-direction: column;
