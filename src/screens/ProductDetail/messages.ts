@@ -27,7 +27,7 @@ export default defineMessages({
   },
   youth: {
     id: 'screens.ProductDetail.youth',
-    defaultMessage: 'Youth'
+    defaultMessage: 'Youth Available'
   },
   productNotFound: {
     id: 'screens.ProductDetail.productNotFound',

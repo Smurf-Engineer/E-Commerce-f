@@ -133,7 +133,7 @@ export const Type = styled.div`
   text-overflow: ellipsis;
   width: ${({ fitContainer }: StyleProps) => (fitContainer ? '100%' : '212px')};
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   ${({ fromTop }: StyleProps) => fromTop ? `
     width: 178px;
@@ -154,13 +154,18 @@ export const WomenIcon = styled(Icon)`
 export const GendersContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 `
 
 export const YouthLabel = styled.div`
-  font-size: 10px;
+  font-size: 8px;
   color: #549c8c;
+  font-family: Avenir;
+  font-weight: bold;
   margin-left: 3px;
+  text-align: right;
+  line-height: 1.5;
+  max-width: 38px;
 `
 
 export const Description = styled.div`
