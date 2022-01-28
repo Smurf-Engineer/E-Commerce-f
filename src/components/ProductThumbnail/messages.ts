@@ -11,6 +11,6 @@ export default defineMessages({
   },
   youth: {
     id: 'components.Payment.youth',
-    defaultMessage: 'Youth'
+    defaultMessage: 'Youth Available'
   }
 })
