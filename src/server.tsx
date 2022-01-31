@@ -47,13 +47,18 @@ server
     const context = {}
     const store = configureStore()
     const { dispatch } = store
-
     const {
       lang: langFound = 'en',
       currency: currencyFound = 'usd'
     } = req.query
-    const code = req.params ? req.params[0].split('/').pop() : 'us'
-
+    const params = req.params ? req.params[0] : ''
+    const paramsArray = params ? params.split('/') : []
+    const code = paramsArray ? paramsArray.pop() : 'us'
+    const firstPath = paramsArray ? paramsArray[0] : ''
+    if (firstPath === 'store_imgs') {
+      res.redirect(`https://23.21.173.129${location}`)
+      return
+    }
     let locale: Region = {
       region: 'global',
       code,
