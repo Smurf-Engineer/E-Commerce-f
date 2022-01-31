@@ -8,6 +8,7 @@ import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet } from 'styled-components'
 import fetch from 'node-fetch'
+import request from 'request'
 import Html from './helpers/Html'
 import renderHtml from './helpers/render'
 import UAParser from 'ua-parser-js'
@@ -56,7 +57,7 @@ server
     const code = paramsArray ? paramsArray.pop() : 'us'
     const firstPath = paramsArray ? paramsArray[0] : ''
     if (firstPath === 'store_imgs') {
-      res.redirect(`https://23.21.173.129${location}`)
+      req.pipe(request(`https://23.21.173.129${location}`)).pipe(res)
       return
     }
     let locale: Region = {
