@@ -57,7 +57,7 @@ server
     const code = paramsArray ? paramsArray.pop() : 'us'
     const firstPath = paramsArray ? paramsArray[0] : ''
     if (firstPath === 'store_imgs') {
-      req.pipe(request(`https://23.21.173.129${location}`)).pipe(res)
+      req.pipe(request({ url: `https://23.21.173.129${location}`, rejectUnauthorized: false })).pipe(res)
       return
     }
     let locale: Region = {
