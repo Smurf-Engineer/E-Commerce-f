@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'components.OrderData.invoice',
     defaultMessage: 'Invoice'
   },
+  aboutDynamicPricing: {
+    id: 'components.OrderData.aboutDynamicPricing',
+    defaultMessage: 'ABOUT DYNAMIC PRICING'
+  },
   makeChange: {
     id: 'components.OrderData.makeChange',
     // tslint:disable-next-line: max-line-length

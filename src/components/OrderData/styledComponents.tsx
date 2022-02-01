@@ -254,3 +254,22 @@ export const SavingContainer = styled.div`
   height: 100%;
   z-index: 29;
 `
+
+export const AboutCollab = styled.div`
+  margin-top: 34px;
+  display: flex;
+  align-items: center;
+  color: ${BLUE};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    img {
+      opacity: 0.5;
+    }
+  }
+`
+
+export const CollabIcon = styled(Icon)`
+  margin-right: 8px;
+`

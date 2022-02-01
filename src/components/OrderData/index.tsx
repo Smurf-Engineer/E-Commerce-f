@@ -33,11 +33,20 @@ import {
   SavingContainer,
   FedexLabel,
   OpenIcon,
-  FedexIcon
+  FedexIcon,
+  AboutCollab,
+  CollabIcon
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
-import { PURCHASE, PAYMENT_ISSUE, VARIABLE_PRICE, JAKROO_LOGO_BASE64, excludeVariables } from '../../constants'
+import {
+  PURCHASE,
+  PAYMENT_ISSUE,
+  VARIABLE_PRICE,
+  JAKROO_LOGO_BASE64,
+  excludeVariables,
+  PREORDER
+} from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
@@ -475,6 +484,12 @@ class OrderData extends React.Component<Props, {}> {
               ) : null */}
           </InfoContainer>
           <SummaryContainer {...{ savingPdf }}>
+            {status === PREORDER &&
+              <AboutCollab onClick={() => {}}>
+                <CollabIcon type="user" />
+                {formatMessage(messages.aboutDynamicPricing)}
+              </AboutCollab>
+            }
             <OrderSummary
               totalSum={total}
               shippingTotal={shippingAmount}
