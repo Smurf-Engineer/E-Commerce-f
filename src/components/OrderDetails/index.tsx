@@ -86,7 +86,8 @@ import {
   VARIABLE_PRICE,
   JAKROO_LOGO_BASE64,
   INVOICE_SENT,
-  excludeVariables
+  excludeVariables,
+  CANCELLED
 } from '../../constants'
 import ProductInfo from '../ProductInfo'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
@@ -550,7 +551,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 </AboutCollab>
               }
               {(teamStoreId && owner) && !savingPdf &&
-                (status === PREORDER || canUpdatePayment) &&
+                (status === PREORDER || canUpdatePayment) && status !== CANCELLED &&
                   <OrderActions>
                     <ButtonEdit onClick={this.handleOnEditOrder}>
                       {formatMessage(

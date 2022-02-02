@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { Container, Cell, EditButton, DeleteButton } from './styledComponents'
 import upperFirst from 'lodash/upperFirst'
-import { INVOICE_SENT, PAYMENT_ISSUE, PREORDER } from '../../../constants'
+import { CANCELLED, INVOICE_SENT, PAYMENT_ISSUE, PREORDER } from '../../../constants'
 
 interface Props {
   date: string
@@ -67,7 +67,7 @@ const ItemOrder = ({
         {upperFirst(status === INVOICE_SENT ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
       </Cell>
       <Cell>
-        {teamStoreId && owner && (status === PREORDER || canUpdatePayment) &&
+        {teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED &&
           <EditButton onClick={editOrderAction}>Edit</EditButton>
         }
       </Cell>
