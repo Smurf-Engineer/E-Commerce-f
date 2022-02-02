@@ -2,8 +2,9 @@
  * Styled Components - Created by david on 07/02/18.
  */
 import styled, { keyframes } from 'styled-components'
-import { GRAY_DARK, RED } from '../../theme/colors'
+import { BLACK, GRAY_DARK, RED } from '../../theme/colors'
 import Menu from 'antd/lib/menu'
+import Divider from 'antd/lib/divider'
 
 const showMenu = keyframes`
   from { opacity: 0};
@@ -20,6 +21,7 @@ export const Container = styled.div`
 
 interface OptionDropdownProps {
   selected?: boolean
+  bold?: boolean
 }
 
 export const OptionDropdown = styled.div`
@@ -27,6 +29,7 @@ export const OptionDropdown = styled.div`
   font-size: 18px;
   cursor: pointer;
   text-transform: uppercase;
+  font-weight: ${({ bold }: OptionDropdownProps) => bold ? 'bold' : 'normal'};
 `
 export const Option = styled.div`
   height: 100%;
@@ -53,4 +56,10 @@ export const StyledMenu = styled(Menu)`
   width: 100%;
   transition: all 1s ease-in;
   animation: ${showMenu} 1s ease-in;
+`
+
+export const StyledDivider = styled(Divider)`
+  height: 45px;
+  background: ${BLACK};
+}
 `

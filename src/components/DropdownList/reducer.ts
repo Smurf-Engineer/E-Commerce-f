@@ -37,6 +37,9 @@ const menuReducer: Reducer<any> = (state = initialState, action) => {
       const { index, visible } = action
       const sportOptions = state.get('sportOptions')
       const updatedSportOptions = sportOptions.update(index, (sport: any) => {
+        if (sport.get('label') === 'team stores') {
+          return sport
+        }
         const updatedSport = sport.set('menuOpen', visible)
         return updatedSport
       })

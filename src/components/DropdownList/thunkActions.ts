@@ -13,6 +13,19 @@ export const getSportsMenu = (client: any) => {
         fetchPolicy: 'network-only'
       })
       const sportsData = get(response, 'data.sports', [])
+      const maxId = sportsData.reduce(
+        (prev: any, cur: any) => ({
+          id: Math.max(prev.id, cur.id),
+        }),
+        {
+          id: 0,
+        }
+      ).id
+      sportsData.push({
+        id: maxId + 1,
+        name: 'TEAM STORES', 
+        route: 'search-teamstores',
+      })
       const sportOptions = sportsData.map(({ name, route }: NavbarSports) => ({
         label: name.toLowerCase(),
         menuOpen: false,

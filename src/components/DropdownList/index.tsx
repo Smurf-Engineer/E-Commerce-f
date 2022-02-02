@@ -24,6 +24,7 @@ import {
   Option,
   OptionDropdown,
   overStyle,
+  StyledDivider,
   StyledMenu
 } from './styledComponents'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
@@ -173,48 +174,57 @@ export class DropdownList extends React.PureComponent<Props> {
     const sportRoute = pathName && pathName.split('/')
     const sportMenus =
       sportOptions &&
-      sportOptions.map(({ label: name, menuOpen, route }, index) => {
-        const sportSelected = sportRoute[sportRoutePosition] === route
-        return (
-          <Menu.Item key={name}>
-            <Popover
-              overlayStyle={overStyle}
-              overlayClassName="innerClass"
-              trigger="hover"
-              placement="bottom"
-              visible={menuOpen}
-              mouseEnterDelay={0.3}
-              onVisibleChange={this.handleOnHideSportsMenu(index)}
-              content={
-                <MenuSports
-                  {...{
-                    sports,
-                    formatMessage,
-                    currentCurrency,
-                    history,
-                    name,
-                    user
-                  }}
-                  visible={menuOpen}
-                  type={index}
-                  onPressSeeAll={this.handleOnSeeAll}
-                  onPressQuickView={this.handleOnQuickView}
-                  onPressCustomize={this.handleOnCustomize}
-                  onPressThumbnail={this.handleOnHideSportsMenu}
-                />
-              }
-            >
-              <OptionDropdown
-                selected={sportSelected}
-                id={route}
-                onClick={this.handleRedirect}
+      sportOptions.length > 0 && 
+      sportOptions.reduce(
+        (prev: any, { label: name, menuOpen, route }, index) => {
+          const sportSelected = sportRoute[sportRoutePosition] === route
+          const divider = (
+            <StyledDivider type="vertical" />
+          )
+          const menuItem = (
+            <Menu.Item key={name}>
+              <Popover
+                overlayStyle={overStyle}
+                overlayClassName="innerClass"
+                trigger="hover"
+                placement="bottom"
+                visible={menuOpen}
+                mouseEnterDelay={0.3}
+                onVisibleChange={this.handleOnHideSportsMenu(index)}
+                content={
+                  <MenuSports
+                    {...{
+                      sports,
+                      formatMessage,
+                      currentCurrency,
+                      history,
+                      name,
+                      user
+                    }}
+                    visible={menuOpen}
+                    type={index}
+                    onPressSeeAll={this.handleOnSeeAll}
+                    onPressQuickView={this.handleOnQuickView}
+                    onPressCustomize={this.handleOnCustomize}
+                    onPressThumbnail={this.handleOnHideSportsMenu}
+                  />
+                }
               >
-                {name}
-              </OptionDropdown>
-            </Popover>
-          </Menu.Item>
-        )
-      })
+                <OptionDropdown
+                  selected={sportSelected}
+                  id={route}
+                  onClick={this.handleRedirect}
+                  bold={name === 'team stores'}
+                >
+                  {name}
+                </OptionDropdown>
+              </Popover>
+            </Menu.Item>
+          )
+          return name !== 'team stores' ? prev.concat(menuItem) : prev.concat(divider, menuItem)
+        }, 
+        []
+      )
     return (
       <StyledMenu mode="horizontal" selectable={false}>
         {sportMenus}
