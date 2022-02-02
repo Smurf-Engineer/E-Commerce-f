@@ -22,13 +22,15 @@ import {
   LoginFailedView,
   LoginFailed,
   OkButton,
-  InputIcon
+  InputIcon,
+  LoadingContainer
 } from './styledComponents'
 import JakrooModal from '../Common/JakrooModal'
 import FacebookGmailLogin from '../FacebookGmailLogin'
 import SignUp from '../SignUp'
 import { mailLogin } from './data'
 import messages from './messages'
+import Spin from 'antd/lib/spin'
 
 interface Props {
   open: boolean
@@ -63,6 +65,7 @@ interface StateProps {
 
 export class Login extends React.Component<Props, StateProps> {
   state = {
+    loading: false,
     isLoginIn: true,
     email: '',
     password: '',
@@ -90,6 +93,7 @@ export class Login extends React.Component<Props, StateProps> {
       city
     } = this.props
     const {
+      loading,
       isLoginIn,
       loginFailed,
       loginFailedReason,
@@ -175,6 +179,7 @@ export class Login extends React.Component<Props, StateProps> {
       <SignUp
         closeSignUp={this.showLogin}
         login={this.onSignedUp}
+        setLoading={this.setLoadingAction}
         setCountryValue={this.handleCountryChange}
         setRegionChange={this.handleRegionChange}
         {...{
@@ -195,13 +200,25 @@ export class Login extends React.Component<Props, StateProps> {
         requestClose={this.onClosemodal}
         style={{ top: 20 }}
       >
-        <Container>{renderView}</Container>
+        <Container>
+          {loading &&
+            <LoadingContainer>
+              <Spin size="large" />
+            </LoadingContainer>
+          }
+          {renderView}
+        </Container>
       </JakrooModal>
     )
   }
   handleJoinNow = () => {
     this.setState({ isLoginIn: false })
   }
+
+  setLoadingAction = (loading: boolean) => {
+    this.setState({ loading })
+  }
+
   onClosemodal = () => {
     const { requestClose } = this.props
     requestClose()
@@ -264,6 +281,7 @@ export class Login extends React.Component<Props, StateProps> {
     }
 
     try {
+      this.setState({ loading: true })
       const loginData = await loginWithEmail({ variables: { email, password } })
       const data = get(loginData, 'data.login', false)
       if (data) {
@@ -296,6 +314,8 @@ export class Login extends React.Component<Props, StateProps> {
         error.graphQLErrors.map((x: any) => x.message) || error.message
       message.error(errorMessage)
       console.error(error)
+    } finally {
+      this.setState({ loading: false })
     }
   }
 

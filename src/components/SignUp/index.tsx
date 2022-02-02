@@ -44,6 +44,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   closeSignUp: () => void
+  setLoading: (loading: boolean) => void
   signUpUser: (variables: {}) => void
   requestClose: () => void
   setCountryValue: (
@@ -317,6 +318,7 @@ class SignUp extends React.Component<Props, StateProps> {
       countryCode = '',
       regionName = '',
       city,
+      setLoading
     } = this.props
 
     if (password.length < 8) {
@@ -345,6 +347,7 @@ class SignUp extends React.Component<Props, StateProps> {
       return
     }
     try {
+      setLoading(true)
       const response = await signUpUser({ variables: { user } })
       const data = get(response, 'data.signUp', false)
       if (data) {
@@ -371,6 +374,8 @@ class SignUp extends React.Component<Props, StateProps> {
       message.error(errorMessage)
       console.error(error)
       this.clearState()
+    } finally {
+      setLoading(false)
     }
   }
 }

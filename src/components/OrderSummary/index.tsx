@@ -57,6 +57,7 @@ interface Props {
   admin?: boolean
   upgrades?: number
   variables?: number
+  simpleDesign?: boolean
   formatMessage: (messageDescriptor: Message, params?: PercentParams) => string
   setCouponCodeAction?: (code: CouponCode) => void
   deleteCouponCodeAction?: () => void
@@ -95,7 +96,8 @@ export class OrderSummary extends React.Component<Props, {}> {
       upgrades = 0,
       totalWithoutDiscount = 0,
       couponName = '',
-      admin = false
+      admin = false,
+      simpleDesign
     } = this.props
     const freeShipping = couponCode && couponCode.freeShipping
     const extraFee = proDesignReview + taxFee + taxPst + taxGst + shippingTotal + upgrades + variables
@@ -253,7 +255,7 @@ export class OrderSummary extends React.Component<Props, {}> {
         ) : null}
         <TotalOrderItem
           withoutMarginBottom={youSaved > 0}
-          {...{ onlyRead, showCouponInput }}
+          {...{ onlyRead, showCouponInput, simpleDesign }}
         >
           <FormattedMessage {...messages.total} />
           <div>{`${symbol} ${netTotal.toFixed(2)}`}</div>
