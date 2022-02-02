@@ -34,9 +34,12 @@ interface Props {
   interactiveHeaders: boolean
   currentPage: number
   orderBy: string
+  userId: string
   sort: sorts
   withPagination?: boolean
   withoutPadding?: boolean
+  editOrder: (orderId: string) => void
+  deleteOrder: (orderId: string) => void
   onSortClick: (label: string, sort: sorts) => void
   onOrderClick: (shortId: string, isService?: boolean) => void
   onChangePage: (page: number) => void
@@ -52,6 +55,9 @@ const OrdersList = ({
   onSortClick,
   onOrderClick,
   onChangePage,
+  deleteOrder,
+  editOrder,
+  userId,
   withPagination = true,
   withoutPadding = false
 }: Props) => {
@@ -118,6 +124,18 @@ const OrdersList = ({
               sort={orderBy === 'status' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
+            <HeaderTable
+              id={'status'}
+              label={''}
+              justifyContent={'flex-end'}
+              sort={'none'}
+            />
+            <HeaderTable
+              id={'status'}
+              label={''}
+              justifyContent={'flex-end'}
+              sort={'none'}
+            />
           </Row>
         )
       }}
@@ -126,7 +144,19 @@ const OrdersList = ({
 
   const orderItems = orders.map(
     (
-      { shortId, date, estimatedDate, status, netsuite, service, totalAmount, currency }: OrderHistory,
+      {
+        shortId,
+        date,
+        userId: authorId,
+        teamStoreId,
+        canUpdatePayment,
+        estimatedDate,
+        status,
+        netsuite,
+        service,
+        totalAmount,
+        currency
+      }: OrderHistory,
       index: number
     ) => {
       const netsuiteObject = get(netsuite, 'orderStatus')
@@ -142,8 +172,22 @@ const OrdersList = ({
         <ItemOrder
           key={index}
           status={netsuiteStatus || status}
+          owner={userId === authorId}
           currency={currency && currency.shortName ? currency.shortName.toUpperCase() : ''}
-          {...{ shortId, date, estimatedDate, onOrderClick, trackingNumber, service, totalAmount }}
+          {...{
+            editOrder,
+            deleteOrder,
+            formatMessage,
+            shortId,
+            teamStoreId,
+            canUpdatePayment,
+            date,
+            estimatedDate,
+            onOrderClick,
+            trackingNumber,
+            service,
+            totalAmount
+          }}
         />
       )
     }

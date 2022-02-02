@@ -9,7 +9,7 @@ import * as OrderHistoryActions from './actions'
 import { Container, ScreenTitle } from './styledComponents'
 import List from './OrdersList'
 import messages from './messages'
-import { sorts } from '../../types/common'
+import { sorts, User } from '../../types/common'
 import OrderDetails from '../OrderDetails'
 import SwipeableViews from 'react-swipeable-views'
 import queryString from 'query-string'
@@ -24,6 +24,7 @@ interface Props {
   isService: boolean
   orderId: string
   currentCurrency: string
+  user: User
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -32,6 +33,10 @@ interface Props {
 }
 
 class OrderHistory extends React.Component<Props, {}> {
+  state = {
+    editOrder: false,
+    deleteOrder: false
+  }
   componentDidMount() {
     const {
       history: {
@@ -49,9 +54,22 @@ class OrderHistory extends React.Component<Props, {}> {
     resetDataAction()
   }
 
-  render() {
-    const { currentPage, orderBy, currentCurrency, sort, formatMessage, orderId, isService, history } = this.props
+  editOrderAction = (orderId: string) => {
+    const { setOrderIdAction } = this.props
+    setOrderIdAction(orderId, false)
+    this.setState({ editOrder: true })
+  }
 
+  deleteOrderAction = (orderId: string) => {
+    const { setOrderIdAction } = this.props
+    setOrderIdAction(orderId, false)
+    this.setState({ deleteOrder: true })
+  }
+
+  render() {
+    const { currentPage, user, orderBy, currentCurrency, sort, formatMessage, orderId, isService, history } = this.props
+    const userId = user ? user.id : ''
+    const { deleteOrder, editOrder } = this.state
     return (
       <SwipeableViews
         onChangeIndex={this.handleOnChangeIndex}
@@ -62,10 +80,13 @@ class OrderHistory extends React.Component<Props, {}> {
             <FormattedMessage {...messages.title} />
           </ScreenTitle>
           <List
-            {...{ formatMessage, currentPage, orderBy, sort }}
+            {...{ formatMessage, currentPage, orderBy, sort, userId }}
             onSortClick={this.handleOnSortClick}
             onOrderClick={this.handleOnOrderClick}
+            editOrder={this.editOrderAction}
+            deleteOrder={this.deleteOrderAction}
             onChangePage={this.handleOnChangePage}
+            goToCart={this.goToCart}
             interactiveHeaders={true}
           />
         </Container>
@@ -78,6 +99,8 @@ class OrderHistory extends React.Component<Props, {}> {
             onReturn={this.handleOnOrderClick}
             from={ORDER_HISTORY}
             goToCart={this.goToCart}
+            showEdit={editOrder}
+            showDelete={deleteOrder}
             {...{ orderId, formatMessage, currentCurrency }}
           />
         }
@@ -103,6 +126,7 @@ class OrderHistory extends React.Component<Props, {}> {
   handleOnOrderClick = (orderId: string, isService?: boolean) => {
     const { setOrderIdAction } = this.props
     setOrderIdAction(orderId, isService)
+    this.setState({ editOrder: false, deleteOrder: false })
   }
 
   handleOnChangePage = (page: number) => {
@@ -113,9 +137,10 @@ class OrderHistory extends React.Component<Props, {}> {
 }
 
 const mapStateToProps = (state: any) => {
+  const app = state.get('app').toJS()
   const langProps = state.get('languageProvider').toJS()
   const orderHistory = state.get('orderHistory').toJS()
-  return { ...orderHistory, ...langProps }
+  return { ...app, ...orderHistory, ...langProps }
 }
 
 const OrderHistoryEnhance = compose(

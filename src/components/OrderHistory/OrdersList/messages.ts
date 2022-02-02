@@ -44,5 +44,32 @@ export default defineMessages({
   emptyMessage: {
     id: 'components.OrdersList.emptyMessage',
     defaultMessage: 'No orders yet'
-  }
+  },
+  editOrderTitle: {
+    id: 'components.OrdersList.editOrderTitle',
+    defaultMessage: 'ARE YOU SURE?'
+  },
+  editOrderMessage: {
+    id: 'components.OrdersList.editOrderMessage',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'By editing your order, all items will be added to your cart so you can update your payment information and complete the checkout. In doing so, this previous order will be cancelled.'
+  },
+  proceed: {
+    id: 'components.OrdersList.proceed',
+    defaultMessage: 'Yes, Proceed'
+  },
+  deleteTeamstoreTitle: {
+    id: 'components.OrdersList.deleteTeamstoreTitle',
+    defaultMessage: 'DELETE TEAMSTORE ORDER'
+  },
+  deleteTeamstoreMessage: {
+    id: 'components.OrdersList.deleteTeamstoreMessage',
+    defaultMessage:
+      'By deleting your order, you will no longer be counted on the team´s order list'
+  },
+  delete: {
+    id: 'components.OrdersList.delete',
+    defaultMessage: 'Yes, Delete'
+  },
 })

@@ -1,7 +1,9 @@
 /**
  * Styled Components - Created by miguelcanobbio on 13/07/18.
  */
+import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
+import { GRAY_SOFT, GRAY_STRONG, RED, WHITE } from '../../../theme/colors'
 
 export const Container = styled.tr`
   cursor: pointer;
@@ -34,5 +36,35 @@ export const Cell = styled.td`
   @media (max-width: 330px) and (max-width: 768px) {
     letter-spacing: 0.09px;
     font-size: 11px;
+  }
+`
+
+export const EditButton = styled.div`
+  border: 1px solid ${GRAY_SOFT};
+  color: ${GRAY_STRONG};
+  font-size: 12px;
+  transition: all .25s;
+  border-radius: 3px;
+  margin: 0 16px;
+  text-align: center;
+  transition: all .25s;
+  height: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    cursor: pointer;
+    background: ${GRAY_SOFT};
+    color: ${WHITE};
+  }
+`
+
+export const DeleteButton = styled(Icon)`
+  color: ${RED};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
   }
 `

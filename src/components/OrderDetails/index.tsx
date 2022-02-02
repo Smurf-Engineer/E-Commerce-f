@@ -15,14 +15,12 @@ import Modal from 'antd/lib/modal'
 import { getOrderQuery, deleteOrderMutation } from './data'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
-import Button from 'antd/lib/button'
 import {
   Container,
   ViewContainer,
   Div,
   ScreenTitle,
   // TODO: Commented to hide the receipt button until green light to continue with this implementation
-  ButtonWrapper,
   // Button,
   OrderInfo,
   OrderDelivery,
@@ -62,7 +60,15 @@ import {
   ModalTitle,
   WarningIcon,
   buttonStyle,
-  InfoBody
+  InfoBody,
+  AboutCollab,
+  CollabIcon,
+  StatusIcon,
+  BottomSectionStatus,
+  CloseButtonStatus,
+  StatusDescription,
+  StatusTitle,
+  ButtonEdit
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -100,6 +106,8 @@ interface Props {
   data?: Data
   from: string
   currentCurrency: string
+  showDelete: boolean
+  showEdit: boolean
   formatMessage: (messageDescriptor: any, variables?: {}) => string
   onReturn: (id: string) => void
   deleteOrder: (variables: {}) => Promise<any>
@@ -117,7 +125,9 @@ export class OrderDetails extends React.Component<Props, {}> {
     savingPdf: false,
     showPaymentIssue: true,
     showArrive: false,
-    showReturn: false
+    showReturn: false,
+    openStatusInfo: false,
+    shownAction: false
   }
   private copyInput: any
   private html2pdf: any
@@ -131,11 +141,11 @@ export class OrderDetails extends React.Component<Props, {}> {
     }
   }
   componentWillUnmount() {
-    this.setState({ showPaymentIssue: true })
+    this.setState({ showPaymentIssue: true, shownAction: false })
   }
   componentDidUpdate() {
-    const { data, formatMessage } = this.props
-    const { showPaymentIssue } = this.state
+    const { data, formatMessage, showEdit, showDelete } = this.props
+    const { showPaymentIssue, shownAction } = this.state
     const invoiceLink = get(data, 'orderQuery.invoiceLink', '')
     const status = get(data, 'orderQuery.status', '')
     if (status === INVOICE_SENT && !!invoiceLink && showPaymentIssue) {
@@ -153,6 +163,14 @@ export class OrderDetails extends React.Component<Props, {}> {
             __html: formatMessage(messages.paymentIssueInfo, { link: invoiceLink })
           }} />
       })
+    }
+    if (!shownAction && data && !data.loading && (showEdit || showDelete)) {
+      this.setState({ shownAction: true })
+      if (showEdit) {
+        this.handleOnEditOrder()
+      } else if (showDelete) {
+        this.handleOnDeleteOrder()
+      }
     }
   }
   downloadInvoice = async () => {
@@ -199,8 +217,23 @@ export class OrderDetails extends React.Component<Props, {}> {
   }
   handleOnReturn = () => {
     const { onReturn } = this.props
-    this.setState({ showPaymentIssue: true })
+    this.setState({ showPaymentIssue: true, shownAction: false })
     onReturn('')
+  }
+  openStatusModal = () => {
+    setTimeout(() => {
+      if (window.navigator && window.navigator.vibrate) {
+        navigator.vibrate([70, 50, 20])
+      }
+      this.setState({ openStatusInfo: true })
+    // tslint:disable-next-line: align
+    }, 250)
+  }
+  closeStatusModal = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
+    this.setState({ openStatusInfo: false })
   }
   render() {
     const {
@@ -226,7 +259,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       savingPdf,
       showPaymentIssue,
       showArrive,
-      showReturn
+      showReturn,
+      openStatusInfo
     } = this.state
 
     const getBackMessage =
@@ -294,6 +328,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
+    const isMobileModal = typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches
 
     const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
 
@@ -427,7 +462,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           <Icon type="left" />
           <span>{formatMessage(getBackMessage)}</span>
         </ViewContainer>
-        <Div>
+        <Div secondary={status === PREORDER}>
           <ScreenTitle>
             <FormattedMessage {...messages.title} />
           </ScreenTitle>
@@ -508,6 +543,25 @@ export class OrderDetails extends React.Component<Props, {}> {
               </DeliveryInfo>
             </OrderDelivery>
             <OrderSummaryContainer {...{ savingPdf }}>
+              {status === PREORDER && !savingPdf &&
+                <AboutCollab onMouseOver={this.openStatusModal}>
+                  <CollabIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
+                  {formatMessage(messages.aboutDynamicPricing)}
+                </AboutCollab>
+              }
+              {(teamStoreId && owner) && !savingPdf &&
+                (status === PREORDER || canUpdatePayment) &&
+                  <OrderActions>
+                    <ButtonEdit onClick={this.handleOnEditOrder}>
+                      {formatMessage(
+                        status === PAYMENT_ISSUE
+                          ? messages.updatePayment
+                          : messages.edit
+                      )}
+                    </ButtonEdit>
+                    <DeleteButton type="delete" onClick={this.handleOnDeleteOrder} />
+                  </OrderActions>
+              }
               <OrderSummary
                 onlyRead={true}
                 totalSum={total}
@@ -616,23 +670,6 @@ export class OrderDetails extends React.Component<Props, {}> {
             fixedCart={status === PAYMENT_ISSUE}
             replaceOrder={shortId}
           />
-        }
-        {(teamStoreId && owner) && !savingPdf &&
-          (status === PREORDER || canUpdatePayment) &&
-            <OrderActions>
-              <ButtonWrapper>
-                <Button type="primary" onClick={this.handleOnEditOrder}>
-                  {formatMessage(
-                    status === PAYMENT_ISSUE
-                      ? messages.updatePayment
-                      : messages.edit
-                  )}
-                </Button>
-              </ButtonWrapper>
-              <DeleteButton onClick={this.handleOnDeleteOrder}>
-                {formatMessage(messages.deleteOrder)}
-              </DeleteButton>
-            </OrderActions>
         }
         {!!teamStoreId && !savingPdf &&
           <FAQSection>
@@ -752,6 +789,27 @@ export class OrderDetails extends React.Component<Props, {}> {
             </FAQBody>
           </FAQSection>
         }
+        <Modal
+          visible={openStatusInfo}
+          footer={null}
+          closable={false}
+          width={isMobileModal ? '100%' : '564px'}
+          wrapClassName={isMobileModal ? 'transparentMask' : ''}
+          maskStyle={isMobileModal ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' } : {}}
+        >
+          <StatusIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
+          <StatusTitle>
+            {formatMessage(messages.dynamicPrice)}
+          </StatusTitle>
+          <StatusDescription>
+            {formatMessage(messages.dynamicPriceDesc)}
+          </StatusDescription>
+          <BottomSectionStatus>
+            <CloseButtonStatus onClick={this.closeStatusModal}>
+              {formatMessage(messages.close)}
+            </CloseButtonStatus>
+          </BottomSectionStatus>
+        </Modal>
       </Container>
     )
   }

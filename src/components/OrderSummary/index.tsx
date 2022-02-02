@@ -134,8 +134,8 @@ export class OrderSummary extends React.Component<Props, {}> {
         </SummaryTitle>
         {(totalWithoutDiscount > 0 && showDiscount) && (
           <OrderItem>
-            <FormattedMessage {...messages.total} />
-            <div>{`${symbol} ${totalWithoutDiscount.toFixed(2)}`}</div>
+            <FormattedMessage {...messages.subTotal} />
+            <div>{`${totalWithoutDiscount.toFixed(2)}`}</div>
           </OrderItem>
         )}
         {(youSaved > 0 && showDiscount) ? (
@@ -144,27 +144,27 @@ export class OrderSummary extends React.Component<Props, {}> {
               percent: savedPercent,
               isAdmin: !admin ? 'You ' : ''
             })}
-            <div>{`${symbol} ${saved.toFixed(2)}`}</div>
+            <div>{`${saved.toFixed(2)}`}</div>
           </YouSavedOrderItem>
         ) : null}
         <OrderItem>
           <FormattedMessage {...messages.subtotal} />
-          <div>{`${symbol} ${subtotal.toFixed(2)}`}</div>
+          <div>{`${subtotal.toFixed(2)}`}</div>
         </OrderItem>
         <CalculationsWrapper>
           <Divider withMargin={amountsDivider} />
           <OrderItem hide={!upgrades} secondary={true}>
             <FormattedMessage {...messages.upgrades} />
-            <div>{`${symbol} ${upgrades.toFixed(2)}`}</div>
+            <div>{`${upgrades.toFixed(2)}`}</div>
           </OrderItem>
           <OrderItem hide={!variables}>
             <FormattedMessage {...messages.variables} />
-            <div>{`${symbol} ${variables.toFixed(2)}`}</div>
+            <div>{`${variables.toFixed(2)}`}</div>
           </OrderItem>
           {!!proDesignReview && (
             <OrderItem>
               <FormattedMessage {...messages.proDesigner} />
-              <div>{`${symbol} ${proDesignReview.toFixed(2)}`}</div>
+              <div>{`${proDesignReview.toFixed(2)}`}</div>
             </OrderItem>
           )}
           {freeShipping &&
@@ -173,7 +173,7 @@ export class OrderSummary extends React.Component<Props, {}> {
                 {...messages[couponCode && couponCode.type !== FREE_SHIP ? 'freeShipping' : 'shipping']}
               />
               <ShippingValue crossed={couponCode && couponCode.type !== FREE_SHIP}>
-                {`${symbol} ${shippingTotal.toFixed(2)}`}
+                {`${shippingTotal.toFixed(2)}`}
               </ShippingValue>
             </OrderItem>
           }
@@ -188,7 +188,7 @@ export class OrderSummary extends React.Component<Props, {}> {
                 )}
               </FlexWrapper>
               <DiscountAmout>
-                {`- ${symbol} ${discountValue.toFixed(2)}`}
+                {`- ${discountValue.toFixed(2)}`}
               </DiscountAmout>
             </OrderItem>
           )}
@@ -204,7 +204,7 @@ export class OrderSummary extends React.Component<Props, {}> {
           {!freeShipping &&
             <OrderItem hide={!shippingTotal}>
               <FormattedMessage {...messages.shipping} />
-              <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
+              <div>{`${shippingTotal.toFixed(2)}`}</div>
             </OrderItem>
           }
           {/* taxes */}
@@ -215,19 +215,19 @@ export class OrderSummary extends React.Component<Props, {}> {
                 ({(taxPercent * 100).toFixed(2)}%)
               </PercentDiv>
             </TaxDiv>
-            <div>{`${symbol} ${taxFee.toFixed(2)}`}</div>
+            <div>{`${taxFee.toFixed(2)}`}</div>
           </OrderItem>
           <OrderItem hide={!taxGst}>
             <FormattedMessage {...messages.taxesGst} />
-            <div>{`${symbol} ${taxGst.toFixed(2)}`}</div>
+            <div>{`${taxGst.toFixed(2)}`}</div>
           </OrderItem>
           <OrderItem hide={!taxPst}>
             <FormattedMessage {...messages.taxesPst} />
-            <div>{`${symbol} ${taxPst.toFixed(2)}`}</div>
+            <div>{`${taxPst.toFixed(2)}`}</div>
           </OrderItem>
           <OrderItem hide={!taxVat}>
             <FormattedMessage {...messages.taxesVat} />
-            {taxVat && <div>{`${symbol} ${taxVat.toFixed(2)}`}</div>}
+            {taxVat && <div>{`${taxVat.toFixed(2)}`}</div>}
           </OrderItem>
         </CalculationsWrapper>
         {amountsDivider && <Divider />}

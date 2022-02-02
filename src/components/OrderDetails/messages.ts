@@ -203,7 +203,7 @@ export default defineMessages({
   },
   edit: {
     id: 'components.OrderDetails.edit',
-    defaultMessage: 'Edit Order'
+    defaultMessage: 'Edit'
   },
   editOrderTitle: {
     id: 'components.OrderDetails.editOrderTitle',
@@ -258,7 +258,7 @@ export default defineMessages({
     id: 'components.OrderDetails.messageTeamstore',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      '<p>We’ve received your team store order and will begin working on it once the Team Store closes.</p><p>All custom items are made-to-order and cannot be changed or cancelled once the store has closed and the order enters the production process. However, <u>during the open ordering period</u>, If you need to cancel or adjust your order (sizes, quantity, address, payment method, etc.), you can do so by clicking the <strong>EDIT</strong> button at the bottom of the order page. Doing so will cancel the existing order and repopulate your items back into your cart where you can make any necessary changes.</p><p>All orders will be shipped via FedEx International Priority. A <strong>signature is required</strong> by default for the security of your order. You will receive a shipping notice, including tracking information, about 3-4 days prior to your estimated delivery date.</p>'
+      '<p>We’ve received your team store order and will begin working on it once the Team Store closes.</p><p>All custom items are made-to-order and cannot be changed or cancelled once the store has closed and the order enters the production process. However, <u>during the open ordering period</u>, If you need to cancel or adjust your order (sizes, quantity, address, payment method, etc.), you can do so by clicking the <strong>EDIT</strong> button above the Order Summary. Doing so will cancel the existing order and repopulate your items back into your cart where you can make any necessary changes.</p><p>All orders will be shipped via FedEx International Priority. A <strong>signature is required</strong> by default for the security of your order. You will receive a shipping notice, including tracking information, about 3-4 days prior to your estimated delivery date.</p>'
   },
   paymentIssue: {
     id: 'components.OrderDetails.paymentIssue',
@@ -269,4 +269,21 @@ export default defineMessages({
     id: 'components.OrderDetails.paymentIssueTitle',
     defaultMessage: 'Payment Issue'
   },
+  aboutDynamicPricing: {
+    id: 'components.OrderDetails.aboutDynamicPricing',
+    defaultMessage: 'ABOUT DYNAMIC PRICING'
+  },
+  close: {
+    id: 'components.OrderDetails.close',
+    defaultMessage: 'Close'
+  },
+  dynamicPrice: {
+    id: 'components.OrderDetails.dynamicPrice',
+    defaultMessage: 'JAKROO DYNAMIC PRICE DROP'
+  },
+  dynamicPriceDesc: {
+    id: 'components.OrderDetails.dynamicPriceDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'During high volume transaction periods, there may be a delay in price updates on screen after placing your order while our price engine reviews and updates all orders. In most cases, your order will be updated and reflect the current pricing as shown on the team store page within 30-60 minutes after the order was placed, or once the next member has placed their order. Payment is NOT taken until after store closure  to ensure everyone gets the same low price no matter when their order was placed.'
+  }
 })

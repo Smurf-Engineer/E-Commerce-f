@@ -43,7 +43,7 @@ export default defineMessages({
   },
   total: {
     id: 'screens.ShoppingCartPage.total',
-    defaultMessage: 'Total'
+    defaultMessage: 'Grand Total'
   },
   estimate: {
     id: 'screens.ShoppingCartPage.estimate',
