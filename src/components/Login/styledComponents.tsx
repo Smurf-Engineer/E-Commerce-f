@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
-import { GRAY_DARK, RED, BLUE, WHITE } from '../../theme/colors'
+import { GRAY_DARK, RED, BLUE, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
@@ -110,4 +110,17 @@ export const OkButton = styled(Button)`
 
 export const InputIcon = styled(Icon)`
   margin-left: -3px;
+`
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 10000;
+  height: 100vh;
+  background: ${WHITE_TRANSPARENT};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `

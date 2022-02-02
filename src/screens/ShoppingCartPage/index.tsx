@@ -630,6 +630,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                 <SideBar>
                   <Ordersummary
                     subtotal={total}
+                    simpleDesign={true}
                     currencySymbol={symbol}
                     upgrades={upgradesTotal}
                     variables={variablesTotal}
