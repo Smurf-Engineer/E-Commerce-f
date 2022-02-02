@@ -3,12 +3,23 @@
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
-import { RED, BLUE, GRAY_DARK, RED_TRANSPARENT_LIGHT } from '../../theme/colors'
+import {
+  RED,
+  BLUE,
+  GRAY_DARK,
+  RED_TRANSPARENT_LIGHT,
+  GRAY_STRONG,
+  GRAY,
+  WHITE,
+  BLACK,
+  GRAY_SOFT
+} from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 import { AVENIR_NEXT } from '../../theme/fonts'
 
 interface DivProps {
   savingPdf?: boolean
+  secondary?: boolean
 }
 
 export const LoadingContainer = styled.div`
@@ -73,7 +84,9 @@ export const Div = styled.div`
   margin-top: 48px;
   padding-right: 34px;
   position: relative;
-
+  @media (max-width: 1023px) {
+    margin-top: ${({ secondary }: DivProps) => secondary ? '58px' : '48px'};
+  }
   @media (max-width: 768px) and (min-width: 320px) {
     align-items: center;
     margin-bottom: 24px;
@@ -319,7 +332,14 @@ export const OrderActions = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 95%;
+  position: absolute;
+  margin-top: -57px;
+  right: 60px;
+  @media (max-width: 1023px) {
+    top: 40px;
+    right: 22px;
+    margin-top: 0px;
+  }
 `
 
 export const FAQSection = styled.div`
@@ -350,12 +370,13 @@ export const FAQBody = styled.div`
   }
 `
 
-export const DeleteButton = styled(AntdButton)`
-  height: 40px;
-  width: 93px;
-  border: none;
+export const DeleteButton = styled(Icon)`
   color: ${RED};
-  box-shadow: none;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
 `
 
 export const StyledText = styled.div`
@@ -419,4 +440,136 @@ export const SavingContainer = styled.div`
   align-items: center;
   height: 100%;
   z-index: 29;
+`
+
+export const ButtonEdit = styled.div`
+  border: 1px solid ${GRAY_SOFT};
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-right: 12px;
+  color: ${GRAY_STRONG};
+  font-size: 12px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    background: ${GRAY_SOFT};
+    color: ${WHITE};
+  }
+`
+
+export const AboutCollab = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${BLUE};
+  transition: all .25s;
+  position: absolute;
+  margin-top: -50px;
+  margin-left: -4px;
+  font-weight: bold;
+  font-family: Avenir;
+  font-size: 12px;
+  cursor: pointer;
+  @media (max-width: 1023px) {
+    top: 94px;
+    left: 22px;
+  }
+`
+
+export const CollabIcon = styled(Icon)`
+  margin-right: 8px;
+`
+
+export const StatusIcon = styled(Icon)`
+  font-size: 18px;
+  width: 100%;
+  filter: drop-shadow(0px 2px 1px lightgray);
+  @media (max-width: 1023px) {
+    font-size: 28px;
+  }
+`
+
+export const StatusTitle = styled.div`
+  text-align: center;
+  font-weight: bold;
+  font-family: Avenir;
+  font-size: 16px;
+  margin-bottom: 24px;
+  margin-top: 16px;
+  @media (min-width: 1024px) {
+    font-size: 16px;
+  }
+  @media (min-width: 1441px) {
+    font-size: 18px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 20px;
+    padding: 0;
+  }
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+    padding: 0;
+    font-size: 19px;
+    margin-top: 30px;
+  }
+`
+
+export const StatusDescription = styled.div`
+  margin-bottom: 8px;
+  text-align: center;
+  @media (min-width: 1024px) {
+    font-size: 14px;
+  }
+  @media (min-width: 1441px) {
+    font-size: 16px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 18px;
+    padding: 0;
+  }
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+    padding: 9;
+    font-size: 19px;
+  }
+`
+
+export const BottomSectionStatus = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-flow: column;
+  align-items: center;
+  @media (max-width: 1023px) {
+    position: fixed;
+    bottom: 44px;
+    z-index: 999;
+  }
+`
+
+export const CloseButtonStatus = styled.div`
+  border: 1px solid ${GRAY};
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-top: 17px;
+  font-size: 12px;
+  color: ${GRAY_STRONG};
+  box-shadow: 0px 2px 4px -1px ${GRAY};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  @media (min-width: 1441px) {
+    font-size: 14px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 16px;
+  }
+  @media (max-width: 1023px) {
+    box-shadow: none;
+    border: 1px solid ${WHITE};
+    color: ${WHITE};
+    background: ${BLACK};
+    margin-top: 0px;
+  }
 `

@@ -35,7 +35,12 @@ import {
   OpenIcon,
   FedexIcon,
   AboutCollab,
-  CollabIcon
+  CollabIcon,
+  StatusTitle,
+  StatusDescription,
+  BottomSectionStatus,
+  CloseButtonStatus,
+  StatusIcon
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -62,6 +67,7 @@ import ProductInfo from '../ProductInfo'
 import ReactDOM from 'react-dom'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
+import Modal from 'antd/lib/modal'
 import filter from 'lodash/filter'
 
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
@@ -91,7 +97,8 @@ class OrderData extends React.Component<Props, {}> {
     showIssue: false,
     savingPdf: false,
     showArrive: false,
-    showReturn: false
+    showReturn: false,
+    openStatusInfo: false
   }
   private copyInput: any
   private html2pdf: any
@@ -180,6 +187,21 @@ class OrderData extends React.Component<Props, {}> {
       window.open(`${FEDEX_URL}?trknbr=${trackingNumber}`)
     }
   }
+  openStatusModal = () => {
+    setTimeout(() => {
+      if (window.navigator && window.navigator.vibrate) {
+        navigator.vibrate([70, 50, 20])
+      }
+      this.setState({ openStatusInfo: true })
+    // tslint:disable-next-line: align
+    }, 250)
+  }
+  closeStatusModal = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
+    this.setState({ openStatusInfo: false })
+  }
   render() {
     const {
       formatMessage,
@@ -241,12 +263,13 @@ class OrderData extends React.Component<Props, {}> {
       showIssue,
       savingPdf,
       showArrive,
-      showReturn
+      showReturn,
+      openStatusInfo
     } = this.state
 
     const card = get(payment, 'stripeCharge.cardData', {})
     const netsuiteObject = get(netsuite, 'orderStatus')
-
+    const isMobileModal = typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches
     const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
     const fulfillments = get(
       netsuiteObject,
@@ -355,7 +378,7 @@ class OrderData extends React.Component<Props, {}> {
       : null
     return (
       <Container>
-        <Title>{title}</Title>
+        <Title secondary={status === PREORDER}>{title}</Title>
         {savingPdf && <SavingContainer><Spin size="large" /></SavingContainer>}
         {paymentMethod === PaymentOptions.INVOICE &&
           <DownloadInvoice onClick={this.downloadInvoice}>
@@ -484,9 +507,9 @@ class OrderData extends React.Component<Props, {}> {
               ) : null */}
           </InfoContainer>
           <SummaryContainer {...{ savingPdf }}>
-            {status === PREORDER &&
-              <AboutCollab onClick={() => {}}>
-                <CollabIcon type="user" />
+            {status === PREORDER && !savingPdf &&
+              <AboutCollab onMouseOver={this.openStatusModal}>
+                <CollabIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
                 {formatMessage(messages.aboutDynamicPricing)}
               </AboutCollab>
             }
@@ -633,6 +656,27 @@ class OrderData extends React.Component<Props, {}> {
             </FAQBody>
           </FAQSection>
         }
+        <Modal
+          visible={openStatusInfo}
+          footer={null}
+          closable={false}
+          width={isMobileModal ? '100%' : '564px'}
+          wrapClassName={isMobileModal ? 'transparentMask' : ''}
+          maskStyle={isMobileModal ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' } : {}}
+        >
+          <StatusIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
+          <StatusTitle>
+            {formatMessage(messages.dynamicPrice)}
+          </StatusTitle>
+          <StatusDescription>
+            {formatMessage(messages.dynamicPriceDesc)}
+          </StatusDescription>
+          <BottomSectionStatus>
+            <CloseButtonStatus onClick={this.closeStatusModal}>
+              {formatMessage(messages.close)}
+            </CloseButtonStatus>
+          </BottomSectionStatus>
+        </Modal>
       </Container>
     )
   }

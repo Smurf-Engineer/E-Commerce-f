@@ -2,9 +2,9 @@
  * ItemOrder Component - Created by miguelcanobbio on 13/07/18.
  */
 import * as React from 'react'
-import { Container, Cell } from './styledComponents'
+import { Container, Cell, EditButton, DeleteButton } from './styledComponents'
 import upperFirst from 'lodash/upperFirst'
-import { INVOICE_SENT, PAYMENT_ISSUE } from '../../../constants'
+import { INVOICE_SENT, PAYMENT_ISSUE, PREORDER } from '../../../constants'
 
 interface Props {
   date: string
@@ -15,6 +15,11 @@ interface Props {
   currency: string
   service: string
   shortId: string
+  canUpdatePayment: boolean
+  owner: boolean
+  teamStoreId: string
+  editOrder: (orderId: string) => void
+  deleteOrder: (orderId: string) => void
   onOrderClick: (shortId: string, isService?: boolean) => void
 }
 
@@ -27,10 +32,29 @@ const ItemOrder = ({
   totalAmount,
   currency,
   shortId,
-  onOrderClick
+  owner,
+  canUpdatePayment,
+  teamStoreId,
+  editOrder,
+  deleteOrder,
+  onOrderClick,
 }: Props) => {
   const handleOnClick = () => {
     onOrderClick(shortId, !!service)
+  }
+  const editOrderAction = (evt: React.MouseEvent) => {
+    if (evt) {
+      evt.preventDefault()
+      evt.stopPropagation()
+    }
+    editOrder(shortId)
+  }
+  const deleteOrderAction = (evt: React.MouseEvent) => {
+    if (evt) {
+      evt.preventDefault()
+      evt.stopPropagation()
+    }
+    deleteOrder(shortId)
   }
   return (
     <Container onClick={handleOnClick}>
@@ -41,6 +65,16 @@ const ItemOrder = ({
       <Cell>{currency} {totalAmount}</Cell>
       <Cell textAlign={'right'}>
         {upperFirst(status === INVOICE_SENT ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
+      </Cell>
+      <Cell>
+        {teamStoreId && owner && (status === PREORDER || canUpdatePayment) &&
+          <EditButton onClick={editOrderAction}>Edit</EditButton>
+        }
+      </Cell>
+      <Cell>
+        {teamStoreId && owner && (status === PREORDER || canUpdatePayment) &&
+          <DeleteButton type="delete" onClick={deleteOrderAction} />
+        }
       </Cell>
     </Container>
   )

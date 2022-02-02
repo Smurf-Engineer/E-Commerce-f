@@ -131,6 +131,10 @@ export const TotalOrderItem = styled.div`
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 22px;
+  color: #83b37b;
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid;
 `
 
 export const InvoiceLink = styled.a`

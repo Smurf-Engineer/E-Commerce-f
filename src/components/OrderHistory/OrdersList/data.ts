@@ -15,11 +15,14 @@ export const getOrdersQuery = gql`
       fullCount
       orders {
         id
+        userId: user_id
         shortId: short_id
         date: created_at
         service
         estimatedDate: estimated_date
         status
+        canUpdatePayment
+        teamStoreId: teamstore_id
         currency {
           shortName: short_name
         }

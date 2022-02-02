@@ -85,9 +85,13 @@ export default defineMessages({
     id: 'screens.ShoppingCartPage.giftPlaceholder',
     defaultMessage: 'Gift Certificate'
   },
+  subTotal: {
+    id: 'screens.ShoppingCartPage.subTotal',
+    defaultMessage: 'Total'
+  },
   total: {
     id: 'screens.ShoppingCartPage.total',
-    defaultMessage: 'Total'
+    defaultMessage: 'Grand Total'
   },
   youSaved: {
     id: 'screens.ShoppingCartPage.youSaved',

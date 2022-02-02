@@ -3,12 +3,13 @@
  */
 import styled from 'styled-components'
 import Checkbox from 'antd/lib/checkbox'
-import { BLUE, GRAY_DARK, RED } from '../../theme/colors'
+import { BLACK, BLUE, GRAY, GRAY_DARK, GRAY_STRONG, RED, WHITE } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 interface DivProps {
   invoice?: boolean
   savingPdf?: boolean
+  secondary?: boolean
 }
 
 export const Container = styled.div`
@@ -32,6 +33,11 @@ export const Title = styled.div`
   letter-spacing: 0.25px;
   line-height: 27px;
   margin-bottom: 40px;
+  ${({ secondary }: DivProps) => secondary ? `
+    @media (max-width: 1023px) {
+      margin-bottom: 60px;
+    }
+  ` : ''}
 `
 
 export const InfoContainer = styled.div`
@@ -256,20 +262,116 @@ export const SavingContainer = styled.div`
 `
 
 export const AboutCollab = styled.div`
-  margin-top: 34px;
   display: flex;
   align-items: center;
   color: ${BLUE};
   transition: all .25s;
-  &:hover {
-    cursor: pointer;
-    opacity: 0.7;
-    img {
-      opacity: 0.5;
-    }
+  position: absolute;
+  top: 24px;
+  font-weight: bold;
+  font-family: Avenir;
+  font-size: 13.5px;
+  cursor: pointer;
+  @media (max-width: 1023px) {
+    top: 44px;
   }
 `
 
 export const CollabIcon = styled(Icon)`
-  margin-right: 8px;
+  margin-right: 13px;
+  margin-left: 2px;
+`
+
+export const StatusIcon = styled(Icon)`
+  font-size: 18px;
+  width: 100%;
+  filter: drop-shadow(0px 2px 1px lightgray);
+  @media (max-width: 1023px) {
+    font-size: 28px;
+  }
+`
+
+export const StatusTitle = styled.div`
+  text-align: center;
+  font-weight: bold;
+  font-family: Avenir;
+  font-size: 16px;
+  margin-bottom: 24px;
+  margin-top: 16px;
+  @media (min-width: 1024px) {
+    font-size: 16px;
+  }
+  @media (min-width: 1441px) {
+    font-size: 18px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 20px;
+    padding: 0;
+  }
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+    padding: 0;
+    font-size: 19px;
+    margin-top: 30px;
+  }
+`
+
+export const StatusDescription = styled.div`
+  margin-bottom: 8px;
+  @media (min-width: 1024px) {
+    font-size: 14px;
+  }
+  @media (min-width: 1441px) {
+    font-size: 16px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 18px;
+    padding: 0;
+  }
+  @media (max-width: 1023px) {
+    color: ${WHITE};
+    padding: 9;
+    font-size: 19px;
+  }
+`
+
+export const BottomSectionStatus = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-flow: column;
+  align-items: center;
+  @media (max-width: 1023px) {
+    position: fixed;
+    bottom: 44px;
+    z-index: 999;
+  }
+`
+
+export const CloseButtonStatus = styled.div`
+  border: 1px solid ${GRAY};
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-top: 17px;
+  font-size: 12px;
+  color: ${GRAY_STRONG};
+  box-shadow: 0px 2px 4px -1px ${GRAY};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  @media (min-width: 1441px) {
+    font-size: 14px;
+  }
+  @media (min-width: 1800px) {
+    font-size: 16px;
+  }
+  @media (max-width: 1023px) {
+    box-shadow: none;
+    border: 1px solid ${WHITE};
+    color: ${WHITE};
+    background: ${BLACK};
+    margin-top: 0px;
+  }
 `
