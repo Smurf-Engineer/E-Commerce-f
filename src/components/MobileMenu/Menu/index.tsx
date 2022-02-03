@@ -18,7 +18,8 @@ import {
   StyledSubMenu,
   containerStyle,
   MenuTitle,
-  BetaLabel
+  BetaLabel,
+  SeeAllItem
 } from './styledComponents'
 import messages from './messages'
 import messagesMenu from '../../../screens/Account/messages'
@@ -186,6 +187,11 @@ class Menu extends React.PureComponent<Props, {}> {
     history.push(`/product-catalogue`)
   }
 
+  handleTeamStores = () => {
+    const { history } = this.props
+    history.push('/search-teamstores')
+  }
+
   render() {
     const {
       data: { loading, error, sports },
@@ -248,7 +254,7 @@ class Menu extends React.PureComponent<Props, {}> {
           </Item>
         )
     )
-
+    console.log('sportss', sports)
     const optionsSports = sports.map(({ name, categories }, index) => {
       // TODO: Check this out.
       // this.getCategories(id)
@@ -288,6 +294,9 @@ class Menu extends React.PureComponent<Props, {}> {
             style={menuStyle}
           >
             {optionsSports}
+            <SeeAllItem onClick={this.handleOnSeeAll}>
+              {formatMessage(messages.seeAll)}
+            </SeeAllItem>
           </MenuAntd>
           <MenuAntd
             mode="inline"
@@ -306,8 +315,8 @@ class Menu extends React.PureComponent<Props, {}> {
           <BottomDiv onClick={this.logout}>
             {formatMessage(messages.logout)}
           </BottomDiv> :
-          <BottomDiv onClick={this.handleOnSeeAll}>
-            {formatMessage(messages.seeAll)}
+          <BottomDiv onClick={this.handleTeamStores}>
+            {formatMessage(messages.teamStores)}
           </BottomDiv>
         }
       </Container>

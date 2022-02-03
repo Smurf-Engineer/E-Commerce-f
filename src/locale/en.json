@@ -10,6 +10,7 @@
   "components.menuBar.nordic": "NORDIC",
   "components.menuBar.active": "ACTIVE",
   "components.menuBar.seeAll": "SEE ALL",
+  "components.menuBar.teamStores": "TEAM STORES",
   "components.MobileSelectColors.selectColors": "Select Colors",
   "components.MobileSelectColors.area": "Area {index}",
   "components.MobileSelectColors.shuffle": "Shuffle Colors",
