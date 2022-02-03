@@ -26,11 +26,15 @@ interface OptionDropdownProps {
 
 export const OptionDropdown = styled.div`
   color: ${({ selected }: OptionDropdownProps) => (selected ? RED : GRAY_DARK)};
-  font-size: 18px;
+  font-size: 16.5px;
   cursor: pointer;
   text-transform: uppercase;
   font-family: Avenir;
   font-weight: ${({ bold }: OptionDropdownProps) => bold ? 'bold' : 'normal'};
+  transition: all .25s;
+  @media (max-width: 1240px) {
+    font-size: 14px;
+  }
 `
 export const Option = styled.div`
   height: 100%;
