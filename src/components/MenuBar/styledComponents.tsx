@@ -88,6 +88,7 @@ export const BottomRow = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 70px;
+  box-shadow: 0px 4px 5px -3px lightgrey;
 `
 
 export const Divider = styled.div`
@@ -98,6 +99,8 @@ export const Divider = styled.div`
 
 export const LogoIcon = styled.img`
   cursor: pointer;
+  max-width: 134px;
+  margin-bottom: 5px;
 `
 
 export const CartIcon = styled.img`

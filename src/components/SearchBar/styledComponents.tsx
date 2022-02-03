@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
-import { BLACK, GRAY, GRAY_DARK, GRAY_LIGHTEST, WHITE } from '../../theme/colors'
+import { BLACK, GRAY, GRAY_LIGHTEST, WHITE } from '../../theme/colors'
 
 const Search = Input.Search
 
@@ -37,9 +37,9 @@ export const Container = styled.div`
     color: ${WHITE};
     border: none;
     box-shadow: none;
-    border-radius: 5px !important;
+    border-radius: 3px !important;
     background-color: ${({ onHeader, focused }: StyledProps) =>
-      focused || !onHeader ? WHITE : GRAY_DARK};
+      focused || !onHeader ? WHITE : '#a5a5a5'};
     border-color: ${({ onHeader, focused }: StyledProps) =>
       focused || !onHeader ? WHITE : GRAY_LIGHTEST};
   }

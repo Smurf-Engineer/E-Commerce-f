@@ -21,17 +21,17 @@ export const getSportsMenu = (client: any) => {
           id: 0,
         }
       ).id
-      sportsData.push({
+      const sportsArray = [...sportsData, {
         id: maxId + 1,
         name: 'TEAM STORES', 
         route: 'search-teamstores',
-      })
-      const sportOptions = sportsData.map(({ name, route }: NavbarSports) => ({
+      }]
+      const sportOptions = sportsArray.map(({ name, route }: NavbarSports) => ({
         label: name.toLowerCase(),
         menuOpen: false,
         route
       }))
-      dispatch(setSportsAction(sportOptions, sportsData))
+      dispatch(setSportsAction(sportOptions, sportsArray))
     } catch (e) {
       message.error('Error loading menu')
     }

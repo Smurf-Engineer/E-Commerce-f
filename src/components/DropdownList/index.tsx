@@ -175,8 +175,8 @@ export class DropdownList extends React.PureComponent<Props> {
     const sportMenus =
       sportOptions &&
       sportOptions.length > 0 && 
-      sportOptions.reduce(
-        (prev: any, { label: name, menuOpen, route }, index) => {
+      sportOptions.map(
+        ({ label: name, menuOpen, route }, index) => {
           const sportSelected = sportRoute[sportRoutePosition] === route
           const divider = (
             <StyledDivider type="vertical" />
@@ -221,7 +221,7 @@ export class DropdownList extends React.PureComponent<Props> {
               </Popover>
             </Menu.Item>
           )
-          return name !== 'team stores' ? prev.concat(menuItem) : prev.concat(divider, menuItem)
+          return name !== 'team stores' ? menuItem : <>{divider}{menuItem}</>
         }, 
         []
       )
