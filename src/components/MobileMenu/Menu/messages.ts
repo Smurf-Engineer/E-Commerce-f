@@ -44,5 +44,9 @@ export default defineMessages({
   logout: {
     id: 'components.menuBar.logout',
     defaultMessage: 'LOG OUT'
+  },
+  teamStores: {
+    id: 'components.menuBar.teamStores',
+    defaultMessage: 'TEAM STORES'
   }
 })

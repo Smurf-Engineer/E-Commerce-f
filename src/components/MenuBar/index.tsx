@@ -20,8 +20,8 @@ import {
   TopRow,
   BottomRow,
   LogoIcon,
-  TeamStoresMenuContainer,
-  TeamStoresMenuTitle,
+  // TeamStoresMenuContainer,
+  // TeamStoresMenuTitle,
   notificationStyles,
   Icon
 } from './styledComponents'
@@ -105,7 +105,7 @@ interface Props {
   hideTop?: boolean
   hideBottom?: boolean
   fakeWidth: number
-  teamStoresHeader?: boolean | undefined
+  // teamStoresHeader?: boolean | undefined
   itemsInCart: number
   designHasChanges: boolean
   initialCountryCode: string
@@ -322,7 +322,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       logoutAction,
       saveUserToLocal,
       fakeWidth,
-      teamStoresHeader,
+      // teamStoresHeader,
       itemsInCart,
       designHasChanges,
       openWithoutSaveModalAction,
@@ -396,17 +396,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       />
     )
 
-    const bottomRowContent = teamStoresHeader ? (
-      <BottomRow>
-        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-        <TeamStoresMenuContainer>
-          <TeamStoresMenuTitle onClick={this.gotoTeamStores}>
-            {formatMessage(messages.teamStoresTitle)}
-          </TeamStoresMenuTitle>
-        </TeamStoresMenuContainer>
-        <div />
-      </BottomRow>
-    ) : (
+    const bottomRowContent = (
       <BottomRow>
         <LogoIcon src={logo} onClick={this.handleOnGoHome} />
         <DropdownList

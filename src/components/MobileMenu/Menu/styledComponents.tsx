@@ -35,6 +35,12 @@ export const BottomDiv = styled.div`
   }
 `
 
+export const SelectAll = styled(BottomDiv)`
+  @media (max-width: 991px) {
+    font-weight: normal;
+  }
+`
+
 export const StyledSubMenu = styled(SubMenu)`
   border-bottom: 1px solid ${GRAY_LIGHTEST};
   .ant-menu-submenu-title {
@@ -65,6 +71,10 @@ export const Item = styled(MenuAntd.Item)`
   padding: 0 6px !important;
   text-transform: ${({ withBorder }: DivProps) => withBorder ? `uppercase` : 'capitalize'};
   border-bottom: ${({ withBorder }: DivProps) => withBorder ? `1px solid ${GRAY_LIGHTEST}` : 'none'};
+`
+
+export const SeeAllItem = styled(Item)`
+  border-bottom: 1px solid ${GRAY_LIGHTEST};
 `
 
 export const containerStyle = { height: 'auto' }
