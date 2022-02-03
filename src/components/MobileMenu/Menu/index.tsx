@@ -254,7 +254,6 @@ class Menu extends React.PureComponent<Props, {}> {
           </Item>
         )
     )
-    console.log('sportss', sports)
     const optionsSports = sports.map(({ name, categories }, index) => {
       // TODO: Check this out.
       // this.getCategories(id)

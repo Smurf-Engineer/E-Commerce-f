@@ -2,7 +2,7 @@
  * Styled Components - Created by david on 07/02/18.
  */
 import styled, { keyframes } from 'styled-components'
-import { BLACK, GRAY_DARK, RED } from '../../theme/colors'
+import { GRAY_DARK, RED } from '../../theme/colors'
 import Menu from 'antd/lib/menu'
 import Divider from 'antd/lib/divider'
 
@@ -29,6 +29,7 @@ export const OptionDropdown = styled.div`
   font-size: 18px;
   cursor: pointer;
   text-transform: uppercase;
+  font-family: Avenir;
   font-weight: ${({ bold }: OptionDropdownProps) => bold ? 'bold' : 'normal'};
 `
 export const Option = styled.div`
@@ -60,6 +61,5 @@ export const StyledMenu = styled(Menu)`
 
 export const StyledDivider = styled(Divider)`
   height: 45px;
-  background: ${BLACK};
-}
+  background: #b7b7b7;
 `

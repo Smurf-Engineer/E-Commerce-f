@@ -241,12 +241,15 @@ export class DropdownList extends React.PureComponent<Props> {
       currentLanguage,
       regionsCodes
     } = this.props
+    if (id === 'search-teamstores') {
+      window.location.replace('/search-teamstores')
+    } else {
+      const region = regionsCodes.includes(currentRegion) ? currentRegion : 'us'
 
-    const region = regionsCodes.includes(currentRegion) ? currentRegion : 'us'
-
-    const path = `/${id}/${region}?lang=${currentLanguage ||
-      'en'}&currency=${currentCurrency}`
-    window.location.replace(path)
+      const path = `/${id}/${region}?lang=${currentLanguage ||
+        'en'}&currency=${currentCurrency}`
+      window.location.replace(path)
+    }
   }
 }
 
