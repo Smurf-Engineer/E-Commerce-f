@@ -130,6 +130,7 @@ interface Props {
   selectedPredyed: string
   showGuidelines: boolean
   previewImage: string
+  previewProgress: number
   openPreviewModal: boolean
   // Redux actions
   onClickGuides: () => void
@@ -342,6 +343,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       showGuidelines,
       placeholders,
       previewImage,
+      previewProgress,
       openPreviewModal,
       openResetPlaceholderModal,
       onRequestColorChart,
@@ -487,6 +489,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               lastName,
               colors,
               previewImage,
+              previewProgress,
               openPreviewModal,
               onClickGuides,
               showGuidelines,

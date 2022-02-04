@@ -50,7 +50,8 @@ import {
   PrintPreviewLabel,
   PrintPreviewIcon,
   PrintImage,
-  LoadingSpinner
+  LoadingPreviewText,
+  PreviewProgress
 } from './styledComponents'
 import {
   viewPositions,
@@ -1641,7 +1642,8 @@ class Render3D extends PureComponent {
       currentStyle,
       openDesignCheckModal,
       showGuidelines,
-      proAssistId
+      proAssistId,
+      previewProgress
     } = this.props
     const { hasModal, modalLinkText, guideline } = product || {}
     if (isMobile) {
@@ -1811,8 +1813,14 @@ class Render3D extends PureComponent {
               visible={openPreviewModal}
             >
               {!!previewImage ?
-                <PrintImage src={previewImage} /> :
-                <LoadingSpinner size="large" />}
+                <PrintImage src={previewImage} /> : (
+                <div>
+                  <LoadingPreviewText>
+                    {formatMessage(messages.loadingPreview)}
+                  </LoadingPreviewText>
+                  <PreviewProgress percent={previewProgress} />
+                </div>
+              )}
             </Modal>
           </PrintPreviewLabel>
         }

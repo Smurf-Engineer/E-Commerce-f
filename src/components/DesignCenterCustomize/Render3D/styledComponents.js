@@ -233,6 +233,11 @@ export const Progress = styled(AntdProgress)`
   transform: translate(-50%, -50%);
 `
 
+export const PreviewProgress = styled(Progress)`
+  top: 65%;
+  width: 80%;
+`
+
 export const Button = styled(AntdButton)`
   height: 40px;
   width: 138px;
@@ -481,3 +486,15 @@ export const buttonStyle = {
   color: BLUE,
   border: `1px solid ${BLUE}`
 }
+
+export const LoadingPreviewProgress = styled(Progress)`
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
+
+export const LoadingPreviewText = styled.p`
+  font-size: 18px;
+  margin-bottom: 8rem;
+`
