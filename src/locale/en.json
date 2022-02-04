@@ -295,6 +295,7 @@
   "components.Render3D.saveAsNew": "Save as a New Design",
   "components.Render3D.proAssist": "{proLabel} ASSIST",
   "components.Render3D.proLabel": "PRO",
+  "components.Render3D.loadingPreview": "The print preview is being compiled and will be ready shortly",
   "components.Render3D.okGotIt": "OK, got it!",
   "components.Render3D.drag": "Drag to rotate",
   "components.Render3D.productOnly": "Product Only",

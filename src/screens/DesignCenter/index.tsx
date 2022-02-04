@@ -338,6 +338,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     openBottomSheet: false,
     openPreviewModal: false,
     previewImage: '',
+    previewProgress: 0,
   }
   private saveClass: any
   componentWillUnmount() {
@@ -396,17 +397,21 @@ export class DesignCenter extends React.Component<Props, {}> {
       )
       if (instance) {
         this.setState({ previewImage: '', openPreviewModal: true })
+        setTimeout(() => this.setState({ previewProgress: 30 }), 700)
+        setTimeout(() => this.setState({ previewProgress: 50 }), 1800)
+        setTimeout(() => this.setState({ previewProgress: 80 }), 2000)
+        setTimeout(() => this.setState({ previewProgress: 92 }), 3000)
         const result = await instance.generateSVG(savedDesign)
         const image = get(result, 'data.design.outputSvg', '')
         if (image) {
-          this.setState({ previewImage: image })
+          this.setState({ previewImage: image, previewProgress: 100 })
         } else {
           this.setState({ openPreviewModal: false })
           Message.error('Error generating preview image.')
         }
       }
     } else {
-      this.setState({ openPreviewModal: false, previewImage: '' })
+      this.setState({ openPreviewModal: false, previewImage: '', previewProgress: 0 })
     }
   }
 
@@ -743,6 +748,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       isDesktopRes,
       previewImage,
       openPreviewModal,
+      previewProgress,
     } = this.state
     const {
       CustomizeTab: CustomizeTabIndex,
@@ -1037,6 +1043,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   text,
                   previewImage,
                   openPreviewModal,
+                  previewProgress,
                   productName,
                   canvas,
                   selectedElement,

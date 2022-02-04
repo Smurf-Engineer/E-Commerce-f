@@ -100,5 +100,9 @@ export default defineMessages({
   proLabel: {
     id: 'components.Render3D.proLabel',
     defaultMessage: 'PRO'
+  },
+  loadingPreview: {
+    id: 'components.Render3D.loadingPreview',
+    defaultMessage: 'The print preview is being compiled and will be ready shortly'
   }
 })
