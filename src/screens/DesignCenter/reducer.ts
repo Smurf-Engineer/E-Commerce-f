@@ -475,7 +475,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
     }
     case SELECT_VARIANT:
-      return state.set('selectedVariant', action.index)
+      return state.merge({
+        selectedVariant: action.index,
+        colorBlockHovered: -1
+      })
     case SET_PALETTE_NAME_ACTION:
       return state.set('paletteName', action.name)
     case SET_PALETTES_ACTION:
