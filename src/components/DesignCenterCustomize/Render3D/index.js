@@ -1570,6 +1570,7 @@ class Render3D extends PureComponent {
       onClickGuides
     } = this.props
     const { retrySave } = this.state
+    this.setupHoverColor(-1)
     if (showGuidelines && !retrySave) {
       this.setState({ retrySave: true }, () => onClickGuides(false))
       return
