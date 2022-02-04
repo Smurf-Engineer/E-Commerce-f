@@ -178,7 +178,7 @@ const ProductSlide = ({
         }
         <BelowTablet>
           {proDesign && <StatusFlag onClick={openInfo} {...{ showTooltips }} src={ProFlag} />}
-          {proCertified && <StatusFlag onClick={openInfo} {...{ showTooltips }} src={ProCertFlag} />}
+          {proCertified && !proDesign && <StatusFlag onClick={openInfo} {...{ showTooltips }} src={ProCertFlag} />}
           {qualityWarning && <StatusFlag onClick={openInfo} {...{ showTooltips }} src={WarningQualityFlag} />}
         </BelowTablet>
         <AboveTablet>
@@ -200,7 +200,7 @@ const ProductSlide = ({
               <StatusFlag {...{ showTooltips }} src={ProFlag} />
             </StyledTooltip>
           }
-          {proCertified &&
+          {proCertified && !proDesign &&
             <StyledTooltip
               overlayClassName="arrowEnabled"
               onVisibleChange={setSeen}
