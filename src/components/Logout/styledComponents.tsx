@@ -9,8 +9,7 @@ import {
   RED,
   GRAY_LIGHTEST,
   DARK_TEXT,
-  WHITE,
-  BLUE_LIGHT
+  WHITE
 } from '../../theme/colors'
 
 const { SubMenu } = MenuAntd
@@ -89,7 +88,7 @@ export const MenuTitle = styled.div``
 export const BetaLabel = styled.div`
   display: inline-block;
   font-size: 8px;
-  color: ${BLUE_LIGHT};
+  color: ${RED};
   font-style: italic;
   margin-left: 4px;
   vertical-align: top;

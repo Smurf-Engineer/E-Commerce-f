@@ -19,7 +19,7 @@ export default defineMessages({
   },
   beta: {
     id: 'components.Logout.beta',
-    defaultMessage: 'BETA'
+    defaultMessage: 'NEW'
   },
   myTeamStoresLabel: {
     id: 'components.Logout.myTeamStoresLabel',

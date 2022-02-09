@@ -2285,36 +2285,24 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 }}
               >
                 <StyledTabs
-                  secondary={
-                    ownerEmail === 'jesus@tailrecursive.co' || 
-                    ownerEmail === 'derekw@jakroousa.com' ||
-                    ownerEmail === 'acaurora@comcast.net' ||
-                    ownerEmail === 'bbtester1@jakroousa.com' || 
-                    ownerEmail === 'derekrwiseman@gmail.com'
-                  }
+                  secondary={true}
                   activeKey={selectedKey}
                   onTabClick={this.onTabClickAction}
                 >
-                  {(ownerEmail === 'jesus@tailrecursive.co' || 
-                    ownerEmail === 'derekw@jakroousa.com' ||
-                    ownerEmail === 'acaurora@comcast.net' ||
-                    ownerEmail === 'bbtester1@jakroousa.com' ||
-                    ownerEmail === 'derekrwiseman@gmail.com') &&
-                    <TabPane
-                      tab={
-                        <Tab
-                          selected={selectedKey === COLLAB}
-                          label={COLLAB}
-                          icon={selectedKey === COLLAB ? teamIconSelected : teamIcon}
-                        />
-                      }
-                      key={COLLAB}
-                    >
-                      <TabContent height={windowHeight}>
-                        {collabComponent}
-                      </TabContent>
-                    </TabPane>
-                  }
+                  <TabPane
+                    tab={
+                      <Tab
+                        selected={selectedKey === COLLAB}
+                        label={COLLAB}
+                        icon={selectedKey === COLLAB ? teamIconSelected : teamIcon}
+                      />
+                    }
+                    key={COLLAB}
+                  >
+                    <TabContent height={windowHeight}>
+                      {collabComponent}
+                    </TabContent>
+                  </TabPane>
                   <TabPane
                     tab={
                       <Tab
@@ -2329,26 +2317,20 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       {chatComponent}
                     </TabContent>
                   </TabPane>
-                  {(ownerEmail === 'jesus@tailrecursive.co' || 
-                    ownerEmail === 'derekw@jakroousa.com' ||
-                    ownerEmail === 'acaurora@comcast.net' ||
-                    ownerEmail === 'bbtester1@jakroousa.com' ||
-                    ownerEmail === 'derekrwiseman@gmail.com') &&
-                    <TabPane
-                      tab={
-                        <Tab
-                          selected={selectedKey === COMMENTS}
-                          label={COMMENTS}
-                          icon={selectedKey === COMMENTS ? commentsIconSelected : commentsIcon}
-                        />
-                      }
-                      key={COMMENTS}
-                    >
-                      <TabContent height={windowHeight}>
-                        {commentsComponent}
-                      </TabContent>
-                    </TabPane>
-                  }
+                  <TabPane
+                    tab={
+                      <Tab
+                        selected={selectedKey === COMMENTS}
+                        label={COMMENTS}
+                        icon={selectedKey === COMMENTS ? commentsIconSelected : commentsIcon}
+                      />
+                    }
+                    key={COMMENTS}
+                  >
+                    <TabContent height={windowHeight}>
+                      {commentsComponent}
+                    </TabContent>
+                  </TabPane>
                   <TabPane
                     tab={
                       <Tab
@@ -2596,26 +2578,20 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 onChange={this.changeCollapseMobile}
                 destroyInactivePanel={true}
               >
-                {(ownerEmail === 'jesus@tailrecursive.co' || 
-                  ownerEmail === 'derekw@jakroousa.com' ||
-                  ownerEmail === 'acaurora@comcast.net' ||
-                  ownerEmail === 'bbtester1@jakroousa.com' ||
-                  ownerEmail === 'derekrwiseman@gmail.com') &&
-                  <PanelMobile
-                    header={
-                      <PanelTitle>
-                        <PanelIcon
-                          selected={selectedKeyMobile === '0'}
-                          src={selectedKeyMobile === '0' ? teamIconSelected : teamIcon}
-                        />
-                        {formatMessage(messages.teamMembers)}
-                      </PanelTitle>
-                    }
-                    key="0"
-                  >
-                    {collabComponent}
-                  </PanelMobile>
-                }
+                <PanelMobile
+                  header={
+                    <PanelTitle>
+                      <PanelIcon
+                        selected={selectedKeyMobile === '0'}
+                        src={selectedKeyMobile === '0' ? teamIconSelected : teamIcon}
+                      />
+                      {formatMessage(messages.teamMembers)}
+                    </PanelTitle>
+                  }
+                  key="0"
+                >
+                  {collabComponent}
+                </PanelMobile>
                 <PanelMobile
                   header={
                     <PanelTitle ref={e => { this.chatDiv = e }}>
@@ -2637,33 +2613,27 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 >
                   {chatComponent}
                 </PanelMobile>
-                {(ownerEmail === 'jesus@tailrecursive.co' || 
-                  ownerEmail === 'derekw@jakroousa.com' ||
-                  ownerEmail === 'acaurora@comcast.net' ||
-                  ownerEmail === 'bbtester1@jakroousa.com' ||
-                  ownerEmail === 'derekrwiseman@gmail.com') &&
-                  <PanelMobile
-                    header={
-                      <PanelTitle>
-                        <PanelIcon
-                          selected={selectedKeyMobile === '2'}
-                          src={selectedKeyMobile === '2' ? commentsIconSelected : commentsIcon}
-                        />
-                        {formatMessage(messages.comments)}
-                        {commentsNotifications > 0 &&
-                          <ChatCount>
-                            <CountCircle className="counter">
-                              {commentsNotifications}
-                            </CountCircle>
-                          </ChatCount>
-                        }
-                      </PanelTitle>
-                    }
-                    key="2"
-                  >
-                    {commentsComponent}
-                  </PanelMobile>
-                }
+                <PanelMobile
+                  header={
+                    <PanelTitle>
+                      <PanelIcon
+                        selected={selectedKeyMobile === '2'}
+                        src={selectedKeyMobile === '2' ? commentsIconSelected : commentsIcon}
+                      />
+                      {formatMessage(messages.comments)}
+                      {commentsNotifications > 0 &&
+                        <ChatCount>
+                          <CountCircle className="counter">
+                            {commentsNotifications}
+                          </CountCircle>
+                        </ChatCount>
+                      }
+                    </PanelTitle>
+                  }
+                  key="2"
+                >
+                  {commentsComponent}
+                </PanelMobile>
                 <PanelMobile
                   header={
                     <PanelTitle>

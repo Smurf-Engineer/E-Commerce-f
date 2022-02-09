@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import MenuAntd from 'antd/lib/menu'
-import { BLUE_LIGHT, GRAY_LIGHTEST } from '../../../theme/colors'
+import { GRAY_LIGHTEST, RED } from '../../../theme/colors'
 const { SubMenu } = MenuAntd
 
 interface DivProps {
@@ -58,7 +58,7 @@ export const MenuTitle = styled.div``
 export const BetaLabel = styled.div`
   display: inline-block;
   font-size: 9px;
-  color: ${BLUE_LIGHT};
+  color: ${RED};
   font-style: italic;
   margin-left: 4px;
   vertical-align: top;
