@@ -23,7 +23,7 @@ export default defineMessages({
   },
   beta: {
     id: 'screens.Account.menu.beta',
-    defaultMessage: 'BETA'
+    defaultMessage: 'NEW'
   },
   proDesign: {
     id: 'screens.Account.proDesign',

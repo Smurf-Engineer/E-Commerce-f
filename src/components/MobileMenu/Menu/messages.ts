@@ -27,7 +27,7 @@ export default defineMessages({
   },
   beta: {
     id: 'components.menuBar.beta',
-    defaultMessage: 'BETA'
+    defaultMessage: 'NEW'
   },
   active: {
     id: 'components.menuBar.active',

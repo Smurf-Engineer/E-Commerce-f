@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import {
   WHITE,
   BLACK,
-  BLUE_LIGHT,
   GRAY_DARK,
   RED
 } from '../../theme/colors'
@@ -35,7 +34,7 @@ export const OptionMenu = styled.div`
 export const BetaLabel = styled.div`
   display: inline-block;
   font-size: 9px;
-  color: ${BLUE_LIGHT};
+  color: ${RED};
   font-style: italic;
   margin-left: 4px;
   vertical-align: top;
