@@ -2125,7 +2125,7 @@ export const SendInvitationButton = styled.div`
 `
 
 export const BottomSection = styled.div`
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-between;
   margin-top: 26px;
