@@ -10,16 +10,14 @@ import { message } from 'antd'
 import { RolePermission, UserPermissions, UserType } from '../../types/common'
 import { initSlaask } from '../../slaask'
 
-export const restoreUserSession = (client: any) => {
+export const restoreUserSession = () => {
   return async (dispatch: any) => {
     try {
       const jsonUser = localStorage.getItem('user')
       const currentRegion = localStorage.getItem('currentRegion')
       if (!!jsonUser) {
         const userObject = JSON.parse(jsonUser)
-        const permissions = await getPermissions(client)
-        const user = { ...userObject, permissions }
-        dispatch({ type: SET_USER_ACTION, user })
+        dispatch({ type: SET_USER_ACTION, user: userObject })
       }
       if (!!currentRegion) {
         const regionObject = JSON.parse(currentRegion)

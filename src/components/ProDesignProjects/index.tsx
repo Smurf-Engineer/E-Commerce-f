@@ -145,6 +145,9 @@ class ProDesignProjects extends React.Component<Props, {}> {
     if (navigator && navigator.serviceWorker) {
       navigator.serviceWorker.addEventListener('message', this.reloadMessages)
     }
+    if (typeof window !== 'undefined') {
+      setTimeout(() => { window.scrollTo(0, 0) }, 1000)
+    }
   }
 
   componentWillUnmount() {

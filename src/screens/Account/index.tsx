@@ -16,6 +16,7 @@ import * as accountActions from './actions'
 import { addTeamStoreItemMutation, profileSettingsQuery } from './data'
 import {
   logoutAction,
+  openLoginAction,
   openQuickViewAction
 } from '../../components/MainLayout/actions'
 import messages from './messages'
@@ -79,7 +80,7 @@ import {
 } from './styledComponents'
 import MyFiles from '../../components/MyFiles'
 import config from '../../config'
-import { TeamStoreItemtype, MessagePayload, IProfileSettings, QueryProps } from '../../types/common'
+import { TeamStoreItemtype, MessagePayload, IProfileSettings, QueryProps, UserType } from '../../types/common'
 import get from 'lodash/get'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -107,12 +108,14 @@ interface Props extends RouteComponentProps<any> {
   teamStoreId: string
   savedDesignId: string
   itemToAdd: TeamStoreItemtype
+  user: UserType
   // Mutation action
   addItemToStore: (variables: {}) => Promise<MessagePayload>
   // Redux actions
   setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   logoutAction: () => void
+  openLoginAction: (open: boolean, callback?: boolean | (() => void)) => void
   setOpenKeysAction: (keys: string[]) => void
   setDefaultScreenAction: (screen: string, openCreations?: boolean) => void
   setCurrentScreenAction: (screen: string) => void
@@ -124,6 +127,9 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class Account extends React.Component<Props, {}> {
+  state = {
+    retryLoad: false
+  }
   componentWillUnmount() {
     const { clearReducerAction } = this.props
     clearReducerAction()
@@ -134,14 +140,25 @@ export class Account extends React.Component<Props, {}> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { location: { search: oldSearch } } = prevProps
+    const { location: { search: oldSearch }, user: oldUser } = prevProps
     const oldQueryParams = queryString.parse(oldSearch)
     const { option: oldOption } = oldQueryParams
-    const { location: { search } } = this.props
+    const { location: { search }, user } = this.props
     const queryParams = queryString.parse(search)
     const { option } = queryParams
+    const { retryLoad } = this.state
     if (oldOption !== option) {
       this.setScreen()
+    }
+    if (user !== oldUser && retryLoad) {
+      const isBrowser = typeof window !== 'undefined'
+      if (isBrowser) {
+        const searchParams = window.location ? window.location.search : ''
+        const isProjectList = /option=proDesignProjects/g.test(searchParams)
+        if (isProjectList) {
+          location.reload()
+        }
+      }
     }
   }
 
@@ -164,12 +181,25 @@ export class Account extends React.Component<Props, {}> {
   }
 
   async componentDidMount() {
-    const { setIsMobileAction } = this.props
+    const { setIsMobileAction, user, openLoginAction: openLoginModalAction } = this.props
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
     ).matches
     await LoadScripts(threeDScripts)
     setIsMobileAction(isMobile)
+    const userSaved = localStorage.getItem('user')
+    if (!user && !userSaved) {
+      const isBrowser = typeof window !== 'undefined'
+      if (isBrowser) {
+        const search = window.location ? window.location.search : ''
+        const isProjectList = /option=proDesignProjects/g.test(search)
+        if (isProjectList) {
+          this.setState({ retryLoad: true })
+          openLoginModalAction(true)
+          return
+        }
+      } 
+    }
   }
 
   handleOnSelectedKeys = (keys: string[]) => {
@@ -543,7 +573,9 @@ const mapStateToProps = (state: any) => {
   const responsive = state.get('responsive').toJS()
   const langProps = state.get('languageProvider').toJS()
   const mainLayout = state.get('layout').toJS()
+  const app = state.get('app').toJS()
   return {
+    ...app,
     ...account,
     ...responsive,
     ...langProps,
@@ -562,7 +594,7 @@ const AccountEnhance = compose(
   injectIntl,
   connect(
     mapStateToProps,
-    { ...accountActions, openQuickViewAction, logoutAction }
+    { ...accountActions, openQuickViewAction, logoutAction, openLoginAction }
   )
 )(Account)
 

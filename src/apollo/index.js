@@ -26,8 +26,14 @@ const errorLink = onError(({ response, operation }) => {
       response.errors.length &&
       head(response.errors.map(error => error.message))
     if (errorMessage.length && unauthorizedExp.test(errorMessage)) {
-      const isProDesign = operation.operationName === 'getProdesignItem' || operation.operationName === 'getEditRequestPrices' || operation.operationName === 'getProdesignItemComments'
-      message.error(isProDesign && operation.operationName !== 'getEditRequestPrices' ? 'You must login to view your design!' : 'User session has expired!')
+      const isBrowser = typeof window !== 'undefined'
+      let isProjectList = false
+      if (isBrowser) {
+        const search = window.location ? window.location.search : ''
+        isProjectList = /option=proDesignProjects/g.test(search)
+      }
+      const isProDesign = operation.operationName === 'getProdesignItem' || operation.operationName === 'getEditRequestPrices' || operation.operationName === 'getProdesignItemComments' || isProjectList
+      message.error(isProDesign && operation.operationName !== 'getEditRequestPrices' && !isProjectList ? 'You must login to view your design!' : 'You must login to proceed!')
       setTimeout(() => {
         try {
           localStorage.removeItem('user')
