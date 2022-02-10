@@ -40,6 +40,7 @@ import SignUpTest from '../screens/HomeTest'
 import PublishingTool from '../screens/PublishingTool'
 import DesignTools from '../screens/DesignTools'
 import TeamstoreTypes from '../screens/TeamstoreTypes'
+import ProDesignLanding from '../screens/ProDesignLanding'
 
 const routes = [
   {
@@ -182,6 +183,11 @@ const routes = [
     path: '/create-store',
     name: 'createStore',
     component: TeamstoreTypes
+  },
+  {
+    path: '/prodesign',
+    name: 'proDesignLanding',
+    component: ProDesignLanding
   },
   {
     path: '/search-teamstores',

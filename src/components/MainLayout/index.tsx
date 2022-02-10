@@ -109,7 +109,7 @@ interface Props extends RouteComponentProps<any> {
   openResellerAction: (open: boolean) => void
   setAccountScreen: (screen: string, openCreations?: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
-  restoreUserSession: (client: any) => void
+  restoreUserSession: (client?: any) => void
   deleteUserSession: () => void
   saveUserSession: (user: UserType, client: any) => void
   openLogoutModalAction: (open: boolean) => void
