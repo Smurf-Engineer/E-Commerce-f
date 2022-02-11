@@ -37,6 +37,7 @@ export const DataContainer = styled.div`
 
 export const CarouselContainer = styled.div`
   width: 100%;
+  margin-bottom: 10px;
   @media (max-width: 768px) {
     margin-right: 0px;
   }
@@ -100,11 +101,17 @@ export const LeftText = styled.div`
   justify-content: center;
   margin-left: 92px;
   font-family: Avenir;
-  @media(max-width: 1024px) {
+  @media (max-width: 1024px) {
     margin-left: 46px;
   }
-  @media(max-width: 678px) {
-    margin-left: 12px;
+  @media (max-width: 820px) {
+    margin-left: 31px;
+  }
+  @media (max-width: 500px) {
+    margin-left: 20px;
+  }
+  @media (max-width: 425px) {
+    margin-left: 16px;
   }
 `
 
@@ -133,6 +140,30 @@ export const RightText = styled.div`
   }
 `
 
+export const TitleTextFirst = styled.div`
+  font-size: 36px;
+  font-weight: bold;
+  font-family: Avenir;
+  margin-bottom: 10px;
+  width: 100%;
+  @media (max-width: 1280px) {
+    font-size: 32px;
+  }
+  @media (max-width: 1024px) {
+    font-size: 28px;
+  }
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+  @media (max-width: 678px) {
+    font-size: 14px;
+  }
+  @media (max-width: 500px) {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+`
+
 export const TitleText = styled.div`
   font-size: 36px;
   font-weight: bold;
@@ -146,10 +177,91 @@ export const TitleText = styled.div`
     font-size: 28px;
   }
   @media (max-width: 768px) {
-    font-size: 24px;
+    font-size: 22px;
   }
   @media (max-width: 678px) {
     font-size: 14px;
+  }
+`
+
+export const ProDesignLogo = styled.img`
+  max-width: 442px;
+  margin-bottom: 32px;
+  @media (max-width: 1224px) {
+    max-width: 382px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 1024px) {
+    max-width: 324px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 820px) {
+    max-width: 306px;
+  }
+  @media (max-width: 768px) {
+    max-width: 268px;
+  }
+  @media (max-width: 680px) {
+    max-width: 180px;
+  }
+  @media (max-width: 480px) {
+    max-width: 136px;
+    margin-bottom: 4px;
+  }
+`
+
+export const ListItemMobile = styled.div`
+  display: none;
+  margin-left: 20px;
+  padding-left: 14px;
+  margin-bottom: 33px;
+  @media (max-width: 768px) {
+    display: list-item;
+    max-width: 410px;
+    margin-bottom: 0px;
+  }
+  @media (max-width: 678px) {
+    max-width: 396px;
+    margin-bottom: 4px;
+    margin-left: 8px;
+    padding-left: unset;
+    font-size: 10px;
+    filter: drop-shadow(0px 0px 4px black);
+  }
+  @media (max-width: 500px) {
+    margin-bottom: 0px;
+    font-size: 8px;
+  }
+`
+
+export const SubtitleSpecial = styled.div`
+  font-size: 16px;
+  font-family: Avenir;
+  margin-bottom: 64px;
+  width: 100%;
+  @media (max-width: 1224px) {
+    margin-bottom: 44px;
+  }
+  @media (max-width: 1024px) {
+    margin-bottom: 23px;
+  }
+  @media (max-width: 820px) {
+    max-width: 470px;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 768px) {
+    font-size: 14px;
+    margin-bottom: 24px;
+    max-width: 380px;
+  }
+  @media (max-width: 678px) {
+    font-size: 10px;
+    margin-bottom: 16px;
+    max-width: 280px;
+  }
+  @media (max-width: 480px) {
+    margin-bottom: 6px;
+    max-width: 208px;
   }
 `
 
@@ -158,6 +270,9 @@ export const Subtitle = styled.div`
   font-family: Avenir;
   margin-bottom: 64px;
   width: 100%;
+  @media (max-width: 1224px) {
+    margin-bottom: 44px;
+  }
   @media (max-width: 768px) {
     font-size: 14px;
     margin-bottom: 24px;
@@ -181,7 +296,14 @@ export const ListItem = styled.div`
   margin-left: 20px;
   padding-left: 14px;
   margin-bottom: 33px;
+  @media (max-width: 1024px) {
+    margin-bottom: 23px;
+  }
+  @media (max-width: 820px) {
+    margin-bottom: 6px;
+  }
   @media (max-width: 768px) {
+    display: none;
     max-width: 410px;
     margin-bottom: 0px;
   }
@@ -367,6 +489,9 @@ export const PhotoImage = styled.img`
   box-shadow: 0px 2px 8px 1px #ababab;
   @media (max-width: 1280px) {
     max-width: 480px;
+  }
+  @media (max-width: 820px) {
+    max-width: 348px;
   }
   @media (max-width: 768px) {
     max-width: 342px;
