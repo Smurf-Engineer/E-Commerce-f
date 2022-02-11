@@ -18,11 +18,13 @@ import {
   FullImage,
   LeftText,
   ListItem,
+  ListItemMobile,
   LogoIcon,
   MediumImage,
   PhotoImage,
   PhotoImageFull,
   PhotoImageNormal,
+  ProDesignLogo,
   RightText,
   Section,
   SectionFlex,
@@ -30,7 +32,9 @@ import {
   SmallImage,
   Subtitle,
   SubtitleNormal,
+  SubtitleSpecial,
   TitleText,
+  TitleTextFirst,
   TopBar
 } from './styledComponents'
 import Carousel from 'antd/lib/carousel'
@@ -82,18 +86,24 @@ class ProDesignLanding extends React.Component<Props, {}> {
               pauseOnHover={false}
             >
               {/* tslint:disable-next-line: max-line-length */}
-              <CarouselItem src="https://jakroo.storage.googleapis.com/theme_images/rkPD2V93K-66962ea9ff60a-Homepage.jpg" />
+              <CarouselItem src="https://storage.googleapis.com/jakroo/homepage/home-landing.png" />
             </Carousel>
           </CarouselContainer>
           <Section>
             <LeftText>
-              <TitleText>COLLABORATE WITH THE PROS</TitleText>
-              <Subtitle>Work together with the Jakroo Design Team to create your custom kit.</Subtitle>
+              <ProDesignLogo src="https://storage.googleapis.com/jakroo/homepage/Pro-Design.svg" />
+              <TitleTextFirst>COLLABORATE WITH THE PROS</TitleTextFirst>
+              <SubtitleSpecial>Work together with the Jakroo Design Team to create your custom kit.</SubtitleSpecial>
               <ListItem>Ideal for competitive teams or clubs requiring multiple products.</ListItem>
               <ListItem>Advanced design for color aesthetic to match your branding requirements.</ListItem>
               <ListItem>Dedicated Account Manager to assist with design and ordering.</ListItem>
               <ListItem>Team Collaboration tool to gather feedback from Team members.</ListItem>
               <ListItem>Design dashboard to easily view, add or approve your designs.</ListItem>
+              <ListItemMobile>Ideal for competitive teams</ListItemMobile>
+              <ListItemMobile>Advanced design options</ListItemMobile>
+              <ListItemMobile>Dedicated Account Manager</ListItemMobile>
+              <ListItemMobile>Team Collaboration Feature</ListItemMobile>
+              <ListItemMobile>Design Dashboard</ListItemMobile>
             </LeftText>
             <FullImage src="https://storage.googleapis.com/jakroo/homepage/prodesign.jpg" />  
           </Section>
@@ -137,7 +147,7 @@ class ProDesignLanding extends React.Component<Props, {}> {
           </Section>
           <SectionFlex>
             <FlexSide>
-              <TitleText>CUSTOM STORES FOR TEAM.</TitleText>
+              <TitleText>CUSTOM STORES FOR TEAMS.</TitleText>
               <SubtitleNormal>FLEXIBLE. CONVENIENT. SAFE.</SubtitleNormal>
               <Subtitle>Fast and convenient individual ordering, checkout and shipping for each member</Subtitle>
               <MediumImage src="https://storage.googleapis.com/jakroo/homepage/Two%20Types.png" />
@@ -153,12 +163,15 @@ class ProDesignLanding extends React.Component<Props, {}> {
             <FlexSide>
               <TitleText>SERVICE & AFTERCARE</TitleText>
               <Subtitle>
+                <p>
                 We place the highest value on building trust and being honest and transparent. Our aim is 
                 to be responsive and respectful, creating positive interactions with all our customers.
-                <br />
+                </p>
+                <p>
                 From personalized size recommendations at time of order, through to aftercare service 
                 with our warranty and crash replacement programs, we are there to support you and provide 
                 the assurance that your investment is protected.
+                </p>
               </Subtitle>
               <BigImage src="https://storage.googleapis.com/jakroo/homepage/Aftercare.png" />
             </FlexSide>
@@ -167,10 +180,13 @@ class ProDesignLanding extends React.Component<Props, {}> {
             <FlexSide>
               <TitleText>TURNAROUND</TitleText>
               <Subtitle>
+                <p>
                 Our proprietary on-demand, just-in-time manufacturing system vertically integrates all core business 
                 functions, from design and customer service through to production and delivery.
-                <br />
+                </p>
+                <p>
                 The result is the <strong>world's fastest turnaround time</strong> for customized technical apparel
+                </p>
               </Subtitle>
               <BigImage src="https://storage.googleapis.com/jakroo/homepage/turnaround.png" />
             </FlexSide>
