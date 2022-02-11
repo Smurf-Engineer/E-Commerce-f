@@ -68,7 +68,7 @@ export class LockerScreen extends React.PureComponent<Props, {}> {
       data
     } = this.props
     let screen
-    if (!data.loading) {
+    if (data && !data.loading && data.designsResult) {
       const { designs = [] } = data.designsResult
       screen = designs.length ? (
         designs.map(
@@ -116,7 +116,7 @@ export class LockerScreen extends React.PureComponent<Props, {}> {
           {screen}
         </List>
         <PaginationRow>
-          {!data.loading && Number(data.designsResult.fullCount) > limit && (
+          {data && data.designsResult && !data.loading && Number(data.designsResult.fullCount) > limit && (
             <Pagination
               size="small"
               current={currentPage}

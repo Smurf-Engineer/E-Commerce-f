@@ -285,12 +285,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
   handleFromDesign = () => {
     const { setFromDesignAction, user } = this.props
-    setFromDesignAction(true)
     if (!user) {
       this.setState({ retrySave: true })
       this.handleOnOpenLogin()
       return
     }
+    setFromDesignAction(true)
     this.handleOnContinue(true)
   }
 

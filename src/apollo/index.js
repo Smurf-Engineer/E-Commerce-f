@@ -32,8 +32,14 @@ const errorLink = onError(({ response, operation }) => {
         const search = window.location ? window.location.search : ''
         isProjectList = /option=proDesignProjects/g.test(search)
       }
-      const isProDesign = operation.operationName === 'getProdesignItem' || operation.operationName === 'getEditRequestPrices' || operation.operationName === 'getProdesignItemComments' || isProjectList
-      message.error(isProDesign && operation.operationName !== 'getEditRequestPrices' && !isProjectList ? 'You must login to view your design!' : 'You must login to proceed!')
+      const isIntakeForm = operation && (operation.operationName === 'phoneSettings' || operation.operationName === 'notificationSettings')
+      const isProDesign = operation.operationName === 'getProdesignItem' || operation.operationName === 'getEditRequestPrices' ||
+        operation.operationName === 'getProdesignItemComments' || isProjectList || isIntakeForm
+      if (!isIntakeForm) {
+        message.error(isProDesign && operation.operationName !== 'getEditRequestPrices' && !isProjectList ?
+          'You must login to view your design!' : 'You must login to proceed!'
+        )
+      }
       setTimeout(() => {
         try {
           localStorage.removeItem('user')

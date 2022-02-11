@@ -39,12 +39,12 @@ const renderHtml = (styleTags: any, html: any, helmet: any) => {
           href="/favicon.ico" />
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet='utf-8' />
+          ${helmet.title.toString()}
           <meta property="og:title" content="Designlab by Jakroo" />
           <meta property="og:description" content="JAKROO Custom Apparel" />
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
           ${helmet.meta.toString()}
           <meta property="og:image" content="https://i.ytimg.com/vi/kLedyokBB0g/maxresdefault.jpg" />
-          ${helmet.title.toString()}
           ${
             assets.client.css
               ? `<link rel="stylesheet" type="text/css" href="${assets.client.css}">`
