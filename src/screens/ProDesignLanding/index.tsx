@@ -55,7 +55,7 @@ class ProDesignLanding extends React.Component<Props, {}> {
   }
   goToProDesign = () => {
     const { history } = this.props
-    history.push('/account?option=proDesignProjects')
+    history.push('/pro-design')
   }
   goToHomePage = () => {
     window.location.replace('/')
@@ -122,7 +122,7 @@ class ProDesignLanding extends React.Component<Props, {}> {
           </SectionFlex>
           <SectionFlexInverted>
             <FlexSide>
-              <PhotoImage src="https://storage.googleapis.com/jakroo/homepage/comments.png" />
+              <PhotoImage src="https://storage.googleapis.com/jakroo/homepage/commentsboard.png" />
             </FlexSide>
             <FlexSide>
               <TitleText>THE BEST IDEAS COME FROM TEAMWORK.</TitleText>
