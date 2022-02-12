@@ -25,6 +25,7 @@ import * as intakeFormActions from './actions'
 import * as apiActions from './api'
 import Modal from 'antd/lib/modal'
 import queryString from 'query-string'
+import loaderModern from '../../assets/loadermodern.gif'
 import vector from '../../assets/vector.svg'
 import raster from '../../assets/raster.png'
 import ProductCatalogue from '../../components/ProductCatalogue'
@@ -68,7 +69,9 @@ import {
   BottomText,
   ModalIcon,
   InfoText,
-  SubTopDiv
+  SubTopDiv,
+  SavingDiv,
+  LoaderImg
 } from './styledComponents'
 import {
   Responsive,
@@ -455,6 +458,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       adminProjectUserId,
       notificationSettings: { notificationData },
       phoneSettings: { phoneData },
+      savingIntake,
       createProject,
       onSetSavingIntake,
       onSetSuccessModalOpen,
@@ -495,34 +499,36 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       fromScratch,
       categories: projectCategories
     }
-    try {
-      const results = await createProject({
-        variables: {
-          proDesignProject,
-          admProject,
-          userId: admProject ? adminProjectUserId : ''
-        }
-      })
-      const successMessage = get(results, 'data.createProDesignProject.message')
-      message.success(successMessage)
-      if (!admProject) {
-        if (notificationData &&
-          (notificationData.notifyProDesign === NotificationOption.BOTH || 
-          notificationData.notifyProDesign === NotificationOption.SMS) &&
-          phoneData && phoneData.phone) {
-          onSetSuccessModalOpen(true)
+    if (!savingIntake) {
+      try {
+        const results = await createProject({
+          variables: {
+            proDesignProject,
+            admProject,
+            userId: admProject ? adminProjectUserId : ''
+          }
+        })
+        const successMessage = get(results, 'data.createProDesignProject.message')
+        message.success(successMessage)
+        if (!admProject) {
+          if (notificationData &&
+            (notificationData.notifyProDesign === NotificationOption.BOTH || 
+            notificationData.notifyProDesign === NotificationOption.SMS) &&
+            phoneData && phoneData.phone) {
+            onSetSuccessModalOpen(true)
+          } else {
+            onSetSMSAlertsModalOpen(true)
+          }
         } else {
-          onSetSMSAlertsModalOpen(true)
+          window.location.href = `/admin/prodesign-dashboard`
         }
-      } else {
-        window.location.href = `/admin/prodesign-dashboard`
+        onSetSavingIntake(false)
+      } catch (e) {
+        onSetSavingIntake(false)
+        message.error(
+          `Something wrong happened. Please try again! ${e.message}`
+        )
       }
-      onSetSavingIntake(false)
-    } catch (e) {
-      onSetSavingIntake(false)
-      message.error(
-        `Something wrong happened. Please try again! ${e.message}`
-      )
     }
   }
 
@@ -1077,6 +1083,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           ]}
           title={formatMessage(messages.title)}
         />
+        {savingIntake &&
+          <SavingDiv>
+            <LoaderImg src={loaderModern} />
+          </SavingDiv>
+        }
         <IntakeContainer
           ref={(listObject: any) => {
             this.intakeRef = listObject
