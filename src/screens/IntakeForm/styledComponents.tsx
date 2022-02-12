@@ -1,6 +1,6 @@
 import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
-import { WHITE, GRAY_DARK, BLUE } from '../../theme/colors'
+import { WHITE, GRAY_DARK, BLUE, WHITE_TRANSPARENT } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
 
 interface StyleProps {
@@ -15,6 +15,23 @@ export const IntakeContainer = styled.div`
     overflow-y: scroll;
     height: calc(100vh - 120px);
   }
+`
+
+export const SavingDiv = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  background: ${WHITE_TRANSPARENT};
+  z-index: 9999999;
+  top: 0;
+  left: 0;
+`
+
+export const LoaderImg = styled.img`
+  max-width: 128px;
 `
 
 export const Title = styled.div`
