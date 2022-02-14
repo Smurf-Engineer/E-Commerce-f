@@ -56,7 +56,7 @@ server
     const paramsArray = params ? params.split('/') : []
     const code = paramsArray ? paramsArray.pop() : 'us'
     const firstPath = paramsArray ? paramsArray[0] : ''
-    if (firstPath === 'store_imgs' || firstPath === 'email') {
+    if (firstPath === 'store_imgs' || firstPath === 'email' || firstPath === 'yotpo') {
       req.pipe(request({ url: `https://23.21.173.129${location}`, rejectUnauthorized: false })).pipe(res)
       return
     }
