@@ -30,6 +30,14 @@ export default defineMessages({
     id: 'components.SMSAlertsModal.noThanks',
     defaultMessage: 'No, thanks',
   },
+  phoneSaved: {
+    id: 'components.SMSAlertsModal.phoneSaved',
+    defaultMessage: 'Phone number saved!',
+  },
+  invalidPhone: {
+    id: 'components.SMSAlertsModal.invalidPhone',
+    defaultMessage: 'Phone number must be at least 11 characters including the country code'
+  },
   updateNotificationSuccessMessage: {
     id: 'components.Notifications.Preferences.updateNotificationSuccessMessage',
     defaultMessage: 'Notification Settings has been updated!',

@@ -76,7 +76,7 @@ class SMSAlertsModal extends React.Component<Props, {}> {
     const { notificationData, updateNotification } = this.props
     const key = 'notifyProDesign'
     const currentValue = notificationData ? notificationData[key] : 0
-    let newValue = -1
+    let newValue = notificationData && notificationData[key] ? -1 : 2
     switch (currentValue) {
       case NotificationOption.EMAIL:
         newValue = NotificationOption.BOTH
@@ -132,7 +132,7 @@ class SMSAlertsModal extends React.Component<Props, {}> {
     this.updatePhoneSetting(
       { userId: user ? user.id : '', phone },
       updatePhone,
-      messages.updateNotificationSuccessMessage
+      messages.phoneSaved
     )
   }
 
@@ -141,7 +141,12 @@ class SMSAlertsModal extends React.Component<Props, {}> {
   }
 
   handleConfirm = () => {
+    const { formatMessage } = this.props
     const { phoneNumber } = this.state
+    if (phoneNumber && phoneNumber.length < 11) {
+      MessageBar.error(formatMessage(messages.invalidPhone))
+      return
+    }
     if (phoneNumber) {
       this.handlePhoneChange(phoneNumber)
       this.changeNotificationSettings()
@@ -174,6 +179,8 @@ class SMSAlertsModal extends React.Component<Props, {}> {
               </InputTitleContainer>
               <PhoneInput
                 country={'us'}
+                autoComplete="jv2"
+                countryCodeEditable={false}
                 value={this.state.phoneNumber}
                 onChange={(value) => {
                   this.setState({ phoneNumber: value })

@@ -1333,10 +1333,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           removeTag={removeTagAction}
           selectedTags={inspirationTags}
         /> : null}
-        {smsAlertsModal && notificationData && phoneData ? <SMSAlertsModal
+        {smsAlertsModal ? <SMSAlertsModal
           user={user}
-          notificationData={notificationData}
-          phoneData={phoneData}
+          notificationData={notificationData || {}}
+          phoneData={phoneData || {}}
           updateNotification={updateNotification}
           updatePhone={updatePhone}
           onClose={this.handleOnSMSAlertsClose}
