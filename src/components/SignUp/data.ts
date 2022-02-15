@@ -7,6 +7,9 @@ export const createUser = graphql(
       signUp(user: $user) {
         user {
           id
+          shortId: short_id
+          email
+          administrator
           name: first_name
           lastName: last_name
         }
