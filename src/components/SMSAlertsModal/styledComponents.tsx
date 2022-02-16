@@ -94,7 +94,8 @@ export const ConfirmButton = styled(Button)`
 `
 
 export const BannerImage = styled.img`
-  width: 350px;
+  max-width: 350px;
+  object-fit: contain;
   @media (max-width: 480px) {
     width: 100%;
   }

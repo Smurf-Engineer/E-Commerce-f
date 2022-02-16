@@ -24,8 +24,8 @@ export const SavingDiv = styled.div`
   align-items: center;
   justify-content: center;
   position: fixed;
-  background: ${WHITE_TRANSPARENT};
-  z-index: 9999999;
+  background: ${({ small }: StyleProps) => small ? 'none' : WHITE_TRANSPARENT};
+  z-index: 777;
   top: 0;
   left: 0;
 `
