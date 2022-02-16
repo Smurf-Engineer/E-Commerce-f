@@ -438,69 +438,70 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       this.handleOnOpenLogin()
       return
     }
-    const {
-      selectedPaletteIndex,
-      inspirationSelectedItems,
-      selectedColors,
-      selectedPrimaryColor,
-      selectedEditColors,
-      selectedEditPrimaryColor,
-      selectedFiles,
-      selectedTeamSize,
-      projectDescription,
-      projectName,
-      phone,
-      selectedDesign,
-      estimatedDate,
-      sendSms,
-      sendEmail,
-      projectCategories,
-      adminProjectUserId,
-      notificationSettings: { notificationData },
-      phoneSettings: { phoneData },
-      savingIntake,
-      createProject,
-      onSetSavingIntake,
-      onSetSuccessModalOpen,
-      onSetSMSAlertsModalOpen
-    } = this.props
-    onSetSavingIntake(true)
-    const primary = selectedPaletteIndex === CUSTOM_PALETTE_INDEX
-      ? selectedPrimaryColor[0] : selectedEditPrimaryColor[0]
-    const accents = selectedPaletteIndex === CUSTOM_PALETTE_INDEX
-      ? selectedColors : selectedEditColors
-    const palette = {
-      primary_color: primary,
-      accent_1: accents.length >= 0 ? accents[0] : null,
-      accent_2: accents.length >= 1 ? accents[1] : null,
-      accent_3: accents.length >= 2 ? accents[2] : null
-    }
-
-    let contentState = null
-    try {
-      contentState = JSON.parse(projectDescription)
-    } catch (e) {
-      console.error('Error ', e)
-    }
-
-    const proDesignProject = {
-      name: projectName,
-      phone,
-      notes: draftToHtml(contentState),
-      teamSize: selectedTeamSize,
-      deliveryDate: estimatedDate,
-      sendEmail,
-      selectedDesign,
-      sendSms,
-      files: selectedFiles.map((file) => file.id),
-      products: selectedItems.map((item) => item.id),
-      inspiration: inspirationSelectedItems,
-      palette,
-      fromScratch,
-      categories: projectCategories
-    }
+    const { savingIntake } = this.props
     if (!savingIntake) {
       try {
+        const {
+          selectedPaletteIndex,
+          inspirationSelectedItems,
+          selectedColors,
+          selectedPrimaryColor,
+          selectedEditColors,
+          selectedEditPrimaryColor,
+          selectedFiles,
+          selectedTeamSize,
+          projectDescription,
+          projectName,
+          phone,
+          selectedDesign,
+          estimatedDate,
+          sendSms,
+          sendEmail,
+          projectCategories,
+          adminProjectUserId,
+          notificationSettings: { notificationData },
+          phoneSettings: { phoneData },
+          createProject,
+          onSetSavingIntake,
+          onSetSuccessModalOpen,
+          onSetSMSAlertsModalOpen
+        } = this.props
+        onSetSavingIntake(true)
+        const primary = selectedPaletteIndex === CUSTOM_PALETTE_INDEX
+          ? selectedPrimaryColor[0] : selectedEditPrimaryColor[0]
+        const accents = selectedPaletteIndex === CUSTOM_PALETTE_INDEX
+          ? selectedColors : selectedEditColors
+        const palette = {
+          primary_color: primary,
+          accent_1: accents.length >= 0 ? accents[0] : null,
+          accent_2: accents.length >= 1 ? accents[1] : null,
+          accent_3: accents.length >= 2 ? accents[2] : null
+        }
+
+        let contentState = null
+        try {
+          contentState = JSON.parse(projectDescription)
+        } catch (e) {
+          console.error('Error ', e)
+        }
+
+        const proDesignProject = {
+          name: projectName,
+          phone,
+          notes: draftToHtml(contentState),
+          teamSize: selectedTeamSize,
+          deliveryDate: estimatedDate,
+          sendEmail,
+          selectedDesign,
+          sendSms,
+          files: selectedFiles.map((file) => file.id),
+          products: selectedItems.map((item) => item.id),
+          inspiration: inspirationSelectedItems,
+          palette,
+          fromScratch,
+          categories: projectCategories
+        }
+    
         const results = await createProject({
           variables: {
             proDesignProject,
@@ -522,12 +523,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         } else {
           window.location.href = `/admin/prodesign-dashboard`
         }
-        onSetSavingIntake(false)
       } catch (e) {
-        onSetSavingIntake(false)
         message.error(
           `Something wrong happened. Please try again! ${e.message}`
         )
+        setTimeout(() => { location.reload() }, 1000)
       }
     }
   }
@@ -1084,7 +1084,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           title={formatMessage(messages.title)}
         />
         {savingIntake &&
-          <SavingDiv>
+          <SavingDiv small={smsAlertsModal || successModal}>
             <LoaderImg src={loaderModern} />
           </SavingDiv>
         }
