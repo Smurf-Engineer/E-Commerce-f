@@ -76,7 +76,7 @@ const Html = ({ content, state, reduxState }: Props) => (
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js" />
     <script
       type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2G_KKwxdtBawSWDbQ3rePbzRrf9uou0w&libraries=places"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U&libraries=places"
     />
     {/* <script
       async={true}
