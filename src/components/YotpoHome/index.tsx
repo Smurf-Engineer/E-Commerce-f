@@ -42,7 +42,7 @@ class YotpoHome extends React.Component<Props, any> {
       const yotpoReviewsCarousel = ReactDOM.findDOMNode(this.yotpoReviews)
       yotpoReviewsCarousel.setAttribute('class', 'yotpo yotpo-reviews-carousel')
       yotpoReviewsCarousel.setAttribute('data-background-color', 'transparent')
-      yotpoReviewsCarousel.setAttribute('data-mode', 'top_rated')
+      yotpoReviewsCarousel.setAttribute('data-mode', 'most_recent')
       yotpoReviewsCarousel.setAttribute('data-type', 'both')
       yotpoReviewsCarousel.setAttribute('data-count', '9')
       yotpoReviewsCarousel.setAttribute('data-show-bottomline', '1')
