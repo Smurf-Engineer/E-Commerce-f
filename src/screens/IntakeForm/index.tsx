@@ -593,7 +593,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       Sections.REVIEW ? formatMessage(messages.submitButtonText) :
       formatMessage(messages.continueButtonText)
     const queryParams = queryString.parse(search)
-    const { id: projectId, admProject } = queryParams || {}
+    const { id: projectId, admProject, admUser } = queryParams || {}
     const previousButtonText = formatMessage(messages.previousButtonText)
     const quantities = selectedItems.reduce((sum, product) => sum + product.quantity, 0)
     switch (screen || currentScreen) {
@@ -605,7 +605,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         }
       case Sections.PRODUCTS:
         return {
-          continueDisable: selectedItems.length < 1 || (!admProject && quantities > 5),
+          continueDisable: selectedItems.length < 1 || (!admProject && quantities > (admUser ? 20 : 5)),
           showPreviousButton: !projectId && !admProject,
           continueButtonText,
           previousButtonText
@@ -730,7 +730,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const { selectProductAction, location: { search }, selectedItems, intl: { formatMessage } } = this.props
     const queryParams = queryString.parse(search)
     const { id: projectId, admUser, admProject } = queryParams || {}
-    if (admProject || (selectedItems.length < (!!projectId && !admUser ? 1 : 5))) {
+    if (admProject || (selectedItems.length < (!!projectId && !admUser ? 1 : (admUser && projectId ? 20 : 5)))) {
       return selectProductAction(product)
     }
     const title = formatMessage(messages.maxProductsTitle)
@@ -1144,7 +1144,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               onDeselectProduct={deselectElementAction}
               hideFilters={['collection', 'season', 'fit_style']}
               fromIntakeForm={true}
-              adminProject={admProject}
+              adminProject={!!admProject || !!admUser}
               isAdmin={!!admUser || !!admProject}
               changeQuantity={this.handleChangeQuantity}
               isEdit={!!projectId && !admUser}
