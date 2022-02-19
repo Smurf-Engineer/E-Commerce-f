@@ -244,7 +244,7 @@ export default defineMessages({
   },
   baseColors: {
     id: 'screens.DesignApproval.baseColors',
-    defaultMessage: 'Base Colors'
+    defaultMessage: 'Base Colors:'
   },
   back: {
     id: 'screens.DesignApproval.back',

@@ -6,10 +6,10 @@ import get from 'lodash/get'
 import {
   Container,
   Name,
-  Stitching,
-  ColorLabel,
-  Oval,
-  Row
+  Row,
+  ColorContainer,
+  Color,
+  ColorName
 } from './styledComponents'
 import { StitchingColor } from '../../../types/common'
 
@@ -28,10 +28,12 @@ const StitchingColor = ({
     <Container>
       <Row>
         <Name>{name}</Name>
-        <Stitching>
-          <ColorLabel>{stitchingName}</ColorLabel>
-          <Oval color={stitchingValue} />
-        </Stitching>
+        <ColorContainer>
+          <Color color={stitchingValue} />
+          <ColorName>
+            {stitchingName}
+          </ColorName>
+        </ColorContainer>
       </Row>
     </Container>
   )

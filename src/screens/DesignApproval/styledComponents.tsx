@@ -599,7 +599,7 @@ export const CloseButtonStatus = styled.div`
 
 export const PrintPreviewLabel = styled.div`
   z-index: 8;
-  max-width: 124px;
+  max-width: 88px;
   width: 100%;
   right: 0px;
   position: absolute;
@@ -626,7 +626,7 @@ export const PrintPreviewLabel = styled.div`
 `
 
 export const PrintPreviewIcon = styled.img`
-  max-width: 86px;
+  max-width: 58px;
 `
 
 export const PreviewDiv = styled.div`
@@ -1562,19 +1562,23 @@ export const MessageComment = styled.div`
   min-width: 164px;
 `
 
-export const ColorName = styled.p`
-  margin: 5px 0 0 0;
-  font-size: 12px;
-`
-
 export const Accesories = styled.div`
   margin: 12px;
 `
 
+export const ColorsList = styled.div`
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+`
+
 export const Color = styled.div`
-  height: 30px;
+  min-height: 30px;
+  height: 100%;
   width: 30px;
-  border-radius: 50%;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  margin-right: 10px;
   border: 1px solid
     ${({ color }: ColorProps) =>
     color && color.toLowerCase() !== WHITE.toLowerCase() ? color : GRAY};
@@ -1584,17 +1588,32 @@ export const Color = styled.div`
 
 export const ColorContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  margin-left: 15px;
+  flex-direction: row;
+  margin-right: 18px;
+  transition: all .25s;
+  align-items: center;
+  box-shadow: 1px 1px 5px -2px #585858;
+  margin-bottom: 14px;
+  border-radius: 5px;
+  padding-right: 8px;
+  min-width: 148px;
+`
+export const ColorName = styled.p`
+  margin: 0;
+  font-size: 11px;
+  text-align: center;
+  word-break: break-all;
+  width: calc(100% - 40px);
 `
 
 export const Colors = styled.div`
-  padding: 0 14px;
+  padding: 0 10px;
   height: 100%;
   position: relative;
   display: flex;
   flex-flow: column;
   flex: 1;
+  overflow-y: scroll;
 `
 
 export const ColorBlock = styled.div`
@@ -1602,6 +1621,9 @@ export const ColorBlock = styled.div`
   flex-wrap: wrap;
   margin-top: 23px;
   margin-left: 12px;
+  @media (max-width: 480px) {
+    margin-left: 0px;
+  }
 `
 
 export const CodeLabel = styled.div`
@@ -1630,6 +1652,8 @@ export const CodeColor = styled.div`
   font-size: 16px;
   letter-spacing: 0.23px;
   line-height: 25px;
+  width: 100%;
+  text-align: left;
 `
 
 export const MessageType = styled.div`

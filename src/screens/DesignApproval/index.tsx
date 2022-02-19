@@ -288,7 +288,8 @@ import {
   StatusMobileBody,
   DesktopCloseButton,
   CloseModalIcon,
-  DragIcon
+  DragIcon,
+  ColorsList
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -1834,14 +1835,16 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         <ApprovalTitle>{formatMessage(messages.colors)}</ApprovalTitle>
         <ColorBlock>
           <CodeColor>{formatMessage(messages.baseColors)}</CodeColor>
-          {colors.map(({ name, value }, index) =>
-            <ColorContainer key={index}>
-              <Color color={value} />
-              <ColorName>
-                {name}
-              </ColorName>
-            </ColorContainer>
-          )}
+          <ColorsList>
+            {colors.map(({ name, value }, index) =>
+              <ColorContainer key={index}>
+                <Color color={value} />
+                <ColorName>
+                  {name}
+                </ColorName>
+              </ColorContainer>
+            )}
+          </ColorsList>
         </ColorBlock>
         <Accesories>
           <AccessoryColors
@@ -2536,7 +2539,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                 </MobileRequestButtons>
               }
-              {!!itemStatus &&
+              {!!itemStatus && false &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId && showRenderWindow &&
                     <Render3D

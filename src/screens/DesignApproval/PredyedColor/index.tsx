@@ -5,11 +5,11 @@ import * as React from 'react'
 import {
   Container,
   Name,
-  Stitching,
-  ColorLabel,
-  Oval,
   Row,
-  ColorWheel
+  ColorWheel,
+  ColorContainer,
+  Color,
+  ColorName
 } from './styledComponents'
 import colorWheel from '../../../assets/Colorwheel.svg'
 import { PredyedColor } from '../../../types/common'
@@ -30,13 +30,15 @@ const PredyedColor = ({
     <Container>
       <Row>
         <Name>{name}</Name>
-        <Stitching>
-          <ColorLabel>{predyedValue === PREDYED_TRANSPARENT ? 'Full Print' : predyedValue}</ColorLabel>
+        <ColorContainer>
           {predyedValue === PREDYED_TRANSPARENT ?
             <ColorWheel src={colorWheel} /> :
-            <Oval color={predyedCode} />
+            <Color color={predyedCode} />
           }
-        </Stitching>
+          <ColorName>
+            {predyedValue === PREDYED_TRANSPARENT ? 'Full Print' : predyedValue}
+          </ColorName>
+        </ColorContainer>
       </Row>
     </Container>
   )
