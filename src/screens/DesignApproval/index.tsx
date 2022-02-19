@@ -2539,7 +2539,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                 </MobileRequestButtons>
               }
-              {!!itemStatus && false &&
+              {!!itemStatus &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId && showRenderWindow &&
                     <Render3D
