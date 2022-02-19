@@ -85,7 +85,7 @@ export const ClosePreview = styled(AntdIcon)`
 
 export const PrintPreviewLabel = styled.div`
   z-index: 11;
-  max-width: ${({ hide }) => hide ? '124px' : 'calc(100% - 25px)'};
+  max-width: ${({ hide }) => hide ? '100px' : 'calc(100% - 25px)'};
   width: 100%;
   right: -14px;
   position: absolute;
@@ -137,7 +137,7 @@ export const BackgroundGray = styled.div`
 `
 
 export const PrintPreviewIcon = styled.img`
-  max-width: 86px;
+  max-width: 58px;
 `
 
 export const PrintPreviewDiv = styled.div`

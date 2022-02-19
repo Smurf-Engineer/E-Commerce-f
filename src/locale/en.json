@@ -60,7 +60,7 @@
   "screens.DesignApproval.newProduct": "<p>Your design request has been received and will be reviewed by your Account Manager. We will send you a message if we have any questions or need any clarification.</p><p>If everything is clear, your design will be available in 2 business days.</p>",
   "screens.DesignApproval.enterDesignInstructions": "ENTER DESIGN INSTRUCTIONS",
   "screens.DesignApproval.addNotes": "Add design instructions here. Minimum 15 characters",
-  "screens.DesignApproval.baseColors": "Base Colors",
+  "screens.DesignApproval.baseColors": "Base Colors:",
   "screens.DesignApproval.approvedCode": "APPROVED",
   "screens.DesignApproval.congratulations": "Congratulations! You have approved your design. Your design is now available in your LOCKER to purchase or Add to a Team Store",
   "screens.DesignApproval.available": "Available Edits",
