@@ -78,7 +78,6 @@ export class DesignCheckModal extends React.Component<Props, {}> {
               }}
             />
           </Content>
-
           <ModalButtonsWrapper>
             {loadingPro ? (
               <Spin size="large" />
