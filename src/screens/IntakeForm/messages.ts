@@ -75,19 +75,25 @@ export default defineMessages({
   successMessage: {
     id: 'screens.IntakeForm.successMessage',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: `Our Design Team will review all details of your submission and get back to you if there are any questions. You will be assigned a dedicated Account Manager who will guide you through the entire process to ensure you have the best experience.`
+    defaultMessage: `As the next step, our Design Team will review the details of your project and get back to you if there are any questions.  Be sure to check your email for status updates.`
   },
   successMessageCenter: {
     id: 'screens.IntakeForm.successMessageCenter',
-    defaultMessage: `You can review and track the progress of your Design Project on your Account Dashboard.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `You will be assigned a dedicated Account Manager to assist you and ensure you have a great experience.`
+  },
+  teamCollaboration: {
+    id: 'screens.IntakeForm.teamCollaboration',
+    defaultMessage: 'Team Collaboration'
   },
   sucessMessageBottom: {
     id: 'screens.IntakeForm.sucessMessageBottom',
-    defaultMessage: `Thank you for choosing JAKROO. We're excited to work on your project.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `You can now share your project with other members to review design details and collaborate on ideas.  Add team members and grant permissions from your project dashboard.`
   },
   returnToHome: {
     id: 'screens.IntakeForm.returnToHome',
-    defaultMessage: 'Return to My Projects'
+    defaultMessage: 'Go to My Project Dashboard'
   },
   maxProductsTitle: {
     id: 'screens.IntakeForm.maxProductsTitle',

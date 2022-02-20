@@ -1320,6 +1320,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         {successModal ? <SuccessModal
           title={formatMessage(messages.successTitle)}
           text={formatMessage(messages.successMessage)}
+          teamCollaboration={formatMessage(messages.teamCollaboration)}
           center={formatMessage(messages.successMessageCenter)}
           footer={formatMessage(messages.sucessMessageBottom)}
           returnHomeText={formatMessage(messages.returnToHome)}
