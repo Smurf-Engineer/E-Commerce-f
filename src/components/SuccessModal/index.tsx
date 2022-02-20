@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { ModalContainer, Title, Description, Strong, EditButton, BodyContent } from './styledComponents'
+import teamIconSelected from '../../assets/team_selected.svg'
+import { ModalContainer, Title, Description, Strong, EditButton, BodyContent, PanelIcon } from './styledComponents'
 import Modal from 'antd/lib/modal'
 
 interface Props {
@@ -7,16 +8,18 @@ interface Props {
   text: string
   center: string
   footer: string
+  teamCollaboration: string
   returnHomeText: string
   onReturnPage: () => void
 }
 
-const SuccessModal = ({ title, text, center, footer, returnHomeText, onReturnPage }: Props) => {
+const SuccessModal = ({ title, text, center, footer, returnHomeText, onReturnPage, teamCollaboration }: Props) => {
   return <Modal
   visible={true}
   footer={null}
   closable={false}
   width={'600px'}
+  wrapClassName="rounded-corner2"
   bodyStyle={{padding: 0}}
 >
   <ModalContainer>
@@ -31,7 +34,10 @@ const SuccessModal = ({ title, text, center, footer, returnHomeText, onReturnPag
         {center}
       </Description>
       <Description>
-        <Strong>{footer}</Strong>
+        <Strong><PanelIcon src={teamIconSelected} />{teamCollaboration}</Strong>
+      </Description>
+      <Description>
+        {footer}
       </Description>
       <EditButton onClick={onReturnPage}>
         {returnHomeText}

@@ -1815,13 +1815,13 @@ class Render3D extends PureComponent {
             >
               {!!previewImage ?
                 <PrintImage src={previewImage} /> : (
-                <div>
-                  <LoadingPreviewText>
-                    {formatMessage(messages.loadingPreview)}
-                  </LoadingPreviewText>
-                  <PreviewProgress percent={previewProgress} />
-                </div>
-              )}
+                  <div>
+                    <LoadingPreviewText>
+                      {formatMessage(messages.loadingPreview)}
+                    </LoadingPreviewText>
+                    <PreviewProgress percent={previewProgress} />
+                  </div>
+                )}
             </Modal>
           </PrintPreviewLabel>
         }
