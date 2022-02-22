@@ -11,6 +11,7 @@ import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
 import filter from 'lodash/filter'
 import isEmpty from 'lodash/isEmpty'
+import AntdModal from 'antd/lib/modal'
 import * as customProductDetailActions from './actions'
 import messages from './messages'
 import { GetDesignByIdQuery, profileSettingsQuery } from './data'
@@ -98,6 +99,8 @@ import Spin from 'antd/lib/spin'
 import { APPROVED, PREDYED_TRANSPARENT } from '../../constants'
 import { getRangeLabel } from '../../utils/utilsShoppingCart'
 import message from 'antd/lib/message'
+
+const { warning } = AntdModal
 
 const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
@@ -863,8 +866,18 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   }
 
   gotToEditDesign = (designId: string) => () => {
-    const { history } = this.props
-    history.push(`/design-center?designId=${designId}`)
+    const { history, data } = this.props
+    const productId = get(data, 'design.product.id', -1)
+    if (productId === 265) {
+      warning({
+        title: <strong>EDITING NOT AVAILABLE</strong>,
+        width: 494,
+        // tslint:disable-next-line: max-line-length
+        content: 'This product has been updated and editing capabilities have been removed. Not to worry! Your design can still be added to your cart and ordered, but if you require changes to your design please contact our designers for assistance through the ProAssist chat M-F 6am-6pm PST.',
+      })
+    } else {
+      history.push(`/design-center?designId=${designId}`)
+    }
   }
 
   handleOpenFitInfo = () => {

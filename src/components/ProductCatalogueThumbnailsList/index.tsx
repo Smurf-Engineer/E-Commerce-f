@@ -8,6 +8,7 @@ import includes from 'lodash/includes'
 import Dropdown from 'antd/lib/dropdown'
 import Pagination from 'antd/lib/pagination'
 import Menu from 'antd/lib/menu'
+import Modal from 'antd/lib/modal'
 import messages from './messages'
 import { GetProductsQuery, profileSettingsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
@@ -47,6 +48,8 @@ import {
 import downArrowIcon from '../../assets/downarrow.svg'
 import get from 'lodash/get'
 import { APPROVED } from '../../constants'
+
+const { warning } = Modal
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
@@ -227,7 +230,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                         {addToCartButton}
                         <ButtonContainer maxMargin={true}>
                           <ActionButton
-                            onClick={this.gotToEditDesign(shortId || '')}
+                            onClick={product.id === 265 ? this.promptNotEditable : this.gotToEditDesign(shortId || '')}
                           >
                             {formatMessage(
                               !proDesign ? messages.edit : messages.preview
@@ -441,6 +444,15 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
   openAddStore = (id: string) => () => {
     const { openAddToTeamStoreModalAction } = this.props
     openAddToTeamStoreModalAction(true, id)
+  }
+
+  promptNotEditable = () => {
+    warning({
+      title: <strong>EDITING NOT AVAILABLE</strong>,
+      width: 494,
+      // tslint:disable-next-line: max-line-length
+      content: 'This product has been updated and editing capabilities have been removed. Not to worry! Your design can still be added to your cart and ordered, but if you require changes to your design please contact our designers for assistance through the ProAssist chat M-F 6am-6pm PST.',
+    })
   }
 
   gotToEditDesign = (designId: string) => () => {
