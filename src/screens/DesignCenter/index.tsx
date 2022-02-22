@@ -115,6 +115,8 @@ import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import clone from 'lodash/clone'
 
+const { warning } = Modal
+
 interface DataProduct extends QueryProps {
   product?: Product
 }
@@ -339,6 +341,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     openPreviewModal: false,
     previewImage: '',
     previewProgress: 0,
+    openedWarning: false
   }
   private saveClass: any
   componentWillUnmount() {
@@ -749,6 +752,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       previewImage,
       openPreviewModal,
       previewProgress,
+      openedWarning,
     } = this.state
     const {
       CustomizeTab: CustomizeTabIndex,
@@ -830,6 +834,17 @@ export class DesignCenter extends React.Component<Props, {}> {
     }
 
     const productId = get(dataDesign, 'designData.product.id', queryParams.id)
+    if ((productId === 265 || productId === '265') && !openedWarning) {
+      this.setState({ openedWarning: true })
+      warning({
+        title: <strong>EDITING NOT AVAILABLE</strong>,
+        width: 494,
+        onOk: () => { history.goBack() },
+        // tslint:disable-next-line: max-line-length
+        content: 'This product has been updated and editing capabilities have been removed. Not to worry! Your design can still be added to your cart and ordered, but if you require changes to your design please contact our designers for assistance through the ProAssist chat M-F 6am-6pm PST.',
+      })
+      return null
+    }
     const productName =
       get(dataProduct, 'product.name') ||
       get(dataDesign, 'designData.product.name', '')
