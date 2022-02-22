@@ -6,7 +6,6 @@ import Tooltip from 'antd/lib/tooltip/'
 import Divider from 'antd/lib/divider'
 import get from 'lodash/get'
 import { Container, Color, Row, Col, ColorTitle } from './styledComponents'
-import MessagesAntd from 'antd/lib/message'
 import { Message } from '../../../../types/common'
 import messages from './messages'
 
@@ -41,7 +40,7 @@ const ColorList = ({
         )
       )
     } catch (e) {
-      MessagesAntd.error(e)
+      console.error(e)
     }
   }
   const regularColors: React.ReactNodeArray = []
