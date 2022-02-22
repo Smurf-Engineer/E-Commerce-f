@@ -834,7 +834,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     }
 
     const productId = get(dataDesign, 'designData.product.id', queryParams.id)
-    if ((productId === 265 || productId === '265') && !openedWarning) {
+    if ((productId === -1 || productId === '-1') && !openedWarning) {
       this.setState({ openedWarning: true })
       warning({
         title: <strong>EDITING NOT AVAILABLE</strong>,

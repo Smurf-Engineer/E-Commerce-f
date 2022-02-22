@@ -868,7 +868,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   gotToEditDesign = (designId: string) => () => {
     const { history, data } = this.props
     const productId = get(data, 'design.product.id', -1)
-    if (productId === 265) {
+    if (productId === -1) {
       warning({
         title: <strong>EDITING NOT AVAILABLE</strong>,
         width: 494,
