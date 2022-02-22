@@ -98,7 +98,9 @@ export class ArtworkSpecs extends React.Component<Props, {}> {
               <FormattedMessage {...messages.colorChart} />
             </ThirdTitle>
             <ColorWrapper>
-              <ColorList height={'100%'} {...{ formatMessage, colorsList }} />
+              {colorsList && !colorsList.loading && colorsList.colorsResult && colorsList.colorsResult.colors ?
+                <ColorList height={'100%'} {...{ formatMessage, colorsList }} /> : null
+              }
             </ColorWrapper>
           </ColorChartContainer>
           <LineCopy />
