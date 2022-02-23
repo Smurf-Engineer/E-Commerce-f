@@ -1098,7 +1098,8 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction,
       stripeToken,
-      paymentClientSecret
+      paymentClientSecret,
+      history
     } = this.props
 
     try {
@@ -1136,12 +1137,27 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingPlaceOrderAction(false)
       getTotalItemsIncartAction()
 
-      const { history } = this.props
       history.push(`/order-placed?orderId=${orderId}`)
     } catch (error) {
       setLoadingPlaceOrderAction(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
+      const errorString = get(errorMessage, '[0]', '')
+      if (errorString) {
+        const idPart = errorString.split('ID: ')
+        if (idPart && idPart.length > 0) {
+          const idDesign = idPart[1] || ''
+          if (idDesign && typeof window !== 'undefined') {
+            const parsedLocal = localStorage.getItem('cart') as any
+            const cartList = JSON.parse(parsedLocal)
+            if (cartList) {
+              const filteredList = cartList.filter(({ designId }: any) => designId !== idDesign)
+              localStorage.setItem('cart', JSON.stringify(filteredList))
+              setTimeout(() => history.replace('/shopping-cart'), 1000)
+            }
+          }
+        }
+      }
     }
   }
   getOrderObject = async (
