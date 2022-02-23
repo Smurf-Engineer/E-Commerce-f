@@ -230,7 +230,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                         {addToCartButton}
                         <ButtonContainer maxMargin={true}>
                           <ActionButton
-                            onClick={product.id === -1 ? this.promptNotEditable : this.gotToEditDesign(shortId || '')}
+                            onClick={product.id === 262 ? this.promptNotEditable : this.gotToEditDesign(shortId || '')}
                           >
                             {formatMessage(
                               !proDesign ? messages.edit : messages.preview
