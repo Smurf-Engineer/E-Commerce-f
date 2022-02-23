@@ -47,7 +47,8 @@ import {
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
 import get from 'lodash/get'
-import { APPROVED } from '../../constants'
+import { APPROVED, DATE_FORMAT } from '../../constants'
+import moment from 'moment'
 
 const { warning } = Modal
 
@@ -230,7 +231,13 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                         {addToCartButton}
                         <ButtonContainer maxMargin={true}>
                           <ActionButton
-                            onClick={product.id === 262 ? this.promptNotEditable : this.gotToEditDesign(shortId || '')}
+                            onClick={(
+                              (product.id === 262 && 
+                                moment(createdAt, DATE_FORMAT).isBefore('02/23/2022')) || 
+                              (product.id === 265 && 
+                                moment(createdAt, DATE_FORMAT).isBefore('02/22/2022'))) ? 
+                              this.promptNotEditable : this.gotToEditDesign(shortId || '')
+                            }
                           >
                             {formatMessage(
                               !proDesign ? messages.edit : messages.preview

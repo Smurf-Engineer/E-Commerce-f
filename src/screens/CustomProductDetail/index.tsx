@@ -96,9 +96,10 @@ import BreadCrumbs from '../../components/BreadCrumbs'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Spin from 'antd/lib/spin'
-import { APPROVED, PREDYED_TRANSPARENT } from '../../constants'
+import { APPROVED, DATE_FORMAT, PREDYED_TRANSPARENT } from '../../constants'
 import { getRangeLabel } from '../../utils/utilsShoppingCart'
 import message from 'antd/lib/message'
+import moment from 'moment'
 
 const { warning } = AntdModal
 
@@ -868,7 +869,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   gotToEditDesign = (designId: string) => () => {
     const { history, data } = this.props
     const productId = get(data, 'design.product.id', -1)
-    if (productId === 262) {
+    const createdAt = get(data, 'design.createdAt', '')
+    if (
+      (productId === 262 && moment(createdAt, DATE_FORMAT).isBefore('02/23/2022')) || 
+      (productId === 265 && moment(createdAt, DATE_FORMAT).isBefore('02/22/2022'))
+    ) {
       warning({
         title: <strong>EDITING NOT AVAILABLE</strong>,
         width: 494,
