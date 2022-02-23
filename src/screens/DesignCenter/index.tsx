@@ -27,6 +27,7 @@ import {
   SELECTED_PRODUCT,
   TABLET_RES,
   DESKTOP_RES,
+  DATE_FORMAT,
 } from '../../constants'
 import {
   openQuickViewAction,
@@ -834,7 +835,13 @@ export class DesignCenter extends React.Component<Props, {}> {
     }
 
     const productId = get(dataDesign, 'designData.product.id', queryParams.id)
-    if ((productId === 262 || productId === '262') && !openedWarning) {
+    const createdAtDesign = get(dataDesign, 'designData.createdAt', '')
+    const triggerWarning = !!createdAtDesign && (
+      ((productId === 262 || productId === '262') && moment(createdAtDesign, DATE_FORMAT).isBefore('02/23/2022')) ||
+      ((productId === 265 || productId === '265') && moment(createdAtDesign, DATE_FORMAT).isBefore('02/22/2022'))
+    )
+
+    if (triggerWarning && !openedWarning) {
       this.setState({ openedWarning: true })
       warning({
         title: <strong>EDITING NOT AVAILABLE</strong>,
