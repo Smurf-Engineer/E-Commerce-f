@@ -44,6 +44,7 @@ const renderHtml = (styleTags: any, html: any, helmet: any) => {
           <meta http-equiv="expires" content="0" />
           <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
           <meta http-equiv="pragma" content="no-cache" />
+          <meta name="google-site-verification" content="w1DwSTEhJVU3VeLY59y6qsOhFuafnmmM33AkDXZTlh0" />
           ${helmet.title.toString()}
           <meta property="og:description" content="JAKROO Custom Apparel" />
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
