@@ -18,6 +18,7 @@ export const verifyTeamStoreQuery = gql`
       on_demand_mode
       enabled
       closed
+      alreadyHave: already_have
     }
   }
 `

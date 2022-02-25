@@ -86,6 +86,27 @@ body {
   display: none;
 }
 
+.centeredButtons .ant-modal-confirm-btns {
+  text-align: center;
+  float: unset;
+}
+
+.centeredButtonsFlex .ant-modal-confirm-btns {
+  text-align: center;
+  float: unset;
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 540px) {
+    justify-content: center;
+    flex-wrap: wrap;
+    .ant-btn {
+      width: 100%;
+      margin: 0 !important;
+      margin-top: 12px !important;
+    }
+  }
+}
+
 .hide-date-input {
   left: 0 !important;
   top: 0 !important;

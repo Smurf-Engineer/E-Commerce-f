@@ -143,5 +143,21 @@ export default defineMessages({
   goToHome: {
     id: 'screens.ShoppingCartPage.goToHome',
     defaultMessage: 'Back to home page'
-  }
+  },
+  activePreOrder: {
+    id: 'screens.ShoppingCartPage.activePreOrder',
+    defaultMessage: 'Active Pre-Order'
+  },
+  activePreOrderBody: {
+    id: 'screens.ShoppingCartPage.activePreOrderBody',
+    defaultMessage: 'It looks like you already have an active PreOrder from this team store, What would you like to do?'
+  },
+  cancelAndGo: {
+    id: 'screens.ShoppingCartPage.cancelAndGo',
+    defaultMessage: 'Cancel & go to My Orders'
+  },
+  proceed: {
+    id: 'screens.ShoppingCartPage.proceed',
+    defaultMessage: 'Proceed with this order'
+  },
 })

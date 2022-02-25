@@ -43,7 +43,12 @@ import {
   CheckoutIcon,
   MaintenanceLayout,
   MaintenanceImage,
-  MaintenaceLink
+  MaintenaceLink,
+  cancelButtonStyle,
+  ModalBody,
+  confirmButtonStyle,
+  ConfirmTitle,
+  ConfirmIcon,
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
 import config from '../../config/index'
@@ -68,7 +73,7 @@ import ModalFooter from '../../components/ModalFooter'
 import { getDesignLabInfo, verifyTeamStoreQuery } from './data'
 import { message } from 'antd'
 
-const { warning } = Modal
+const { warning, confirm } = Modal
 
 interface DataDesignLabInfo extends QueryProps {
   designInfo?: DesignLabInfo
@@ -177,6 +182,9 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
+  state = {
+    alreadyHaveAlert: false
+  }
   handleClick = () => {
     const { history } = this.props
     history.push('/product-catalogue')
@@ -235,6 +243,36 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setStoreTerms(checked)
   }
 
+  alreadyHaveNotify = (activeCheckout: boolean) => {
+    const { intl: { formatMessage } } = this.props
+    confirm({
+      title: (
+        <ConfirmTitle>
+          <ConfirmIcon type="question-circle" theme="twoTone" />
+          {formatMessage(messages.activePreOrder)}
+        </ConfirmTitle>
+      ),
+      icon: ' ',
+      centered: true,
+      width: '458px',
+      className: 'centeredButtonsFlex',
+      cancelText: formatMessage(messages.cancelAndGo),
+      okText: formatMessage(messages.proceed),
+      cancelButtonProps: {
+        style: confirmButtonStyle
+      },
+      okButtonProps: {
+        style: cancelButtonStyle
+      },
+      onCancel: () => {
+        this.setState({ alreadyHaveAlert: false })
+        window.location.replace('/account?option=orderHistory')
+      },
+      onOk: () => this.onCheckoutClick(activeCheckout),
+      content: <ModalBody>{formatMessage(messages.activePreOrderBody)}</ModalBody>
+    })
+  }
+
   onCheckoutClick = (activeCheckout: boolean) => {
     const { openStoreInfoAction, cart, highlightRequiredFields } = this.props
     if (activeCheckout) {
@@ -269,6 +307,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   async componentDidUpdate(oldProps: Props) {
     const { cart, itemsVerified, client: { query }, clearCart } = this.props
     const { cart: oldCart } = oldProps
+    const { alreadyHaveAlert } = this.state
     if (!isEqual(cart, oldCart)) {
       this.saveCart()
     }
@@ -287,9 +326,13 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           const onDemandMode = get(response, 'data.verifyTeamStore.on_demand_mode', true)
           const cutoffDate = get(response, 'data.verifyTeamStore.cutoff_date', '')
           const closed = get(response, 'data.verifyTeamStore.closed', true)
+          const alreadyHave = get(response, 'data.verifyTeamStore.alreadyHave', false)
           if (!enabled || !cutoffDate || onDemandMode || closed) {
             clearCart()
             message.info('Expired batch store items have been removed from your cart')
+          }
+          if (alreadyHave && !alreadyHaveAlert) {
+            this.setState({ alreadyHaveAlert: true })
           }
         }
       }
@@ -495,6 +538,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       selectedIndex,
       highlightFields
     } = this.props
+    const { alreadyHaveAlert } = this.state
     const { formatMessage } = intl
     const underMaintenance = get(data, 'getDesignLabInfo.underMaintenance', false)
     if (underMaintenance) {
@@ -594,7 +638,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       )
     })
 
-    const onCheckoutClick = () => this.onCheckoutClick(activeCheckout)
+    const onCheckoutClick = () => alreadyHaveAlert ? 
+      this.alreadyHaveNotify(activeCheckout) : this.onCheckoutClick(activeCheckout)
     const designReviewModal = (
       <CheckoutDesignCheckModal
         requestClose={onCheckoutClick}

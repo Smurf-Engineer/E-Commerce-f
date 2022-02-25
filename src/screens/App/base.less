@@ -536,9 +536,28 @@ body {
 	top: 0;
 	cursor: move;
 }
-.centeredButtons .ant-modal-confirm-btns {
-  text-align: center;
-  float: unset;
+.centeredButtons {
+  .ant-modal-confirm-btns {
+    text-align: center;
+    float: unset;
+  }
+}
+.centeredButtonsFlex {
+  .ant-modal-confirm-btns {
+    text-align: center;
+    float: unset;
+    display: flex;
+    justify-content: space-between;
+    @media (max-width: 540px) {
+      justify-content: center;
+      flex-wrap: wrap;
+      .ant-btn {
+        width: 100%;
+        margin: 0 !important;
+        margin-top: 12px !important;
+      }
+    }
+  }
 }
 .arrowEnabled {
 	.ant-popover-arrow {
