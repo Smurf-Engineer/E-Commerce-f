@@ -389,3 +389,33 @@ export const MaintenaceLink = styled.div`
     opacity: 0.7;
   }
 `
+
+export const ConfirmTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-family: Avenir-Medium;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+  display: flex;
+  align-items: center;
+`
+
+export const ConfirmIcon = styled(Icon)`
+  margin-right: 18px;
+`
+
+export const ModalBody = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 15px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin: 22px 0 28px -38px;
+`
+
+export const cancelButtonStyle = {
+  background: BLUE,
+  border: 'none',
+}
+
+export const confirmButtonStyle = {}
