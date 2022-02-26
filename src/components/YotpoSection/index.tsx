@@ -66,7 +66,7 @@ const YotpoSection = ({
             {mediaFiles.map(image => (
               <SlideImageContainer>
                 {getFileExtension(image.url) === MP4_EXTENSION ? (
-                  <SlideVideo controls={true}>
+                  <SlideVideo autoPlay={true}>
                     <source src={image.url} type="video/mp4" />
                   </SlideVideo>
                 ) : (

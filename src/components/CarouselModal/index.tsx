@@ -79,7 +79,6 @@ export class CarouselModal extends React.Component<Props, {}> {
               loop={true}
               muted={true}
               playsInline={true}
-              controls={true}
               disablePictureInPicture={true}
               controlsList="nofullscreen nodownload noremoteplayback"
             >

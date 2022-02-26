@@ -54,6 +54,9 @@ import {
 } from './styledComponents'
 import {
   getDesignLabInfo,
+  getFeaturedImages,
+  getFeaturedProducts,
+  getMainHeaderImages,
   getShortenURLQuery,
   profileSettingsQuery,
 } from './data'
@@ -131,10 +134,10 @@ interface Props extends RouteComponentProps<any> {
   headerImageLink: string
   featuredBanners: ProductFile[]
   productTiles: ProductTiles[]
-  featuredProducts: Product[]
+  featuredProductsData: Product[]
   homepageImages: HomepageImagesType[]
-  mainHeaderImages: HomepageImagesType[]
-  featuredImages: HomepageImagesType[]
+  mainHeaderData: HomepageImagesType[]
+  featuredImagesData: HomepageImagesType[]
   secondaryFeaturedImages: HomepageImagesType[]
   title: string
   carouselSettings: HomepageCarousel
@@ -219,14 +222,13 @@ export class Home extends React.Component<Props, {}> {
       currentCurrency,
       clientInfo,
       match,
-      mainHeaderImages,
+      mainHeaderData,
+      featuredImagesData,
       productTiles,
       featuredBanners,
-      featuredProducts,
+      featuredProductsData,
       profileData,
-      loading,
       homepageImages,
-      featuredImages,
       secondaryFeaturedImages,
       user,
       carouselSettings: {
@@ -260,81 +262,50 @@ export class Home extends React.Component<Props, {}> {
     )
     const reseller = get(profileData, 'profileData.reseller', {})
     const deliveryDate = get(dataDesignLabInfo, 'deliveryDate.date', null)
-
+    const loading = get(featuredImagesData, 'loading', true)
+    const mainHeaderImages = get(mainHeaderData, 'getHomepageContent.mainHeaderImages', [])
+    const featuredImages = get(featuredImagesData, 'getHomepageContent.featuredImages', [])
+    const featuredProducts = get(featuredProductsData, 'getHomepageContent.featuredProducts', [])
+  
     const today = new Date()
-
-    const searchResults = searchString ? (
-      <SearchResults
-        searchParam={searchString}
-        showResults={showSearchResults}
-        closeResults={this.closeResults}
-        openResults={this.openResults}
-        quickViewAction={this.handleOnQuickView}
-        currentCurrency={currentCurrency || config.defaultCurrency}
-        {...{ history, SearchResults, user }}
-      />
-    ) : null
-
-    const featured = featuredProducts && !!featuredProducts.length && (
-      <FeaturedProducts
-        formatMessage={intl.formatMessage}
-        openQuickView={this.handleOnQuickView}
-        currentCurrency={currentCurrency || config.defaultCurrency}
-        {...{ history, featuredProducts, reseller }}
-      />
-    )
-    const mainHeaderItems = mainHeaderImages.map(
-      (item: HeaderImagePlaceHolder, index: number) => (
-        <div>
-          <CarouselItem
-            key={index}
-            onClick={this.handleGoToUrl(item.url)}
-            {...{ item }}
-          />
-        </div>
-      )
-    )
-    const secondaryHeaderItems = homepageImages.map(
-      (item: HeaderImagePlaceHolder, index: number) => (
-        <div>
-          <CarouselItem
-            key={index}
-            onClick={this.handleGoToUrl(item.url)}
-            {...{ item }}
-          />
-        </div>
-      )
-    )
-    const featuredItems = featuredImages.map(
-      (item: HeaderImagePlaceHolder, index: number) => (
-        <div>
-          <CarouselItem
-            key={index}
-            onClick={this.handleGoToUrl(item.url)}
-            {...{ item }}
-          />
-        </div>
-      )
-    )
-    const secondaryFeaturedItems = secondaryFeaturedImages.map(
-      (item: HeaderImagePlaceHolder, index: number) => (
-        <div>
-          <CarouselItem
-            key={index}
-            onClick={this.handleGoToUrl(item.url)}
-            {...{ item }}
-          />
-        </div>
-      )
-    )
 
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
-        <Helmet {...{ title }} />
+        {/* tslint:disable:max-line-length */}
+        <Helmet
+          {...{ title }}
+        >
+          <meta name="description" content="JAKROO Custom Apparel - Get your custom order started today!" />
+          <meta name="keywords" content="Custom Jerseys, Personalize, Sports Apparel, Jakroo, Apparel, Custom apparel, ProDesign, pro-design" />
+          <meta name="Content-Language" content="en" />
+          <meta name="page-topic" content="Sport" />
+          <meta name="page-type" content="Custom Jerseys" />
+          <link rel="canonical" href="https://www.jakroo.com/" />
+          <link rel="author" href="https://www.jakroo.com/" />
+          <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/us?lang=en&currency=usd" />
+          <link rel="alternate" hrefLang="en-gb" href="https://jakroo.com/gb?lang=en&currency=gbp" />
+          <link rel="alternate" hrefLang="en-us" href="https://jakroo.com/us?lang=en&currency=usd" />
+          <link rel="alternate" hrefLang="en-ca" href="https://jakroo.com/ca?lang=en&currency=cad" />
+          <link rel="alternate" hrefLang="en-au" href="https://jakroo.com/au?lang=en&currency=aud" />
+          <link rel="alternate" hrefLang="en" href="https://jakroo.com/us?lang=en&currency=usd" />
+        </Helmet>
+        {/* tslint:enable:max-line-length */}
         <Container {...{ loading }}>
           <SearchContainer>
-            {featuredItems && featuredItems.length ? featuredItems : null}
-            {mainHeaderItems.length ? (
+            {featuredImages && featuredImages.length > 0 ?
+              featuredImages.map(
+                (item: HeaderImagePlaceHolder, index: number) => (
+                  <div>
+                    <CarouselItem
+                      key={index}
+                      onClick={this.handleGoToUrl(item.url)}
+                      {...{ item }}
+                    />
+                  </div>
+                )
+              )
+            : null}
+            {mainHeaderImages.length ? (
               <CarouselContainer>
                 <Carousel
                   autoplaySpeed={slideDuration}
@@ -344,7 +315,17 @@ export class Home extends React.Component<Props, {}> {
                   autoplay={true}
                   pauseOnHover={false}
                 >
-                  {mainHeaderItems}
+                  {mainHeaderImages.map(
+                    (item: HeaderImagePlaceHolder, index: number) => (
+                      <div>
+                        <CarouselItem
+                          key={index}
+                          onClick={this.handleGoToUrl(item.url)}
+                          {...{ item }}
+                        />
+                      </div>
+                    )
+                  )}
                 </Carousel>
               </CarouselContainer>
             ) : null}
@@ -369,7 +350,17 @@ export class Home extends React.Component<Props, {}> {
               this.stepInput = input
             }}
           >
-            {searchResults}
+            {searchString ? (
+              <SearchResults
+                searchParam={searchString}
+                showResults={showSearchResults}
+                closeResults={this.closeResults}
+                openResults={this.openResults}
+                quickViewAction={this.handleOnQuickView}
+                currentCurrency={currentCurrency || config.defaultCurrency}
+                {...{ history, SearchResults, user }}
+              />
+            ) : null}
           </div>
           {!!deliveryDaysResponse && (
             <DeliveryContainer>
@@ -404,8 +395,15 @@ export class Home extends React.Component<Props, {}> {
               </OrderingInfo>
             </DeliveryContainer>
           )}
-          {featured}
-          {secondaryHeaderItems.length ? (
+          {featuredProducts && !!featuredProducts.length && (
+            <FeaturedProducts
+              formatMessage={intl.formatMessage}
+              openQuickView={this.handleOnQuickView}
+              currentCurrency={currentCurrency || config.defaultCurrency}
+              {...{ history, featuredProducts, reseller }}
+            />
+          )}
+          {homepageImages.length ? (
             <CarouselContainer>
               <Carousel
                 autoplaySpeed={secondarySlideDuration}
@@ -416,12 +414,32 @@ export class Home extends React.Component<Props, {}> {
                 pauseOnHover={false}
                 dots={true}
               >
-                {secondaryHeaderItems}
+                {homepageImages.map(
+                  (item: HeaderImagePlaceHolder, index: number) => (
+                    <div>
+                      <CarouselItem
+                        key={index}
+                        onClick={this.handleGoToUrl(item.url)}
+                        {...{ item }}
+                      />
+                    </div>
+                  )
+                )}
               </Carousel>
             </CarouselContainer>
           ) : null}
-          {secondaryFeaturedItems && secondaryFeaturedItems.length
-            ? secondaryFeaturedItems
+          {secondaryFeaturedImages && secondaryFeaturedImages.length > 0 ? 
+            secondaryFeaturedImages.map(
+              (item: HeaderImagePlaceHolder, index: number) => (
+                <div>
+                  <CarouselItem
+                    key={index}
+                    onClick={this.handleGoToUrl(item.url)}
+                    {...{ item }}
+                  />
+                </div>
+              )
+            )
             : null}
           {/* <PropositionTilesContainer>
             <PropositionTile>
@@ -440,7 +458,7 @@ export class Home extends React.Component<Props, {}> {
           {featuredBanners.map(({ url, urlMobile }: ProductFile) => (
             <SlideImageContainer>
               {getFileExtension(url || '') === MP4_EXTENSION ? (
-                <SlideVideo controls={true}>
+                <SlideVideo autoPlay={true}>
                   <source src={url} type="video/mp4" />
                 </SlideVideo>
               ) : (
@@ -456,7 +474,10 @@ export class Home extends React.Component<Props, {}> {
         </Container>
         <LoadingContainer {...{ loading }}>
           <Spinner size="large" />
-          <ImageSkeleton fullSize={true} />
+          <ImageRow>
+            <ImageSkeleton />
+            <ImageSkeleton />
+          </ImageRow>
           <SkeletonDiv title={false} />
           <SkeletonDiv />
           <ImageRow>
@@ -492,6 +513,36 @@ const HomeEnhance = compose(
   ),
   injectIntl,
   withApollo,
+  graphql(getFeaturedImages, {
+    options: ({ match }: OwnProps) => {
+      const { params } = match || {}
+      return {
+        fetchPolicy: 'network-only',
+        variables: { sportRoute: params.region },
+      }
+    },
+    name: 'featuredImagesData',
+  }),
+  graphql(getMainHeaderImages, {
+    options: ({ match }: OwnProps) => {
+      const { params } = match || {}
+      return {
+        fetchPolicy: 'network-only',
+        variables: { sportRoute: params.region },
+      }
+    },
+    name: 'mainHeaderData',
+  }),
+  graphql(getFeaturedProducts, {
+    options: ({ match }: OwnProps) => {
+      const { params } = match || {}
+      return {
+        fetchPolicy: 'network-only',
+        variables: { sportRoute: params.region },
+      }
+    },
+    name: 'featuredProductsData',
+  }),
   graphql(getShortenURLQuery, {
     options: ({ match }: OwnProps) => {
       const { params } = match || {}

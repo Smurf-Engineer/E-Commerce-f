@@ -18,7 +18,7 @@ export const Container = styled.div`
 
   .ant-input {
     ${({ onHeader }: StyledProps) =>
-      onHeader ? `background-color : ${GRAY_LIGHTEST};` : ''};
+      onHeader ? `background-color : #f9f9f9;` : ''};
   }
   .ant-input:focus {
     ${({ onHeader }: StyledProps) =>
