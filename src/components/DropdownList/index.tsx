@@ -211,6 +211,7 @@ export class DropdownList extends React.PureComponent<Props> {
                 }
               >
                 <OptionDropdown
+                  {...{ index }}
                   selected={sportSelected}
                   id={route}
                   onClick={this.handleRedirect}

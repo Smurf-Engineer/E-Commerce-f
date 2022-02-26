@@ -8,13 +8,6 @@ import gql from 'graphql-tag'
 export const getHomepageInfo = gql`
   query getHomepageContent($sportRoute: String) {
     getHomepageContent(sportRoute: $sportRoute) {
-      mainHeaderImages {
-        id
-        desktopImage: image
-        mobileImage: image_mobile
-        url: link
-        assetType: type
-      }
       carouselSettings {
         slideTransition: slide_transition
         slideDuration: slide_duration
@@ -36,68 +29,12 @@ export const getHomepageInfo = gql`
         sportId: sport_id
         isVideo: is_video
       }
-      featuredImages {
-        id
-        desktopImage: image
-        mobileImage: image_mobile
-        assetType: type
-        url: link
-      }
       secondaryFeaturedImages {
         id
         desktopImage: image
         mobileImage: image_mobile
         assetType: type
         url: link
-      }
-      featuredProducts {
-        id
-        code
-        yotpoId: yotpo_id
-        name
-        type: name
-        description: short_description
-        shortDescription: short_description
-        collections
-        isTopProduct
-        weight
-        hideFitStyles: hide_fit_styles
-        youthCombined: youth_combined
-        customizable: design_center
-        retailMen: men_retail
-        retailWomen: women_retail
-        genders {
-          id
-          name: gender
-        }
-        fitStyles {
-          id
-          info
-          name: description
-        }
-        priceRange {
-          quantity
-          price
-          abbreviation
-          shortName: short_name
-        }
-        images: pictures {
-          front: front_image
-          back: back_image
-          left: left_image
-          right: right_image
-          genderId: gender_id
-          thumbnail
-        }
-        sizeRange: size_range {
-          id
-          name
-          isYouth: is_youth
-        }
-        colors {
-          name
-          image
-        }
       }
       productTiles {
         id
@@ -139,4 +76,88 @@ export const getShortenURLQuery = gql`
       url
     }
   }
+`
+
+export const getMainHeaderImages = gql`
+  query getHomepageContent($sportRoute: String) {
+    getHomepageContent(sportRoute: $sportRoute) {
+      mainHeaderImages {
+        id
+        desktopImage: image
+        mobileImage: image_mobile
+        url: link
+        assetType: type
+      }
+    }
+  }
+`
+
+export const getFeaturedImages = gql`
+  query getHomepageContent($sportRoute: String) {
+    getHomepageContent(sportRoute: $sportRoute) {
+      featuredImages {
+        id
+        desktopImage: image
+        mobileImage: image_mobile
+        assetType: type
+        url: link
+      }
+    }
+  }
+`
+
+export const getFeaturedProducts = gql`
+query getHomepageContent($sportRoute: String) {
+  getHomepageContent(sportRoute: $sportRoute) {
+    featuredProducts {
+      id
+      code
+      yotpoId: yotpo_id
+      name
+      type: name
+      description: short_description
+      shortDescription: short_description
+      collections
+      isTopProduct
+      weight
+      hideFitStyles: hide_fit_styles
+      youthCombined: youth_combined
+      customizable: design_center
+      retailMen: men_retail
+      retailWomen: women_retail
+      genders {
+        id
+        name: gender
+      }
+      fitStyles {
+        id
+        info
+        name: description
+      }
+      priceRange {
+        quantity
+        price
+        abbreviation
+        shortName: short_name
+      }
+      images: pictures {
+        front: front_image
+        back: back_image
+        left: left_image
+        right: right_image
+        genderId: gender_id
+        thumbnail
+      }
+      sizeRange: size_range {
+        id
+        name
+        isYouth: is_youth
+      }
+      colors {
+        name
+        image
+      }
+    }
+  }
+}
 `

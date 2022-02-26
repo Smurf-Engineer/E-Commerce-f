@@ -82,7 +82,7 @@ export const TopText = styled.div`
 
 export const BottomRow = styled.div`
   display: flex;
-  background-color: #f6f6f6;
+  background: linear-gradient(0deg, #f6f6f6, #f6f6f652);
   padding: 16px 34px;
   flex-direction: row;
   justify-content: space-between;

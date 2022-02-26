@@ -6,7 +6,6 @@ import {
   WHITE,
   AUBERGINE,
   GRAY_SOFT,
-  GRAY_SKELETON,
   GRAY_HEADER,
   BLACK,
   GRAY_LIGHTEST,
@@ -76,7 +75,7 @@ export const ImageSkeleton = styled.div`
   height: 262px;
   margin-top: 24px;
   margin-bottom: 18px;
-  background: ${GRAY_SKELETON};
+  background: #f1f1f1;
   @media (max-width: 768px) {
     margin-top: ${({ fullSize }: DivProps) => (fullSize ? '0' : '24px')};
   }
@@ -112,7 +111,7 @@ export const LabelRedirect = styled.div`
 export const SkeletonDiv = styled(Skeleton)`
   margin-left: -77px;
   li {
-    background: ${GRAY_SKELETON} !important;
+    background: #f1f1f1 !important;
   }
 `
 

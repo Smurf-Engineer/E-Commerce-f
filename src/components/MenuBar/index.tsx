@@ -16,7 +16,6 @@ import {
   Container,
   TopText,
   Row,
-  Divider,
   TopRow,
   BottomRow,
   LogoIcon,
@@ -452,7 +451,6 @@ class MenuBar extends React.Component<Props, StateProps> {
                       </TopRow>
                     </Row>
                   )}
-                  <Divider />
                   {!hideBottom && bottomRowContent}
                 </Container>
               )

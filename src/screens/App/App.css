@@ -45,7 +45,7 @@ body {
 
 .innerClass .ant-popover-inner {
   background-color: #ffffffe0;
-  backdrop-filter: blur(9px);
+  backdrop-filter: blur(12px);
   transition: all .25s;
   @media not all and (min-resolution:.001dpcm) { 
     @supports (-webkit-appearance:none) {
@@ -64,7 +64,7 @@ body {
 
 .innerClassTooltip .ant-tooltip-inner {
   background-color: #ffffffe0;
-  backdrop-filter: blur(9px);
+  backdrop-filter: blur(12px);
   transition: all .25s;
   @media not all and (min-resolution:.001dpcm) { 
     @supports (-webkit-appearance:none) {
