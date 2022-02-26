@@ -518,7 +518,7 @@ const HomeEnhance = compose(
       const { params } = match || {}
       return {
         fetchPolicy: 'network-only',
-        variables: { sportRoute: params.region },
+        variables: { sportRoute: params.sportRoute },
       }
     },
     name: 'featuredImagesData',
@@ -528,7 +528,7 @@ const HomeEnhance = compose(
       const { params } = match || {}
       return {
         fetchPolicy: 'network-only',
-        variables: { sportRoute: params.region },
+        variables: { sportRoute: params.sportRoute },
       }
     },
     name: 'mainHeaderData',
@@ -538,7 +538,7 @@ const HomeEnhance = compose(
       const { params } = match || {}
       return {
         fetchPolicy: 'network-only',
-        variables: { sportRoute: params.region },
+        variables: { sportRoute: params.sportRoute },
       }
     },
     name: 'featuredProductsData',
