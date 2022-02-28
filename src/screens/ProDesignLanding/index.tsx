@@ -185,10 +185,12 @@ class ProDesignLanding extends React.Component<Props, {}> {
                 functions, from design and customer service through to production and delivery.
                 </p>
                 <p>
-                The result is the <strong>world's fastest turnaround time</strong> for customized technical apparel
+                The result is the <strong>world's fastest turnaround time</strong> for customized technical apparel.
+                <br/>
+                Only 2 weeks or less from order to arrival at your door.
                 </p>
               </Subtitle>
-              <BigImage src="https://storage.googleapis.com/jakroo/homepage/turnaround.png" />
+              <BigImage src="https://storage.googleapis.com/jakroo/homepage/calendar.svg" />
             </FlexSide>
             <FlexSideRight>
               <PhotoImageFull src="https://storage.googleapis.com/jakroo/homepage/Turnaround.jpg" />
