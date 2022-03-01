@@ -209,7 +209,6 @@ export class Home extends React.Component<Props, {}> {
     {/* tslint:disable:max-line-length */}
     const { title = MAIN_TITLE } = this.props
     let metaData
-    console.log('🔴sportRoute:', sportRoute)
     switch (sportRoute) {
       case 'road-bike':
         metaData =
