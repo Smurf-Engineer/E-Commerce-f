@@ -205,6 +205,57 @@ export class Home extends React.Component<Props, {}> {
     }
   }
 
+  getMetaData = (sportRoute: string) => {
+    {/* tslint:disable:max-line-length */}
+    const { title = MAIN_TITLE } = this.props
+    let metaData
+    switch (sportRoute) {
+      case 'road-bike':
+        metaData =
+          <Helmet title="Custom Cycling Jerseys for Teams & Clubs - JAKROO">
+            <meta name="description" content="Start customizing your cycling kit today! 2 week delivery. Wide product selection. Custom Team Store. Design online select Jakroo Pro Design" />
+            <meta name="keywords" content="custom cycling jerseys, custom race suits, custom time trial suits, custom team kits, online jersey designer, pro design by jakroo" />
+            <meta name="Content-Language" content="en" />
+            <meta name="page-topic" content="Sport" />
+            <meta name="page-type" content="Custom Cycling" />
+            <meta name="og:title" content="Custom Cycling Jerseys for Teams & Clubs - JAKROO" />
+            <meta name="og:url" content="https://jakroo.com/road-bike" />
+            <meta name="og:type" content="article" />
+            <meta name="og:description" content="Start customizing your cycling team kit today! 2 week delivery. Wide product selection. Custom Team Store. Design online select Jakroo Pro Design" />
+            <link rel="canonical" href="https://www.jakroo.com/" />
+            <link rel="author" href="https://www.jakroo.com/" />
+            <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-gb" href="https://jakroo.com/gb?lang=en&currency=gbp" />
+            <link rel="alternate" hrefLang="en-us" href="https://jakroo.com/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-ca" href="https://jakroo.com/ca?lang=en&currency=cad" />
+            <link rel="alternate" hrefLang="en-au" href="https://jakroo.com/au?lang=en&currency=aud" />
+            <link rel="alternate" hrefLang="en" href="https://jakroo.com/us?lang=en&currency=usd" />
+          </Helmet>
+        break
+    
+      default:
+        metaData =
+          <Helmet {...{ title }}>
+            <meta name="description" content="Custom apparel by Jakroo - Get your custom order started today! Delivered in 2 weeks or less.Two ways to customize your kit" />
+            <meta name="keywords" content="custom team apparel, made to order, online jersey designer, customized cycling kits, personalized cycling jerseys" />
+            <meta name="Content-Language" content="en" />
+            <meta name="page-topic" content="Sport" />
+            <meta name="page-type" content="Custom Jerseys" />
+            <link rel="canonical" href="https://www.jakroo.com/" />
+            <link rel="author" href="https://www.jakroo.com/" />
+            <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-gb" href="https://jakroo.com/gb?lang=en&currency=gbp" />
+            <link rel="alternate" hrefLang="en-us" href="https://jakroo.com/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-ca" href="https://jakroo.com/ca?lang=en&currency=cad" />
+            <link rel="alternate" hrefLang="en-au" href="https://jakroo.com/au?lang=en&currency=aud" />
+            <link rel="alternate" hrefLang="en" href="https://jakroo.com/us?lang=en&currency=usd" />
+          </Helmet>
+        break
+    }
+    return metaData
+    {/* tslint:enable:max-line-length */}
+  }
+
   handleGoToUrl = (link?: string) => () => {
     const { history } = this.props
     if (link) {
@@ -237,13 +288,13 @@ export class Home extends React.Component<Props, {}> {
         secondarySlideTransition,
         secondarySlideDuration,
       },
-      title = MAIN_TITLE,
       dataDesignLabInfo,
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
     const { params } = match || {}
     const shortUrl = params.region || ''
+    const sportRoute = params.sportRoute || ''
     if (!!shortUrl && shortUrl.length > 0 && shortUrl.charAt(0) === '~') {
       return (
         <RedirectDiv>
@@ -268,28 +319,9 @@ export class Home extends React.Component<Props, {}> {
     const featuredProducts = get(featuredProductsData, 'getHomepageContent.featuredProducts', [])
   
     const today = new Date()
-
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
-        {/* tslint:disable:max-line-length */}
-        <Helmet
-          {...{ title }}
-        >
-          <meta name="description" content="JAKROO Custom Apparel - Get your custom order started today!" />
-          <meta name="keywords" content="Custom Jerseys, Personalize, Sports Apparel, Jakroo, Apparel, Custom apparel, ProDesign, pro-design" />
-          <meta name="Content-Language" content="en" />
-          <meta name="page-topic" content="Sport" />
-          <meta name="page-type" content="Custom Jerseys" />
-          <link rel="canonical" href="https://www.jakroo.com/" />
-          <link rel="author" href="https://www.jakroo.com/" />
-          <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/us?lang=en&currency=usd" />
-          <link rel="alternate" hrefLang="en-gb" href="https://jakroo.com/gb?lang=en&currency=gbp" />
-          <link rel="alternate" hrefLang="en-us" href="https://jakroo.com/us?lang=en&currency=usd" />
-          <link rel="alternate" hrefLang="en-ca" href="https://jakroo.com/ca?lang=en&currency=cad" />
-          <link rel="alternate" hrefLang="en-au" href="https://jakroo.com/au?lang=en&currency=aud" />
-          <link rel="alternate" hrefLang="en" href="https://jakroo.com/us?lang=en&currency=usd" />
-        </Helmet>
-        {/* tslint:enable:max-line-length */}
+        {this.getMetaData(sportRoute)}
         <Container {...{ loading }}>
           <SearchContainer>
             {featuredImages && featuredImages.length > 0 ?
