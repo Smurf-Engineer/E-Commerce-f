@@ -141,7 +141,7 @@ export const COMMENTER_ROLE = 'Commenter'
 export const APPROVER_ROLE = 'Approver'
 export const GUEST_ROLE = 'Guest'
 
-export const MAIN_TITLE = 'Online Jersey Design Center - Designlab by Jakroo'
+export const MAIN_TITLE = 'Custom Cycling Apparel for Teams, Clubs and Individuals - JAKROO'
 
 /* Zoom Size Products */
 export const MODEL_SIZES = {

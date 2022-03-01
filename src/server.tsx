@@ -67,17 +67,18 @@ server
       currency: currencyFound,
       realCountryCode: code
     }
-
-    try {
-      const resultFetch = await fetch(
-        `${config.graphqlUriBase}region?ip=${req.ip}`
-      )
-      locale = await resultFetch.json()
-    } catch (error) {
-      locale.code = 'us'
-      console.error(error)
+    if (config.paypalEnv === 'production') {
+      try {
+        const resultFetch = await fetch(
+          `${config.graphqlUriBase}region?ip=${req.ip}`
+        )
+        locale = await resultFetch.json()
+      } catch (error) {
+        locale.code = 'us'
+        console.error(error)
+      }
     }
-
+    
     const redirectUrl = `/${locale.code}?lang=${locale.lang}&currency=${
       locale.currency
       }`

@@ -45,9 +45,9 @@ const renderHtml = (styleTags: any, html: any, helmet: any) => {
           <meta http-equiv="expires" content="0" />
           <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
           <meta name="google-site-verification" content="w1DwSTEhJVU3VeLY59y6qsOhFuafnmmM33AkDXZTlh0" />
-          <meta property="og:description" content="JAKROO Custom Apparel" />
+          <meta property="og:description" content="Custom apparel by Jakroo - Get your custom order started today! Delivered in 2 weeks or less.Two ways to customize your kit" />
           <meta property='og:type' content="article" />
-          <meta property="og:image" content="https://i.ytimg.com/vi/kLedyokBB0g/maxresdefault.jpg" />
+          <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
           <meta name='viewport' content='width=device-width, initial-scale=1'>
           ${helmet.meta.toString()}
           ${helmet.link.toString()}
