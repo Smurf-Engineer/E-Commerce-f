@@ -521,8 +521,17 @@ export const BottomButton = styled.div`
   font-family: Avenir;
   margin-top: 50px;
   margin-bottom: 100px;
-  box-shadow: 0px 2px 5px 0px #878787;
+  box-shadow: 0px 3px 10px 0px #939393;
   transition: all .25s;
+  max-width: 451px;
+  width: 100%;
+  text-align: center;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  letter-spacing: 1px;
   &:hover {
     cursor: pointer;
     opacity: 0.7;
