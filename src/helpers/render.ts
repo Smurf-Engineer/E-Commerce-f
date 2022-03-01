@@ -37,19 +37,19 @@ const renderHtml = (styleTags: any, html: any, helmet: any) => {
            </script>
           <link rel="icon" 
           href="/favicon.ico" />
-          ${helmet.title.toString()}
-          <title>Online Jersey Design Center - Designlab by Jakroo</title>
+          ${helmet.title.toString() || '<title>Online Jersey Design Center - Designlab by Jakroo</title>'}
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet='utf-8' />
           <meta name='robots' content='index, follow, noodp'>
           <meta http-equiv="expires" content="0" />
           <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
           <meta name="google-site-verification" content="w1DwSTEhJVU3VeLY59y6qsOhFuafnmmM33AkDXZTlh0" />
-          <meta property="og:description" content="Custom apparel by Jakroo - Get your custom order started today! Delivered in 2 weeks or less.Two ways to customize your kit" />
-          <meta property='og:type' content="article" />
-          <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
           <meta name='viewport' content='width=device-width, initial-scale=1'>
-          ${helmet.meta.toString()}
+          ${helmet.meta.toString() || `
+            <meta property="og:description" content="Custom apparel by Jakroo - Get your custom order started today! Delivered in 2 weeks or less.Two ways to customize your kit" />
+            <meta property="og:type" content="article" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+          `}
           ${helmet.link.toString()}
           ${
             assets.client.css
