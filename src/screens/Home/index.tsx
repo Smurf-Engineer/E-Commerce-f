@@ -209,6 +209,7 @@ export class Home extends React.Component<Props, {}> {
     {/* tslint:disable:max-line-length */}
     const { title = MAIN_TITLE } = this.props
     let metaData
+    console.log('🔴sportRoute:', sportRoute)
     switch (sportRoute) {
       case 'road-bike':
         metaData =
@@ -321,7 +322,7 @@ export class Home extends React.Component<Props, {}> {
     const today = new Date()
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
-        {this.getMetaData(sportRoute)}
+        {this.getMetaData(sportRoute || shortUrl)}
         <Container {...{ loading }}>
           <SearchContainer>
             {featuredImages && featuredImages.length > 0 ?
