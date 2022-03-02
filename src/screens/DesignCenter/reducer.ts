@@ -533,6 +533,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         style: action.style,
         styleIndex: action.index,
         colors: action.colors,
+        colorBlock: -1,
+        colorBlockHovered: -1,
         designHasChanges: false,
         styleColors: action.colors,
         customize3dMounted: false,
