@@ -1105,6 +1105,15 @@ class Checkout extends React.Component<Props, {}> {
     try {
       setLoadingPlaceOrderAction(true)
       const orderObj = await this.getOrderObject(paypalObj, sca)
+      if (
+        orderObj && 
+        !orderObj.cardId && 
+        orderObj.isFixedTeamstore && 
+        orderObj.paymentMethod === PaymentOptions.CREDITCARD
+      ) {
+        message.error('Invalid card/not available, please try another.')
+        return
+      }
       const response = await placeOrder({
         variables: { orderObj }
       })
