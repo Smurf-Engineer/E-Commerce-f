@@ -101,6 +101,7 @@ import LockerScreen from './LockerScreen'
 import Helmet from 'react-helmet'
 import { NotificationSetting, PhoneSetting } from '../../components/Notifications/Preferences'
 import SMSAlertsModal from '../../components/SMSAlertsModal'
+import { NEW_PRO_DESIGN } from '../../constants'
 
 const { info, confirm } = Modal
 
@@ -512,6 +513,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         const successMessage = get(results, 'data.createProDesignProject.message')
         message.success(successMessage)
         if (!admProject) {
+          window.dataLayer.push({ event: NEW_PRO_DESIGN, label: 'Google' })
           if (notificationData &&
             (notificationData.notifyProDesign === NotificationOption.BOTH || 
             notificationData.notifyProDesign === NotificationOption.SMS) &&
