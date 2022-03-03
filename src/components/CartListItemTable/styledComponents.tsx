@@ -245,10 +245,11 @@ export const InfoDescription = styled.div`
 `
 
 export const InfoImage = styled.img`
-  max-width: 886px;
+  max-width: 75vw;
   margin: 4px 0;
   margin-top: 0px;
   display: block;
+  width: 100%;
   @media (max-width: 768px) {
     display: none;
   }
