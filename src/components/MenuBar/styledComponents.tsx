@@ -101,6 +101,9 @@ export const LogoIcon = styled.img`
   cursor: pointer;
   max-width: 134px;
   margin-bottom: 5px;
+  @media (max-width: 1200px) {
+    max-width: 118px;
+  }
 `
 
 export const CartIcon = styled.img`
