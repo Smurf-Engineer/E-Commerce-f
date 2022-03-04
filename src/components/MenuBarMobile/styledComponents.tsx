@@ -26,7 +26,14 @@ export const Container = styled.div`
 `
 
 export const Logo = styled.img`
-  width: 47%;
+  width: 100%;
+  max-width: 130px;
+  @media (max-width: 740px) {
+    max-width: 115px;
+  }
+  @media (max-width: 620px) {
+    max-width: 100px;
+  }
 `
 
 export const Icon = styled.img``
