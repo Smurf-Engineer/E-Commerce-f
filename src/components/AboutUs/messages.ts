@@ -20,5 +20,9 @@ export default defineMessages({
   jobs: {
     id: 'components.footer.aboutUs.jobs',
     defaultMessage: 'Job Opportunities'
+  },
+  reviews: {
+    id: 'components.footer.aboutUs.reviews',
+    defaultMessage: 'Customer Reviews'
   }
 })

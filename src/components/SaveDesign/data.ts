@@ -34,6 +34,7 @@ export const saveDesignName = graphql(
           name
           type: name
           active
+          twoPieces: two_pieces
           onlyProDesign: only_pro_design
           description: short_description
           shortDescription: short_description
@@ -139,6 +140,7 @@ export const saveDesignChanges = graphql(
           collections
           isTopProduct
           weight
+          twoPieces: two_pieces
           mpn
           priceRange {
             quantity

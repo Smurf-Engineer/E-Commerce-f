@@ -7,11 +7,12 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import {
-  Container,
+  Container, TextContainer, TitleBold,
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import { Colors, QueryProps } from '../../types/common'
 import { Helmet } from 'react-helmet'
+import messages from './messages'
 
 declare global {
   interface Window {
@@ -70,12 +71,20 @@ export class Reviews extends React.Component<Props, {}> {
         <link rel="alternate" hrefLang="en" href="https://jakroo.com/us?lang=en&currency=usd" />
       </Helmet>
     {/* tslint:enable:max-line-length */}
+    const { formatMessage = () => '' } = intl || {}
     return (
       <Layout {...{ intl, history }}>
         {helmetData}
         <Container>
+          <TextContainer>
+            {formatMessage(messages.title)}
+          </TextContainer>
+          <TitleBold>
+            {formatMessage(messages.mainTitle)}
+          </TitleBold>
           <div
             className="yotpo yotpo-pictures-widget"
+            class="yotpo yotpo-pictures-widget"
             data-gallery-id="5bff13a3d9a55a5737932331"
           />
           <div id="yotpo-testimonials-custom-tab" />

@@ -5,7 +5,9 @@ import * as React from 'react'
 import { Container, YotpoHomeContainer, YotpoReviews } from './styledComponents'
 import ReactDOM from 'react-dom'
 
-interface Props {}
+interface Props {
+  sportRoute?: string
+}
 
 declare global {
   interface Window {
@@ -26,19 +28,39 @@ class YotpoHome extends React.Component<Props, any> {
 
   updateYotpoWidget = () => {
     try {
+      const { sportRoute } = this.props
       const yotpoGrid = ReactDOM.findDOMNode(this.yotpo)
-      yotpoGrid.setAttribute('class', 'yotpo yotpo-pictures-gallery')
-      yotpoGrid.setAttribute('data-layout-rows', '1')
-      yotpoGrid.setAttribute('data-spacing', '1')
-      yotpoGrid.setAttribute('data-source', 'all')
-      yotpoGrid.setAttribute('data-title', '0')
-      yotpoGrid.setAttribute('data-hover-color', '#ffffff')
-      yotpoGrid.setAttribute('data-hover-opacity', '0.8')
-      yotpoGrid.setAttribute('data-hover-icon', 'true')
-      yotpoGrid.setAttribute('data-cta-text', 'CUSTOMIZE')
-      yotpoGrid.setAttribute('data-cta-color', '#2f84ed')
-      yotpoGrid.setAttribute('data-yotpo-element-id', '2')
-
+      switch (sportRoute) {
+        case 'road-bike':
+          yotpoGrid.setAttribute('class', 'yotpo yotpo-pictures-widget')
+          yotpoGrid.setAttribute('data-gallery-id', '62216ea40e65803c12186ed7')
+          break
+        case 'triathlon':
+          yotpoGrid.setAttribute('class', 'yotpo yotpo-pictures-widget')
+          yotpoGrid.setAttribute('data-gallery-id', '5d24a0e0dbcbdf035572d99a')
+          break
+        case 'mountain-bike':
+          yotpoGrid.setAttribute('class', 'yotpo yotpo-pictures-widget')
+          yotpoGrid.setAttribute('data-gallery-id', '62216e5586d1927c03767974')
+          break
+        case 'nordic':
+          yotpoGrid.setAttribute('class', 'yotpo yotpo-pictures-widget')
+          yotpoGrid.setAttribute('data-gallery-id', '5d24a82784f4bc50b6b7fb7a')
+          break
+        default:
+          yotpoGrid.setAttribute('class', 'yotpo yotpo-pictures-gallery')
+          yotpoGrid.setAttribute('data-layout-rows', '1')
+          yotpoGrid.setAttribute('data-spacing', '1')
+          yotpoGrid.setAttribute('data-source', 'all')
+          yotpoGrid.setAttribute('data-title', '0')
+          yotpoGrid.setAttribute('data-hover-color', '#ffffff')
+          yotpoGrid.setAttribute('data-hover-opacity', '0.8')
+          yotpoGrid.setAttribute('data-hover-icon', 'true')
+          yotpoGrid.setAttribute('data-cta-text', 'CUSTOMIZE')
+          yotpoGrid.setAttribute('data-cta-color', '#2f84ed')
+          yotpoGrid.setAttribute('data-yotpo-element-id', '2')
+          break
+      }
       const yotpoReviewsCarousel = ReactDOM.findDOMNode(this.yotpoReviews)
       yotpoReviewsCarousel.setAttribute('class', 'yotpo yotpo-reviews-carousel')
       yotpoReviewsCarousel.setAttribute('data-background-color', 'transparent')

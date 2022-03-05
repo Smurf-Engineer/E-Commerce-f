@@ -28,10 +28,26 @@ export const ComplianceLogos = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  @media(max-width: 768px) {
+    flex-flow: row;
+    justify-content: space-between;
+    margin-top: 0px;
+  }
 `
 
 export const StyledImg = styled.img`
   margin-bottom: 10px;
   align-self: flex-end;
   width: 70px;
+`
+
+export const RewardLogo = styled.div`
+  transform: scale(0.6);
+  margin-top: -50px;
+  margin-right: -41px;
+  margin-left: -51px;
+  @media (max-width: 1280px) {
+    align-self: flex-end;
+    transform: scale(0.5);
+  }
 `

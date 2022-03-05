@@ -10,6 +10,8 @@ export const Container = styled.div`
   margin: 0 auto;
   padding-top: 0;
   min-height: 80vh;
+  display: flex;
+  flex-flow: column;
   .yotpo-pictures-widget {
     margin-top: 0px;
     .yotpo-pictures-gallery-header-wrapper {
@@ -198,4 +200,25 @@ export const ColorChartContainer = styled.div`
     margin: 0 auto;
     max-width: 500px;
   }
+`
+
+export const TextContainer = styled.div`
+  margin: 0 auto;
+  padding-top: 48px;
+  margin-bottom: 35px;
+  font-size: 17px;
+  text-align: center;
+  font-style: italic;
+  max-width: 794px;
+  margin-left: 22px;
+  margin-right: 22px;
+  align-self: center;
+`
+
+export const TitleBold = styled.div`
+  text-align: center;
+  margin-bottom: 28px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: Avenir;
 `
