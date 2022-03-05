@@ -409,7 +409,7 @@ class CartListItemTable extends React.Component<Props, State> {
         <HeaderCell key={index} {...{ width }}>
           <CellContainer align={index === 9 ? 'center' : 'flex-start'}>
             <Title
-              titleWidth={index === 0 && !onlyRead ? genderSelectWidth : ''}
+              titleWidth={index === 0 && !onlyRead ? (withTwoPieces && isMobile ? '73px' : genderSelectWidth) : ''}
               align={
                 index === headers.length - 1 && onlyRead ? 'center' : 'left'
               }
@@ -534,7 +534,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 placeholder={formatMessage(messages.genderPlaceholder)}
                 optionFilterProp="children"
                 value={gender ? gender.name : undefined}
-                selectWidth={genderSelectWidth}
+                selectWidth={withTwoPieces && isMobile ? '73px' : genderSelectWidth}
                 disabled={cartItem.fixedCart}
                 highlightFields={
                   highlightFields && !gender && !!genders.length
@@ -560,7 +560,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 placeholder={formatMessage(messages.sizePlaceholder)}
                 optionFilterProp="children"
                 value={size ? size.name : undefined}
-                selectWidth={fitSelectWidth}
+                selectWidth={withTwoPieces && isMobile ? '73px' : fitSelectWidth}
                 disabled={cartItem.fixedCart || !sizes.length}
                 highlightFields={highlightFields && !size && !!sizes.length}
               >
@@ -578,7 +578,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 placeholder={formatMessage(messages.topSizePlaceholder)}
                 optionFilterProp="children"
                 value={topSize ? topSize.name : undefined}
-                selectWidth={fitSelectWidth}
+                selectWidth={withTwoPieces && isMobile ? '73px' : fitSelectWidth}
                 disabled={cartItem.fixedCart || !sizes.length}
                 highlightFields={highlightFields && !size && !!sizes.length}
               >
@@ -596,7 +596,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   placeholder={formatMessage(messages.bottomSizePlaceholder)}
                   optionFilterProp="children"
                   value={bottomSize ? bottomSize.name : undefined}
-                  selectWidth={fitSelectWidth}
+                  selectWidth={withTwoPieces && isMobile ? '73px' : fitSelectWidth}
                   disabled={cartItem.fixedCart || !sizes.length}
                   highlightFields={highlightFields && !size && !!sizes.length}
                 >
@@ -614,7 +614,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 placeholder={formatMessage(messages.fitPlaceholder)}
                 optionFilterProp="children"
                 value={fit ? fit.name : undefined}
-                selectWidth={fitSelectWidth}
+                selectWidth={withTwoPieces && isMobile ? '73px' : fitSelectWidth}
                 disabled={cartItem.fixedCart || !fits || (hideFitStyles && youthSelected)}
                 highlightFields={highlightFields && !fit && fits}
               >
@@ -630,7 +630,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   optionFilterProp="children"
                   disabled={youthCombined && youthSelected}
                   value={firstUpgrade ? firstUpgrade.name : undefined}
-                  selectWidth={fitSelectWidth}
+                  selectWidth={withTwoPieces && isMobile ? '73px' : fitSelectWidth}
                   allowClear={upgradeOne.defaultOption === -1}
                 >
                   {upgradeOneOptions}
@@ -646,7 +646,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   optionFilterProp="children"
                   disabled={youthCombined && youthSelected}
                   value={secondUpgrade ? secondUpgrade.name : undefined}
-                  selectWidth={fitSelectWidth}
+                  selectWidth={withTwoPieces && isMobile ? '73px' : fitSelectWidth}
                   allowClear={upgradeTwo.defaultOption === -1}
                 >
                   {upgradeTwoOptions}
@@ -695,7 +695,7 @@ class CartListItemTable extends React.Component<Props, State> {
                     optionFilterProp="children"
                     disabled={youthCombined && youthSelected}
                     value={thirdUpgrade ? thirdUpgrade.name : undefined}
-                    selectWidth={fitSelectWidth}
+                    selectWidth={withTwoPieces && isMobile ? '73px' : fitSelectWidth}
                     allowClear={upgradeThree.defaultOption === -1}
                   >
                     {upgradeThreeOptions}

@@ -11,6 +11,7 @@ interface Props {
   link?: string
   history: any
   children?: any
+  noClick?: boolean
 }
 
 class UnderlinedLink extends React.Component<Props, {}> {
@@ -27,8 +28,10 @@ class UnderlinedLink extends React.Component<Props, {}> {
   }
 
   handleClick = () => {
-    const { link, history } = this.props
-    history.push(link)
+    const { link, history, noClick } = this.props
+    if (!noClick) {
+      history.push(link)
+    }
   }
 }
 

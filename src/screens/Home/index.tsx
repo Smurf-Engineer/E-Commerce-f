@@ -218,10 +218,11 @@ export class Home extends React.Component<Props, {}> {
             <meta name="Content-Language" content="en" />
             <meta name="page-topic" content="Sport" />
             <meta name="page-type" content="Custom Cycling" />
-            <meta name="og:title" content="Custom Cycling Jerseys for Teams & Clubs - JAKROO" />
-            <meta name="og:url" content="https://jakroo.com/road-bike" />
-            <meta name="og:type" content="article" />
-            <meta name="og:description" content="Start customizing your cycling team kit today! 2 week delivery. Wide product selection. Custom Team Store. Design online select Jakroo Pro Design" />
+            <meta property="og:title" content="Custom Cycling Jerseys for Teams & Clubs - JAKROO" />
+            <meta property="og:url" content="https://jakroo.com/road-bike" />
+            <meta property="og:type" content="article" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+            <meta property="og:description" content="Start customizing your cycling team kit today! 2 week delivery. Wide product selection. Custom Team Store. Design online select Jakroo Pro Design" />
             <link rel="canonical" href="https://www.jakroo.com/" />
             <link rel="author" href="https://www.jakroo.com/" />
             <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/us?lang=en&currency=usd" />
@@ -232,7 +233,29 @@ export class Home extends React.Component<Props, {}> {
             <link rel="alternate" hrefLang="en" href="https://jakroo.com/us?lang=en&currency=usd" />
           </Helmet>
         break
-    
+      case 'mountain-bike':
+        metaData =
+          <Helmet title="Custom Mountain Bike Jerseys and shorts - JAKROO">
+            <meta name="description" content="Create your custom mountain bike kit today! 2 week delivery. Wide product selection. Custom Team Store. Design yourself online" />
+            <meta name="keywords" content="custom mountain bike jerseys, custom mountain bike shorts, custom mtb jerseys" />
+            <meta name="Content-Language" content="en" />
+            <meta name="page-topic" content="Sport" />
+            <meta name="page-type" content="Custom MTB" />
+            <meta property="og:title" content="Custom Mountain Bike Jerseys and shorts - JAKROO" />
+            <meta property="og:url" content="https://jakroo.com/mountain-bike" />
+            <meta property="og:type" content="article" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+            <meta property="og:description" content="Start customizing your cycling team kit today! 2 week delivery. Wide product selection. Custom Team Store. Design online select Jakroo Pro Design" />
+            <link rel="canonical" href="https://www.jakroo.com/" />
+            <link rel="author" href="https://www.jakroo.com/" />
+            <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-gb" href="https://jakroo.com/gb?lang=en&currency=gbp" />
+            <link rel="alternate" hrefLang="en-us" href="https://jakroo.com/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-ca" href="https://jakroo.com/ca?lang=en&currency=cad" />
+            <link rel="alternate" hrefLang="en-au" href="https://jakroo.com/au?lang=en&currency=aud" />
+            <link rel="alternate" hrefLang="en" href="https://jakroo.com/us?lang=en&currency=usd" />
+          </Helmet>
+        break 
       default:
         metaData =
           <Helmet {...{ title }}>
@@ -243,6 +266,7 @@ export class Home extends React.Component<Props, {}> {
             <meta name="page-type" content="Custom Jerseys" />
             <meta property="og:description" content="Custom apparel by Jakroo - Get your custom order started today! Delivered in 2 weeks or less.Two ways to customize your kit" />
             <meta property="og:type" content="article" />
+            <meta property="og:url" content="https://jakroo.com" />
             <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
             <link rel="canonical" href="https://www.jakroo.com/" />
             <link rel="author" href="https://www.jakroo.com/" />
@@ -505,7 +529,7 @@ export class Home extends React.Component<Props, {}> {
             </SlideImageContainer>
           ))}
           <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
-          <YotpoHome />
+          <YotpoHome {...{ sportRoute }} />
         </Container>
         <LoadingContainer {...{ loading }}>
           <Spinner size="large" />

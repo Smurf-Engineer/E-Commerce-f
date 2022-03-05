@@ -43,7 +43,7 @@ export const Header = styled.div`
   }
 `
 
-export const Footer = styled.div`
+export const Footer = styled.footer`
   background: ${AUBERGINE};
   color: rgba(0, 0, 0, 0.65);
   font-size: 14px;
