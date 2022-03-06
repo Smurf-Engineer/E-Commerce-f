@@ -59,7 +59,7 @@ const ContactAndLinks = ({
               <AboutUs {...{ history, formatMessage }} />
               <Teams {...{ history, formatMessage, openReseller }} />
               <RewardLogo>
-                <div id="y-badges" class="yotpo yotpo-badge badge-init" />
+                <div id="y-badges" className="yotpo yotpo-badge badge-init" />
               </RewardLogo>
               <ComplianceLogos>
                 <a href="/compliance">
@@ -88,7 +88,7 @@ const ContactAndLinks = ({
                   <SportsFooter {...{ history, formatMessage, currentCurrency, currentLanguage, currentRegion }} /><br/>
                   <AboutUs {...{ history, formatMessage }} />
                   <RewardLogo>
-                    <div id="y-badges" class="yotpo yotpo-badge badge-init" />
+                    <div id="y-badges" className="yotpo yotpo-badge badge-init" />
                   </RewardLogo>
                 </div>
               </Row>
