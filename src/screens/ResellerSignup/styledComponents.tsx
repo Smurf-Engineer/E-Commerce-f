@@ -394,6 +394,15 @@ export const BillingSelect = styled(Select)`
   }
 `
 
+export const CategorySelect = styled(Select)`
+  width: 100%;
+  .ant-select-selection--single {
+    padding-top: 2px;
+    font-weight: normal;
+    border-radius: 0;
+  }
+`
+
 export const InputRow = styled.div`
   display: flex;
   justify-content: space-between;

@@ -73,6 +73,10 @@ export default defineMessages({
     id: 'components.ResellerSignup.billingCountry',
     defaultMessage: 'Billing Country'
   },
+  businessCategory: {
+    id: 'components.ResellerSignup.businessCategory',
+    defaultMessage: 'Business Category'
+  },
   cancel: {
     id: 'components.ResellerSignup.cancel',
     defaultMessage: 'Cancel'
