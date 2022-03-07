@@ -70,7 +70,8 @@ import {
   FullDiv,
   BigTitle,
   BannerCheckList,
-  MiddleText
+  MiddleText,
+  CategorySelect
 } from './styledComponents'
 import { createUser } from './data'
 import messages from './messages'
@@ -111,6 +112,29 @@ const countries = [
   {
     label: 'USA',
     value: 'usd'
+  }
+]
+
+const businessCategories = [
+  {
+    label: 'Retail Shop',
+    value: 'retail_shop'
+  },
+  {
+    label: 'Online Shop',
+    value: 'online_shop'
+  },
+  {
+    label: 'Promotional Distributor',
+    value: 'promotional_distributor'
+  },
+  {
+    label: 'Event Organizer',
+    value: 'event_organizer'
+  },
+  {
+    label: 'Other',
+    value: 'other'
   }
 ]
 
@@ -155,7 +179,8 @@ interface StateProps {
   changedBanner: boolean,
   selectedRegionCode: string,
   businessName: string,
-  fileName: string
+  fileName: string,
+  businessCategory: string
 }
 
 export class ResellerSignup extends React.Component<Props, StateProps> {
@@ -180,7 +205,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     visible: false,
     bannerSelected: 0,
     changedBanner: false,
-    fileName: ''
+    fileName: '',
+    businessCategory: ''
   }
   componentDidMount() {
     if (window) {
@@ -218,6 +244,11 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     this.setState({
       selectedRegion: value,
       selectedRegionCode: regionCode
+    })
+  }
+  handleBusinessCategoryChange = (value: any) => {
+    this.setState({
+      businessCategory: value
     })
   }
   uploadFile = (event: UploadChangeParam) => {
@@ -300,7 +331,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       // sendSms,
       sendMail,
       terms,
-      fileName
+      fileName,
+      businessCategory
     } = this.state
     const { formatMessage } = intl
     const file = fileName ? getFileWithExtension(fileName) : ''
@@ -608,6 +640,22 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                     )}
                   </BillingSelect>
                 </InputDiv>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.businessCategory} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <CategorySelect
+                    value={businessCategory}
+                    onChange={this.handleBusinessCategoryChange}
+                  >
+                    {businessCategories.map(({ label, value }, index: Number) =>
+                      <Option key={index} {...{ value }}>
+                        {label}
+                      </Option>
+                    )}
+                  </CategorySelect>
+                </InputDiv>
               </InputRow>
               <Notifications>
                 <Label>
@@ -728,7 +776,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       selectedRegionCode: '',
       terms: false,
       loading: false,
-      fileName: ''
+      fileName: '',
+      businessCategory: ''
     })
   }
   handleSignUp = async (evt: React.FormEvent<HTMLInputElement>, ignoreCurrency?: boolean) => {
@@ -742,6 +791,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       sendSms,
       gst,
       businessName,
+      businessCategory,
       selectedRegion,
       sendMail,
       phone,
@@ -762,7 +812,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       message.error(formatMessage(messages.passwordLengthError))
     }
     if (!firstName || !lastName || !email || !password || !confirmPassword || !currency
-      || !website || !businessName || !selectedRegion
+      || !website || !businessName || !businessCategory || !selectedRegion
       || (currency === US_CURRENCY && !fileName) || (currency === CA_CURRENCY && !gst)
     ) {
       message.error(formatMessage(messages.requiredFieldsError))
@@ -802,7 +852,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       selectedRegion,
       sendMail,
       fileName,
-      phone
+      phone,
+      businessCategory
     }
 
     try {
