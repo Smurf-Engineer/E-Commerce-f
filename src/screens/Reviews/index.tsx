@@ -83,6 +83,7 @@ export class Reviews extends React.Component<Props, {}> {
             {formatMessage(messages.mainTitle)}
           </TitleBold>
           <div
+            class="yotpo yotpo-pictures-widget"
             className="yotpo yotpo-pictures-widget"
             data-gallery-id="5bff13a3d9a55a5737932331"
           />
