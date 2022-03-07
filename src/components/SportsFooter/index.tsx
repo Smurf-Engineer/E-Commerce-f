@@ -23,10 +23,6 @@ const sports = [
     path: '/mountain-bike'
   },
   {
-    name: 'Indoor',
-    path: '/indoor'
-  },
-  {
     name: 'Triathlon',
     path: '/triathlon'
   },
