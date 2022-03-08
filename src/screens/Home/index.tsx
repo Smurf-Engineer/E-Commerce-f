@@ -161,11 +161,16 @@ export class Home extends React.Component<Props, {}> {
     dispatch(getHomepage(query, params.sportRoute))
   }
 
-  componentDidUpdate() {
-    const { shortenURLData } = this.props
+  componentDidUpdate(prevProps: Props) {
+    const { shortenURLData, featuredImagesData } = this.props
+    const oldLoading = get(prevProps, 'featuredImagesData.loading', true)
+    const loading = get(featuredImagesData, 'loading', true)
     const url = get(shortenURLData, 'shortenURL.url', '')
     if (!!url && !!url.trim()) {
       window.location.replace(url)
+    }
+    if (typeof window !== 'undefined' && zenscroll && oldLoading !== loading && !loading) {
+      window.scrollTo(0, 0)
     }
   }
 
