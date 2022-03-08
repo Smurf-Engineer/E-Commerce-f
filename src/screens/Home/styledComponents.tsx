@@ -23,6 +23,9 @@ export const Container = styled.div`
   transition: all 0.5s ease;
   z-index: 2;
   min-height: 120vh;
+  max-width: 1680px;
+  margin: 0 auto;
+  box-shadow: 0px 5px 14px 8px #c7c7c7;
   opacity: ${({ loading }: DivProps) => (loading ? '0' : '1')};
 `
 
