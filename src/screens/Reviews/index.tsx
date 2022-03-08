@@ -31,7 +31,7 @@ interface Props extends RouteComponentProps<any> {
 
 export class Reviews extends React.Component<Props, {}> {
   componentDidMount() {
-    if (window && zenscroll) {
+    if (typeof window !== 'undefined' && zenscroll) {
       zenscroll.toY(0, 0)
     }
     // tslint:disable-next-line: max-line-length
@@ -42,6 +42,14 @@ export class Reviews extends React.Component<Props, {}> {
     const t = document.getElementsByTagName('script')[0]
     if (t && t.parentNode) {
       t.parentNode.insertBefore(x, t)
+    }
+    if (typeof window !== 'undefined' && window.yotpo && window.yotpo.inview) {
+      window.yotpo.refreshWidgets()
+    }
+  }
+  componentDidUpdate() {
+    if (typeof window !== 'undefined' && window.yotpo && window.yotpo.inview) {
+      window.yotpo.refreshWidgets()
     }
   }
   render() {
