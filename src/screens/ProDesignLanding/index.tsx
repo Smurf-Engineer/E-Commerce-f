@@ -61,19 +61,33 @@ class ProDesignLanding extends React.Component<Props, {}> {
     window.location.replace('/')
   }
   render() {    
+    {/* tslint:disable:max-line-length */}
+    const metaData =
+      <Helmet title="Custom Apparel Designed by JAKROO">
+        <meta name="description" content="Changing the way customization gets done.Custom cycling jerseys designed by Jakroo. Customized triathlon apparel designed by Jakroo. Work with our designers to create the perfect custom jersey" />
+        <meta name="keywords" content="custom design cycling, custom mountain bike jerseys" />
+        <meta name="Content-Language" content="en" />
+        <meta name="page-topic" content="Design" />
+        <meta name="page-type" content="Pro Design" />
+        <meta property="og:title" content="Custom Apparel Designed by JAKROO" />
+        <meta property="og:url" content="https://jakroo.com/prodesign" />
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+        <meta property="og:description" content="Changing the way customization gets done.Custom cycling jerseys designed by Jakroo. Customized triathlon apparel designed by Jakroo." />
+        <link rel="canonical" href="https://jakroo.com/prodesign" />
+        <link rel="author" href="https://jakroo.com/prodesign" />
+        <link rel="alternate" href="https://designlab.jakroo.com/prodesign"/>
+        <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/prodesign/us?lang=en&currency=usd" />
+        <link rel="alternate" hrefLang="en-gb" href="https://jakroo.com/prodesign/gb?lang=en&currency=gbp" />
+        <link rel="alternate" hrefLang="en-us" href="https://jakroo.com/prodesign/us?lang=en&currency=usd" />
+        <link rel="alternate" hrefLang="en-ca" href="https://jakroo.com/prodesign/ca?lang=en&currency=cad" />
+        <link rel="alternate" hrefLang="en-au" href="https://jakroo.com/prodesign/au?lang=en&currency=aud" />
+        <link rel="alternate" hrefLang="en" href="https://jakroo.com/prodesign/us?lang=en&currency=usd" />
+      </Helmet>
+    {/* tslint:enable:max-line-length */}
     return (
       <Container>
-        <Helmet
-          meta={[
-            { property: 'og:title', content: 'ProDesign by Jakroo' },
-            { property: 'og:url', content: 'https://jakroo.com/prodesign' },
-            { property: 'og:type', content: 'article' },
-            { property: 'og:image', content: 'https://storage.googleapis.com/jakroo/homepage/01.jpg' }
-          ]}
-          title={'ProDesign by Jakroo'}
-        >
-          <title>ProDesign by Jakroo</title>
-        </Helmet>
+        {metaData}
         <TopBar>
           <LogoIcon onClick={this.goToHomePage} src={logo} />
         </TopBar>
