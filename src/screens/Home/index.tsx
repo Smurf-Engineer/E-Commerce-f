@@ -250,7 +250,7 @@ export class Home extends React.Component<Props, {}> {
             <meta property="og:title" content="Custom Running Singlets and Shirts - JAKROO" />
             <meta property="og:url" content="https://jakroo.com/active" />
             <meta property="og:type" content="article" />
-            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/og-active.jpg" />
             <meta property="og:description" content="Design your own running singlet today! 2 week delivery. Personalized Running Singlets and Shirts." />
             <link rel="canonical" href="https://jakroo.com/active" />
             <link rel="author" href="https://jakroo.com/active" />
@@ -274,7 +274,7 @@ export class Home extends React.Component<Props, {}> {
             <meta property="og:title" content="Custom Triathlon Jerseys | Custom Tri Suits - JAKROO" />
             <meta property="og:url" content="https://jakroo.com/triathlon" />
             <meta property="og:type" content="article" />
-            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/og-triathlon.jpg" />
             <meta property="og:description" content="Start customizing your cycling team kit today! 2 week delivery. Wide product selection. Custom Team Store. Design online select Jakroo Pro Design" />
             <link rel="canonical" href="https://jakroo.com/triathlon" />
             <link rel="author" href="https://jakroo.com/triathlon" />
@@ -298,7 +298,7 @@ export class Home extends React.Component<Props, {}> {
             <meta property="og:title" content="Custom Cycling Jerseys | 2 Ways to Customize - JAKROO" />
             <meta property="og:url" content="https://jakroo.com/road-bike" />
             <meta property="og:type" content="article" />
-            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/og-road-bike.jpg" />
             <meta property="og:description" content="Custom cycling jerseys for Teams and Individuals. 2 Week Delivery. Design your own cycling kit online" />
             <link rel="canonical" href="https://jakroo.com/road-bike" />
             <link rel="author" href="https://jakroo.com/road-bike" />
@@ -322,7 +322,7 @@ export class Home extends React.Component<Props, {}> {
             <meta property="og:title" content="Custom Mountain Bike Jerseys and shorts - JAKROO" />
             <meta property="og:url" content="https://jakroo.com/mountain-bike" />
             <meta property="og:type" content="article" />
-            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/og-mountain-bike.jpg" />
             <meta property="og:description" content="Design your own mountain bike jersey! 2 week delivery. MTB jerseys, shirts, long pants. Custom Team Store. Design mtb jerseys online for free" />
             <link rel="canonical" href="https://jakroo.com/mountain-bike" />
             <link rel="author" href="https://jakroo.com/mountain-bike" />
