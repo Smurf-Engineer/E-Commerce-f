@@ -20,7 +20,7 @@ export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
 
 export const SET_SKIP_VALUE = `${namespace}/SET_SKIP_VALUE`
 export const TEAM_STORES_LIMIT = 15
-export const SCREEN_TITLE = 'Jakroo DesignLab - Team Store Search'
+export const SCREEN_TITLE = 'Jakroo Custom Team Stores | Find your Team Store'
 
 export const paymentIcons = [
     dynamicDrop,
