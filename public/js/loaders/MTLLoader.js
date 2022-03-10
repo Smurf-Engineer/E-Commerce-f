@@ -32,7 +32,7 @@ THREE.MTLLoader.prototype = {
 		var scope = this;
 
 		var loader = new THREE.FileLoader( this.manager );
-		loader.setCrossOrigin('anonymous');
+		loader.crossOrigin = 'anonymous';
 		loader.setPath( this.path );
 		loader.load( url, function ( text ) {
 
