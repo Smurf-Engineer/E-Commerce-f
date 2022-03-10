@@ -298,6 +298,7 @@ class Render3D extends PureComponent {
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
+        textureLoader.setCrossOrigin('anonymous')
         if (!!zipper) {
           const hasZipperColor =
             has(colorAccessories, 'zipperColor') &&
@@ -542,11 +543,13 @@ class Render3D extends PureComponent {
     /* Object and MTL load */
     if (obj && mtl) {
       const mtlLoader = new THREE.MTLLoader()
+      mtlLoader.setCrossOrigin('anonymous')
       mtlLoader.load(mtl, (materials) => {
         this.handleOnLoadModel(true)
 
         materials.preload()
         const objLoader = new THREE.OBJLoader()
+        objLoader.crossOrigin = 'anonymous'
         objLoader.setMaterials(materials)
         objLoader.load(
           obj,
@@ -563,7 +566,7 @@ class Render3D extends PureComponent {
             const meshIndex = getMeshIndex(MESH)
 
             const textureLoader = new THREE.TextureLoader()
-
+            textureLoader.setCrossOrigin('anonymous')
             /* Stitching */
             if (!!flatlock) {
               const flatlockObj = textureLoader.load(flatlock)
@@ -755,10 +758,12 @@ class Render3D extends PureComponent {
     )
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
+    mtlLoader.setCrossOrigin('anonymous')
     mtlLoader.load(modelMtl || product.mtl, (materials) => {
       this.handleOnLoadModel(true)
       materials.preload()
       const objLoader = new THREE.OBJLoader()
+      objLoader.crossOrigin = 'anonymous'
       objLoader.setMaterials(materials)
       objLoader.load(
         modelObj || product.obj,
@@ -967,6 +972,7 @@ class Render3D extends PureComponent {
               object.add(brandingObj)
               const brandingIndex = children.length - 1
               const textureLoader = new THREE.TextureLoader()
+              textureLoader.setCrossOrigin('anonymous')
               const brandingTexture = textureLoader.load(product.branding)
               brandingTexture.minFilter = THREE.LinearFilter
               const brandingMaterial = new THREE.MeshPhongMaterial({
