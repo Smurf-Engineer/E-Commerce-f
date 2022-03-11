@@ -243,9 +243,11 @@ class Render3D extends PureComponent {
 
     /* Loaders */
     const mtlLoader = new THREE.MTLLoader()
+    mtlLoader.setCrossOrigin('anonymous')
     const objLoader = new THREE.OBJLoader()
+    objLoader.crossOrigin = 'anonymous'
     const imgLoader = new THREE.TextureLoader()
-
+    imgLoader.setCrossOrigin('anonymous')
     this.scene = scene
     this.camera = camera
     this.renderer = renderer

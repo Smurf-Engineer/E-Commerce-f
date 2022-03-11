@@ -402,9 +402,11 @@ class Render3D extends PureComponent {
     scene.add(directionalLight)
     /* Loaders */
     const mtlLoader = new THREE.MTLLoader()
+    mtlLoader.setCrossOrigin('anonymous')
     const objLoader = new THREE.OBJLoader()
+    objLoader.crossOrigin = 'anonymous'
     const textureLoader = new THREE.TextureLoader()
-
+    textureLoader.setCrossOrigin('anonymous')
     const raycaster = new THREE.Raycaster()
     const mouse = new THREE.Vector2()
     const onClickPosition = new THREE.Vector2()

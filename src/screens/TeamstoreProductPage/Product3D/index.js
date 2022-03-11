@@ -59,7 +59,7 @@ class Render3D extends PureComponent {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
     /* Textures */
     const textureLoader = new THREE.TextureLoader()
-
+    textureLoader.setCrossOrigin('anonymous')
     const textures = {
       texture: {},
       flatlock: {},
@@ -166,13 +166,14 @@ class Render3D extends PureComponent {
     scene.add(directionalLight)
 
     const mtlLoader = new THREE.MTLLoader()
-
+    mtlLoader.setCrossOrigin('anonymous')
     /* Object and MTL load */
 
     mtlLoader.load(jerseyTextures.mtl, materials => {
       this.handleOnLoadModel(true)
       materials.preload()
       const objLoader = new THREE.OBJLoader()
+      objLoader.crossOrigin = 'anonymous'
       objLoader.setMaterials(materials)
       objLoader.load(
         jerseyTextures.obj,
