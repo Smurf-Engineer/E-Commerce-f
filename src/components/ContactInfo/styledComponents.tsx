@@ -2,6 +2,7 @@
  * Styled Components - Created by cazarez on 07/02/18.
  */
 import styled from 'styled-components'
+import { GRAY } from '../../theme/colors'
 
 export const Container = styled.div`
   color: #fff;
@@ -30,4 +31,9 @@ export const AddressText = styled.div`
 
 export const ContactLabel = styled.div`
   margin-bottom: 15px;
+`
+
+export const Subtitle = styled.div`
+  font-size: 11.5px;
+  color: ${GRAY};
 `
