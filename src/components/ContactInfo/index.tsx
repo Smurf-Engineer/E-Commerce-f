@@ -2,7 +2,7 @@
  * ContactInfo Component - Created by Carlos Cazarez on 07/02/18.
  */
 import * as React from 'react'
-import { Container, Title, AddressText, ContactLabel } from './styledComponents'
+import { Container, Title, AddressText, ContactLabel, Subtitle } from './styledComponents'
 import messages from './messages'
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -10,28 +10,62 @@ interface Props {
   currentRegion: string
 }
 const ContactInfo = ({ formatMessage, currentRegion }: Props) => {
-  const isCanada = () => {
-    return currentRegion === 'ca'
+
+  let company
+  let subtitle
+  let street
+  let suburb
+  let phone
+  let mail
+
+  switch (currentRegion) {
+    case 'ca':
+      company = messages.companyCA
+      street = messages.streetCA
+      suburb = messages.suburbCA
+      phone = messages.phoneCA
+      mail = messages.emailCA
+      break
+    case 'au':
+      company = messages.companyAU
+      street = messages.streetAU
+      suburb = messages.suburbAU
+      phone = messages.phoneAU
+      mail = messages.emailAU
+      subtitle = messages.subtitleAU
+      break
+    default:
+      company = messages.company
+      street = messages.street
+      suburb = messages.suburb
+      phone = messages.phone
+      mail = messages.email
+      break
   }
 
   return (
     <Container>
       <Title>{formatMessage(messages.title)}</Title>
       <ContactLabel>
-        {formatMessage(isCanada() ? messages.companyCA : messages.company)}
+        {formatMessage(company)}
+        {subtitle &&
+          <Subtitle>
+            {formatMessage(subtitle)}
+          </Subtitle>
+        }
       </ContactLabel>
       <ContactLabel>
         <AddressText>
-          {formatMessage(isCanada() ? messages.streetCA : messages.street)}
+          {formatMessage(street)}
         </AddressText>
         <AddressText>
-          {formatMessage(isCanada() ? messages.suburbCA : messages.suburb)}
+          {formatMessage(suburb)}
         </AddressText>
       </ContactLabel>
       <ContactLabel>
-        {formatMessage(isCanada() ? messages.phoneCA : messages.phone)}
+        {formatMessage(phone)}
       </ContactLabel>
-      <ContactLabel>{formatMessage(isCanada() ? messages.emailCA : messages.email)}</ContactLabel>
+      <ContactLabel>{formatMessage(mail)}</ContactLabel>
     </Container>
   )
 }
