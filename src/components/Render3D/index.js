@@ -710,6 +710,7 @@ class Render3D extends PureComponent {
               object.add(brandingObj)
               const brandingIndex = children.length - 1
               const textureLoader = new THREE.TextureLoader()
+              textureLoader.setCrossOrigin('anonymous')
               const brandingTexture = textureLoader.load(branding)
               brandingTexture.minFilter = THREE.LinearFilter
               const brandingMaterial = new THREE.MeshPhongMaterial({
