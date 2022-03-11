@@ -154,6 +154,10 @@ export default defineMessages({
     id: 'screens.FitAndSizing.cyclingCap',
     defaultMessage: 'CYCLING CAP'
   },
+  cyclingGlove: {
+    id: 'screens.FitAndSizing.cyclingGlove',
+    defaultMessage: 'CYCLING GLOVE'
+  },
   bicep: {
     id: 'screens.FitAndSizing.bicep',
     defaultMessage: 'Bicep'

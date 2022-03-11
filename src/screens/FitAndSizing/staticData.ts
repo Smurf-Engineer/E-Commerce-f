@@ -277,6 +277,15 @@ export const charts = [
           in: ['21', '22.4'],
           cm: ['53.3', '56.9']
         }
+      },
+      {
+        title: 'cyclingGlove',
+        headers: ['circumference'],
+        size: ['xs', 's', 'm', 'l', 'xl'],
+        circumference: {
+          in: ['7.5', '7.75', '8.25', '8.75', '9.25'],
+          cm: ['19', '19.5', '21', '22.2', '23.5']
+        }
       }
     ]
   }
