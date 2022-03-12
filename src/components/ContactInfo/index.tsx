@@ -55,9 +55,11 @@ const ContactInfo = ({ formatMessage, currentRegion }: Props) => {
         }
       </ContactLabel>
       <ContactLabel>
-        <AddressText>
-          {formatMessage(street)}
-        </AddressText>
+        <AddressText
+          dangerouslySetInnerHTML={{
+            __html: formatMessage(street)
+          }}
+        />
         <AddressText>
           {formatMessage(suburb)}
         </AddressText>

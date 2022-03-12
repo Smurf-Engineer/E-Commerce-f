@@ -243,12 +243,14 @@ class Payment extends React.PureComponent<Props, {}> {
           >
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
-          <MethodButton
-            selected={paymentMethod === PAYPAL}
-            onClick={this.handlePaypalClick}
-          >
-            {formatMessage(messages.methodPaypal)}
-          </MethodButton>
+          {!isFixedTeamstore &&
+            <MethodButton
+              selected={paymentMethod === PAYPAL}
+              onClick={this.handlePaypalClick}
+            >
+              {formatMessage(messages.methodPaypal)}
+            </MethodButton>
+          }
           {invoice && invoiceTerms && !isFixedTeamstore &&
             <MethodButton
               selected={paymentMethod === INVOICE}
