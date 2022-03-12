@@ -35,7 +35,7 @@ export default defineMessages({
   },
   streetAU: {
     id: 'components.footer.contactInfo.streetAU',
-    defaultMessage: '10 Ashbourne Tce Biggera Waters Gold Coast'
+    defaultMessage: '10 Ashbourne Tce Biggera Waters<br/>Gold Coast'
   },
   suburb: {
     id: 'components.footer.contactInfo.suburb',
