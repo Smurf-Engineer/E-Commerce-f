@@ -55,7 +55,7 @@ export default defineMessages({
   },
   phoneCA: {
     id: 'components.footer.contactInfo.phoneCA',
-    defaultMessage: '872.252.5766'
+    defaultMessage: '877.252.5766'
   },
   phoneAU: {
     id: 'components.footer.contactInfo.phoneAU',
