@@ -49,6 +49,7 @@ export const getProdesignItemQuery = gql`
         collections
         isTopProduct
         predyedlabel
+        branding
         hasPredyed: has_predyed
         intendedUse: intended_use
         obj
