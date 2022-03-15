@@ -896,7 +896,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <RowSwitch>
               <SwitchWithLabel
                 hasError={hasError}
-                defaultChecked={true}
+                defaultChecked={false}
                 {...{ passCode, updatePassCodeAction }}
                 withInput={true}
                 checked={privateStore}

@@ -39,7 +39,7 @@ export const initialState = fromJS({
   initialStartDate: null,
   endDate: '',
   endDateMoment: null,
-  privateStore: true,
+  privateStore: false,
   onDemand: true,
   passCode: '',
   openLocker: false,
