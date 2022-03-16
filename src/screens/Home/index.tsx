@@ -148,6 +148,7 @@ export class Home extends React.Component<Props, {}> {
   state = {
     openQuickView: false,
     openResults: true,
+    topPosition: 70,
   }
   private stepInput: any
 
@@ -159,6 +160,11 @@ export class Home extends React.Component<Props, {}> {
     } = this.props
     const { getHomepage } = thunkActions
     dispatch(getHomepage(query, params.sportRoute))
+    window.addEventListener('scroll', this.handleScroll)
+  }
+
+  componentWillUnmount() {
+    window.addEventListener('scroll', this.handleScroll)
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -172,6 +178,12 @@ export class Home extends React.Component<Props, {}> {
     if (typeof window !== 'undefined' && zenscroll && oldLoading !== loading && !loading) {
       window.scrollTo(0, 0)
     }
+  }
+
+  handleScroll = () => {
+    const scrollPosition = typeof window !== 'undefined' ? window.scrollY : 0
+    const topPosition = 70 - scrollPosition
+    this.setState({ topPosition })
   }
 
   handleOnQuickView = (id: number, yotpoId: string, gender: number) => {
@@ -398,6 +410,7 @@ export class Home extends React.Component<Props, {}> {
       },
       dataDesignLabInfo,
     } = this.props
+    const { topPosition } = this.state
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
     const { params } = match || {}
@@ -425,7 +438,6 @@ export class Home extends React.Component<Props, {}> {
     const mainHeaderImages = get(mainHeaderData, 'getHomepageContent.mainHeaderImages', [])
     const featuredImages = get(featuredImagesData, 'getHomepageContent.featuredImages', [])
     const featuredProducts = get(featuredProductsData, 'getHomepageContent.featuredProducts', [])
-  
     const today = new Date()
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
@@ -469,7 +481,7 @@ export class Home extends React.Component<Props, {}> {
                 </Carousel>
               </CarouselContainer>
             ) : null}
-            <SearchBarContent>
+            <SearchBarContent topPosition={topPosition > 0 ? topPosition : 0}>
               <SearchBar search={this.onSearch} {...{ formatMessage }} />
               {/* TODO: Commented for phase 1, will be implemented in Jakroo phase 2
               <HelpContainer>

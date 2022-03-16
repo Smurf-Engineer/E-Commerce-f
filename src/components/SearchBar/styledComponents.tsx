@@ -34,14 +34,15 @@ export const Container = styled.div`
   }
 
   .ant-btn-primary {
-    color: ${WHITE};
+    color: #4d4d4d;
     border: none;
     box-shadow: none;
     border-radius: 3px !important;
     background-color: ${({ onHeader, focused }: StyledProps) =>
-      focused || !onHeader ? WHITE : '#a5a5a5'};
+      focused || !onHeader ? '#e7e7e7' : '#e0e0e0'};
     border-color: ${({ onHeader, focused }: StyledProps) =>
       focused || !onHeader ? WHITE : GRAY_LIGHTEST};
+    margin-right: 6px;
   }
 `
 
