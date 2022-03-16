@@ -147,8 +147,7 @@ interface Props extends RouteComponentProps<any> {
 export class Home extends React.Component<Props, {}> {
   state = {
     openQuickView: false,
-    openResults: true,
-    topPosition: 70,
+    openResults: true
   }
   private stepInput: any
 
@@ -160,11 +159,6 @@ export class Home extends React.Component<Props, {}> {
     } = this.props
     const { getHomepage } = thunkActions
     dispatch(getHomepage(query, params.sportRoute))
-    window.addEventListener('scroll', this.handleScroll)
-  }
-
-  componentWillUnmount() {
-    window.addEventListener('scroll', this.handleScroll)
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -410,7 +404,6 @@ export class Home extends React.Component<Props, {}> {
       },
       dataDesignLabInfo,
     } = this.props
-    const { topPosition } = this.state
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
     const { params } = match || {}
@@ -443,6 +436,21 @@ export class Home extends React.Component<Props, {}> {
       <Layout {...{ history, intl }} style={layoutStyle}>
         {this.getMetaData(sportRoute || shortUrl)}
         <Container {...{ loading }}>
+          <SearchBarContent>
+            <SearchBar search={this.onSearch} {...{ formatMessage }} />
+            {/* TODO: Commented for phase 1, will be implemented in Jakroo phase 2
+            <HelpContainer>
+              <NeedHelp>
+                <FormattedMessage {...messages.helpFind} />
+              </NeedHelp>
+              <GetStartedButton
+                size="large"
+                onClick={this.handleOnGetStarted}
+              >
+                <FormattedMessage {...messages.startButton} />
+              </GetStartedButton>
+            </HelpContainer>*/}
+          </SearchBarContent>
           <SearchContainer>
             {featuredImages && featuredImages.length > 0 ?
               featuredImages.map(
@@ -481,21 +489,6 @@ export class Home extends React.Component<Props, {}> {
                 </Carousel>
               </CarouselContainer>
             ) : null}
-            <SearchBarContent topPosition={topPosition > 0 ? topPosition : 0}>
-              <SearchBar search={this.onSearch} {...{ formatMessage }} />
-              {/* TODO: Commented for phase 1, will be implemented in Jakroo phase 2
-              <HelpContainer>
-                <NeedHelp>
-                  <FormattedMessage {...messages.helpFind} />
-                </NeedHelp>
-                <GetStartedButton
-                  size="large"
-                  onClick={this.handleOnGetStarted}
-                >
-                  <FormattedMessage {...messages.startButton} />
-                </GetStartedButton>
-              </HelpContainer>*/}
-            </SearchBarContent>
           </SearchContainer>
           <div
             ref={(input) => {
