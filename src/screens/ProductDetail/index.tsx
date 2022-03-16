@@ -75,6 +75,9 @@ import {
   ThreeDButton,
   FingerIcon,
   InfoMessage,
+  SizeChartCustom,
+  SizeChartCustomMobile,
+  MobileFlex,
 } from './styledComponents'
 import lockSound from '../../assets/lock.wav'
 import enabledSound from '../../assets/enabled.wav'
@@ -818,12 +821,15 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     </MobileButton>
                   </MobileButtonWrapper>
                 )}
-                {templateZip && (
-                  <MobileButtonTemplate onClick={this.openTemplate}>
-                    <Download type="download" />
-                    {formatMessage(messages.downloadTemplates)}
-                  </MobileButtonTemplate>
-                )}
+                <MobileFlex>
+                  {!isRetail && chart && <SizeChartCustomMobile onClick={this.goToChart} src={sizeChartSvg} />}
+                  {templateZip && (
+                    <MobileButtonTemplate onClick={this.openTemplate}>
+                      <Download type="download" />
+                      {formatMessage(messages.downloadTemplates)}
+                    </MobileButtonTemplate>
+                  )}
+                </MobileFlex>
                 <Description>{description}</Description>
                 <BannerMaterialSection>
                   {bannerMaterials.map((banner: ProductFile) => (
@@ -839,6 +845,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                       </StyledButton>
                     </StyledButtonWrapper>
                   )}
+                  {!isRetail && chart && <SizeChartCustom onClick={this.goToChart} src={sizeChartSvg} />}
                   {templateZip && (
                     <ButtonTemplate onClick={this.openTemplate}>
                       <Download type="download" />

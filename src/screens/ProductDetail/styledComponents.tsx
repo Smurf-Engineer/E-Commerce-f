@@ -75,6 +75,47 @@ export const SizeChart = styled.img`
   }
 `
 
+export const SizeChartCustom = styled.img`
+  max-width: 128px;
+  width: 100%;
+  object-fit: contain;
+  &:hover {
+    cursor: pointer;
+  }
+  @media (max-width: 926px) {
+    margin-top: 24px;
+    margin-bottom: 16px;
+  }
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: none;
+    margin-top: unset;
+    margin-bottom: unset;
+  }
+`
+
+export const SizeChartCustomMobile = styled.img`
+  max-width: 128px;
+  width: 100%;
+  object-fit: contain;
+  display: none;
+  &:hover {
+    cursor: pointer;
+  }
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: flex;
+  }
+`
+
+export const MobileFlex = styled.div`
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  margin: 22px 0;
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: flex;
+  }
+`
+
 export const YouthLabel = styled.div`
   font-size: 12px;
   color: #549c8c;
@@ -665,7 +706,6 @@ export const ActionButtonsRow = styled.div`
 export const MobileButtonTemplate = styled.div`
   display: none;
   justify-content: center;
-  height: 40px;
   color: ${BLUE};
   font-size: 14px;
   font-weight: bold;
