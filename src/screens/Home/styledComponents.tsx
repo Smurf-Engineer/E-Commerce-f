@@ -38,9 +38,8 @@ export const HomeHeader = styled.div`
 
 export const SearchBarContent = styled.div`
   color: ${WHITE};
-  position: unset;
-  position: fixed;
-  top: ${({ topPosition = 70 }: DivProps) => topPosition > 0 ? topPosition : 0}px;
+  position: sticky;
+  top: 0;
   width: 100%;
   z-index: 9999;
   transition: all .25s;
@@ -58,9 +57,6 @@ export const SearchBackground = styled.img`
 
 export const SearchContainer = styled.div`
   position: relative;
-  @media (max-width: 991px) {
-    margin-top: 48px;
-  }
 `
 
 export const HelpContainer = styled.div`
