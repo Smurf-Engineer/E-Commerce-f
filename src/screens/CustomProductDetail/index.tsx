@@ -57,6 +57,9 @@ import {
   InfoMessage,
   FingerIcon,
   ThreeDButton,
+  BackTopStyled,
+  BackButton,
+  BackIcon,
   // ColorButtons,
   // ToneButton
 } from './styledComponents'
@@ -653,6 +656,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       <Layout {...{ history, intl }} style={layoutStyle}>
         <Container>
           <BreadCrumbs {...{ history, formatMessage, routes }} />
+          {isMobile &&
+            <BackTopStyled>
+              <BackButton><BackIcon type="up-circle" theme="twoTone" twoToneColor="#4596bf" /> UP</BackButton>
+            </BackTopStyled>
+          }
           {(design && !loading) && (
             <Content>
               <ImagePreview>

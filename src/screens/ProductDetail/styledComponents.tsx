@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Breadcrumb from 'antd/lib/breadcrumb'
 import Button from 'antd/lib/button'
+import BackTop from 'antd/lib/back-top'
 import InputNumber from 'antd/lib/input-number'
 import {
   RED,
@@ -37,6 +38,32 @@ export const Container = styled.div`
   @media (max-width: 700px) {
     user-select: none !important;
   }
+`
+
+export const BackTopStyled = styled(BackTop)`
+  &.ant-back-top {
+    left: 24px !important;
+    right: unset !important;
+    bottom: 68px !important;
+  }
+`
+
+export const BackButton = styled.div`
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  background: #ffffffcf;
+  border-radius: 90px;
+  padding: 10px;
+  min-width: 83px;
+  font-weight: bold;
+  font-family: Avenir;
+  box-shadow: 0px 1px 4px -1px grey;
+`
+
+export const BackIcon = styled(Icon)`
+  font-size: 30px;
+  margin-right: 8px;
 `
 
 export const Content = styled.div`

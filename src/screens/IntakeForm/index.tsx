@@ -1072,6 +1072,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       <Layout
         {...{ history, intl }}
         hideBottomHeader={true}
+        hideTopHeader={true}
         disableAssist={true}
         hideFooter={true}
         darkMode={true}

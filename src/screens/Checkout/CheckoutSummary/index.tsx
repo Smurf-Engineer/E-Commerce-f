@@ -6,6 +6,7 @@ import PaypalExpressBtn from 'react-paypal-express-checkout-authorize'
 import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
+import Modal from 'antd/lib/modal'
 import messages from './messages'
 import {
   Container,
@@ -13,7 +14,12 @@ import {
   ContinueIcon,
   ContinueButton,
   paypalButtonStyle,
-  PlaceOrderButton
+  PlaceOrderButton,
+  CancelButton,
+  ModalTitle,
+  cancelButtonStyle,
+  buttonStyle,
+  InfoBody
 } from './styledComponents'
 import { getTaxQuery, isScaPaymentQuery } from './data'
 import {
@@ -34,6 +40,8 @@ import {
   getTaxesAndDiscount,
   roundDecimals
 } from '../../../utils/utilsCheckout'
+
+const { confirm } = Modal
 
 interface Data extends QueryProps {
   taxes: NetsuiteTax
@@ -64,6 +72,7 @@ interface Props {
   currentCurrency: string
   showDiscount?: boolean
   placingOrder?: boolean
+  history: any
   formatMessage: (messageDescriptor: any) => string
   couponCode?: CouponCode
   productsPrices: ProductPrice[]
@@ -90,6 +99,7 @@ const CheckoutSummary = ({
   upgrades = 0,
   variables = 0,
   couponCode,
+  history,
   totalWithoutDiscount = 0,
   setCouponCodeAction,
   deleteCouponCodeAction,
@@ -219,10 +229,33 @@ const CheckoutSummary = ({
       <ContinueIcon type="right" />
     </ContinueButton>
 
+  const handleCancel = () => {
+    confirm({
+      title: <ModalTitle>{formatMessage(messages.areYouSure)}</ModalTitle>,
+      icon: ' ',
+      centered: true,
+      cancelText: formatMessage(messages.cancel),
+      okText: formatMessage(messages.yes),
+      cancelButtonProps: {
+        style: cancelButtonStyle
+      },
+      okButtonProps: {
+        style: buttonStyle
+      },
+      onOk: () => {
+        history.push('/shopping-cart')
+      },
+      content: <InfoBody>{formatMessage(messages.promptReturn)}</InfoBody>
+    })
+  }
+
   const orderButton = showOrderButton ? orderButtonComponent : continueButton
   return (
     <Container>
-      <MediaQuery maxWidth={480}>{currentStep === 2 ? orderButton : null}</MediaQuery>
+      <MediaQuery maxWidth={480}>
+        {currentStep === 2 ? orderButton : null}
+        <CancelButton onClick={handleCancel}>{formatMessage(messages.cancel)}</CancelButton>
+      </MediaQuery>
       <OrderSummary
         weight={weight.toString()}
         showCouponInput={true}
@@ -249,7 +282,10 @@ const CheckoutSummary = ({
           totalSum
         }}
       />
-      <MediaQuery minWidth={481}>{orderButton}</MediaQuery>
+      <MediaQuery minWidth={481}>
+        {orderButton}
+        <CancelButton onClick={handleCancel}>{formatMessage(messages.cancel)}</CancelButton>
+      </MediaQuery>
     </Container>
   )
 }
