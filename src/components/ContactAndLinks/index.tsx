@@ -22,12 +22,15 @@ import {
 import BSCILogo from '../../assets/BSCI_logo.svg'
 import CaliPropLogo from '../../assets/californiaprop65.svg'
 import PeopleForBikesLogo from '../../assets/people-for-bikes.png'
+import { User } from '../../types/common'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
   openReseller?: () => void
+  openLoginAction?: (open: boolean) => void
   fakeWidth: number
   history?: any
+  user: User
   currentRegion: string
   currentLanguage: string
   currentCurrency?: string
@@ -39,6 +42,8 @@ const ContactAndLinks = ({
   history,
   currentRegion,
   currentLanguage,
+  user,
+  openLoginAction,
   currentCurrency,
   openReseller = () => {},
 }: Props) => {
@@ -54,7 +59,7 @@ const ContactAndLinks = ({
               <ContactInfo {...{ history, formatMessage, currentRegion }} />
               <SportsFooter {...{ history, formatMessage, currentCurrency, currentLanguage, currentRegion }} />
               <ProductsFooter {...{ history, formatMessage, currentCurrency, currentLanguage, currentRegion }} />
-              <CustomerSupport {...{ history, formatMessage }} />
+              <CustomerSupport {...{ history, formatMessage, user, openLoginAction }} />
               <DesignSupport {...{ history, formatMessage }} />
               <AboutUs {...{ history, formatMessage }} />
               <Teams {...{ history, formatMessage, openReseller }} />
@@ -80,7 +85,7 @@ const ContactAndLinks = ({
               <ContactInfo {...{ history, formatMessage, currentRegion }} />
               <Row>
                 <div>
-                  <CustomerSupport {...{ history, formatMessage }} /><br/>
+                  <CustomerSupport {...{ history, formatMessage, user, openLoginAction }} /><br/>
                   <DesignSupport {...{ history, formatMessage }} /><br/>
                   <Teams {...{ history, formatMessage, openReseller }} />
                 </div>

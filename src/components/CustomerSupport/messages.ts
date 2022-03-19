@@ -28,5 +28,9 @@ export default defineMessages({
   privacyPolicy: {
     id: 'components.footer.customerSupport.privacyPolicy',
     defaultMessage: 'Privacy Policy'
+  },
+  login: {
+    id: 'components.footer.customerSupport.login',
+    defaultMessage: 'Login | Sign up'
   }
 })
