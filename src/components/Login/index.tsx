@@ -198,7 +198,7 @@ export class Login extends React.Component<Props, StateProps> {
         open={open}
         width="450px"
         requestClose={this.onClosemodal}
-        style={{ top: 20 }}
+        style={{ top: 20, zIndex: 99999 }}
       >
         <Container>
           {loading &&

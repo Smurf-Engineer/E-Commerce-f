@@ -15,5 +15,6 @@ export const Icon = styled.img``
 
 export const overStyle = {
   width: '100%',
-  paddingTop: 24
+  paddingTop: 24,
+  zIndex: '1000'
 }

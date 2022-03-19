@@ -468,7 +468,7 @@ class MainLayout extends React.Component<Props, {}> {
         {!hideFooter && (
           <Footer>
             <ContactAndLinks
-              {...{ history, formatMessage, fakeWidth, currentLanguage, currentRegion }}
+              {...{ history, formatMessage, fakeWidth, currentLanguage, currentRegion, openLoginAction, user }}
               openReseller={this.handleOpenReseller}
               currentCurrency={currentCurrency || config.defaultCurrency}
             />

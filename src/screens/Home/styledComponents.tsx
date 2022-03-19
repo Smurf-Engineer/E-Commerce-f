@@ -41,7 +41,7 @@ export const SearchBarContent = styled.div`
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 9999;
+  z-index: 1000;
   transition: all .25s;
   box-shadow: 0px 5px 8px -4px #292929;
   @media (min-width: 992px) {
