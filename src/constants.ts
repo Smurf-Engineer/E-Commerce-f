@@ -142,7 +142,7 @@ export const COMMENTER_ROLE = 'Commenter'
 export const APPROVER_ROLE = 'Approver'
 export const GUEST_ROLE = 'Guest'
 
-export const MAIN_TITLE = 'Custom Cycling Apparel for Teams, Clubs and Individuals - JAKROO'
+export const MAIN_TITLE = 'Custom Apparel for Cycling, Triathlon, Running and Nordic Ski -JAKROO'
 
 /* Zoom Size Products */
 export const MODEL_SIZES = {

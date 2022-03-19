@@ -302,6 +302,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       client: { query }
     } = this.props
     setInitialData(query)
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0)
+    }
   }
 
   async componentDidUpdate(oldProps: Props) {

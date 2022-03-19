@@ -223,17 +223,17 @@ export class Home extends React.Component<Props, {}> {
     switch (sportRoute) {
       case 'nordic':
         metaData =
-          <Helmet title="Custom Nordic Club Apparel - JAKROO">
-            <meta name="description" content="Create your custom mountain bike kit today! 2 week delivery. Wide product selection. Custom Team Store. Design yourself online" />
-            <meta name="keywords" content="custom nordic skin suit, custom nordic one piece, custom nordic race suit, custom nordic warmups, custom cross-country ski club apparel" />
+          <Helmet title="Custom Nordic Ski apparel for Clubs - JAKROO">
+            <meta name="description" content="Custom Nordic Club apparel. Design online or use Pro Design. Delivered in 2 Weeks" />
+            <meta name="keywords" content="custom cross-country ski club apparel, custom nordic skin suit, custom nordic race suit, custom nordic warmups" />
             <meta name="Content-Language" content="en" />
             <meta name="page-topic" content="Sport" />
             <meta name="page-type" content="Custom Nordic" />
-            <meta property="og:title" content="Custom Nordic Race Suits and Club Apparel - JAKROO" />
+            <meta property="og:title" content="Custom Nordic Ski apparel for Clubs - JAKROO" />
             <meta property="og:url" content="https://jakroo.com/nordic" />
             <meta property="og:type" content="article" />
             <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
-            <meta property="og:description" content="Start customizing your cycling team kit today! 2 week delivery. Wide product selection. Custom Team Store. Design online select Jakroo Pro Design" />
+            <meta property="og:description" content="Custom Nordic Club apparel. Design online or use Pro Design. Delivered in 2 Weeks" />
             <link rel="canonical" href="https://jakroo.com/nordic" />
             <link rel="author" href="https://jakroo.com/nordic" />
             <link rel="alternate" href="https://designlab.jakroo.com/nordic"/>
@@ -247,17 +247,17 @@ export class Home extends React.Component<Props, {}> {
         break
       case 'active':
         metaData =
-          <Helmet title="Custom Running Singlets and Shirts - JAKROO">
+          <Helmet title="Custom Running Singlets, Tech Shirts - JAKROO">
             <meta name="description" content="Design your own running singlet today! 2 week delivery. Personalized Running Singlets. 2 Week Delivery." />
-            <meta name="keywords" content="custom running singlets, custom tshirts design your own running shirt, custom running shirts" />
+            <meta name="keywords" content="custom running shirts, custom running singlets, custom run tanks, custom gym tanks, custom tech tee" />
             <meta name="Content-Language" content="en" />
             <meta name="page-topic" content="Sport" />
-            <meta name="page-type" content="Custom Running" />
-            <meta property="og:title" content="Custom Running Singlets and Shirts - JAKROO" />
+            <meta name="page-type" content="Custom Run" />
+            <meta property="og:title" content="Custom Running Singlets, Tech Shirts - JAKROO" />
             <meta property="og:url" content="https://jakroo.com/active" />
             <meta property="og:type" content="article" />
             <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/og-active.jpg" />
-            <meta property="og:description" content="Design your own running singlet today! 2 week delivery. Personalized Running Singlets and Shirts." />
+            <meta property="og:description" content="Custom running singlets, running shirts and track jackets. Design online. Delivered in 2 weeks or less" />
             <link rel="canonical" href="https://jakroo.com/active" />
             <link rel="author" href="https://jakroo.com/active" />
             <link rel="alternate" href="https://designlab.jakroo.com/active"/>
@@ -273,15 +273,15 @@ export class Home extends React.Component<Props, {}> {
         metaData =
           <Helmet title="Custom Triathlon Jerseys | Custom Tri Suits - JAKROO">
             <meta name="description" content="Create your custom triathlon suit  today! 2 week delivery. Design your own Tri tops, suits and shorts Online. Custom Team Store. Men, Women, Youth sizing" />
-            <meta name="keywords" content="custom triathlon kits, custom tri suits custom tri singlets, design your custom tri jersey online" />
+            <meta name="keywords" content="custom tri tops, custom triathlon suits, custom tri shirts" />
             <meta name="Content-Language" content="en" />
             <meta name="page-topic" content="Sport" />
-            <meta name="page-type" content="Custom Triathlon" />
+            <meta name="page-type" content="Custom TRI" />
             <meta property="og:title" content="Custom Triathlon Jerseys | Custom Tri Suits - JAKROO" />
             <meta property="og:url" content="https://jakroo.com/triathlon" />
             <meta property="og:type" content="article" />
             <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/og-triathlon.jpg" />
-            <meta property="og:description" content="Start customizing your cycling team kit today! 2 week delivery. Wide product selection. Custom Team Store. Design online select Jakroo Pro Design" />
+            <meta property="og:description" content="Custom triathlon suits and apparel for competitive teams, clubs and individuals. 2 week delivery. Custom Storefront. Easy design options" />
             <link rel="canonical" href="https://jakroo.com/triathlon" />
             <link rel="author" href="https://jakroo.com/triathlon" />
             <link rel="alternate" href="https://designlab.jakroo.com/triathlon"/>
@@ -329,7 +329,7 @@ export class Home extends React.Component<Props, {}> {
             <meta property="og:url" content="https://jakroo.com/mountain-bike" />
             <meta property="og:type" content="article" />
             <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/og-mountain-bike.jpg" />
-            <meta property="og:description" content="Design your own mountain bike jersey! 2 week delivery. MTB jerseys, shirts, long pants. Custom Team Store. Design mtb jerseys online for free" />
+            <meta property="og:description" content="Create your custom mountain bike kit today! 2 week delivery. Wide product selection. Custom Team Store. Design yourself online" />
             <link rel="canonical" href="https://jakroo.com/mountain-bike" />
             <link rel="author" href="https://jakroo.com/mountain-bike" />
             <link rel="alternate" href="https://designlab.jakroo.com/mountain-bike"/>

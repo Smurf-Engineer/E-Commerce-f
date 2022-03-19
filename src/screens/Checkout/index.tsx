@@ -477,7 +477,7 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     return (
-      <Layout {...{ history, intl }}>
+      <Layout {...{ history, intl }} hideTopHeader={true} hideBottomHeader={true}>
         <Container>
           <CheckoutTitle>
             {intl.formatMessage(messages.title).toLocaleUpperCase()}
@@ -601,6 +601,7 @@ class Checkout extends React.Component<Props, {}> {
                   youthTotal,
                   showOrderButton,
                   couponCode,
+                  history,
                   currentStep,
                   showDiscount,
                   setCouponCodeAction,

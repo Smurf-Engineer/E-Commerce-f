@@ -78,6 +78,9 @@ import {
   SizeChartCustom,
   SizeChartCustomMobile,
   MobileFlex,
+  BackButton,
+  BackIcon,
+  BackTopStyled,
 } from './styledComponents'
 import lockSound from '../../assets/lock.wav'
 import enabledSound from '../../assets/enabled.wav'
@@ -268,6 +271,135 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     }
   }
 
+  getMetaData = (productId: string) => {
+    {/* tslint:disable:max-line-length */}
+    let metaData
+    switch (productId) {
+      case '82':
+        metaData =
+          <Helmet title="Custom Women's Running Singlet. Fully printable - JAKROO">
+            <meta name="description" content="Fully customizable women's running singet. Lightweight performance tank. Design Online. 2 Week Delivery" />
+            <meta name="keywords" content="custom running singlet, custom women running singlet, women custom run tank, custom gym tank women" />
+            <meta name="Content-Language" content="en" />
+            <meta name="page-topic" content="Sport" />
+            <meta name="page-type" content="Custom Jerseys" />
+            <meta property="og:title" content="Custom Women's Running Singlet. Fully printable - JAKROO" />
+            <meta property="og:url" content="https://jakroo.com/product?id=82&modelId=arc" />
+            <meta property="og:type" content="article" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+            <meta property="og:description" content="Fully customizable women's running singet. Lightweight performance tank. Design Online. 2 Week Delivery" />
+            <link rel="canonical" href="https://jakroo.com/product?id=82&modelId=arc" />
+            <link rel="author" href="https://jakroo.com/product?id=82&modelId=arc" />
+            <link rel="alternate" href="https://designlab.jakroo.com/product?id=82&modelId=arc"/>
+            <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/product?id=82&modelId=arc/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-gb" href="https://jakroo.com/product?id=82&modelId=arc/gb?lang=en&currency=gbp" />
+            <link rel="alternate" hrefLang="en-us" href="https://jakroo.com/product?id=82&modelId=arc/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-ca" href="https://jakroo.com/product?id=82&modelId=arc/ca?lang=en&currency=cad" />
+            <link rel="alternate" hrefLang="en-au" href="https://jakroo.com/product?id=82&modelId=arc/au?lang=en&currency=aud" />
+            <link rel="alternate" hrefLang="en" href="https://jakroo.com/product?id=82&modelId=arc/us?lang=en&currency=usd" />
+          </Helmet>
+        break
+      case '64':
+        metaData =
+          <Helmet title="Custom Men's Running Singlet. Fully printable - JAKROO">
+            <meta name="description" content="Fully customizable men's running singlet. Lightweight performance singlet. Design Online. 2 Week Delivery" />
+            <meta name="keywords" content="custom running singlet, design running singlet, custom running vest, custom running tank" />
+            <meta name="Content-Language" content="en" />
+            <meta name="page-topic" content="Sport" />
+            <meta name="page-type" content="Custom Jerseys" />
+            <meta property="og:title" content="Custom Men's Running Singlet. Fully printable - JAKROO" />
+            <meta property="og:url" content="https://jakroo.com/product?id=64&modelId=apex" />
+            <meta property="og:type" content="article" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+            <meta property="og:description" content="Fully customizable men's running singlet. Lightweight performance singlet. Design Online. 2 Week Delivery" />
+            <link rel="canonical" href="https://jakroo.com/product?id=64&modelId=apex" />
+            <link rel="author" href="https://jakroo.com/product?id=64&modelId=apex" />
+            <link rel="alternate" href="https://designlab.jakroo.com/product?id=64&modelId=apex"/>
+            <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/product?id=64&modelId=apex/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-gb" href="https://jakroo.com/product?id=64&modelId=apex/gb?lang=en&currency=gbp" />
+            <link rel="alternate" hrefLang="en-us" href="https://jakroo.com/product?id=64&modelId=apex/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-ca" href="https://jakroo.com/product?id=64&modelId=apex/ca?lang=en&currency=cad" />
+            <link rel="alternate" hrefLang="en-au" href="https://jakroo.com/product?id=64&modelId=apex/au?lang=en&currency=aud" />
+            <link rel="alternate" hrefLang="en" href="https://jakroo.com/product?id=64&modelId=apex/us?lang=en&currency=usd" />
+          </Helmet>
+        break
+      case '7':
+        metaData =
+          <Helmet title="Custom Cycling Club Jersey. Ideal for all levels of cyclists - JAKROO">
+            <meta name="description" content="Fully customizable cycling club jersey. Ideal for cycling clubs and recreational cyclists. Design Online. 2 Week Delivery" />
+            <meta name="keywords" content="custom bicycle jerseys, custom bike jerseys, custom blank cycling jerseys, design your own cycling jersey" />
+            <meta name="Content-Language" content="en" />
+            <meta name="page-topic" content="Sport" />
+            <meta name="page-type" content="Custom Jerseys" />
+            <meta property="og:title" content="Custom Cycling Club Jersey. Ideal for all levels of cyclists - JAKROO" />
+            <meta property="og:url" content="https://jakroo.com/product?id=7&modelId=fondo" />
+            <meta property="og:type" content="article" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+            <meta property="og:description" content="Fully customizable cycling club jersey. Ideal for cycling clubs and recreational cyclists. Design Online. 2 Week Delivery" />
+            <link rel="canonical" href="https://jakroo.com/product?id=7&modelId=fondo" />
+            <link rel="author" href="https://jakroo.com/product?id=7&modelId=fondo" />
+            <link rel="alternate" href="https://designlab.jakroo.com/product?id=7&modelId=fondo"/>
+            <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/product?id=7&modelId=fondo/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-gb" href="https://jakroo.com/product?id=7&modelId=fondo/gb?lang=en&currency=gbp" />
+            <link rel="alternate" hrefLang="en-us" href="https://jakroo.com/product?id=7&modelId=fondo/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-ca" href="https://jakroo.com/product?id=7&modelId=fondo/ca?lang=en&currency=cad" />
+            <link rel="alternate" hrefLang="en-au" href="https://jakroo.com/product?id=7&modelId=fondo/au?lang=en&currency=aud" />
+            <link rel="alternate" hrefLang="en" href="https://jakroo.com/product?id=7&modelId=fondo/us?lang=en&currency=usd" />
+          </Helmet>
+        break
+      case '164':
+        metaData =
+          <Helmet title="Custom Cycling Race Jersey for Elite and Professional teams - JAKROO">
+            <meta name="description" content="Fully customizable race jersey for cycling clubs or individuals. Premium Italian fabrics. Design Online. 2 Week Delivery." />
+            <meta name="keywords" content="custom cycling jersey, custom road bike jersey, design your own cycling jersey. custom cycling kit" />
+            <meta name="Content-Language" content="en" />
+            <meta name="page-topic" content="Sport" />
+            <meta name="page-type" content="Custom Jerseys" />
+            <meta property="og:title" content="Custom Cycling Race Jersey for Elite and Professional teams - JAKROO" />
+            <meta property="og:url" content="https://jakroo.com/product?id=164&modelId=nova_pro" />
+            <meta property="og:type" content="article" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+            <meta property="og:description" content="Fully customizable race jersey for cycling clubs or individuals. Premium Italian fabrics. Design Online. 2 Week Delivery." />
+            <link rel="canonical" href="https://jakroo.com/product?id=164&modelId=nova_pro" />
+            <link rel="author" href="https://jakroo.com/product?id=164&modelId=nova_pro" />
+            <link rel="alternate" href="https://designlab.jakroo.com/product?id=164&modelId=nova_pro"/>
+            <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/product?id=164&modelId=nova_pro/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-gb" href="https://jakroo.com/product?id=164&modelId=nova_pro/gb?lang=en&currency=gbp" />
+            <link rel="alternate" hrefLang="en-us" href="https://jakroo.com/product?id=164&modelId=nova_pro/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-ca" href="https://jakroo.com/product?id=164&modelId=nova_pro/ca?lang=en&currency=cad" />
+            <link rel="alternate" hrefLang="en-au" href="https://jakroo.com/product?id=164&modelId=nova_pro/au?lang=en&currency=aud" />
+            <link rel="alternate" hrefLang="en" href="https://jakroo.com/product?id=164&modelId=nova_pro/us?lang=en&currency=usd" />
+          </Helmet>
+        break
+      default:
+        metaData =
+          <Helmet title={MAIN_TITLE}>
+            <meta name="description" content="Design your custom cycling apparel today! Delivered in 2 Weeks or less. Customized cycling jerseys. Custom bike jerseys" />
+            <meta name="keywords" content="custom mountain bike jerseys, custom cycling jerseys, custom triathlon suits, custom running shirts" />
+            <meta name="Content-Language" content="en" />
+            <meta name="page-topic" content="Sport" />
+            <meta name="page-type" content="Custom Jerseys" />
+            <meta property="og:title" content="Custom Cycling Apparel for Teams, Clubs and Individuals - JAKROO" />
+            <meta property="og:description" content="Design your custom cycling apparel today! Delivered in 2 Weeks or less. Customized cycling jerseys. Custom bike jerseys" />
+            <meta property="og:type" content="article" />
+            <meta property="og:url" content="https://jakroo.com" />
+            <meta property="og:image" content="https://storage.googleapis.com/jakroo/homepage/JakrooCustom.jpg" />
+            <link rel="canonical" href="https://jakroo.com/" />
+            <link rel="author" href="https://jakroo.com/" />
+            <link rel="alternate" href="https://designlab.jakroo.com"/>
+            <link rel="alternate" hrefLang="x-default" href="https://jakroo.com/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-gb" href="https://jakroo.com/gb?lang=en&currency=gbp" />
+            <link rel="alternate" hrefLang="en-us" href="https://jakroo.com/us?lang=en&currency=usd" />
+            <link rel="alternate" hrefLang="en-ca" href="https://jakroo.com/ca?lang=en&currency=cad" />
+            <link rel="alternate" hrefLang="en-au" href="https://jakroo.com/au?lang=en&currency=aud" />
+            <link rel="alternate" hrefLang="en" href="https://jakroo.com/us?lang=en&currency=usd" />
+          </Helmet>
+        break
+    }
+    return metaData
+    {/* tslint:enable:max-line-length */}
+  }
+
   render() {
     const {
       intl,
@@ -357,7 +489,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       hideFitStyles,
       sizeRange: sizesProduct,
       modelSize,
-      title = MAIN_TITLE,
       infoFlag,
       infoMessage,
     } = product
@@ -375,6 +506,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const yotpoId = queryParams.modelId || ''
     const previousRoute = queryParams.ps || ''
     const gender = queryParams.gender || 0
+    const idParam = queryParams.id || 0
     const colorId = selectedColor && selectedColor.id
 
     const searchObject = isRetail ? { colorId } : {}
@@ -680,9 +812,14 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
-        <Helmet {...{ title }} />
+        {this.getMetaData(idParam)}
         <Container>
           <BreadCrumbs {...{ history, formatMessage, routes }} />
+          {isMobile &&
+            <BackTopStyled>
+              <BackButton><BackIcon type="up-circle" theme="twoTone" twoToneColor="#4596bf" /> UP</BackButton>
+            </BackTopStyled>
+          }
           {product && (
             <Content>
               <ImagePreview>
