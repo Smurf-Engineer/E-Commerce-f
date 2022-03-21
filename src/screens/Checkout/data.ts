@@ -80,6 +80,8 @@ export const profileSettingsQuery = gql`
         lastName: last_name
         email
         invoice
+        invoiceStartDate: invoice_start_date
+        invoiceEndDate: invoice_end_date
         invoiceTerms: invoice_terms
       }
     }

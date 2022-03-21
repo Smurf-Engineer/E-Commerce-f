@@ -24,6 +24,7 @@ import {
   PaymentOptions,
   EU_SUBSIDIARY_COUNTRIES
 } from '../../screens/Checkout/constants'
+import moment from 'moment'
 
 const { CREDITCARD, PAYPAL, INVOICE } = PaymentOptions
 
@@ -47,6 +48,8 @@ interface Props {
   paymentClientSecret: string
   isFixedTeamstore: boolean
   invoice: boolean
+  invoiceStartDate: string
+  invoiceEndDate: string
   invoiceTerms: string
   setPayRef: (payRef: any) => void
   showBillingAddressFormAction: (show: boolean) => void
@@ -147,6 +150,25 @@ class Payment extends React.PureComponent<Props, {}> {
     setPaymentMethodAction(INVOICE)
   }
 
+  ableToInvoice = () => {
+    const {
+      invoice,
+      invoiceStartDate,
+      invoiceEndDate
+    } = this.props
+
+    if (invoice) {
+      return true
+    }
+    if (invoiceStartDate && moment(invoiceStartDate).isAfter(moment())) {
+      return false
+    }
+    if (invoiceEndDate && moment(invoiceEndDate).isBefore(moment())) {
+      return false
+    }
+    return true
+  }
+
   render() {
     const {
       formatMessage,
@@ -164,7 +186,6 @@ class Payment extends React.PureComponent<Props, {}> {
       nextStep,
       showContent,
       showCardForm,
-      invoice,
       invoiceTerms,
       showCardFormAction,
       selectCardToPayAction,
@@ -251,7 +272,7 @@ class Payment extends React.PureComponent<Props, {}> {
               {formatMessage(messages.methodPaypal)}
             </MethodButton>
           }
-          {invoice && invoiceTerms && !isFixedTeamstore &&
+          {this.ableToInvoice() && invoiceTerms && !isFixedTeamstore &&
             <MethodButton
               selected={paymentMethod === INVOICE}
               onClick={this.handleInvoiceClick}

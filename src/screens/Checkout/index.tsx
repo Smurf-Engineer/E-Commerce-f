@@ -412,6 +412,8 @@ class Checkout extends React.Component<Props, {}> {
     const shoppingCart = cloneDeep(cart) as CartItems[]
 
     const invoice = get(profileData, 'profileData.userProfile.invoice', false)
+    const invoiceStartDate = get(profileData, 'profileData.userProfile.invoiceStartDate', '')
+    const invoiceEndDate = get(profileData, 'profileData.userProfile.invoiceEndDate', '')
     const invoiceTerms = get(profileData, 'profileData.userProfile.invoiceTerms', false)
 
     const shoppingCartData = getShoppingCartData(
@@ -535,6 +537,8 @@ class Checkout extends React.Component<Props, {}> {
                     saveCountryAction,
                     showCardForm,
                     invoice,
+                    invoiceStartDate,
+                    invoiceEndDate,
                     invoiceTerms,
                     showCardFormAction,
                     selectCardToPayAction,
