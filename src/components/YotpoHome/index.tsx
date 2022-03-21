@@ -63,17 +63,8 @@ class YotpoHome extends React.Component<Props, any> {
         default:
           component =
             <div
-              class="yotpo yotpo-pictures-gallery"
-              data-layout-rows="1"
-              data-spacing="1"
-              data-source="all"
-              data-title="0"
-              data-hover-color="#ffffff"
-              data-hover-opacity="0.8"
-              data-hover-icon="true"
-              data-cta-text="CUSTOMIZE"
-              data-cta-color="#2f84ed"
-              data-yotpo-element-id="2"
+              class="yotpo yotpo-pictures-widget"
+              data-gallery-id="5bff13a3d9a55a5737932331"
             />
           break
       }
