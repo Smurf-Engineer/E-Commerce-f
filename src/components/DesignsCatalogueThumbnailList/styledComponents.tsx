@@ -1,10 +1,17 @@
 import styled from 'styled-components'
 import InfiniteScroll from 'react-infinite-scroller'
+import { WHITE } from '../../theme/colors'
 
 export const Container = styled.div``
 export const Content = styled.div`
   height: 70vh;
   overflow: auto;
+  border-top: 2px solid #e8e6e6;
+  border-bottom: 2px solid #e8e6e6;
+  @media(max-width: 714px) {
+    border-top: 2px solid #c0c0c0;
+    border-bottom: 2px solid #c0c0c0;
+  }
 `
 
 export const Text = styled.div`
@@ -66,7 +73,7 @@ export const ThumbnailsList = styled.ul`
   align-items: flex-start;
   justify-content: center;
   padding: 0;
-
+  background: #f8f8f8;
   margin-left: ${({ withoutPadding }: HeadRowProps) =>
     withoutPadding ? '-54px' : '0'};
 `
@@ -75,16 +82,23 @@ export const ThumbnailListItem = styled.li`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: calc(100% / 4);
+  width: auto;
+  min-width: 228px;
   padding-bottom: 20px;
   align-items: center;
   justify-content: center;
+  background: ${WHITE};
+  margin: 18px 16px;
+  border-radius: 3px;
+  box-shadow: 0px 2px 10px -4px #b1b1b1;
   @media (min-width: 481px) and (max-width: 1024px) {
-    width: calc(100% / 3);
+    margin: 12px 6px;
   }
 
   @media (min-width: 320px) and (max-width: 714px) {
-    width: calc(95% / 2);
+    margin: 0;
+    min-width: unset;
+    width: calc(100% / 2);
   }
 `
 
