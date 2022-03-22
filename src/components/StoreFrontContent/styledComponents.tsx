@@ -34,6 +34,7 @@ export const Container = styled.div`
   width: 100%;
   margin: 0 auto;
   padding: 10px 50px 0;
+  box-shadow: 0px 12px 14px 4px #c9c9c9;
   @media (min-width: 320px) and (max-width: 748px) {
     padding: 0;
   }
@@ -423,8 +424,7 @@ export const SectionLink = styled.a`
 
 export const ListContainer = styled.div`
   padding-right: 0;
-  padding-left: 32px;
-  max-width: 1280px;
+  max-width: 1440px;
   width: 100%;
   margin: 0 auto;
   margin-top: 28px;
