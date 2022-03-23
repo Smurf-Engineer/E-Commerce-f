@@ -503,6 +503,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                           display,
                           teamStoreName,
                           closed,
+                          fixedPrice,
                           totalDesigns,
                         }}
                         withoutPadding={false}

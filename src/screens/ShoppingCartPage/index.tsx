@@ -277,7 +277,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     const { openStoreInfoAction, cart, highlightRequiredFields } = this.props
     if (activeCheckout) {
       const fixedItem = find(cart, 'isFixed')
-      if (fixedItem) {
+      const isFixedStore = cart.some(({ fixedPrice }) => fixedPrice)
+      if (fixedItem && !isFixedStore) {
         const sameTeam = every(cart, ['teamStoreId', fixedItem.teamStoreId])
         if (sameTeam) {
           openStoreInfoAction(true)
@@ -574,6 +575,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
     const cartItems = cart || []
     const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
+    const isFixedStore = cartItems.some(({ fixedPrice }) => fixedPrice)
     let activeCheckout = true
     const renderList = cartItems.map((cartItem, index) => {
       if (!this.isAllSetInProduct(cartItem)) {
@@ -683,7 +685,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                     upgrades={upgradesTotal}
                     variables={variablesTotal}
                     youSaved={totalWithoutDiscount - total}
-                    {...{ formatMessage, totalWithoutDiscount, showDiscount }}
+                    {...{ formatMessage, totalWithoutDiscount, showDiscount, isFixedStore }}
                   />
                   <ButtonWrapper disabled={!activeCheckout}>
                     <CheckoutButton

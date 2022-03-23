@@ -406,6 +406,7 @@ class Checkout extends React.Component<Props, {}> {
     const { cart } = stateLocation
     const reorder = some(cart, 'fixedCart')
     const isFixedTeamstore = some(cart, 'isFixed')
+    const isFixedStore = some(cart, 'fixedPrice')
     const showDiscount = some(cart, ['isReseller', false]) || some(cart, ['isReseller', null])
     const preorder = isFixedTeamstore && !reorder
 
@@ -601,6 +602,7 @@ class Checkout extends React.Component<Props, {}> {
                   youthTotal,
                   showOrderButton,
                   couponCode,
+                  isFixedStore,
                   history,
                   currentStep,
                   showDiscount,

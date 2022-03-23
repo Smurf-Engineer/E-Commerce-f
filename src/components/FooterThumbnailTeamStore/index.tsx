@@ -34,6 +34,7 @@ interface Props {
   onDemandMode?: boolean
   isResellerStore?: boolean
   isResellerOwner?: boolean
+  fixedPrice?: boolean
   targetPrice: number | string
   currentPrice: number | string
   priceRange?: PriceRange[]
@@ -51,6 +52,7 @@ const FooterThumbnailTeamStore = ({
   targetPrice,
   isResellerStore,
   isResellerOwner,
+  fixedPrice,
   currentPrice,
   priceRange = [],
   currentRangeAttributes,
@@ -73,7 +75,7 @@ const FooterThumbnailTeamStore = ({
     }
   }
 
-  if (!onDemandMode && currentRangeAttributes) {
+  if (!onDemandMode && !fixedPrice && currentRangeAttributes) {
     const percentAmount = MAX_PERCENT / currentRangeAttributes.range
     let relativePercent =
       ((progress - currentRangeAttributes.minQuantity) /
@@ -88,7 +90,7 @@ const FooterThumbnailTeamStore = ({
       <Description>{description}</Description>
       <Description>{code}</Description>
       <BottomPrices>
-        {((isResellerStore && isResellerOwner) || !isResellerStore) &&
+        {((isResellerStore && isResellerOwner) || !isResellerStore) && !fixedPrice &&
           <PricesContainer>
             <Label>
               <FormattedMessage {...messages[isResellerStore && isResellerOwner ? 'purchasePrice' : 'regularPrice']} />
@@ -102,7 +104,7 @@ const FooterThumbnailTeamStore = ({
                 {...messages.listPrice}
               /> :
               <FormattedMessage
-                {...(onDemandMode ? 
+                {...((onDemandMode || fixedPrice) ? 
                   messages[isResellerStore && !isResellerOwner ? 'listPrice' : 'teamPrice'] : messages.currentPrice
                 )}
               />
@@ -112,7 +114,7 @@ const FooterThumbnailTeamStore = ({
         </PricesContainer>
       </BottomPrices>
 
-      {!onDemandMode && (
+      {!onDemandMode && !fixedPrice && (
         <div>
           <Bottom>
             <ProgressWrapper>

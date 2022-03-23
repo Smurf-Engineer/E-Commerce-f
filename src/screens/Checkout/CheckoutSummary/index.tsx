@@ -72,6 +72,7 @@ interface Props {
   currentCurrency: string
   showDiscount?: boolean
   placingOrder?: boolean
+  isFixedStore?: boolean
   history: any
   formatMessage: (messageDescriptor: any) => string
   couponCode?: CouponCode
@@ -100,6 +101,7 @@ const CheckoutSummary = ({
   variables = 0,
   couponCode,
   history,
+  isFixedStore,
   totalWithoutDiscount = 0,
   setCouponCodeAction,
   deleteCouponCodeAction,
@@ -266,6 +268,7 @@ const CheckoutSummary = ({
           formatMessage,
           proDesignReview,
           currencySymbol,
+          isFixedStore,
           showDiscount,
           couponCode,
           upgrades,
