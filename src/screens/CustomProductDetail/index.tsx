@@ -777,6 +777,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 </BannerMaterialSection>
                 {((teamStoreItem && teamEnable) || !teamStoreItem) &&
                   collectionSelection}
+                {teamStoreItem && !teamEnable && !!chart ?
+                  sizeChartButton : null
+                }
                 {productInfo}
               </ProductData>
               <FitInfo

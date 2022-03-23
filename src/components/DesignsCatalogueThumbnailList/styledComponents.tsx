@@ -99,6 +99,7 @@ export const ThumbnailListItem = styled.li`
     margin: 0;
     min-width: unset;
     width: calc(100% / 2);
+    margin-bottom: 17px;
   }
 `
 

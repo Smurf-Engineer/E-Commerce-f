@@ -127,7 +127,7 @@ export const Item = styled.li`
 
 export const PaymentIcons = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: baseline;
   margin: 0 30px;
   height: 40px;
@@ -172,6 +172,7 @@ export const TeamImage = styled.img`
 `
 
 export const PaymentMethodsText = styled.div`
-  padding-inline-start: 30px;
+  text-align: center;
+  margin-top: 6px;
   margin-bottom: 10px;
 `
