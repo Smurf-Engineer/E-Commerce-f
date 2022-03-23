@@ -31,6 +31,7 @@ interface Props {
   withEditButton?: boolean
   withDeleteButton?: boolean
   owner?: boolean
+  fixedPrice?: boolean
   formatMessage: (messageDescriptor: any) => string
   openShareModalAction?: (id?: string) => void
   onItemClick?: () => void
@@ -54,7 +55,8 @@ const TeamStoreItem = ({
   onDeleteClick,
   closed = false,
   fixedDate = false,
-  owner = false
+  owner = false,
+  fixedPrice = false
 }: Props) => {
   const closedMessage =
     owner && fixedDate && closed ? formatMessage(messages.closedForOrder) : ''
@@ -79,10 +81,10 @@ const TeamStoreItem = ({
     <ButtonsContainer>
       {owner && (
         <StoreType>
-          {formatMessage(messages[fixedDate ? 'batchOrder' : 'onDemand'])}
+          {formatMessage(messages[fixedDate ? (fixedPrice ? 'fixedPrice' : 'batchOrder') : 'onDemand'])}
         </StoreType>
       )}
-      {withEditButton && !closed && (
+      {withEditButton && !closed && !fixedPrice && (
         <EditButton onClick={handleClickEdit}>
           {formatMessage(messages.editButtonLabel)}
         </EditButton>

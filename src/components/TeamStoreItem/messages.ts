@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.TeamStoreItem.shareButtonLabel',
     defaultMessage: 'Share'
   },
+  fixedPrice: {
+    id: 'components.TeamStoreItem.fixedPrice',
+    defaultMessage: 'CUSTOM BATCH ORDER'
+  },
   editButtonLabel: {
     id: 'components.TeamStoreItem.editButtonLabel',
     defaultMessage: 'Edit'
