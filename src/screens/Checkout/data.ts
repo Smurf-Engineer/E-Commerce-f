@@ -79,7 +79,7 @@ export const profileSettingsQuery = gql`
         firstName: first_name
         lastName: last_name
         email
-        invoice
+        invoiceEnabled: invoice_enabled
         invoiceTerms: invoice_terms
       }
     }

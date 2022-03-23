@@ -46,7 +46,7 @@ interface Props {
   showBillingForm: boolean
   paymentClientSecret: string
   isFixedTeamstore: boolean
-  invoice: boolean
+  invoiceEnabled: boolean
   invoiceTerms: string
   setPayRef: (payRef: any) => void
   showBillingAddressFormAction: (show: boolean) => void
@@ -164,7 +164,7 @@ class Payment extends React.PureComponent<Props, {}> {
       nextStep,
       showContent,
       showCardForm,
-      invoice,
+      invoiceEnabled,
       invoiceTerms,
       showCardFormAction,
       selectCardToPayAction,
@@ -251,7 +251,7 @@ class Payment extends React.PureComponent<Props, {}> {
               {formatMessage(messages.methodPaypal)}
             </MethodButton>
           }
-          {invoice && invoiceTerms && !isFixedTeamstore &&
+          {invoiceEnabled && invoiceTerms && !isFixedTeamstore &&
             <MethodButton
               selected={paymentMethod === INVOICE}
               onClick={this.handleInvoiceClick}
