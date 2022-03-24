@@ -16,6 +16,7 @@ export const GetDesignByIdQuery = gql`
       teamName: team_name
       predyedName: predyed_name
       teamOnDemand: team_on_demand_mode
+      fixedPrice: team_fixed_price
       isReseller: is_reseller
       resellerPrice: reseller_price {
         abbreviation
