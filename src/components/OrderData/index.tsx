@@ -251,7 +251,8 @@ class OrderData extends React.Component<Props, {}> {
           status,
           teamStoreName,
           teamStoreId,
-          coupon
+          coupon,
+          fixedPriceStore
         }
       },
       currentCurrency
@@ -346,7 +347,7 @@ class OrderData extends React.Component<Props, {}> {
         variables += subVariables || 0
         upgrades += subUpgrade || 0
         subtotal += productTotal || 0
-
+        cartItem.fixedPrice = fixedPriceStore
         const itemImage = designId ? designImage || '' : images[0].front
         const itemTitle = designId ? designName || '' : name
         const itemDescription = designId
@@ -507,7 +508,7 @@ class OrderData extends React.Component<Props, {}> {
               ) : null */}
           </InfoContainer>
           <SummaryContainer {...{ savingPdf }}>
-            {status === PREORDER && !savingPdf &&
+            {status === PREORDER && !savingPdf && !fixedPriceStore &&
               <AboutCollab onMouseOver={this.openStatusModal}>
                 <CollabIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
                 {formatMessage(messages.aboutDynamicPricing)}
@@ -522,6 +523,7 @@ class OrderData extends React.Component<Props, {}> {
               youSaved={totalWithoutDiscount - subtotal}
               proDesignReview={proDesign && PRO_DESIGN_FEE}
               couponName={coupon}
+              isFixedStore={fixedPriceStore}
               couponCode={{ type: couponType, freeShipping }}
               {...{
                 formatMessage,
@@ -544,19 +546,21 @@ class OrderData extends React.Component<Props, {}> {
               {formatMessage(messages.faqTitle)}
             </Title>
             <FAQBody>
-              <ProductInfo
-                id="showPricing"
-                titleWidth={'100%'}
-                title={formatMessage(messages.priceQuestion)}
-                showContent={showPricing}
-                toggleView={this.toggleProductInfo}
-              >
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: formatMessage(messages.priceAnswer)
-                  }}
-                />
-              </ProductInfo>
+              {!fixedPriceStore &&
+                <ProductInfo
+                  id="showPricing"
+                  titleWidth={'100%'}
+                  title={formatMessage(messages.priceQuestion)}
+                  showContent={showPricing}
+                  toggleView={this.toggleProductInfo}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.priceAnswer)
+                    }}
+                  />
+                </ProductInfo>
+              }
               <ProductInfo
                 id="showIssue"
                 richText={true}

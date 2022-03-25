@@ -534,7 +534,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                       }}
                     />
                   </AboutTitle>
-                  {!isResellerStore && (
+                  {!isResellerStore && !fixedPrice && (
                     <ProductInfo
                       id="Much"
                       title={formatMessage(messages.howMuchTitle)}

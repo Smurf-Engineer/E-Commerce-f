@@ -262,7 +262,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
                   i.designImage,
                   i.designCode,
                   itemProdPage,
-                  fixedPrices,
+                  i.fixedPrices && i.fixedPrices.length > 0 ? i.fixedPrices : fixedPrices,
                   i.teamStoreName,
                   fixedCart,
                   replaceOrder,

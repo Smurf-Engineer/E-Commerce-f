@@ -1084,6 +1084,7 @@ export interface OrderDataInfo {
   coupon?: string
   couponType?: string
   freeShipping?: boolean
+  fixedPriceStore?: boolean
 }
 
 export interface TextFormat {
