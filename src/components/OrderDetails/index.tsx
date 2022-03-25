@@ -68,7 +68,8 @@ import {
   CloseButtonStatus,
   StatusDescription,
   StatusTitle,
-  ButtonEdit
+  ButtonEdit,
+  StatusLabel
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -93,6 +94,7 @@ import ProductInfo from '../ProductInfo'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import ReactDOM from 'react-dom'
 import filter from 'lodash/filter'
+import { BLUE, GRAY } from '../../theme/colors'
 
 const { warning } = Modal
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
@@ -342,12 +344,20 @@ export class OrderDetails extends React.Component<Props, {}> {
     )
     const packages = get(fulfillments, '[0].packages')
     const trackingNumber = packages && packages.replace('<BR>', ', ')
-
+    let statusColor = GRAY
     let subtotal = 0
     let upgrades = 0
     let variables = 0
     let totalWithoutDiscount = 0
     let cart = cartOriginal
+    const orderStatus = netsuiteStatus || (status === INVOICE_SENT ? PAYMENT_ISSUE : status)
+    switch (orderStatus) {
+      case 'Pre-Order':
+        statusColor = BLUE
+        break
+      default:
+        break
+    }
     if (fixedPriceStore) {
       cart = cartOriginal.map((item) => ({...item, fixedPrice: true }))
     }
@@ -543,9 +553,9 @@ export class OrderDetails extends React.Component<Props, {}> {
                     }
                   </Info>
                   <Info {...{ savingPdf }}>{estimatedDate}</Info>
-                  <Info {...{ savingPdf }} redColor={status === PAYMENT_ISSUE || status === INVOICE_SENT}>
-                    {netsuiteStatus || (status === INVOICE_SENT ? PAYMENT_ISSUE : status)}
-                  </Info>
+                  <StatusLabel {...{ savingPdf, statusColor }}>
+                    {orderStatus}
+                  </StatusLabel>
                   <Info {...{ savingPdf }}>
                     {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
                   </Info>

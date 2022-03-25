@@ -225,6 +225,7 @@ export const DeliveryData = styled.div`
 interface InfoProps {
   redColor?: boolean
   savingPdf?: boolean
+  statusColor?: string
 }
 
 export const Info = styled.div`
@@ -236,6 +237,18 @@ export const Info = styled.div`
     margin-bottom: 16px;
   }
 `
+
+export const StatusLabel = styled.div`
+  color: ${GRAY_DARK};
+  height: 22px;
+  margin-bottom: 12px;
+  background: ${({ statusColor }: InfoProps) => statusColor || GRAY};
+  @media (max-width: 768px) {
+    text-align: ${({ savingPdf }: InfoProps) => savingPdf ? 'left' : 'right'};
+    margin-bottom: 16px;
+  }
+`
+
 export const OrderSummaryContainer = styled.div`
   width: 25%;
 
