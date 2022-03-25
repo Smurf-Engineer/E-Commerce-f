@@ -69,7 +69,8 @@ import {
   StatusDescription,
   StatusTitle,
   ButtonEdit,
-  StatusLabel
+  StatusLabel,
+  IconStatus
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -94,7 +95,7 @@ import ProductInfo from '../ProductInfo'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import ReactDOM from 'react-dom'
 import filter from 'lodash/filter'
-import { BLUE, GRAY } from '../../theme/colors'
+import { GRAY } from '../../theme/colors'
 
 const { warning } = Modal
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
@@ -353,7 +354,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     const orderStatus = netsuiteStatus || (status === INVOICE_SENT ? PAYMENT_ISSUE : status)
     switch (orderStatus) {
       case 'Pre-Order':
-        statusColor = BLUE
+        statusColor = '#cde4ff'
         break
       default:
         break
@@ -554,6 +555,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                   </Info>
                   <Info {...{ savingPdf }}>{estimatedDate}</Info>
                   <StatusLabel {...{ savingPdf, statusColor }}>
+                    <IconStatus type="audit" />
                     {orderStatus}
                   </StatusLabel>
                   <Info {...{ savingPdf }}>

@@ -239,14 +239,31 @@ export const Info = styled.div`
 `
 
 export const StatusLabel = styled.div`
-  color: ${GRAY_DARK};
+  color: ${BLACK};
   height: 22px;
   margin-bottom: 12px;
+  font-weight: bold;
+  font-family: Avenir;
+  display: inline-block;
+  padding: 0 13px;
+  font-size: 14px;
+  border-radius: 45px;
   background: ${({ statusColor }: InfoProps) => statusColor || GRAY};
   @media (max-width: 768px) {
     text-align: ${({ savingPdf }: InfoProps) => savingPdf ? 'left' : 'right'};
     margin-bottom: 16px;
   }
+`
+
+export const IconStatus = styled(Icon)`
+  margin-right: 9px;
+  color: black;
+  background: ${WHITE};
+  padding: 6px;
+  border-radius: 12px;
+  margin-left: -17px;
+  padding-right: 8px;
+  margin-top: -5px;
 `
 
 export const OrderSummaryContainer = styled.div`
