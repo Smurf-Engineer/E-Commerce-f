@@ -699,7 +699,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   {(user && (user.id === 'HkuTqBauQ' || user.id === 'H1R0yFr0V')) &&
                     <StyledInput onChange={this.changeTone} value={tone} />
                   }
-                  {false ? <Render3D
+                  <Render3D
                     customProduct={true}
                     textColor="white"
                     disableControls={isMobile ? hideControls : false}
@@ -708,7 +708,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     zoomedIn={true}
                     light={tone}
                     asImage={phone}
-                  /> : null}
+                  />
                   {isMobile &&
                     <ThreeDButton 
                       onTouchEnd={this.onTouchEndAction}
