@@ -300,6 +300,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const resellerPrice = get(design, 'resellerPrice', [])
     const teamEnable = get(design, 'teamEnable', '')
     const teamOnDemand = get(design, 'teamOnDemand', false)
+    const fixedPrice = get(design, 'fixedPrice', false)
     const isReseller = get(design, 'isReseller', false)
     const teamName = get(design, 'teamName', '')
     const predyedName = get(design, 'predyedName', '')
@@ -374,7 +375,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       currencyPrices.length &&
       currencyPrices.map(
         ({ price, quantity }, index: number) =>
-          index < MAX_AMOUNT_PRICES && (!(isReseller && !ownedDesign && index === 0) || !isReseller) && (
+          index < MAX_AMOUNT_PRICES && (!(isReseller && !ownedDesign && index === 0) || !isReseller) && 
+            ((fixedPrice && index !== 0) || !fixedPrice) && (
             <AvailablePrices key={index}>
               <PriceQuantity
                 {...{ index, price, symbol, teamStoreItem }}
@@ -584,7 +586,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             teamStoreId={teamStoreShortId}
             isReseller={isReseller && !ownedDesign}
             fixedPrices={isReseller && ownedDesign ? [] : teamPrice}
-            {...{ designId, designName, designImage, teamStoreItem, formatMessage, proCertified, proDesign }}
+            {...{
+              designId,
+              designName,
+              designImage,
+              teamStoreItem,
+              fixedPrice,
+              formatMessage,
+              proCertified,
+              proDesign
+            }}
             teamStoreName={teamName}
           />
         }
@@ -688,7 +699,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   {(user && (user.id === 'HkuTqBauQ' || user.id === 'H1R0yFr0V')) &&
                     <StyledInput onChange={this.changeTone} value={tone} />
                   }
-                  <Render3D
+                  {false ? <Render3D
                     customProduct={true}
                     textColor="white"
                     disableControls={isMobile ? hideControls : false}
@@ -697,7 +708,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     zoomedIn={true}
                     light={tone}
                     asImage={phone}
-                  />
+                  /> : null}
                   {isMobile &&
                     <ThreeDButton 
                       onTouchEnd={this.onTouchEndAction}

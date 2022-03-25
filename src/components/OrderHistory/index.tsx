@@ -101,7 +101,7 @@ class OrderHistory extends React.Component<Props, {}> {
             goToCart={this.goToCart}
             showEdit={editOrder}
             showDelete={deleteOrder}
-            {...{ orderId, formatMessage, currentCurrency }}
+            {...{ orderId, formatMessage, currentCurrency, history }}
           />
         }
       </SwipeableViews>

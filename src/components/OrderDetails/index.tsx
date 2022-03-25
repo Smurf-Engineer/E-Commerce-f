@@ -109,6 +109,7 @@ interface Props {
   currentCurrency: string
   showDelete: boolean
   showEdit: boolean
+  history: any
   formatMessage: (messageDescriptor: any, variables?: {}) => string
   onReturn: (id: string) => void
   deleteOrder: (variables: {}) => Promise<any>
@@ -306,7 +307,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       billingZipCode,
       netsuite,
       payment: { stripeCharge },
-      cart,
+      cart: cartOriginal,
       status,
       currency,
       cutoffDate,
@@ -325,6 +326,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       onDemand,
       coupon,
       couponType,
+      fixedPriceStore,
       freeShipping
     } = data.orderQuery
 
@@ -345,6 +347,10 @@ export class OrderDetails extends React.Component<Props, {}> {
     let upgrades = 0
     let variables = 0
     let totalWithoutDiscount = 0
+    let cart = cartOriginal
+    if (fixedPriceStore) {
+      cart = cartOriginal.map((item) => ({...item, fixedPrice: true }))
+    }
     const cartItems = cart || []
     const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     const renderItemList = cart
@@ -360,7 +366,8 @@ export class OrderDetails extends React.Component<Props, {}> {
           productTotal,
           unitPrice,
           teamStoreItem,
-          itemDetails
+          itemDetails,
+          teamPrice
         } = cartItem
         let priceRange = productRange
         const isReseller = resellerComission > 0 || resellerInline > 0
@@ -374,11 +381,13 @@ export class OrderDetails extends React.Component<Props, {}> {
             return { ...priceItem, price }
           })
         }
+        if (teamPrice && teamPrice.length > 0) {
+          cartItem.fixedPrices = teamPrice || []
+        }
         const quantitySum = itemDetails.reduce((a, b) => a + b.quantity, 0)
         const currencyPrices = filter(priceRange, {
           abbreviation: currency && currency.shortName ? currency.shortName.toLowerCase() : 'usd'
         })
-
         totalWithoutDiscount += quantitySum * (currencyPrices && currencyPrices[0] ? currencyPrices[0].price : 0)
         // This function is used to SUM all the upgrades prices applied to a product and have it on the subtotal
         // Upgrades prices * quantities
@@ -544,7 +553,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               </DeliveryInfo>
             </OrderDelivery>
             <OrderSummaryContainer {...{ savingPdf }}>
-              {status === PREORDER && !savingPdf &&
+              {status === PREORDER && !savingPdf && !fixedPriceStore &&
                 <AboutCollab onMouseOver={this.openStatusModal}>
                   <CollabIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
                   {formatMessage(messages.aboutDynamicPricing)}
@@ -572,6 +581,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 currencySymbol={currency.shortName}
                 proDesignReview={proDesign && PRO_DESIGN_FEE}
                 couponName={coupon}
+                isFixedStore={fixedPriceStore}
                 couponCode={{ type: couponType, freeShipping }}
                 invoiceLink={!showPaymentIssue ? invoiceLink : ''}
                 {...{
@@ -607,6 +617,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                   items={cart}
                   {...{ formatMessage }}
                   withoutTop={true}
+                  fixedPrice={fixedPriceStore}
                   myLockerList={false}
                   itemProdPage={true}
                   orderDetails={true}
@@ -668,6 +679,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             orderDetails={true}
             onClick={() => true}
             hide={true}
+            fixedPrice={fixedPriceStore}
             fixedCart={status === PAYMENT_ISSUE}
             replaceOrder={shortId}
           />
@@ -678,19 +690,21 @@ export class OrderDetails extends React.Component<Props, {}> {
               {formatMessage(messages.faqTitle)}
             </Title>
             <FAQBody>
-              <ProductInfo
-                id="showPricing"
-                titleWidth={'100%'}
-                title={formatMessage(messages.priceQuestion)}
-                showContent={showPricing}
-                toggleView={this.toggleProductInfo}
-              >
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: formatMessage(messages.priceAnswer)
-                  }}
-                />
-              </ProductInfo>
+              {!fixedPriceStore &&
+                <ProductInfo
+                  id="showPricing"
+                  titleWidth={'100%'}
+                  title={formatMessage(messages.priceQuestion)}
+                  showContent={showPricing}
+                  toggleView={this.toggleProductInfo}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.priceAnswer)
+                    }}
+                  />
+                </ProductInfo>
+              }
               <ProductInfo
                 id="showIssue"
                 richText={true}
@@ -816,7 +830,7 @@ export class OrderDetails extends React.Component<Props, {}> {
   }
 
   handleOnEditOrder = () => {
-    const { formatMessage, goToCart } = this.props
+    const { formatMessage, history } = this.props
     confirm({
       title: formatMessage(messages.editOrderTitle),
       content: formatMessage(messages.editOrderMessage),
@@ -827,7 +841,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           const wrapper = this.editOrderButton.getWrappedInstance()
           const editButton = wrapper.getWrappedInstance()
           await editButton.addToCart()
-          goToCart()
+          history.push('/shopping-cart')
         } catch (e) {
           message.error(e.message)
         }

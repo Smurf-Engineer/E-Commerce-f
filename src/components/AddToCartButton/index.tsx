@@ -37,6 +37,7 @@ interface CartItems {
   designImage?: string
   designCode?: string
   isFixed?: boolean
+  fixedPrice?: boolean
   isReseller?: boolean
   teamStoreId?: string
   proCertified?: boolean
@@ -58,6 +59,7 @@ interface Props {
   proDesign?: boolean
   designCode?: string
   isFixed?: boolean
+  fixedPrice?: boolean
   isReseller?: boolean
   teamStoreId?: string
   teamStoreItem?: string
@@ -147,6 +149,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       item,
       designId,
       isFixed,
+      fixedPrice,
       isReseller,
       teamStoreId,
       teamStoreItem,
@@ -229,6 +232,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         replaceOrder,
         proCertified,
         proDesign,
+        fixedPrice
       )
       this.saveInLocalStorage(itemToAdd)
     } else {
@@ -258,12 +262,13 @@ export class AddToCartButton extends PureComponent<Props, {}> {
                   i.designImage,
                   i.designCode,
                   itemProdPage,
-                  fixedPrices,
+                  i.fixedPrices && i.fixedPrices.length > 0 ? i.fixedPrices : fixedPrices,
                   i.teamStoreName,
                   fixedCart,
                   replaceOrder,
                   i.proCertified,
-                  i.proDesign
+                  i.proDesign,
+                  i.fixedPrice
                 )
               )
             )
@@ -284,7 +289,8 @@ export class AddToCartButton extends PureComponent<Props, {}> {
               fixedCart,
               replaceOrder,
               proCertified,
-              proDesign
+              proDesign,
+              fixedPrice
             )
             this.saveInLocalStorage(itemToAdd)
           }
@@ -308,7 +314,8 @@ export class AddToCartButton extends PureComponent<Props, {}> {
               fixedCart,
               replaceOrder,
               item.proCertified,
-              item.proDesign
+              item.proDesign,
+              item.fixedPrice
             )
           )
         }
@@ -332,7 +339,8 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     fixedCart: boolean = false,
     replaceOrder: string = '',
     proCertified?: boolean,
-    proDesign?: boolean
+    proDesign?: boolean,
+    fixedPrice?: boolean
   ) => {
     const details = [] as CartItemDetail[]
     const upgradeOne = get(item, 'product.upgradeOne', {})
@@ -410,7 +418,8 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       { fixedCart },
       { replaceOrder },
       { proCertified },
-      { proDesign }
+      { proDesign },
+      { fixedPrice }
     )
     return itemToAdd
   }

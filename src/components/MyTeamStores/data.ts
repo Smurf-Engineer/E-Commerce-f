@@ -11,6 +11,7 @@ export const GetTeamMyStoresQuery = gql`
         banner
         closed
         isOnDemand: on_demand_mode
+        fixedPrice: fixed_price
       }
       fullCount
     }

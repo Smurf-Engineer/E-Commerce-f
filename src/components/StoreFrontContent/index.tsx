@@ -290,6 +290,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const teamStoreBanner = get(getTeamStore, 'banner', null)
     const teamStoreName = get(getTeamStore, 'name', '')
     const teamStoreOwner = get(getTeamStore, 'owner', false)
+    const fixedPrice = get(getTeamStore, 'fixedPrice', false)
     const cutOffDay = get(getTeamStore, 'cutoff_date.day', '0')
     const deliveryDay = get(getTeamStore, 'delivery_date.day', '0')
     const onDemandMode = get(getTeamStore, 'onDemandMode', false)
@@ -364,7 +365,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                         <FormattedMessage {...messages.share} />
                       </Button>
                     </ButtonWrapper>
-                    {teamStoreOwner && !closed && (
+                    {teamStoreOwner && !closed && !fixedPrice && (
                       <ButtonWrapper>
                         <Button type="primary" onClick={this.handleOnPressEdit}>
                           <FormattedMessage {...messages.edit} />
@@ -388,7 +389,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 </FlexContainer>
                 <TopContainer>
                   <FlexColumnContainer>
-                    {!onDemandMode && (
+                    {!onDemandMode && !fixedPrice && (
                       <React.Fragment>
                         <DynamicDropLogo src={dropLogo} />
                         <PriceDescription>
@@ -480,7 +481,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     <Corner />
                   </Bulletin>
                 )}
-                {!onDemandMode && (
+                {!onDemandMode && !fixedPrice && (
                   <PricesButton onClick={this.onTogglePriceModal}>
                     {formatMessage(messages.quantityPrice)}
                   </PricesButton>
@@ -502,6 +503,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                           display,
                           teamStoreName,
                           closed,
+                          fixedPrice,
                           totalDesigns,
                         }}
                         withoutPadding={false}
@@ -532,7 +534,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                       }}
                     />
                   </AboutTitle>
-                  {!isResellerStore && (
+                  {!isResellerStore && !fixedPrice && (
                     <ProductInfo
                       id="Much"
                       title={formatMessage(messages.howMuchTitle)}

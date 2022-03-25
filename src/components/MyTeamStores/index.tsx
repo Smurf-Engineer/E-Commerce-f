@@ -71,7 +71,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
     let myTeamstoresList
     if (teamStores) {
       myTeamstoresList = teamStores.map((teamstore, key) => {
-        const { shortId, closed, isOnDemand } = teamstore
+        const { shortId, closed, isOnDemand, fixedPrice } = teamstore
         return (
           <TeamStore
             name={teamstore.name}
@@ -86,7 +86,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
             openShareModalAction={this.handleOpenShareModal(shortId)}
             onItemClick={this.gotoTeamStore(shortId)}
             fixedDate={!isOnDemand}
-            {...{ key, formatMessage, closed }}
+            {...{ key, formatMessage, closed, fixedPrice }}
           />
         )
       })

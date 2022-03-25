@@ -18,6 +18,7 @@ export const getSingleTeamStore = gql`
       bulletin
       private
       owner
+      fixedPrice: fixed_price
       cutoff_date {
         day
         dayOrdinal
@@ -90,6 +91,7 @@ export const getTeamStoreMutation = graphql(
         banner
         private
         owner
+        fixedPrice: fixed_price
         cutoff_date {
           day
           dayOrdinal

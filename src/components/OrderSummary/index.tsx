@@ -58,6 +58,7 @@ interface Props {
   upgrades?: number
   variables?: number
   simpleDesign?: boolean
+  isFixedStore?: boolean
   formatMessage: (messageDescriptor: Message, params?: PercentParams) => string
   setCouponCodeAction?: (code: CouponCode) => void
   deleteCouponCodeAction?: () => void
@@ -80,6 +81,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       showCouponInput,
       onlyRead,
       couponCode,
+      isFixedStore,
       invoiceLink,
       variables = 0,
       showDiscount = true,
@@ -134,13 +136,13 @@ export class OrderSummary extends React.Component<Props, {}> {
           <SummaryIcon type="shopping"/>
           <FormattedMessage {...messages.summaryTitle} />
         </SummaryTitle>
-        {(totalWithoutDiscount > 0 && showDiscount) && (
+        {(totalWithoutDiscount > 0 && showDiscount) && !isFixedStore && (
           <OrderItem>
             <FormattedMessage {...messages.subTotal} />
             <div>{`${totalWithoutDiscount.toFixed(2)}`}</div>
           </OrderItem>
         )}
-        {(youSaved > 0 && showDiscount) ? (
+        {(youSaved > 0 && showDiscount && !isFixedStore) ? (
           <YouSavedOrderItem {...{ onlyRead }}>
             {formatMessage(messages.youSaved, {
               percent: savedPercent,
@@ -150,7 +152,7 @@ export class OrderSummary extends React.Component<Props, {}> {
           </YouSavedOrderItem>
         ) : null}
         <OrderItem>
-          <FormattedMessage {...messages.subtotal} />
+          <FormattedMessage {...messages[isFixedStore ? 'subTotal' : 'subtotal']} />
           <div>{`${subtotal.toFixed(2)}`}</div>
         </OrderItem>
         <CalculationsWrapper>

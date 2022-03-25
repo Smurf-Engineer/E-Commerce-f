@@ -31,6 +31,7 @@ export const getSingleTeamStore = gql`
       featured
       owner_name
       display
+      fixedPrice: fixed_price
       onDemandMode: on_demand_mode
       team_size_id
       closed

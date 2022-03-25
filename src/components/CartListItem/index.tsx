@@ -297,7 +297,8 @@ export class CartListItem extends React.Component<Props, {}> {
       designCode,
       fixedPrices = [],
       teamStoreName = '',
-      teamStoreId
+      teamStoreId,
+      fixedPrice
     } = cartItem
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
@@ -420,12 +421,15 @@ export class CartListItem extends React.Component<Props, {}> {
                 { symbol, price: (Number(unitaryPrice) || 0).toFixed(2) }
               )}
             </ItemDetailsHeaderPriceDetail>
-            <ItemDetailsHeaderPriceDetail>
-              {formatMessage(messages.regularPrice, {
-                symbol,
-                price: personalPrice
-              })}
-            </ItemDetailsHeaderPriceDetail> </>
+            {!fixedPrice &&
+              <ItemDetailsHeaderPriceDetail>
+                {formatMessage(messages.regularPrice, {
+                  symbol,
+                  price: personalPrice
+                })}
+              </ItemDetailsHeaderPriceDetail>
+            }
+            </>
           }
           <HeaderPriceDetailEmpty />
         </PriceContainer>

@@ -77,6 +77,7 @@ interface Props {
   resellerComission?: number
   teamStoreName?: string
   closed?: boolean
+  fixedPrice?: boolean
   totalDesigns?: number
 }
 
@@ -101,6 +102,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       currentCurrency = config.defaultCurrency,
       teamStoreName,
       closed,
+      fixedPrice,
       totalDesigns = 0
     } = this.props
     const LAST_ITEM = 1
@@ -205,7 +207,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             }
           })
 
-          const currentPrice = onDemandMode
+          const currentPrice = (onDemandMode || fixedPrice)
             ? fixedPriceValue.price
             : currentRangeAttributes.price
           const currentPriceText = `${fixedPriceValue.shortName
@@ -237,6 +239,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       name,
                       targetRange,
                       onDemandMode,
+                      fixedPrice,
                       isResellerStore,
                       isResellerOwner,
                       code,
@@ -269,7 +272,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       teamStoreItem={itemShortId}
                       teamStoreId={teamStoreShortId}
                       fixedPrices={isResellerOwner ? [] : priceRange}
-                      {...{ proCertified, proDesign }}
+                      {...{ proCertified, proDesign, fixedPrice }}
                     />
                   )
                 }

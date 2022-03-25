@@ -18,6 +18,7 @@ export const getOrderQuery = gql`
       cutoffDate: cutoff_date
       paymentMethod: payment_method
       invoiceTerms: invoice_terms
+      fixedPriceStore: fixed_price_store
       shippingFirstName: shipping_address_first_name
       shippingPhone: shipping_address_phone
       shippingLastName: shipping_address_last_name
@@ -223,6 +224,12 @@ export const getOrderQuery = gql`
         teamStoreItem
         isReseller
         teamStoreName
+        teamPrice {
+          abbreviation
+          shortName: short_name
+          quantity
+          price
+        }
       }
       status
       owner
