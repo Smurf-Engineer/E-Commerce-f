@@ -618,7 +618,8 @@ export class Review extends React.Component<Props, {}> {
                       const extension = getFileExtension(fileUrl)
                       return (<ImageContainer key={index}>
                         {docTypes.includes(type) ?
-                          <DocIcon onClick={openFile} type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> :
+                          <DocIcon onClick={openFile} type={type === ZIP_TYPE ? 'file-zip' : 
+                          (type === PDF_TYPE ? 'file-pdf' : 'file')} /> :
                           (type === POSTSCRIPT_TYPE ?
                             <LogoImage onClick={openFile} src={extension === '.ai' ? aiLogo : epsLogo} /> : 
                             <Image src={fileUrl} />

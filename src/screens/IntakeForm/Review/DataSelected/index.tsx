@@ -173,7 +173,7 @@ export class DataSelected extends React.Component<Props, {}> {
                   const extension = getFileExtension(fileUrl)
                   return (<ImageContainer key={index}>
                     {docTypes.includes(type) ?
-                      <DocIcon type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> : 
+                      <DocIcon type={type === ZIP_TYPE ? 'file-zip' : (type === PDF_TYPE ? 'file-pdf' : 'file')} /> : 
                       (type === POSTSCRIPT_TYPE ?
                         <LogoImage src={extension === '.ai' ? aiLogo : epsLogo} /> : <Image src={fileUrl} />)
                     }
