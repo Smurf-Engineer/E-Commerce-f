@@ -2,7 +2,7 @@
  * ItemOrder Component - Created by miguelcanobbio on 13/07/18.
  */
 import * as React from 'react'
-import { Container, Cell, EditButton, DeleteButton } from './styledComponents'
+import { Container, Cell, DeleteButton, EditIcon } from './styledComponents'
 import upperFirst from 'lodash/upperFirst'
 import { CANCELLED, INVOICE_SENT, PAYMENT_ISSUE, PREORDER } from '../../../constants'
 
@@ -68,7 +68,7 @@ const ItemOrder = ({
       </Cell>
       <Cell>
         {teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED &&
-          <EditButton onClick={editOrderAction}>Edit</EditButton>
+          <EditIcon type="edit" onClick={editOrderAction}>Edit</EditIcon>
         }
       </Cell>
       <Cell>

@@ -60,6 +60,20 @@ export const EditButton = styled.div`
   }
 `
 
+export const EditIcon = styled(Icon)`
+  background: #ffd277;
+  margin-left: 18px;
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 3px;
+  color: ${WHITE};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+`
+
 export const DeleteButton = styled(Icon)`
   color: ${RED};
   transition: all .25s;

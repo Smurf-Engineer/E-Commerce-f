@@ -225,6 +225,7 @@ export const DeliveryData = styled.div`
 interface InfoProps {
   redColor?: boolean
   savingPdf?: boolean
+  statusColor?: string
 }
 
 export const Info = styled.div`
@@ -236,6 +237,47 @@ export const Info = styled.div`
     margin-bottom: 16px;
   }
 `
+
+export const StatusLabel = styled.div`
+  color: ${BLACK};
+  height: 22px;
+  margin-bottom: 12px;
+  font-weight: bold;
+  font-family: Avenir;
+  display: inline-block;
+  padding: 0 13px;
+  font-size: 14px;
+  border-radius: 45px;
+  background: ${({ statusColor }: InfoProps) => statusColor || GRAY};
+  @media (max-width: 768px) {
+    text-align: ${({ savingPdf }: InfoProps) => savingPdf ? 'left' : 'right'};
+    margin-bottom: 16px;
+  }
+`
+
+export const StatusImage = styled.img`
+  width: 30px;
+  margin-right: 9px;
+  color: ${BLACK};
+  padding: 4px;
+  border-radius: 12px;
+  margin-left: -17px;
+  padding-right: 9px;
+  margin-top: -5px;
+  background: ${WHITE};
+`
+
+export const IconStatus = styled(Icon)`
+  margin-right: 9px;
+  color: ${BLACK};
+  background: ${WHITE};
+  padding: 6px;
+  border-radius: 12px;
+  margin-left: -17px;
+  padding-right: 8px;
+  margin-top: -5px;
+`
+
 export const OrderSummaryContainer = styled.div`
   width: 25%;
 
@@ -454,6 +496,21 @@ export const ButtonEdit = styled.div`
     cursor: pointer;
     background: ${GRAY_SOFT};
     color: ${WHITE};
+  }
+`
+
+export const EditIcon = styled(Icon)`
+  background: #ffd277;
+  margin-right: 16px;
+  font-size: 18px;
+  padding: 5px;
+  border-radius: 3px;
+  color: ${WHITE};
+  box-shadow: 1px 2px 3px 0px #d3d3d3;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
   }
 `
 

@@ -61,12 +61,13 @@ export default defineMessages({
   },
   deleteTeamstoreTitle: {
     id: 'components.OrdersList.deleteTeamstoreTitle',
-    defaultMessage: 'DELETE TEAMSTORE ORDER'
+    defaultMessage: 'ARE YOU SURE?'
   },
   deleteTeamstoreMessage: {
     id: 'components.OrdersList.deleteTeamstoreMessage',
     defaultMessage:
-      'By deleting your order, you will no longer be counted on the team´s order list'
+      // tslint:disable-next-line: max-line-length
+      'Cancelled orders will no longer count towards team quantities but you can always place a new order during the open ordering period to count towards the team totals.'
   },
   delete: {
     id: 'components.OrdersList.delete',

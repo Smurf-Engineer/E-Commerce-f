@@ -68,7 +68,11 @@ import {
   CloseButtonStatus,
   StatusDescription,
   StatusTitle,
-  ButtonEdit
+  ButtonEdit,
+  StatusLabel,
+  IconStatus,
+  StatusImage,
+  EditIcon
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -77,6 +81,7 @@ import AddToCartButton from '../AddToCartButton'
 
 import iconPaypal from '../../assets/Paypal.svg'
 import iconFedex from '../../assets/fedexicon.svg'
+import shippedIcon from '../../assets/shippedicon.png'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
@@ -87,12 +92,17 @@ import {
   JAKROO_LOGO_BASE64,
   INVOICE_SENT,
   excludeVariables,
-  CANCELLED
+  CANCELLED,
+  PAID,
+  PENDING_APPROVAL,
+  IN_PRODUCTION,
+  SHIPPED
 } from '../../constants'
 import ProductInfo from '../ProductInfo'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import ReactDOM from 'react-dom'
 import filter from 'lodash/filter'
+import { GRAY } from '../../theme/colors'
 
 const { warning } = Modal
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
@@ -342,12 +352,41 @@ export class OrderDetails extends React.Component<Props, {}> {
     )
     const packages = get(fulfillments, '[0].packages')
     const trackingNumber = packages && packages.replace('<BR>', ', ')
-
+    let statusColor = GRAY
+    let statusIcon = 'audit'
     let subtotal = 0
     let upgrades = 0
     let variables = 0
     let totalWithoutDiscount = 0
     let cart = cartOriginal
+    const orderStatus = netsuiteStatus || (status === INVOICE_SENT ? PAYMENT_ISSUE : status)
+    switch (orderStatus) {
+      case PREORDER:
+        statusColor = '#cde4ff'
+        statusIcon = 'carry-out'
+        break
+      case CANCELLED:
+        statusColor = '#ffcaca'
+        statusIcon = 'close-circle'
+        break
+      case PAID:
+        statusColor = '#cff8d9'
+        statusIcon = 'dollar'
+        break
+      case PENDING_APPROVAL:
+        statusColor = '#fff1cd'
+        statusIcon = 'clock-circle'
+        break
+      case IN_PRODUCTION:
+        statusColor = '#ffe0af'
+        statusIcon = 'skin'
+        break
+      case SHIPPED:
+        statusColor = '#97d39b'
+        break
+      default:
+        break
+    }
     if (fixedPriceStore) {
       cart = cartOriginal.map((item) => ({...item, fixedPrice: true }))
     }
@@ -543,9 +582,13 @@ export class OrderDetails extends React.Component<Props, {}> {
                     }
                   </Info>
                   <Info {...{ savingPdf }}>{estimatedDate}</Info>
-                  <Info {...{ savingPdf }} redColor={status === PAYMENT_ISSUE || status === INVOICE_SENT}>
-                    {netsuiteStatus || (status === INVOICE_SENT ? PAYMENT_ISSUE : status)}
-                  </Info>
+                  <StatusLabel {...{ savingPdf, statusColor }}>
+                    {orderStatus === SHIPPED ?
+                      <StatusImage src={shippedIcon} /> :
+                      <IconStatus type={statusIcon} />
+                    }
+                    {orderStatus}
+                  </StatusLabel>
                   <Info {...{ savingPdf }}>
                     {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
                   </Info>
@@ -562,13 +605,14 @@ export class OrderDetails extends React.Component<Props, {}> {
               {(teamStoreId && owner) && !savingPdf &&
                 (status === PREORDER || canUpdatePayment) && status !== CANCELLED &&
                   <OrderActions>
-                    <ButtonEdit onClick={this.handleOnEditOrder}>
-                      {formatMessage(
-                        status === PAYMENT_ISSUE
-                          ? messages.updatePayment
-                          : messages.edit
-                      )}
-                    </ButtonEdit>
+                    {status === PAYMENT_ISSUE ?
+                      <ButtonEdit onClick={this.handleOnEditOrder}>
+                        {formatMessage(messages.updatePayment)}
+                      </ButtonEdit> :
+                      <EditIcon type="edit" onClick={this.handleOnEditOrder}>
+                        {formatMessage(messages.edit)}
+                      </EditIcon>
+                    }
                     <DeleteButton type="delete" onClick={this.handleOnDeleteOrder} />
                   </OrderActions>
               }

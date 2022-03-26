@@ -54,7 +54,9 @@ export const TopContainer = styled.div`
     align-items: center;
   }
 `
-export const SideBar = styled.div``
+export const SideBar = styled.div`
+  min-width: 268px;
+`
 
 export const Description = styled.div`
   text-align: center;
@@ -359,7 +361,6 @@ export const FlexContainer = styled.div`
 export const FlexColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 800px;
   padding: 10px;
 `
 
