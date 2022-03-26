@@ -255,9 +255,21 @@ export const StatusLabel = styled.div`
   }
 `
 
+export const StatusImage = styled.img`
+  width: 30px;
+  margin-right: 9px;
+  color: ${BLACK};
+  padding: 4px;
+  border-radius: 12px;
+  margin-left: -17px;
+  padding-right: 9px;
+  margin-top: -5px;
+  background: ${WHITE};
+`
+
 export const IconStatus = styled(Icon)`
   margin-right: 9px;
-  color: black;
+  color: ${BLACK};
   background: ${WHITE};
   padding: 6px;
   border-radius: 12px;
@@ -484,6 +496,21 @@ export const ButtonEdit = styled.div`
     cursor: pointer;
     background: ${GRAY_SOFT};
     color: ${WHITE};
+  }
+`
+
+export const EditIcon = styled(Icon)`
+  background: #ffd277;
+  margin-right: 16px;
+  font-size: 18px;
+  padding: 5px;
+  border-radius: 3px;
+  color: ${WHITE};
+  box-shadow: 1px 2px 3px 0px #d3d3d3;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
   }
 `
 
