@@ -551,7 +551,7 @@ export const StatusTitle = styled.div`
   font-family: Avenir;
   font-size: 16px;
   margin-bottom: 24px;
-  margin-top: 16px;
+  margin-top: 38px;
   @media (min-width: 1024px) {
     font-size: 16px;
   }
@@ -566,7 +566,7 @@ export const StatusTitle = styled.div`
     color: ${WHITE};
     padding: 0;
     font-size: 19px;
-    margin-top: 30px;
+    margin-top: 54px;
   }
 `
 
@@ -603,13 +603,42 @@ export const BottomSectionStatus = styled.div`
   }
 `
 
+export const StatusTop = styled.div`
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 10px;
+  background: #c7e777;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  font-weight: bold;
+  font-family: Avenir;
+  @media (max-width: 648px) {
+    position: unset;
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;  
+  }
+`
+
+export const EditContent = styled.div`
+  margin: 22px 0 28px -38px;
+`
+
+export const TitleEdit = styled.div`
+  text-align: center;
+  font-weight: bold;
+  font-family: Avenir;
+`
+
 export const CloseButtonStatus = styled.div`
-  border: 1px solid ${GRAY};
-  padding: 10px 12px;
-  border-radius: 8px;
+  padding: 10px 20px;
+  border-radius: 5px;
   margin-top: 17px;
   font-size: 12px;
-  color: ${GRAY_STRONG};
+  color: ${WHITE};
+  background: ${RED};
   box-shadow: 0px 2px 4px -1px ${GRAY};
   transition: all .25s;
   &:hover {

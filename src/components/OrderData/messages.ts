@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.OrderData.payment',
     defaultMessage: 'Payment Method'
   },
+  statusLabel: {
+    id: 'components.OrderData.statusLabel',
+    defaultMessage: 'Your Order has been received and is being processed'
+  },
   orderNumber: {
     id: 'components.OrderData.orderNumber',
     defaultMessage: 'Order Number'
@@ -195,7 +199,7 @@ export default defineMessages({
   },
   close: {
     id: 'components.OrderData.close',
-    defaultMessage: 'Close'
+    defaultMessage: 'Got it'
   },
   dynamicPrice: {
     id: 'components.OrderData.dynamicPrice',
@@ -204,6 +208,6 @@ export default defineMessages({
   dynamicPriceDesc: {
     id: 'components.OrderData.dynamicPriceDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: 'During high volume transaction periods, there may be a delay in price updates on screen after placing your order while our price engine reviews and updates all orders. In most cases, your order will be updated and reflect the current pricing as shown on the team store page within 30-60 minutes after the order was placed, or once the next member has placed their order. Payment is NOT taken until after store closure  to ensure everyone gets the same low price no matter when their order was placed.'
+    defaultMessage: '<p>During high volume transaction periods, there may be a delay in price updates on screen after placing your order while our price engine updates pricing on all orders.</p> <p>Do not worry. Your order will be updated and reflect the current pricing as shown on the team store page within 30 minutes after the order was placed, or once the next member has placed their order.</p> <p>Payment is <strong>NOT</strong> taken until after store closure to ensure everyone gets the same low price no matter when their order was placed.</p>'
   }
 })
