@@ -2248,7 +2248,13 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       </CommentSection>
 
     return (
-      <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true} hideAlerts={true}>
+      <Layout
+        {...{ history, intl }}
+        hideTopHeader={isMobile}
+        hideBottomHeader={true}
+        hideFooter={true}
+        hideAlerts={true}
+      >
         <Container>
           {installedFonts.length ? (
             <GoogleFontLoader fonts={installedFonts} />

@@ -94,6 +94,10 @@ export default defineMessages({
     // tslint:disable-next-line: max-line-length
     defaultMessage: '<p>Batch Order team stores provide the convenience of individual ordering with the benefit of group discounting. During high volume transaction periods, there may be a delay in price updates on screen after placing your order while our price engine reviews and updates all orders. In most cases, your order will be updated and reflect the current pricing as shown on the team store page within 30-60 minutes after the order was placed, or once the next member has placed their order. <u>Payment is NOT taken until after the store closes</u> to ensure everyone gets the same low price no matter when their order was placed.</p>'
   },
+  statusLabel: {
+    id: 'components.OrderDetails.statusLabel',
+    defaultMessage: 'Your Order has been received and is being processed'
+  },
   issueQuestion: {
     id: 'components.OrderDetails.issueQuestion',
     defaultMessage: 'My order status shows <span>payment Issue</span>. What do I do?'
@@ -207,13 +211,13 @@ export default defineMessages({
   },
   editOrderTitle: {
     id: 'components.OrderDetails.editOrderTitle',
-    defaultMessage: 'ARE YOU SURE?'
+    defaultMessage: 'EDITING YOUR ORDER'
   },
   editOrderMessage: {
     id: 'components.OrderDetails.editOrderMessage',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'By editing your order, all items will be added to your cart so you can update your payment information and complete the checkout. In doing so, this previous order will be cancelled.'
+      '<p>Editing your order will place ALL the original items back to the shopping cart and the <u>original order will be cancelled.</u></p> <p>You can then make changes to the items in the cart, including deleting or adding more items from the Team Store.</p> <p><strong>You will need to confirm your payment information and complete the checkout in order to resubmit the order.</strong></p>'
   },
   proceed: {
     id: 'components.OrderDetails.proceed',
@@ -285,6 +289,6 @@ export default defineMessages({
   dynamicPriceDesc: {
     id: 'components.OrderDetails.dynamicPriceDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: 'During high volume transaction periods, there may be a delay in price updates on screen after placing your order while our price engine reviews and updates all orders. In most cases, your order will be updated and reflect the current pricing as shown on the team store page within 30-60 minutes after the order was placed, or once the next member has placed their order. Payment is NOT taken until after store closure  to ensure everyone gets the same low price no matter when their order was placed.'
+    defaultMessage: '<p>During high volume transaction periods, there may be a delay in price updates on screen after placing your order while our price engine updates pricing on all orders.</p> <p>Do not worry. Your order will be updated and reflect the current pricing as shown on the team store page within 30 minutes after the order was placed, or once the next member has placed their order.</p> <p>Payment is <strong>NOT</strong> taken until after store closure to ensure everyone gets the same low price no matter when their order was placed.</p>'
   }
 })

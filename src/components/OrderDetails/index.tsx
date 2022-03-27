@@ -63,7 +63,6 @@ import {
   InfoBody,
   AboutCollab,
   CollabIcon,
-  StatusIcon,
   BottomSectionStatus,
   CloseButtonStatus,
   StatusDescription,
@@ -72,7 +71,10 @@ import {
   StatusLabel,
   IconStatus,
   StatusImage,
-  EditIcon
+  EditIcon,
+  EditContent,
+  StatusTop,
+  TitleEdit
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -233,13 +235,10 @@ export class OrderDetails extends React.Component<Props, {}> {
     onReturn('')
   }
   openStatusModal = () => {
-    setTimeout(() => {
-      if (window.navigator && window.navigator.vibrate) {
-        navigator.vibrate([70, 50, 20])
-      }
-      this.setState({ openStatusInfo: true })
-    // tslint:disable-next-line: align
-    }, 250)
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate([70, 50, 20])
+    }
+    this.setState({ openStatusInfo: true })
   }
   closeStatusModal = () => {
     if (window.navigator && window.navigator.vibrate) {
@@ -597,7 +596,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             </OrderDelivery>
             <OrderSummaryContainer {...{ savingPdf }}>
               {status === PREORDER && !savingPdf && !fixedPriceStore &&
-                <AboutCollab onMouseOver={this.openStatusModal}>
+                <AboutCollab onClick={this.openStatusModal}>
                   <CollabIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
                   {formatMessage(messages.aboutDynamicPricing)}
                 </AboutCollab>
@@ -848,27 +847,31 @@ export class OrderDetails extends React.Component<Props, {}> {
             </FAQBody>
           </FAQSection>
         }
-        <Modal
-          visible={openStatusInfo}
-          footer={null}
-          closable={false}
-          width={isMobileModal ? '100%' : '564px'}
-          wrapClassName={isMobileModal ? 'transparentMask' : ''}
-          maskStyle={isMobileModal ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' } : {}}
-        >
-          <StatusIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
-          <StatusTitle>
-            {formatMessage(messages.dynamicPrice)}
-          </StatusTitle>
-          <StatusDescription>
-            {formatMessage(messages.dynamicPriceDesc)}
-          </StatusDescription>
-          <BottomSectionStatus>
-            <CloseButtonStatus onClick={this.closeStatusModal}>
-              {formatMessage(messages.close)}
-            </CloseButtonStatus>
-          </BottomSectionStatus>
-        </Modal>
+        {status === PREORDER && !savingPdf && !fixedPriceStore &&
+          <Modal
+            visible={openStatusInfo}
+            footer={null}
+            closable={false}
+            width={isMobileModal ? '100%' : '564px'}
+            wrapClassName={isMobileModal ? 'transparentMask' : ''}
+            maskStyle={isMobileModal ? { background: 'rgb(0 0 0 / 80%)', backdropFilter: 'blur(7px)' } : {}}
+          >
+            <StatusTop>{formatMessage(messages.statusLabel)}</StatusTop>
+            <StatusTitle>
+              {formatMessage(messages.dynamicPrice)}
+            </StatusTitle>
+            <StatusDescription
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.dynamicPriceDesc)
+              }}
+            />
+            <BottomSectionStatus>
+              <CloseButtonStatus onClick={this.closeStatusModal}>
+                {formatMessage(messages.close)}
+              </CloseButtonStatus>
+            </BottomSectionStatus>
+          </Modal>
+        }
       </Container>
     )
   }
@@ -876,8 +879,16 @@ export class OrderDetails extends React.Component<Props, {}> {
   handleOnEditOrder = () => {
     const { formatMessage, history } = this.props
     confirm({
-      title: formatMessage(messages.editOrderTitle),
-      content: formatMessage(messages.editOrderMessage),
+      icon: ' ',
+      centered: true,
+      className: 'centeredButtons',
+      title: <TitleEdit>{formatMessage(messages.editOrderTitle)}</TitleEdit>,
+      content: <EditContent
+        dangerouslySetInnerHTML={{
+          __html: formatMessage(messages.editOrderMessage)
+        }}
+      />,
+      width: '512px',
       okText: formatMessage(messages.proceed),
       onOk: async () => {
         try {
