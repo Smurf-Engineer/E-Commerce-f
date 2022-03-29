@@ -162,6 +162,10 @@ export const getProdesignItemQuery = gql`
               front: front_image
             }
           }
+          lastTask {
+            date
+            type
+          }
         }
         files {
           id

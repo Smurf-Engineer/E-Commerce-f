@@ -289,7 +289,9 @@ import {
   DesktopCloseButton,
   CloseModalIcon,
   DragIcon,
-  ColorsList
+  ColorsList,
+  ScheduledDate,
+  DateIcon
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -1601,6 +1603,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       modelSize,
       name: productName
     } = product || {}
+    const lastTask = (projectDesigns.find(item => item.id === projectItemId) || {} as DesignType).lastTask
     const isOwner = role === OWNER_ROLE
     const isApprover = role === APPROVER_ROLE
     const isGuest = role === GUEST_ROLE
@@ -2370,6 +2373,12 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </DesignLabel>
                 </NameLabel>
               }
+              {lastTask && lastTask.date && (
+                <ScheduledDate>
+                  <DateIcon type="calendar" />
+                  {moment(lastTask.date).format('M/D')}
+                </ScheduledDate>
+              )}
               {!!itemStatus &&
                 <StatusLabel onClick={isMobile ? this.openStatusModal : () => {}} color={statusColor}>
                   {itemLabels[itemStatus] || formatMessage(messages.inDesign)}

@@ -30,7 +30,8 @@ import {
   GRAY_SKELETON,
   COLOR_IN_DESIGN,
   DARKER_GRAY,
-  GRAY_SNOW
+  GRAY_SNOW,
+  BLUE_LIGHT
 } from '../../theme/colors'
 import TextArea from 'antd/lib/input/TextArea'
 import Button from 'antd/lib/button'
@@ -2590,4 +2591,21 @@ export const RemoveFileIcon = styled(Icon)`
     cursor: pointer;
     opacity: 0.7;
   }
+`
+
+export const ScheduledDate = styled.div`
+  width: fit-content;
+  position: absolute;
+  top: 11px;
+  right: 180px;
+  padding: 8px;
+  background: ${WHITE};
+  box-shadow: 0px 1px 3px 0px ${GRAY};
+  border-radius: 6px;
+  color: ${BLUE_LIGHT};
+  font-weight: bold;
+`
+
+export const DateIcon = styled(Icon)`
+  margin-right: 8px;
 `
