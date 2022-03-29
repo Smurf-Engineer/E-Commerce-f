@@ -335,6 +335,7 @@ export type DesignType = {
   outputPng?: string
   proCertified?: boolean
   qualityWarning?: boolean
+  lastTask?: LastTask
 }
 
 export type DesignNote = {

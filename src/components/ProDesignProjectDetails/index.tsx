@@ -670,7 +670,7 @@ export class Review extends React.Component<Props, {}> {
               </Row>
               <Row>
                 {designs.map((design: ProDesignItem, key: number) => {
-                  const { product, code, image, status, name, id: itemId, createdAt, notifications } = design
+                  const { product, code, image, status, name, id: itemId, createdAt, notifications, lastTask } = design
                   const { 
                     id,
                     yotpoId,
@@ -711,7 +711,8 @@ export class Review extends React.Component<Props, {}> {
                         isTopProduct,
                         priceRange,
                         customizable,
-                        colors
+                        colors,
+                        lastTask
                       }}
                     />
                   )

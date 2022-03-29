@@ -137,6 +137,10 @@ export const getProDesignProject = gql`
             image
           }
         }
+        lastTask {
+          date
+          type
+        }
       }
     }
   }

@@ -4,7 +4,17 @@
 import Icon from 'antd/lib/icon'
 import Popover from 'antd/lib/popover'
 import styled from 'styled-components'
-import { GRAY_DARK, GREEN_BRIGHT, WHITE, RED, BLACK_LABEL, GRAY_LIGHTEST, BLACK_SHADOW } from '../../../theme/colors'
+import { 
+  GRAY_DARK, 
+  GREEN_BRIGHT, 
+  WHITE, 
+  RED, 
+  BLACK_LABEL, 
+  GRAY_LIGHTEST, 
+  BLACK_SHADOW, 
+  GRAY, 
+  BLUE_LIGHT 
+} from '../../../theme/colors'
 
 type StyledProps = {
   backgroundColor?: string
@@ -342,3 +352,20 @@ export const buttonStyle = {
   background: 'none',
   color: RED
 }
+
+export const ScheduledDate = styled.div`
+  width: fit-content;
+  position: absolute;
+  top: -10px;
+  left: 8px;
+  padding: 8px;
+  background: ${WHITE};
+  box-shadow: 0px 1px 3px 0px ${GRAY};
+  border-radius: 6px;
+  color: ${BLUE_LIGHT};
+  font-weight: bold;
+`
+
+export const DateIcon = styled(Icon)`
+  margin-right: 8px;
+`
