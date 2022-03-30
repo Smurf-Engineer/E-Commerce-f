@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.OrderDetails.gotIt',
     defaultMessage: 'Got it!'
   },
+  cancel: {
+    id: 'components.OrderDetails.cancel',
+    defaultMessage: 'Cancel'
+  },
   makeChange: {
     id: 'components.OrderDetails.makeChange',
     // tslint:disable-next-line: max-line-length

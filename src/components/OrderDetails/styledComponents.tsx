@@ -412,8 +412,8 @@ export const FAQBody = styled.div`
   }
 `
 
-export const DeleteButton = styled(Icon)`
-  color: ${RED};
+export const DeleteButton = styled.div`
+  color: ${GRAY_SOFT};
   transition: all .25s;
   &:hover {
     cursor: pointer;
