@@ -73,7 +73,9 @@ const ItemOrder = ({
       </Cell>
       <Cell>
         {teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED &&
-          <DeleteButton type="delete" onClick={deleteOrderAction} />
+          <DeleteButton onClick={deleteOrderAction}>
+            Cancel
+          </DeleteButton>
         }
       </Cell>
     </Container>

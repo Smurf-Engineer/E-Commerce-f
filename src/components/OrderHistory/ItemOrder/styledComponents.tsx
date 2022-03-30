@@ -3,7 +3,7 @@
  */
 import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
-import { GRAY_SOFT, GRAY_STRONG, RED, WHITE } from '../../../theme/colors'
+import { GRAY_SOFT, GRAY_STRONG, WHITE } from '../../../theme/colors'
 
 export const Container = styled.tr`
   cursor: pointer;
@@ -74,8 +74,9 @@ export const EditIcon = styled(Icon)`
   }
 `
 
-export const DeleteButton = styled(Icon)`
-  color: ${RED};
+export const DeleteButton = styled.div`
+  color: ${GRAY_SOFT};
+  font-size: 13px;
   transition: all .25s;
   &:hover {
     cursor: pointer;

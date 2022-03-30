@@ -612,7 +612,9 @@ export class OrderDetails extends React.Component<Props, {}> {
                         {formatMessage(messages.edit)}
                       </EditIcon>
                     }
-                    <DeleteButton type="delete" onClick={this.handleOnDeleteOrder} />
+                    <DeleteButton onClick={this.handleOnDeleteOrder}>
+                      {formatMessage(messages.cancel)}
+                    </DeleteButton>
                   </OrderActions>
               }
               <OrderSummary
