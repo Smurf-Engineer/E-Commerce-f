@@ -26,6 +26,8 @@ import {
   TooltipBody,
   buttonStyle,
   TooltipContentModal,
+  ScheduledDate,
+  DateIcon,
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
 import JackrooLogo from '../../../assets/Jackroologo.svg'
@@ -39,6 +41,7 @@ import { ImageType, Message } from '../../../types/common'
 import { BLUE_STATUS, GREEN_STATUS, ORANGE_STATUS, WHITE } from '../../../theme/colors'
 import { CUSTOMER_PREVIEW, CUSTOMER_APPROVED, PREFLIGHT_STATUS, IN_DESIGN, itemLabels } from '../../../constants'
 import messages from './messages'
+import moment from 'moment'
 
 const { info } = Modal
 const AboveTablet = (props: any) => <Responsive {...props} minWidth={768} />
@@ -75,6 +78,7 @@ interface Props {
   proStatus?: string
   proCertified?: boolean
   qualityWarning?: boolean
+  lastTask?: any
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -120,6 +124,7 @@ const ProductSlide = ({
   setSeen,
   proDesignAssigned,
   selectProduct,
+  lastTask,
   fromIntakeForm = false,
   isSelected = false,
   selectedIndex,
@@ -322,6 +327,12 @@ const ProductSlide = ({
         </ProLabel>
         : null
       }
+      {lastTask && lastTask.date && proStatus === IN_DESIGN && (
+        <ScheduledDate>
+          <DateIcon type="calendar" />
+          {moment(lastTask.date).format('M/D')}
+        </ScheduledDate>
+      )}
       <ThumbnailImage
         onClick={!selectProduct ? onPressThumbnail : undefined}
         src={thumbnail}

@@ -90,6 +90,7 @@ interface Props {
   proCertified?: boolean
   qualityWarning?: boolean
   showTooltips?: boolean
+  lastTask?: any
   setSeen: () => void
   deleteItem?: () => void
   formatMessage: (messageDescriptor: MessageType, values?: {}) => string
@@ -330,6 +331,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       fromIntakeForm,
       proDesignAssigned,
       selectProduct,
+      lastTask,
       isSelected = false,
       selectedIndex = 0,
       fitContainer = false,
@@ -452,7 +454,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             showTooltips,
             setSeen,
             proCertified,
-            qualityWarning
+            qualityWarning,
+            lastTask
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}

@@ -309,6 +309,14 @@ export interface Product {
   templateZip?: string
 }
 
+export type LastTask = {
+  date: string
+  started: boolean
+  type: string
+  art_department: boolean
+  assigned: string
+}
+
 export type DesignType = {
   id: number
   code: string
@@ -335,6 +343,7 @@ export type DesignType = {
   outputPng?: string
   proCertified?: boolean
   qualityWarning?: boolean
+  lastTask?: LastTask
 }
 
 export type DesignNote = {
