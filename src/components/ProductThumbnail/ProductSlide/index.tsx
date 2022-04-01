@@ -327,7 +327,7 @@ const ProductSlide = ({
         </ProLabel>
         : null
       }
-      {lastTask && lastTask.date && (
+      {lastTask && lastTask.date && proStatus === IN_DESIGN && (
         <ScheduledDate>
           <DateIcon type="calendar" />
           {moment(lastTask.date).format('M/D')}

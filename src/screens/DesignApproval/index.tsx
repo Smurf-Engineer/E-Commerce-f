@@ -2373,7 +2373,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </DesignLabel>
                 </NameLabel>
               }
-              {lastTask && lastTask.date && (
+              {lastTask && lastTask.date && itemStatus === IN_DESIGN && (
                 <ScheduledDate>
                   <DateIcon type="calendar" />
                   {moment(lastTask.date).format('M/D')}
