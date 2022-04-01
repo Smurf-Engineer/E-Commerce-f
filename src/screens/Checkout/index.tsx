@@ -544,6 +544,7 @@ class Checkout extends React.Component<Props, {}> {
                     skip,
                     currentPage,
                     indexAddressSelected,
+                    isFixedStore,
                     limit,
                     setSkipValueAction,
                     showBillingForm,

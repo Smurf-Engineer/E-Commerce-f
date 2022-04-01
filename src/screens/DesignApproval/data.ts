@@ -18,8 +18,8 @@ export const getFonts = graphql(
 )
 
 export const getProdesignItemQuery = gql`
-  query getProdesignItem($shortId: String!) {
-    projectItem: getProdesignItem(shortId: $shortId) {
+  query getProdesignItem($shortId: String!, $deviceInfo: DeviceObjectInput) {
+    projectItem: getProdesignItem(shortId: $shortId, deviceInfo: $deviceInfo) {
       id: short_id
       status
       code: design_code
