@@ -44,6 +44,7 @@ interface Props {
   indexAddressSelected: number
   limit: number
   showBillingForm: boolean
+  isFixedStore: boolean
   paymentClientSecret: string
   isFixedTeamstore: boolean
   invoiceEnabled: boolean
@@ -181,6 +182,7 @@ class Payment extends React.PureComponent<Props, {}> {
       paymentClientSecret,
       createPaymentIntent,
       setPayRef,
+      isFixedStore,
       isFixedTeamstore
     } = this.props
     const { stripe, openConfirm } = this.state
@@ -251,7 +253,7 @@ class Payment extends React.PureComponent<Props, {}> {
               {formatMessage(messages.methodPaypal)}
             </MethodButton>
           }
-          {invoiceEnabled && invoiceTerms && !isFixedTeamstore &&
+          {invoiceEnabled && invoiceTerms && (!isFixedTeamstore || (isFixedTeamstore && isFixedStore)) &&
             <MethodButton
               selected={paymentMethod === INVOICE}
               onClick={this.handleInvoiceClick}

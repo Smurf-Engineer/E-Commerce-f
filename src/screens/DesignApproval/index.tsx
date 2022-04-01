@@ -7,6 +7,7 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import get from 'lodash/get'
 import debounce from 'lodash/debounce'
+import uaParser from 'ua-parser-js'
 import GoogleFontLoader from 'react-google-font-loader'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import { compose, graphql, withApollo } from 'react-apollo'
@@ -323,7 +324,7 @@ import {
 import moment from 'moment'
 import messages from './messages'
 import Spin from 'antd/lib/spin'
-import { getFileExtension, getFileWithExtension } from '../../utils/utilsFiles'
+import { getFileExtension, getFileWithExtension, getVideoCardInfo } from '../../utils/utilsFiles'
 import { UploadChangeParam } from 'antd/lib/upload'
 import AccessoryColors from './AccessoryColors'
 import SwipeableBottomSheet from 'react-swipeable-clickeable-bottom-sheet'
@@ -2545,7 +2546,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                 </MobileRequestButtons>
               }
-              {!!itemStatus &&
+              {!!itemStatus && false &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId && showRenderWindow &&
                     <Render3D
@@ -3062,8 +3063,37 @@ const DesignsEnhance = compose(
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''
       const queryParams = queryString.parse(search)
+      let deviceType = 'desktop'
+      let deviceName = ''
+      let screenWidth = ''
+      let screenHeight = ''
+      let gpu = ''
+      let browser = ''
+      let osName = ''
+      if (typeof window !== 'undefined') {
+        gpu = getVideoCardInfo().renderer || ''
+        const parser = new uaParser()
+        const infoDevice = parser.getResult() || {}
+        deviceType = infoDevice && infoDevice.device ? infoDevice.device.type || '' : ''
+        deviceName = infoDevice && infoDevice.device ? 
+          `${infoDevice.device.vendor || ''} ${infoDevice.device.model || ''}` : ''
+        browser = infoDevice && infoDevice.device ?
+          `${infoDevice.browser.name || ''} ${infoDevice.browser.version || ''}` : ''
+        osName = infoDevice && infoDevice.device ? `${infoDevice.os.name || ''} ${infoDevice.os.version || ''}` : ''
+        screenWidth = `${window.screen.width}px`
+        screenHeight = `${window.screen.height}px`
+      }
+      const deviceInfo = {
+        deviceType,
+        deviceName,
+        screenWidth,
+        screenHeight,
+        gpu,
+        browser,
+        osName
+      }
       return {
-        variables: { shortId: queryParams.id },
+        variables: { shortId: queryParams.id, deviceInfo },
         fetchPolicy: 'network-only',
         skip: !queryParams.id
       }
