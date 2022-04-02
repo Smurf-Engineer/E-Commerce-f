@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { GRAY_DARK, WHITE, GRAY_LIGHT, BLUE } from '../../theme/colors'
+import { GRAY_DARK, WHITE, BLUE, GRAY_STRONG, GRAY_SNOW } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
@@ -27,26 +27,64 @@ interface ButtonProps {
   selected?: boolean
 }
 
-export const MethodButton = styled(Button)`
-  background-color: ${WHITE};
-  border: 2px solid ${GRAY_LIGHT};
-  border-radius: 2px;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
-  color: ${({ selected }: ButtonProps) => (selected ? BLUE : GRAY_LIGHT)};
-  height: 40px;
-  margin-left: 5px;
-  width: 138.23px;
+export const PaymentIcon = styled(Icon)`
+  font-size: 16px;
+`
 
-  &:hover,
-  &::selection,
-  &::after,
-  &:focus {
+export const PaypalIcon = styled.img`
+  transition: all .25s;
+  max-width: 90%;
+`
+
+export const CheckIcon = styled(Icon)`
+  color: ${BLUE};
+  position: absolute;
+  top: -10px;
+  right: -6px;
+  font-size: 18px;
+  background: white;
+  border-radius: 35px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: scale-in-center 0.25s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  @keyframes scale-in-center {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+`
+
+export const MethodButton = styled(Button)`
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ selected }) => selected ? WHITE : GRAY_SNOW};
+  border-radius: 5px;
+  transition: all .25s;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  color: ${({ selected }) => selected ? BLUE : GRAY_STRONG};
+  height: 58px;
+  margin-left: 5px;
+  margin-right: 12px;
+  width: 112px;
+  span {
+    margin-left: 0px;
+  }
+  &:hover {
     border-color: ${BLUE};
     color: ${BLUE};
   }
 
-  border: 0.5px solid
-    ${({ selected }: ButtonProps) => (selected ? BLUE : GRAY_LIGHT)};
+  border: ${({ selected }: ButtonProps) => (selected ? `1.5px solid ${BLUE}` : `0.5px solid ${GRAY_STRONG}`)};
 `
 
 export const InvoiceDiv = styled.div`

@@ -30,17 +30,15 @@ export const ContinueButton = styled.div`
   margin-top: 28px;
   justify-content: center;
   align-items: center;
-  background: white;
+  background: #69a1e3;
   border-radius: 25px;
-  border: 1px solid #4a90e282;
   padding: 12px;
-  color: ${BLUE};
-  box-shadow: 0px 2px 7px -1px lightgrey;
+  color: ${WHITE};
+  box-shadow: 0px 2px 4px 0px lightgrey;
   transition: all .25s;
   &:hover {
     cursor: pointer;
-    background: #69a1e3;
-    color: ${WHITE};
+    opacity: 0.7;
   }
 `
 

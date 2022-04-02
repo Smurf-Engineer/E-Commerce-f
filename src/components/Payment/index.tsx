@@ -15,8 +15,12 @@ import {
   InvoiceTitle,
   InvoiceSubtitle,
   InvoiceInformation,
-  InvoiceIcon
+  InvoiceIcon,
+  PaymentIcon,
+  PaypalIcon,
+  CheckIcon
 } from './styledComponents'
+import paypalIcon from '../../assets/paypal_logo.png'
 import CreditCardForm from '../CreditCardFormBilling'
 import { AddressType, StripeCardData, CreditCardData } from '../../types/common'
 import Modal from '../../components/ConfirmCountryDialog'
@@ -243,6 +247,8 @@ class Payment extends React.PureComponent<Props, {}> {
             selected={paymentMethod === CREDITCARD}
             onClick={this.handleCreditCardClick}
           >
+              {paymentMethod === CREDITCARD && <CheckIcon type="check-circle" theme="filled" />}
+            <PaymentIcon type="credit-card" />
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
           {!isFixedTeamstore &&
@@ -250,7 +256,8 @@ class Payment extends React.PureComponent<Props, {}> {
               selected={paymentMethod === PAYPAL}
               onClick={this.handlePaypalClick}
             >
-              {formatMessage(messages.methodPaypal)}
+              {paymentMethod === PAYPAL && <CheckIcon type="check-circle" theme="filled" />}
+              <PaypalIcon src={paypalIcon} />
             </MethodButton>
           }
           {invoiceEnabled && invoiceTerms && (!isFixedTeamstore || (isFixedTeamstore && isFixedStore)) &&
@@ -258,6 +265,8 @@ class Payment extends React.PureComponent<Props, {}> {
               selected={paymentMethod === INVOICE}
               onClick={this.handleInvoiceClick}
             >
+              {paymentMethod === INVOICE && <CheckIcon type="check-circle" theme="filled" />}
+              <PaymentIcon type="audit" />
               {formatMessage(messages.invoice)}
             </MethodButton>
           }

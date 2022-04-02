@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'screens.DesignApproval.cancel',
     defaultMessage: 'Cancel'
   },
+  estimatedDate: {
+    id: 'screens.DesignApproval.estimatedDate',
+    defaultMessage: 'The <strong>estimated date</strong> your design will be <strong>ready for review</strong>'
+  },
   send: {
     id: 'screens.DesignApproval.send',
     defaultMessage: 'Send'
