@@ -42,11 +42,11 @@ export const ButtonWrapper = styled.div`
 `
 
 export const StyledEmptyButton = styled(Button)`
-  height: 50px;
-  width: 221px;
+  height: 43px;
+  width: 195px;
   border: 2px solid ${BUTTON_COLOR};
   border-radius: 2px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 22px;
   text-align: center;
   margin-bottom: 20px;

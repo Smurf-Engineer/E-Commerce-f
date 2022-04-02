@@ -1846,7 +1846,7 @@ export const ButtonWrapper = styled.div`
   .ant-btn-primary  {
     background-color: ${({ secondary }: RowProps) => secondary ? WHITE : BLUE};
     border-color: ${({ secondary }: RowProps) => secondary ? GRAY_STRONG : BLUE};
-    width: 138px;
+    width: 78px;
     color: ${({ selected }: RowProps) => selected ? WHITE : GRAY_DARK};
   }
   .ant-btn-primary:hover {

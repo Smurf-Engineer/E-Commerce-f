@@ -2375,10 +2375,21 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </NameLabel>
               }
               {lastTask && lastTask.date && itemStatus === IN_DESIGN && (
-                <ScheduledDate>
-                  <DateIcon type="calendar" />
-                  {moment(lastTask.date).format('M/D')}
-                </ScheduledDate>
+                <StyledPopOver
+                  overlayClassName="innerClassTooltip"
+                  title={
+                    <PopoverText
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.estimatedDate) 
+                        }}
+                    />
+                  }
+                >
+                  <ScheduledDate>
+                    <DateIcon type="calendar" />
+                    {moment(lastTask.date).format('M/D')}
+                  </ScheduledDate>
+                </StyledPopOver>
               )}
               {!!itemStatus &&
                 <StatusLabel onClick={isMobile ? this.openStatusModal : () => {}} color={statusColor}>
