@@ -120,8 +120,9 @@ export const getProDesignProject = gql`
             abbreviation
             shortName: short_name
           }
-          images: pictures {
+          images: original_pictures {
             front: front_image
+            thumbnail: thumbnail
             back: back_image
             left: left_image
             right: right_image
