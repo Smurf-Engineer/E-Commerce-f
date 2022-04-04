@@ -158,8 +158,9 @@ export const getProdesignItemQuery = gql`
             code
             name
             shortDescription: short_description
-            pictures {
+            pictures: original_pictures {
               front: front_image
+              thumbnail
             }
           }
           lastTask {
