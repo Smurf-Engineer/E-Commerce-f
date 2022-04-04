@@ -2725,7 +2725,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                                 {itemLabels[designStatus] || itemLabels[IN_DESIGN]}
                               </ProStatus>
                             </ProLabel>
-                            <DesignImage src={designReady ? image : pictures[0].front} />
+                            <DesignImage src={designReady ? image : (pictures[0].thumbnail || pictures[0].front)} />
                             <DesignName secondary={!nameDesign}>{nameDesign || 'Pending'}</DesignName>
                             <ProductName>{nameProduct}</ProductName>
                           </ProjectDesign>
@@ -2785,7 +2785,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                                 {itemLabels[designStatus] || itemLabels[IN_DESIGN]}
                               </ProStatus>
                             </ProLabel>
-                            <DesignImage src={designReady ? image : pictures[0].front} />
+                            <DesignImage src={designReady ? image : pictures[0].thumbnail || pictures[0].front} />
                             <DesignName secondary={!nameDesign}>{nameDesign || 'Pending'}</DesignName>
                             <ProductName>{nameProduct}</ProductName>
                           </ProjectDesign>
