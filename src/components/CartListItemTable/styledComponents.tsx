@@ -299,7 +299,40 @@ export const StyledSelect = styled(Select)`
   & .ant-select-selection {
     border-color: ${({ highlightFields }: SelectType) =>
     highlightFields ? RED : GRAY_ANTDESIGN};
+    transition: all .25s;
   }
+  transition: all .25s;
+  ${({ highlightFields }: SelectType) => highlightFields ? `
+    .ant-select-selection {
+      background: #fff3f3;
+    }
+    animation: pulse 1s 0.5s 2;
+    @keyframes pulse {
+      0% {
+        filter: drop-shadow(0 0 0 rgba(255, 0, 0, 1));
+        transform: scale(1);
+        .ant-select-selection {
+          background: #fff3f3 !important;
+        }
+      }
+    
+      70% {
+        filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0));
+        transform: scale(1.05);
+        .ant-select-selection {
+          background: #white !important;
+        }
+      }
+    
+      100% {
+        filter: drop-shadow(0 0 0 rgba(255, 0, 0, 0));
+        transform: scale(1);
+        .ant-select-selection {
+          background: #fff3f3 !important;
+        }
+      }
+    }
+  ` : ''}
 `
 
 export const StyledInput = styled(Input)`
