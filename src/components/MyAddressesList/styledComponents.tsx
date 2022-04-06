@@ -76,7 +76,7 @@ export const AddressesList = styled.div`
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: flex-start;
-    max-height: 620px;
+    max-height: 668px;
   ` : ''}
 `
 
