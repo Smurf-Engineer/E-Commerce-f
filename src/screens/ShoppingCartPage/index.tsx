@@ -9,6 +9,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import has from 'lodash/has'
 import find from 'lodash/find'
 import get from 'lodash/get'
+import zenscroll from 'zenscroll'
 import isEqual from 'lodash/isEqual'
 import every from 'lodash/every'
 import filter from 'lodash/filter'
@@ -289,6 +290,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       }
       return this.proceedCheckout()
     }
+    zenscroll.toY(0, 1500)
+    message.error('Missing values on 1 or more items!')
     highlightRequiredFields()
   }
 
