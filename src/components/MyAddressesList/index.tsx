@@ -176,7 +176,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
           city={`${city}, ${stateProvince}`}
           zipCode={zipCode}
           country={country}
-          apartment={listForMyAccount ? apartment : undefined}
+          apartment={apartment}
           showSecondaryButtons={listForMyAccount}
         />
       )
