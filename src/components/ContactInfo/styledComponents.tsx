@@ -33,6 +33,16 @@ export const ContactLabel = styled.div`
   margin-bottom: 15px;
 `
 
+export const PhoneLabel = styled.a`
+  color: #fff;
+  text-decoration: underline;
+  margin-bottom: 15px;
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+`
+
 export const Subtitle = styled.div`
   font-size: 11.5px;
   color: ${GRAY};
