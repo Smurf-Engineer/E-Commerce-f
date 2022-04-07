@@ -417,7 +417,10 @@ class MainLayout extends React.Component<Props, {}> {
           </CarouselContainer>
           
         )}
-        <Helmet defaultTitle={MAIN_TITLE} />
+        <Helmet defaultTitle={MAIN_TITLE}>
+          {/* Stop Safari from detecting and enabling phone number links with the following meta tag */}
+          <meta name="format-detection" content="telephone=no" />
+        </Helmet>
         <Header {...{ hideTopHeader, hideBottomHeader }}>
           <MenuBar
             searchFunc={this.onSearch}
