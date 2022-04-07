@@ -2,7 +2,7 @@
  * ContactInfo Component - Created by Carlos Cazarez on 07/02/18.
  */
 import * as React from 'react'
-import { Container, Title, AddressText, ContactLabel, Subtitle } from './styledComponents'
+import { Container, Title, AddressText, ContactLabel, Subtitle, PhoneLabel } from './styledComponents'
 import messages from './messages'
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -64,9 +64,9 @@ const ContactInfo = ({ formatMessage, currentRegion }: Props) => {
           {formatMessage(suburb)}
         </AddressText>
       </ContactLabel>
-      <ContactLabel>
+      <PhoneLabel href={`tel:${formatMessage(phone)}`}>
         {formatMessage(phone)}
-      </ContactLabel>
+      </PhoneLabel>
       <ContactLabel>{formatMessage(mail)}</ContactLabel>
     </Container>
   )
