@@ -31,6 +31,11 @@ export const getAlertsQuery = gql`
       sequence
       content
     }
+  }
+`
+
+export const getUserQuery = gql`
+  query getUserProfile {
     profileData: getUserProfile {
       userProfile {
         userId: id
