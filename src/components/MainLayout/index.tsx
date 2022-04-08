@@ -24,6 +24,7 @@ import {
   SimpleFont,
   QueryProps,
   Alert,
+  User,
 } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
@@ -39,7 +40,7 @@ import {
 } from './styledComponents'
 import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
-import { getAlertsQuery, getFonts } from './data'
+import { getAlertsQuery, getFonts, getUserQuery } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
@@ -55,8 +56,13 @@ interface AlertsData extends QueryProps {
   alertsData: Alert[]
 }
 
+interface UserData extends QueryProps {
+  profileData: User
+}
+
 interface Props extends RouteComponentProps<any> {
   alertsData: AlertsData
+  userQuery: UserData
   children: React.ReactChildren
   intl: InjectedIntl
   history: any
@@ -216,13 +222,13 @@ class MainLayout extends React.Component<Props, {}> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { user, disableAssist, alertsData } = this.props
+    const { user, disableAssist, alertsData, userQuery } = this.props
 
     if (typeof window !== 'undefined' && !disableAssist) {
       const initialized = get(window, '_slaask._ready', false)
-      const loading = get(alertsData, 'loading', true)
+      const loading = get(userQuery, 'loading', true)
       if (!initialized && !loading) {
-        const userProfile = get(alertsData, 'profileData.userProfile', {})
+        const userProfile = get(userQuery, 'profileData.userProfile', {})
         openSupport({...user, userCode: userProfile.userId, managerName: userProfile.managerName })
       }
     }
@@ -544,12 +550,13 @@ const mapStateToProps = (state: any) => {
   }
 }
 
+type OwnProps = {
+  user?: User
+}
+
 const LayoutEnhance = compose(
   withApollo,
   getFonts,
-  graphql(getAlertsQuery, {
-    name: 'alertsData',
-  }),
   connect(
     mapStateToProps,
     {
@@ -559,6 +566,18 @@ const LayoutEnhance = compose(
       openWithoutSaveModalAction: openOutWithoutSaveModalAction,
       setAccountScreen: setDefaultScreenAction,
     }
-  )
+  ),
+  graphql(getAlertsQuery, {
+    name: 'alertsData',
+  }),
+  graphql(getUserQuery, {
+    options: (ownprops: OwnProps) => {
+      const { user } = ownprops
+      return {
+        skip: !user,
+      }
+    },
+    name: 'userQuery',
+  }),
 )(MainLayout)
 export default LayoutEnhance
