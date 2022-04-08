@@ -24,7 +24,8 @@ import {
   MultiButtonsDiv,
   SecondaryButtonsMulti,
   StyledButtonMulti,
-  EditButtonMulti
+  EditButtonMulti,
+  EditButtonWrapper
 } from './styledComponents'
 
 interface Props {
@@ -84,14 +85,14 @@ const MyAddress = ({
     selectAddressAction(addressIndex as number)
   }
   let buttons = !showSecondaryButtons ? (
-    <>
+    <EditButtonWrapper>
       <StyledCheckbox {...{ small }} checked={isSelected} onChange={handleOnSelectAddress}>
         {formatMessage(messages.useThisAddress)}
       </StyledCheckbox>
       <EditButton onClick={handleOnEdit}>
-        <ButtonIcon type="edit" />{formatMessage(messages.edit)}
+        <ButtonIcon type="edit" />
       </EditButton>
-    </>
+    </EditButtonWrapper>
   ) : (
       <SecondaryButtons>
         <StyledButton onClick={handleOnDelete}>

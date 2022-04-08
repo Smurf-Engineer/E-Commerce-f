@@ -129,6 +129,11 @@ export const EditButtonMulti = styled.div`
   }
 `
 
+export const EditButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 export const SecondaryButtons = styled.div`
   display: flex;
   margin-top: 8px;
