@@ -215,7 +215,7 @@ interface Props extends RouteComponentProps<any> {
   smsCheckAction: (checked: boolean) => void
   emailCheckAction: (checked: boolean) => void
   showAddressFormAction: (show: boolean) => void
-  showBillingAddressFormAction: (show: boolean) => void
+  showBillingAddressFormAction: (show: boolean, modal?: boolean) => void
   setSelectedAddressAction: (
     address: AddressType,
     indexAddress: number,
@@ -226,7 +226,7 @@ interface Props extends RouteComponentProps<any> {
     indexAddress: number
   ) => void
   updateAddress: (variables: {}) => void
-  setAddressEditAction: (address: AddressType | {}) => void
+  setAddressEditAction: (address: AddressType | {}, billing?: boolean) => void
   sameBillingAndAddressCheckedAction: () => void
   sameBillingAndAddressUncheckedAction: () => void
   saveToStorage: (cart: CartItems[]) => void
@@ -289,6 +289,7 @@ class Checkout extends React.Component<Props, {}> {
       phone,
       showForm,
       showBillingForm,
+      showBillingModal,
       indexAddressSelected,
       billingFirstName,
       billingLastName,
@@ -547,7 +548,9 @@ class Checkout extends React.Component<Props, {}> {
                     isFixedStore,
                     limit,
                     setSkipValueAction,
+                    updateAddress,
                     showBillingForm,
+                    showBillingModal,
                     showBillingAddressFormAction,
                     paymentClientSecret
                   }}
@@ -561,6 +564,7 @@ class Checkout extends React.Component<Props, {}> {
                   setStripeAction={this.setStripe}
                   createPaymentIntent={this.createPaymentIntent}
                   isFixedTeamstore={preorder}
+                  setAddressEdit={this.setAddressEdit}
                 />
                 <Review
                   {...{
@@ -834,9 +838,9 @@ class Checkout extends React.Component<Props, {}> {
     Message.error(err, 5)
   }
 
-  setAddressEdit = (address: AddressType | {}) => {
+  setAddressEdit = (address: AddressType | {}, billing?: boolean) => {
     const { setAddressEditAction } = this.props
-    setAddressEditAction(address)
+    setAddressEditAction(address, billing)
   }
 
   handleOnPlaceOrder = async (event: any, sca?: boolean) => {

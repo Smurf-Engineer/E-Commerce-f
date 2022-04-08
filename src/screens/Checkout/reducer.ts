@@ -91,6 +91,7 @@ export const initialState = fromJS({
   stripeToken: '',
   showCardForm: false,
   showBillingForm: false,
+  showBillingModal: false,
   selectedCard: {},
   // Review
   loadingPlaceOrder: false,
@@ -113,6 +114,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         loadingBilling: false
       })
     case SET_ADDRESS_EDIT: {
+      const { billing } =  action
       const {
         firstName,
         lastName,
@@ -127,6 +129,23 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         defaultBilling,
         defaultShipping
       } = action.address
+      if (billing) {
+        return state.merge({
+          showBillingModal: true,
+          billingFirstName: firstName || '',
+          billingLastName: lastName || '',
+          billingStreet: street || '',
+          billingApartment: apartment || '',
+          billingCountry: country || '',
+          billingStateProvince: stateProvince || '',
+          billingStateProvinceCode: stateProvinceCode || '',
+          billingCity: city || '',
+          billingZipCode: zipCode || '',
+          billingPhone: phone || '',
+          billingDefaultBilling: defaultBilling || -1,
+          billingDefaultShipping: defaultShipping || -1
+        }) 
+      }
       return state.merge({
         firstName: firstName || '',
         lastName: lastName || '',
@@ -298,6 +317,9 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
           hasError: false,
           indexAddressSelected: -1
         })
+      }
+      if (action.modal) {
+        return state.set('showBillingModal', false)
       }
       return state.set('showBillingForm', false)
     }
