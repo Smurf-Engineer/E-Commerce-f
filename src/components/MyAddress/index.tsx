@@ -84,9 +84,14 @@ const MyAddress = ({
     selectAddressAction(addressIndex as number)
   }
   let buttons = !showSecondaryButtons ? (
-    <StyledCheckbox {...{ small }} checked={isSelected} onChange={handleOnSelectAddress}>
-      {formatMessage(messages.useThisAddress)}
-    </StyledCheckbox>
+    <>
+      <StyledCheckbox {...{ small }} checked={isSelected} onChange={handleOnSelectAddress}>
+        {formatMessage(messages.useThisAddress)}
+      </StyledCheckbox>
+      <EditButton onClick={handleOnEdit}>
+        <ButtonIcon type="edit" />{formatMessage(messages.edit)}
+      </EditButton>
+    </>
   ) : (
       <SecondaryButtons>
         <StyledButton onClick={handleOnDelete}>

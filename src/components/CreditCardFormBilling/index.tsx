@@ -5,9 +5,11 @@ import * as React from 'react'
 import { injectStripe, CardElement } from 'react-stripe-elements'
 import AnimateHeight from 'react-animate-height'
 import get from 'lodash/get'
-import { isNumberValue } from '../../utils/utilsAddressValidation'
+import Modal from 'antd/lib/modal'
+import message from 'antd/lib/message'
+import { isApoCity, isNumberValue, isPoBox, isValidCity, isValidZip } from '../../utils/utilsAddressValidation'
 import messages from './messages'
-import { PHONE_FIELD } from '../../constants'
+import { PHONE_FIELD, PHONE_MINIMUM } from '../../constants'
 import {
   Container,
   ContainerBilling,
@@ -23,7 +25,8 @@ import {
   InputTitleContainer,
   Label,
   ErrorMsg,
-  StripeCardElement
+  StripeCardElement,
+  modalStyle
 } from './styledComponents'
 import ShippingAddressForm from '../ShippingAddressForm'
 import MyAddresses from '../MyAddressesList'
@@ -46,10 +49,11 @@ interface Props {
   indexAddressSelected: number
   limit: number
   showBillingForm: boolean
+  showBillingModal: boolean
   isEuSubsidiary: boolean
   isFixedTeamstore: boolean
   isInvoice: boolean
-  showBillingAddressFormAction: (show: boolean) => void
+  showBillingAddressFormAction: (show: boolean, modal?: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
   setLoadingBillingAction: (loading: boolean) => void
@@ -69,13 +73,21 @@ interface Props {
   ) => void
   nextStep: () => void
   createPaymentIntent: () => void
+  setAddressEdit: (address: AddressType | {}, billing?: boolean) => void
+  updateAddress: (variables: {}) => void
 }
 
 const PAYMENT_TYPE_CARD = 'card'
 export class CreditCardFormBilling extends React.Component<Props, {}> {
   state = {
-    cardElement: null
+    addressIdToMutate: -1,
+    showAddressModal: false,
+    cardElement: null,
+    modalLoading: false,
+    hasError: false
   }
+  private addressListRef: any
+
   render() {
     const {
       formatMessage,
@@ -107,9 +119,16 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
       currentPage,
       indexAddressSelected,
       showBillingForm,
+      showBillingModal,
       showBillingAddressFormAction,
       isEuSubsidiary
     } = this.props
+    const { 
+      modalLoading, 
+      hasError: hasErrorState,
+      showAddressModal,
+      addressIdToMutate
+    } = this.state
 
     const renderAddresses = (
       adressesToShow?: number | null,
@@ -118,17 +137,23 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
     ) => {
       return (
         <MyAddresses
+          ref={(addressListRef: any) => {
+            this.addressListRef = addressListRef
+          }}
           itemsNumber={adressesToShow}
           selectAddressAction={this.handleSelectedAddress}
           renderForModal={renderInModal}
-          changePage={this.handlechangePage}
+          changePage={this.handleChangePage}
           listForMyAccount={false}
           billingAddress={true}
           simple={true}
           showForm={showBillingForm}
           showAddressFormAction={showBillingAddressFormAction}
+          setAddressToUpdateAction={this.setAddressToUpdateAction}
           {...{
             withPagination,
+            showAddressModal,
+            addressIdToMutate,
             indexAddressSelected,
             currentPage,
             skip,
@@ -237,6 +262,38 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
         >
           {formatMessage(messages.continue)}
         </ContinueButton>
+        <Modal
+          visible={showAddressModal || showBillingModal}
+          closable={false}
+          maskClosable={false}
+          okText={formatMessage(messages.saveAddress)}
+          onOk={this.handleOnSaveAddress}
+          confirmLoading={modalLoading}
+          style={modalStyle}
+          onCancel={this.handleOnResetData}
+          destroyOnClose={true}
+          width="864px"
+        >
+          <Title>{formatMessage(messages.title)}</Title>
+          <ShippingAddressForm
+            {...{
+              firstName,
+              lastName,
+              street,
+              apartment,
+              country,
+              stateProvince,
+              stateProvinceCode,
+              city,
+              zipCode,
+              phone,
+              selectDropdownAction,
+              inputChangeAction,
+              formatMessage
+            }}
+            hasError={hasError || hasErrorState}
+          />
+        </Modal>
       </Container>
     )
   }
@@ -381,6 +438,108 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
   handleSelectedAddress = (address: AddressType, indexAddress: number) => {
     const { setSelectedAddress } = this.props
     setSelectedAddress(address, indexAddress, true)
+  }
+
+  setAddressToUpdateAction = (address: AddressType) => {
+    const { setAddressEdit } = this.props
+    const { id } = address || {}
+    this.setState({ addressIdToMutate: id, showAddressModal: true })
+    setAddressEdit(address, true)
+  }
+
+  handleOnSaveAddress = async () => {
+    const {
+      billingAddress: {
+        firstName,
+        lastName,
+        street,
+        apartment,
+        country,
+        stateProvince,
+        stateProvinceCode,
+        city,
+        zipCode,
+        phone,
+        defaultBilling,
+        defaultShipping,
+      },
+      formatMessage
+    } = this.props
+    const { addressIdToMutate } = this.state
+    if (addressIdToMutate !== -1) {
+      const error =
+      !firstName ||
+      !lastName ||
+      !street ||
+      !country ||
+      !stateProvince ||
+      !stateProvinceCode ||
+      !city ||
+      !zipCode ||
+      !phone ||
+      (isPoBox(street) && defaultShipping) ||
+      isApoCity(city)
+
+      if (!isValidCity(city) || isNumberValue(city)) {
+        message.error(formatMessage(messages.invalidCity))
+        return
+      }
+
+      if (!isValidZip(zipCode)) {
+        message.error(formatMessage(messages.invalidZip))
+        return
+      }
+
+      if (!phone || (phone && phone.length < PHONE_MINIMUM)) {
+        message.error(formatMessage(messages.invalidPhone))
+        return
+      }
+
+      if (error) {
+        this.setState({ hasError: error })
+        return
+      }
+
+      const address = {
+        id: addressIdToMutate,
+        firstName,
+        lastName,
+        street,
+        apartment,
+        country,
+        stateProvince,
+        stateProvinceCode,
+        city,
+        zipCode: zipCode.trim(),
+        phone,
+        defaultBilling,
+        defaultShipping
+      }
+      this.setState({ modalLoading: true })
+      await this.updateAddAddress(address)
+      this.handleOnResetData()
+    }
+  }
+
+  handleOnResetData = () => {
+    const { setAddressEdit, showBillingAddressFormAction } = this.props
+    setAddressEdit({})
+    this.setState({
+      showAddressModal: false,
+      modalLoading: false,
+      addressIdToMutate: -1,
+    })
+    showBillingAddressFormAction(false, true)
+  }
+
+  updateAddAddress = async (address: AddressType) => {
+    const { updateAddress } = this.props
+    await updateAddress({ variables: { address } })
+    if (this.addressListRef && this.addressListRef.getWrappedInstance) {
+      const wrapper = this.addressListRef.getWrappedInstance()
+      const editButton = wrapper.getWrappedInstance()
+      await editButton.reloadAddress()
+    }
   }
 }
 

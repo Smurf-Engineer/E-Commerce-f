@@ -48,13 +48,14 @@ interface Props {
   indexAddressSelected: number
   limit: number
   showBillingForm: boolean
+  showBillingModal: boolean
   isFixedStore: boolean
   paymentClientSecret: string
   isFixedTeamstore: boolean
   invoiceEnabled: boolean
   invoiceTerms: string
   setPayRef: (payRef: any) => void
-  showBillingAddressFormAction: (show: boolean) => void
+  showBillingAddressFormAction: (show: boolean, modal?: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   formatMessage: (messageDescriptor: any) => string
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
@@ -77,6 +78,8 @@ interface Props {
   saveCountryAction: (countryCode: string | null) => void
   setStripeAction: (stripe: any) => void
   createPaymentIntent: () => void
+  setAddressEdit: (address: AddressType | {}, billing?: boolean) => void
+  updateAddress: (variables: {}) => void
 }
 
 interface MyWindow extends Window {
@@ -182,12 +185,15 @@ class Payment extends React.PureComponent<Props, {}> {
       limit,
       setSkipValueAction,
       showBillingForm,
+      showBillingModal,
       showBillingAddressFormAction,
       paymentClientSecret,
       createPaymentIntent,
       setPayRef,
       isFixedStore,
-      isFixedTeamstore
+      isFixedTeamstore,
+      setAddressEdit,
+      updateAddress
     } = this.props
     const { stripe, openConfirm } = this.state
 
@@ -224,11 +230,14 @@ class Payment extends React.PureComponent<Props, {}> {
           limit,
           setSkipValueAction,
           showBillingForm,
+          showBillingModal,
           showBillingAddressFormAction,
           paymentClientSecret,
           createPaymentIntent,
           isFixedTeamstore,
           stripe,
+          setAddressEdit,
+          updateAddress
         }}
         ref={(payRef: any) => { setPayRef(payRef) }}
         isInvoice={paymentMethod === INVOICE}
@@ -236,7 +245,7 @@ class Payment extends React.PureComponent<Props, {}> {
         selectDropdownAction={this.handleOnDropdownAction}
         inputChangeAction={this.handleOnChangeInput}
         isEuSubsidiary={europeStripeAccount}
-      />
+        />
     )
 
     return (

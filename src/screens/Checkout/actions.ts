@@ -91,9 +91,10 @@ export const showAddressFormAction = (show: boolean): AnyAction => ({
   show
 })
 
-export const showBillingAddressFormAction = (show: boolean): AnyAction => ({
+export const showBillingAddressFormAction = (show: boolean, modal?: boolean): AnyAction => ({
   type: SHOW_BILLING_ADDRESS_FORM,
-  show
+  show,
+  modal
 })
 
 export const sameBillingAndAddressCheckedAction = (): AnyAction => ({
@@ -124,9 +125,10 @@ export const setSelectedAddressesAction = (
   index
 })
 
-export const setAddressEditAction = (address: AddressType): AnyAction => ({
+export const setAddressEditAction = (address: AddressType, billing?: boolean): AnyAction => ({
   type: SET_ADDRESS_EDIT,
-  address
+  address,
+  billing
 })
 
 export const setStripeErrorAction = (error: string): AnyAction => ({

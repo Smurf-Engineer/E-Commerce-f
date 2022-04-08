@@ -5,6 +5,10 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
+  title: {
+    id: 'components.CreditCardFormBilling.tittle',
+    defaultMessage: 'Billing Address'
+  },
   cardNumber: {
     id: 'components.CreditCardFormBilling.cardNumber',
     defaultMessage: 'Card information'
@@ -36,5 +40,21 @@ export default defineMessages({
   methodCreditCard: {
     id: 'components.CreditCardFormBilling.methodCreditCard',
     defaultMessage: 'Credit Card'
+  },
+  saveAddress: {
+    id: 'components.CreditCardFormBilling.saveAddress',
+    defaultMessage: 'Save'
+  },
+  invalidCity: {
+    id: 'components.CreditCardFormBilling.invalidCity',
+    defaultMessage: 'Enter a valid city name'
+  },
+  invalidZip: {
+    id: 'components.CreditCardFormBilling.invalidZip',
+    defaultMessage: 'Enter a valid ZIP Code'
+  },
+  invalidPhone: {
+    id: 'components.CreditCardFormBilling.invalidPhone',
+    defaultMessage: 'Phone number must be at least 11 characters including the country code'
   }
 })

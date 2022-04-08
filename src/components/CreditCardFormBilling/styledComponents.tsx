@@ -122,3 +122,5 @@ export const StripeCardElement = {
     color: GRAY_DARK
   }
 }
+
+export const modalStyle = { top: 20, paddingBottom: '96px' }
