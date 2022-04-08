@@ -92,13 +92,15 @@ export const openSupport = (user: UserType) => {
       sessionStorage.setItem('slaaskSupportId', slaaskId)
       id = slaaskId
     }
-    const { email, name, lastName, id: userId } = user || {}
+    const { email, name, lastName, id: userId, managerName, userCode } = user || {}
     const info = {
       id,
       email,
       userId,
       name,
-      lastName
+      lastName,
+      managerName,
+      userCode
     }
     initSlaask(info, true)
   } catch (error) {

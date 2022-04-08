@@ -31,5 +31,11 @@ export const getAlertsQuery = gql`
       sequence
       content
     }
+    profileData: getUserProfile {
+      userProfile {
+        userId: id
+        managerName: account_manager_name
+      }
+    }
   }
 `

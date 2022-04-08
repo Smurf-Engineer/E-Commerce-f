@@ -37,6 +37,7 @@ export const PhoneLabel = styled.a`
   color: #fff;
   text-decoration: underline;
   margin-bottom: 15px;
+  display: inline-block;
   &:hover {
     color: #fff;
     text-decoration: underline;

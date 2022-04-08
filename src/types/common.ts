@@ -733,6 +733,8 @@ export interface UserType {
   lastName: string
   token: string
   email: string
+  managerName?: string
+  userCode?: number
   administrator: boolean
   permissions: UserPermissions
 }

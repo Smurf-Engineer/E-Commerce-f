@@ -107,6 +107,7 @@ interface Props {
   isMobile: boolean
   responsive: Responsive
   callbackToSave: boolean
+  managerName: string
   loggedUserId: string
   infoModalOpen: boolean
   saveAndBuy: boolean
@@ -340,6 +341,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       fonts,
       variants,
       colorsList,
+      managerName,
       showGuidelines,
       placeholders,
       previewImage,
@@ -485,6 +487,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               proAssistId,
               openPreview,
               userEmail,
+              managerName,
               name,
               lastName,
               colors,

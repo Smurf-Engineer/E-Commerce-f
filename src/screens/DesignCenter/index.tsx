@@ -792,6 +792,11 @@ export class DesignCenter extends React.Component<Props, {}> {
       'designInfo.tutorialPlaylist',
       ''
     )
+    const managerName = get(
+      dataDesignLabInfo,
+      'profileData.userProfile.managerName',
+      ''
+    )
     const productQueryWithError = !!dataProduct && !!dataProduct.error
     const designQueryWithError = !!dataDesign && !!dataDesign.error
     if (productQueryWithError || designQueryWithError) {
@@ -1075,6 +1080,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   selectedPredyed,
                   textFormat,
                   artFormat,
+                  managerName,
                   bindingName,
                   proAssistId,
                   openPaletteModalAction,

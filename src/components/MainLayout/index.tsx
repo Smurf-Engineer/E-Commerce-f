@@ -217,8 +217,14 @@ class MainLayout extends React.Component<Props, {}> {
 
   componentDidUpdate(prevProps: Props) {
     const { user, disableAssist, alertsData } = this.props
-    if (!disableAssist) {
-      openSupport(user)
+
+    if (typeof window !== 'undefined' && !disableAssist) {
+      const initialized = get(window, '_slaask._ready', false)
+      const loading = get(alertsData, 'loading', true)
+      if (!initialized && !loading) {
+        const userProfile = get(alertsData, 'profileData.userProfile', {})
+        openSupport({...user, userCode: userProfile.userId, managerName: userProfile.managerName })
+      }
     }
 
     if (typeof window !== undefined && alertsData !== prevProps.alertsData) {
@@ -542,9 +548,6 @@ const LayoutEnhance = compose(
   withApollo,
   getFonts,
   graphql(getAlertsQuery, {
-    options: {
-      fetchPolicy: 'network-only',
-    },
     name: 'alertsData',
   }),
   connect(
