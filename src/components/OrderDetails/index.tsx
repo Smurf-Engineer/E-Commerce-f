@@ -162,6 +162,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     const { showPaymentIssue, shownAction } = this.state
     const invoiceLink = get(data, 'orderQuery.invoiceLink', '')
     const status = get(data, 'orderQuery.status', '')
+    const canUpdatePayment = get(data, 'orderQuery.canUpdatePayment', false)
     if (status === INVOICE_SENT && !!invoiceLink && showPaymentIssue) {
       this.setState({ showPaymentIssue: false })
       warning({
@@ -178,7 +179,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           }} />
       })
     }
-    if (!shownAction && data && !data.loading && (showEdit || showDelete)) {
+    if (!shownAction && data && !data.loading && (showEdit || showDelete) && canUpdatePayment && !invoiceLink) {
       this.setState({ shownAction: true })
       if (showEdit) {
         this.handleOnEditOrder()
@@ -602,7 +603,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 </AboutCollab>
               }
               {(teamStoreId && owner) && !savingPdf &&
-                (status === PREORDER || canUpdatePayment) && status !== CANCELLED &&
+                (status === PREORDER || canUpdatePayment) && status !== CANCELLED && !invoiceLink &&
                   <OrderActions>
                     {status === PAYMENT_ISSUE ?
                       <ButtonEdit onClick={this.handleOnEditOrder}>
