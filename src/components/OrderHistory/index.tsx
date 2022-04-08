@@ -125,8 +125,8 @@ class OrderHistory extends React.Component<Props, {}> {
 
   handleOnOrderClick = (orderId: string, isService?: boolean) => {
     const { setOrderIdAction } = this.props
-    setOrderIdAction(orderId, isService)
     this.setState({ editOrder: false, deleteOrder: false })
+    setOrderIdAction(orderId, isService)
   }
 
   handleOnChangePage = (page: number) => {
