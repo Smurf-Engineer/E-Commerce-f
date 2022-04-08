@@ -217,7 +217,8 @@ class Render3D extends PureComponent {
       loggedUserId,
       showBranding,
       showGuidelines,
-      userCode
+      userCode,
+      managerName
     } = nextProps
     const { openSlaask } = this.state
     if (loadingModel) {
@@ -269,6 +270,7 @@ class Render3D extends PureComponent {
         userCode,
         designId,
         lastName,
+        managerName,
         name
       })
       this.setState({ openSlaask: false })

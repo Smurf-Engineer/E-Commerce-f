@@ -198,6 +198,12 @@ export const getDesignLabInfo = gql`
         timeZone
       }
     }
+    profileData: getUserProfile {
+      userProfile {
+        userId: id
+        managerName: account_manager_name
+      }
+    }
   }
 `
 

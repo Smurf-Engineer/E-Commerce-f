@@ -8,48 +8,52 @@ export function initSlaask(info, isSupport) {
     lastName = '',
     email = '',
     userId = '',
-    userCode = ''
+    userCode = '',
+    managerName = ''
   } = info
   const settings = isSupport
     ? {
-        identify: () => ({
-          id,
-          userId,
-          email,
-          name: `JV2-Support`,
-          'First Name': name,
-          'Last Name:': lastName,
-          'User Locker': `${config.baseUrl}admin/users/${userId}`
-        }),
-        options: {
-          team_id: config.slaaskSupportTeam,
-          pulse: true
-        },
-        key: config.slaaskSuuportKey
-      }
+      identify: () => ({
+        id,
+        userId,
+        'User #': userCode ? `JV2-${userCode}` : '',
+        email,
+        'Account Manager': managerName,
+        name: `JV2-Support`,
+        'First Name': name,
+        'Last Name': lastName,
+        'User Locker': userId ? `${config.baseUrl}admin/users/${userId}` : ''
+      }),
+      options: {
+        team_id: config.slaaskSupportTeam,
+        pulse: true
+      },
+      key: config.slaaskSuuportKey
+    }
     : {
-        identify: () => ({
-          id,
-          name: `JV2-PRO ASSIST-${id}`,
-          ticket: id,
-          userId,
-          email,
-          'User #': `JV2-${userCode}`,
-          'User Locker': `${config.baseUrl}admin/users/${userId}`,
-          'First Name': name,
-          'Last Name': lastName
-        }),
-        options: {
-          team_id: config.slaaskTeam,
-          pulse: true
-        },
-        onInit: _slaask => {
-          _slaask.on('ready', () => {
-            _slaask.show()
-          })
-        },
-        key: config.slaaskApiKey
-      }
+      identify: () => ({
+        id,
+        name: `JV2-PRO ASSIST-${id}`,
+        ticket: id,
+        userId,
+        email,
+        'Account Manager': managerName,
+        'User #': `JV2-${userCode}`,
+        'User Locker': `${config.baseUrl}admin/users/${userId}`,
+        'First Name': name,
+        'Last Name': lastName
+      }),
+      options: {
+        team_id: config.slaaskTeam,
+        pulse: true
+      },
+      onInit: _slaask => {
+        _slaask.on('ready', () => {
+          _slaask.show()
+        })
+      },
+      key: config.slaaskApiKey
+    }
   window._slaaskSettings = settings
   if (window._slaask) {
     window._slaask.identifyContact()
