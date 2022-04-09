@@ -31,7 +31,7 @@ export default defineMessages({
   },
   jakrooUrl: {
     id: 'components.CarouselHeader.Uploader.jakrooUrl',
-    defaultMessage: 'http://designlab.jakroo.com/'
+    defaultMessage: 'http://jakroo.com/'
   },
   saveChanges: {
     id: 'components.CarouselHeader.Uploader.saveChanges',

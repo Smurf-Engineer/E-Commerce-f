@@ -87,7 +87,7 @@ export default defineMessages({
   },
   customLinkPlaceholder: {
     id: 'components.FirstStep.customLinkPlaceholder',
-    defaultMessage: 'https://designlab.jakroo.com...'
+    defaultMessage: 'https://jakroo.com...'
   },
   productCodeHolder: {
     id: 'components.FirstStep.productCodeHolder',

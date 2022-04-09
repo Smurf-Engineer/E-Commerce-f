@@ -129,7 +129,7 @@ export class StoreFront extends React.Component<Props, {}> {
     const bannerProp = queryParams ? queryParams.bannerProp : ''
     const storedCode = getSessionCode(storeId)
     // tslint:disable-next-line: max-line-length
-    const shareStoreUrl = `https://designlab.jakroo.com/store-front?storeId=${storeId}&titleProp=${titleProp}&bannerProp=${bannerProp}`
+    const shareStoreUrl = `https://jakroo.com/store-front?storeId=${storeId}&titleProp=${titleProp}&bannerProp=${bannerProp}`
     return (
       <TeamsLayout teamStoresHeader={true} {...{ intl, history }}>
         <Container>
@@ -142,7 +142,7 @@ export class StoreFront extends React.Component<Props, {}> {
               {
                 property: 'og:image',
                 content: bannerProp ? bannerProp 
-                : 'https://designlab.jakroo.com/static/media/teamStoreSearch.9279d162.jpg'
+                : 'https://jakroo.com/static/media/teamStoreSearch.9279d162.jpg'
               }
             ]}
             title={titleProp}

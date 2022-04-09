@@ -63,7 +63,7 @@ export default defineMessages({
   orderArriveDesc: {
     id: 'components.OrderData.orderArriveDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: '<p>Delivery dates shown on your order are estimates only. Jakroo prides itself with having the industry’s fastest turnaround times and we will do our best to ensure the timely delivery of your order. However, external events beyond our control such as weather, carrier delays,  or other mitigating factors may result in delivery delays and do not warrant a cancellation the order. Learn more about our delivery terms within our <a href="https://designlab.jakroo.com/terms-of-use">terms and conditions</a> policy. Once your order is passed to the carrier,  you will be able to track the shipping status via a tracking link located on this order screen. </p>'
+    defaultMessage: '<p>Delivery dates shown on your order are estimates only. Jakroo prides itself with having the industry’s fastest turnaround times and we will do our best to ensure the timely delivery of your order. However, external events beyond our control such as weather, carrier delays,  or other mitigating factors may result in delivery delays and do not warrant a cancellation the order. Learn more about our delivery terms within our <a href="https://jakroo.com/terms-of-use">terms and conditions</a> policy. Once your order is passed to the carrier,  you will be able to track the shipping status via a tracking link located on this order screen. </p>'
   },
   returnPolicy: {
     id: 'components.OrderData.returnPolicy',
@@ -73,7 +73,7 @@ export default defineMessages({
   returnPolicyDesc: {
     id: 'components.OrderData.returnPolicyDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: '<p>All orders are custom made-to-order on demand and cannot be returned for reasons other than manufacturer error or defect. Visit our <a href="https://designlab.jakroo.com/warranty-program">warranty page</a> for more details.</p>'
+    defaultMessage: '<p>All orders are custom made-to-order on demand and cannot be returned for reasons other than manufacturer error or defect. Visit our <a href="https://jakroo.com/warranty-program">warranty page</a> for more details.</p>'
   },
   arriveQuestion: {
     id: 'components.OrderData.arriveQuestion',
@@ -83,7 +83,7 @@ export default defineMessages({
   arriveQuestionDesc: {
     id: 'components.OrderData.arriveQuestionDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: '<p>Delivery dates shown on your order are estimates only. Jakroo prides itself with having the industry’s fastest turnaround times and we will do our best to ensure the timely delivery of your order. However, external events beyond our control such as weather, carrier delays, or other mitigating factors, may result in delivery delays and do not warrant a cancellation the order. Learn more about our delivery terms within our <a href="https://designlab.jakroo.com/terms-of-use">terms and conditions</a> policy. Once your order is passed to the carrier,  you will be able to track the shipping status via a tracking link located on this order screen.</p>'
+    defaultMessage: '<p>Delivery dates shown on your order are estimates only. Jakroo prides itself with having the industry’s fastest turnaround times and we will do our best to ensure the timely delivery of your order. However, external events beyond our control such as weather, carrier delays, or other mitigating factors, may result in delivery delays and do not warrant a cancellation the order. Learn more about our delivery terms within our <a href="https://jakroo.com/terms-of-use">terms and conditions</a> policy. Once your order is passed to the carrier,  you will be able to track the shipping status via a tracking link located on this order screen.</p>'
   },
   returnQuestion: {
     id: 'components.OrderData.returnQuestion',
@@ -93,7 +93,7 @@ export default defineMessages({
   returnQuestionDesc: {
     id: 'components.OrderData.returnQuestionDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: '<p>All orders are custom made-to-order on demand and cannot be returned for reasons other than manufacturer error or defect. Visit our <a href="https://designlab.jakroo.com/warranty-program">warranty page</a> for more details.</p>'
+    defaultMessage: '<p>All orders are custom made-to-order on demand and cannot be returned for reasons other than manufacturer error or defect. Visit our <a href="https://jakroo.com/warranty-program">warranty page</a> for more details.</p>'
   },
   paymentTerms: {
     id: 'components.OrderData.paymentTerms',
