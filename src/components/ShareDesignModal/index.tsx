@@ -58,7 +58,7 @@ class ShareDesignModal extends React.Component<Props, {}> {
       {
         method: 'share',
         href: designURL,
-        picture: picture || 'https://designlab.jakroo.com/static/media/teamStoreSearch.9279d162.jpg',
+        picture: picture || 'https://jakroo.com/static/media/teamStoreSearch.9279d162.jpg',
         display: 'popup',
         quote: messageForShare || 'Check my awesome design!'
       },

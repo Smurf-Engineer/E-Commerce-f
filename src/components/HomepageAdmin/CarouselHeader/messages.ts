@@ -23,7 +23,7 @@ export default defineMessages({
   },
   jakrooUrl: {
     id: 'components.CarouselHeader.jakrooUrl',
-    defaultMessage: 'http://designlab.jakroo.com/'
+    defaultMessage: 'http://jakroo.com/'
   },
   saveChanges: {
     id: 'components.CarouselHeader.saveChanges',
