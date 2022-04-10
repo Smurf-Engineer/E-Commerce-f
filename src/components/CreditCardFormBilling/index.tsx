@@ -148,7 +148,7 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
           billingAddress={true}
           simple={true}
           showForm={showBillingForm}
-          showAddressFormAction={showBillingAddressFormAction}
+          showAddressFormAction={(show: boolean) => showBillingAddressFormAction(show, true)}
           setAddressToUpdateAction={this.setAddressToUpdateAction}
           {...{
             withPagination,
@@ -522,8 +522,7 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
   }
 
   handleOnResetData = () => {
-    const { setAddressEdit, showBillingAddressFormAction } = this.props
-    setAddressEdit({})
+    const { showBillingAddressFormAction } = this.props
     this.setState({
       showAddressModal: false,
       modalLoading: false,
