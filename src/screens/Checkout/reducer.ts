@@ -301,6 +301,9 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('showForm', false)
     }
     case SHOW_BILLING_ADDRESS_FORM: {
+      if (action.modal) {
+        return state.set('showBillingModal', false)
+      }
       if (action.show) {
         return state.merge({
           showBillingForm: true,
@@ -317,9 +320,6 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
           hasError: false,
           indexAddressSelected: -1
         })
-      }
-      if (action.modal) {
-        return state.set('showBillingModal', false)
       }
       return state.set('showBillingForm', false)
     }

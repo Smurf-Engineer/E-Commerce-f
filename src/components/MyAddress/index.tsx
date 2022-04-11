@@ -48,7 +48,7 @@ interface Props {
   small?: boolean
   formatMessage: (messageDescriptor: any) => string
   selectAddressAction?: (index: number) => void
-  showAddressFormAction?: (show: boolean, index?: number) => void
+  showAddressFormAction?: (show: boolean) => void
   showConfirmDeleteAction?: (index: number) => void
 }
 
