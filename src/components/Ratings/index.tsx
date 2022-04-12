@@ -3,24 +3,27 @@
  */
 import * as React from 'react'
 import StarRatings from 'react-star-ratings'
-import { Container, Text } from './styledComponents'
+import { Container, StyledStars, Text } from './styledComponents'
 
 interface Props {
   rating: number
   totalReviews: number
   stars: number
   starDimension: string
+  handleClickStars?: () => void
 }
 
-const Ratings = ({ totalReviews, stars, rating, starDimension }: Props) => {
+const Ratings = ({ totalReviews, stars, rating, starDimension, handleClickStars }: Props) => {
   return (
     <Container>
-      <StarRatings
-        rating={rating}
-        starRatedColor="red"
-        numberOfStars={stars}
-        starDimension={starDimension}
-      />
+      <StyledStars onClick={handleClickStars}>
+        <StarRatings
+          rating={rating}
+          starRatedColor="red"
+          numberOfStars={stars}
+          starDimension={starDimension}
+        />
+      </StyledStars>
       <Text>{`${totalReviews} Reviews`}</Text>
     </Container>
   )
