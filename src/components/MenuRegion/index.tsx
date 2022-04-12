@@ -130,7 +130,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
       currency: currencyCode
     }
     this.setState({ visiblePopover: false, openModal: false })
-    message.success('Currency updated!')
+    message.success('Region and Currency updated')
     const snd = new Audio(currencySound)
     snd.play()
     snd.remove()
