@@ -6,7 +6,7 @@ import { WHITE, DARK_TEXT } from '../../theme/colors'
 
 export const Regions = styled.div`
   display: flex;
-  width: 68px;
+  width: 16px;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
