@@ -103,6 +103,7 @@ import { DEFAULT_ROUTE, PHONE_MINIMUM } from '../../constants'
 import { message } from 'antd'
 import some from 'lodash/some'
 import { updateAddressMutation } from '../../components/MyAddresses/data'
+import moment from 'moment'
 
 const { info } = Modal
 
@@ -1350,7 +1351,7 @@ class Checkout extends React.Component<Props, {}> {
         }
       )
       const couponCode = couponObject && couponObject.code
-
+      const timeZone = moment().utcOffset()
       const orderObj = {
         proDesign,
         paymentMethod,
@@ -1372,6 +1373,7 @@ class Checkout extends React.Component<Props, {}> {
         weight: weightSum,
         couponCode,
         isFixedTeamstore,
+        timeZone,
         replaceOrder
       }
       return orderObj

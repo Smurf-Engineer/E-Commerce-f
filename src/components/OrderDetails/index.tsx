@@ -179,7 +179,8 @@ export class OrderDetails extends React.Component<Props, {}> {
           }} />
       })
     }
-    if (!shownAction && data && !data.loading && (showEdit || showDelete) && canUpdatePayment && !invoiceLink) {
+    if (!shownAction && data && !data.loading && (showEdit || showDelete) && 
+        (canUpdatePayment || status === PREORDER) && !invoiceLink) {
       this.setState({ shownAction: true })
       if (showEdit) {
         this.handleOnEditOrder()
