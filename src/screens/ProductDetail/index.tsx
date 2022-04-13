@@ -186,6 +186,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     hideControls: true,
   }
 
+  constructor(props: any) {
+    super(props)
+    this.customerReviewRef = React.createRef()
+  }
+
   componentWillUnmount() {
     const { resetReducerAction } = this.props
     resetReducerAction()
@@ -398,6 +403,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     }
     return metaData
     {/* tslint:enable:max-line-length */}
+  }
+
+  handleClickStars = () => {
+    const { customerReviewRef } = this
+    if (customerReviewRef && customerReviewRef.current) {
+      customerReviewRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   render() {
@@ -949,6 +961,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   starDimension={'15px'}
                   rating={get(reviewsScore, 'averageScore', 0)}
                   totalReviews={get(reviewsScore, 'total', 0)}
+                  handleClickStars={this.handleClickStars}
                 />
                 {!isRetail && (
                   <MobileButtonWrapper>
@@ -1012,6 +1025,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               formatMessage,
               currentCurrency,
             }}
+            ref={this.customerReviewRef}
           />
         </Container>
         <StartDesignModal
