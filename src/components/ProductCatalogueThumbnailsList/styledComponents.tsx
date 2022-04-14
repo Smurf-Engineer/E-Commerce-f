@@ -122,6 +122,10 @@ export const ThumbnailListItem = styled.li`
   @media (min-width: 1260px) {
     width: 25%;
   }
+
+  @media (min-width: 2024px) {
+    width: 15%;
+  }
 `
 
 export const Loading = styled.div`

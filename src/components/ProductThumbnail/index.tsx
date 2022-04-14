@@ -53,6 +53,8 @@ interface Props {
   labelButton?: string | React.ReactNode
   isTopProduct: boolean
   itemId?: string
+  designLab?: boolean
+  selectedProduct?: number
   footer?: React.ReactNode
   gender?: number
   createdAt?: string
@@ -93,6 +95,7 @@ interface Props {
   lastTask?: any
   setSeen: () => void
   deleteItem?: () => void
+  productToDesign?: (id: number) => void
   formatMessage: (messageDescriptor: MessageType, values?: {}) => string
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
@@ -177,6 +180,13 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       this.goToProDesign(product)
     } else if (!isStoreThumbnail && !myLockerList) {
       this.setState({ designModalOpen: true })
+    }
+  }
+
+  selectProductToDesign = () => {
+    const { id, productToDesign, selectedProduct } = this.props
+    if (productToDesign) {
+      productToDesign(selectedProduct === id ? -1 : id)
     }
   }
 
@@ -305,6 +315,9 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       isTopProduct,
       footer,
       labelButton,
+      designLab,
+      id,
+      selectedProduct,
       image,
       product,
       isOwner,
@@ -412,6 +425,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     return (
       <Container
         {...{ withMargin, selectProduct, isSelected, fitContainer, fromTop }}
+        isSelected={isSelected || selectedProduct === id}
         onClick={selectProduct ? this.onHandleCheckChangeImage : undefined}>
         {!!notifications && <NotificationsBadge>{notifications > 9 ? '+9' : notifications}</NotificationsBadge>}
         <StartDesignModal
@@ -433,6 +447,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             currentImage,
             fromTop,
             labelButton,
+            designLab,
             image,
             hideCustomButton,
             hideQuickView,
@@ -457,6 +472,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             qualityWarning,
             lastTask
           }}
+          selectProductToDesign={this.selectProductToDesign}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
           onPressQuickView={this.handleOnPressQuickView}

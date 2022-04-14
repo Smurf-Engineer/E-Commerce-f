@@ -29,6 +29,7 @@ import Designs from '../screens/Designs'
 import DesignApproval from '../screens/DesignApproval'
 import ProductDetail from '../screens/ProductDetail'
 import ProductCatalog from '../screens/ProductCatalogue'
+import DesignLabLanding from '../screens/DesignLabLanding'
 import DesignCenter from '../screens/DesignCenter'
 import ProductModels from '../screens/ProductModels'
 import NotFound from '../screens/NotFound'
@@ -234,6 +235,11 @@ const routes = [
     path: '/product-catalogue',
     name: 'productCatalogue',
     component: ProductCatalog
+  },
+  {
+    path: '/designlab',
+    name: 'designLabLanding',
+    component: DesignLabLanding
   },
   {
     path: '/recovery',
