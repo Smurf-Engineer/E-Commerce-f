@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { RED, BLUE, WHITE, GRAY_DARK, GRAY_LIGHT } from '../../theme/colors'
+import { RED, BLUE, WHITE, GRAY_DARK, GRAY_LIGHT, BLUE_BRIGHT } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
 
 export const Container = styled.div`
@@ -22,14 +22,17 @@ export const Text = styled.div`
 export const StyledButton = styled(Button)`
   height: 50px;
   width: 221px;
-  border: 2px solid ${RED};
+  background-color: ${BLUE};
+  border-color: ${BLUE};
   border-radius: 2px;
   text-transform: uppercase;
-  color: ${RED};
+  color: ${WHITE} !important;
   transition: all 0.25s;
-  &:hover {
-    color: ${WHITE};
-    background: ${RED};
+  &:hover,
+  :focus,
+  :active {
+    background-color: ${BLUE_BRIGHT};
+    border-color: ${BLUE_BRIGHT};
   }
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;

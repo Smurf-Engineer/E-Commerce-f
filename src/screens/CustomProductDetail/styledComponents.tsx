@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, GRAY_LIGHTEST, GRAY_STRONG } from '../../theme/colors'
+import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, GRAY_LIGHTEST, GRAY_STRONG, BLACK_BG } from '../../theme/colors'
 import Input from 'antd/lib/input'
 import BackTop from 'antd/lib/back-top'
 import Icon from 'antd/lib/icon'
@@ -345,9 +345,10 @@ interface ButtonProps {
 
 export const SectionButton = styled.div`
   align-content: center;
-  background-color: #ffffff;
+  background-color: ${({ selected }: ButtonProps) => selected ? BLACK_BG : WHITE};
+  color: ${({ selected }: ButtonProps) => selected ? WHITE : 'rgba(0, 0, 0, 0.65)'};
   border: ${({ selected }: ButtonProps) =>
-    selected ? '2px solid #e61737' : '0.5px solid #dcdcdc'};
+    selected ? `0.5px solid ${BLACK_BG}` : '0.5px solid #dcdcdc'};
   border-radius: 2px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   display: flex;

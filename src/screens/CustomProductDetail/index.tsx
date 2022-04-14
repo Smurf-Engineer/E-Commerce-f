@@ -156,6 +156,12 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     tone: '',
     hideControls: true,
   }
+
+  constructor(props: any) {
+    super(props)
+    this.customerReviewRef = React.createRef()
+  }
+
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     this.handleSetLoading(false)
@@ -222,6 +228,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       currentTarget: { value }
     } = evt
     this.setState({ tone: value })
+  }
+
+  handleClickStars = () => {
+    const { customerReviewRef } = this
+    if (customerReviewRef && customerReviewRef.current) {
+      customerReviewRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   render() {
@@ -777,6 +790,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 <Ratings
                   stars={5}
                   starDimension={'15px'}
+                  handleClickStars={this.handleClickStars}
                   {...{ rating, totalReviews }}
                 />
                 <Description>{description}</Description>
@@ -812,6 +826,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               formatMessage,
               currentCurrency
             }}
+            ref={this.customerReviewRef}
             hideFeatured={true}
           />
         </Container>

@@ -68,7 +68,7 @@ class YotpoReviews extends React.Component<Props, any> {
           <YotpoCarousel innerRef={yotpo => (this.yotpoGallery = yotpo)} />
         </YotpoCarouselContainer>
         {children}
-        <YotpoReviewsContainer>
+        <YotpoReviewsContainer innerRef={this.props.innerRef}>
           <YotpoReviewsElement innerRef={yotpo => (this.yotpo = yotpo)} />
         </YotpoReviewsContainer>
       </Container>
@@ -76,4 +76,8 @@ class YotpoReviews extends React.Component<Props, any> {
   }
 }
 
-export default YotpoReviews
+export default React.forwardRef((props, ref) => 
+  <YotpoReviews 
+    innerRef={ref} {...props}
+  />
+)

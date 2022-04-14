@@ -18,3 +18,7 @@ export const Text = styled.div`
 `
 
 export const StyledImg = styled.img``
+
+export const StyledStars = styled.div`
+  cursor: pointer;
+`

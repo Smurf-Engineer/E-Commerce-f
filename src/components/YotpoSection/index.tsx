@@ -52,12 +52,13 @@ const YotpoSection = ({
   history,
   formatMessage,
   dispatch,
-  currentCurrency
+  currentCurrency,
+  innerRef
 }: Props) => {
   const products = get(data, 'products', [])
   return (
     <Container>
-      <YotpoReviews {...{ yotpoId, name }}>
+      <YotpoReviews ref={innerRef} {...{ yotpoId, name }}>
         {mediaFiles && !!mediaFiles.length && !hideFeatured && (
           <div>
             <Separator>
@@ -117,4 +118,6 @@ const YotpoSectionEnhance = compose(
   connect(mapDispatchToProps)
 )(YotpoSection)
 
-export default YotpoSectionEnhance
+export default React.forwardRef((props, ref) => 
+  <YotpoSectionEnhance innerRef={ref} {...props} />
+)
