@@ -15,6 +15,7 @@ import account from '../screens/Account/reducer'
 import home from '../screens/Home/reducer'
 import reset from '../screens/ResetPassword/reducer'
 import storeFront from '../screens/StoreFront/reducer'
+import designLabLanding from '../screens/DesignLabLanding/reducer'
 import teamstoreProductPage from '../screens/TeamstoreProductPage/reducer'
 import searchTeamstores from '../screens/SearchTeamstores/reducer'
 import checkout from '../screens/Checkout/reducer'
@@ -141,6 +142,7 @@ export interface ReducersObject {
   myLocker: any
   myFiles: any
   orderHistory: any
+  designLabLanding: any
   orderHistoryAdmin: any
   usersAdmin: any
   discountsAdmin: any
@@ -234,6 +236,7 @@ const rootReducer = combineReducers({
   affiliatesAbout,
   resellerOptions,
   checkout,
+  designLabLanding,
   proDesignProjects,
   designerTool,
   designApproval,

@@ -78,6 +78,7 @@ interface Props {
   proStatus?: string
   proCertified?: boolean
   qualityWarning?: boolean
+  designLab?: boolean
   lastTask?: any
   onPressBack: () => void
   onPressNext: () => void
@@ -86,6 +87,7 @@ interface Props {
   deleteItem: () => void
   onPressThumbnail: () => void
   setSeen: () => void
+  selectProductToDesign: () => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   handleCheckChange: (event: CheckboxChangeEvent) => void
 }
@@ -103,6 +105,7 @@ const ProductSlide = ({
   isTopProduct,
   images,
   image,
+  designLab,
   labelButton = 'CUSTOMIZE',
   currentImage,
   onPressCustomize,
@@ -122,6 +125,7 @@ const ProductSlide = ({
   formatMessage,
   showTooltips,
   setSeen,
+  selectProductToDesign = () => {},
   proDesignAssigned,
   selectProduct,
   lastTask,
@@ -258,11 +262,14 @@ const ProductSlide = ({
         </ImageTop>
         <Page>
           {/* <a href={urlProduct}> TODO: WIP new way to right click */}
-          <Image src={image} onClick={!selectProduct ? onPressThumbnail : undefined} />
+          <Image
+            src={image} 
+            onClick={!selectProduct ? (designLab ? selectProductToDesign : onPressThumbnail) : undefined}
+          />
           {/* </a> TODO: WIP new way to right click */}
         </Page>
         <AboveTablet>
-          {isHovered && (!selectProduct && !hideCustomButton) && (
+          {isHovered && (!selectProduct && !hideCustomButton) && !designLab && (
             <ButtonContainer {...{ myLockerList }} onClick={onPressCustomize}>
               {labelButton}
             </ButtonContainer>
@@ -292,7 +299,7 @@ const ProductSlide = ({
     ? images[imagesOrder.find(key => images[key]) || 'thumbnail']
     : JackrooLogo
   return (
-    <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct, selectProduct }}>
+    <ImageContainer {...{ designLab, onMouseEnter, onMouseLeave, isTopProduct, selectProduct }}>
       <ImageTop {...{ selectProduct, isProDesign, selectedIndex }}>
         <AboveTablet>
           {!hideQuickView && (
@@ -334,11 +341,11 @@ const ProductSlide = ({
         </ScheduledDate>
       )}
       <ThumbnailImage
-        onClick={!selectProduct ? onPressThumbnail : undefined}
+        onClick={!selectProduct ? (designLab ? selectProductToDesign : onPressThumbnail) : undefined}
         src={thumbnail}
         {...{ fitContainer, isProDesign, fromTop }}
       />
-      {isHovered && (!selectProduct && !hideCustomButton) && (
+      {isHovered && (!selectProduct && !hideCustomButton) && !designLab && (
         <ButtonContainer
           {...{ myLockerList, fromTop }}
           onClick={customizable ? onPressCustomize : onPressThumbnail}

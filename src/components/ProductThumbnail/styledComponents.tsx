@@ -27,6 +27,7 @@ export const Container = styled.section`
     margin: 0 9px;
     margin-bottom: 9px;
   ` : ''}
+  transition: all .45s;
   @media (min-width: 320px) and (max-width: 480px) {
     margin: 0 auto;
     width: auto;

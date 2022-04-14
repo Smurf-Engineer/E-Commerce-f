@@ -76,6 +76,9 @@ interface Props {
   previewOnly?: boolean
   profileData: ProfileData
   isEdit?: boolean
+  designLab?: boolean
+  selectedProduct?: number
+  productToDesign?: (id: number) => void
   makeCopy: (shortId: string) => void
   setDesignSelected: (shortId: string) => void
   changeQuantity: (key: number) => void
@@ -114,6 +117,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       data,
       isEdit,
       designs,
+      designLab,
+      selectedProduct,
+      productToDesign,
       changeQuantity,
       onPressPrivate = () => { },
       onPressDelete = () => { },
@@ -186,6 +192,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   handleCheckChange,
                   isSelected,
                   proDesign,
+                  designLab,
+                  selectedProduct,
+                  productToDesign,
                   showTooltips,
                   formatMessage,
                   proCertified,
@@ -349,6 +358,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   fromIntakeForm,
                   yotpoId,
                   type,
+                  designLab,
+                  selectedProduct,
+                  productToDesign,
                   showTooltips,
                   formatMessage,
                   description,
@@ -398,12 +410,14 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
 
     return (
       <Container>
-        <SelectedProducts
-          {...{ changeQuantity, fromIntakeForm, adminProject, isEdit }}
-          products={selectedItems}
-          title={formatMessage(messages.selectedProducts)}
-          handleDeleteProduct={handleCheckChange}
-        />
+        {!designLab &&
+          <SelectedProducts
+            {...{ changeQuantity, fromIntakeForm, adminProject, isEdit }}
+            products={selectedItems}
+            title={formatMessage(messages.selectedProducts)}
+            handleDeleteProduct={handleCheckChange}
+          />
+        }
         <HeadRow withoutPadding={!!withoutPadding}>
           {total ? <TotalItems>{`${total} Items`}</TotalItems> : null}
           {sortOptions && !!sortByLabel.length && (

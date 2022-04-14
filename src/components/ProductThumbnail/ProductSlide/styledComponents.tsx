@@ -21,6 +21,7 @@ type StyledProps = {
   selectProduct?: boolean
   isProDesign?: boolean
   showTooltips?: boolean
+  designLab?: boolean
   selectedIndex?: number
   fromTop?: boolean
 }
@@ -32,8 +33,8 @@ export const ImageContainer = styled.div`
   ${({ backgroundColor }: StyledProps) =>
     backgroundColor ? `background-color: ${backgroundColor}` : ''};
   width: 100%;
-  padding: ${({ backgroundColor, selectProduct }: StyledProps) => {
-    if (selectProduct) {
+  padding: ${({ backgroundColor, selectProduct,  designLab }: StyledProps) => {
+    if (selectProduct || designLab) {
       return '0'
     }
     return backgroundColor ? '10px' : '10px 0'

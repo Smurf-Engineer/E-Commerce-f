@@ -357,6 +357,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       location: { search },
       intl: { formatMessage },
     } = this.props
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0)
+    }
     LoadScripts(threeDScripts)
     if (
       responsive.tablet &&
