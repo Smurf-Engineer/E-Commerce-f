@@ -146,12 +146,13 @@ export class DesignLabLanding extends React.Component<Props, StateProps> {
 
     if (gender && !filter) {
       this.setState({ showgenderFilters: true } as any)
-      if (gender === ALL_GENDERS) {
+      const genderValue = gender === 'na' ? 'N/A' : gender
+      if (genderValue === ALL_GENDERS) {
         setAllGendersAction()
       } else {
         const filterObject = {
           type: 'genderFilters',
-          name: upperFirst(gender),
+          name: upperFirst(genderValue),
           firstGenderSet: true
         }
         setSelectedFilters(filterObject)
