@@ -5,7 +5,7 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Progress from 'antd/lib/progress'
 import messages from './messages'
-import { Filter, PriceRange, PriceRangeProgress } from '../../types/common'
+import { Filter, ItemDetailType, PriceRange, PriceRangeProgress } from '../../types/common'
 import { BLUE } from '../../theme/colors'
 import {
   Footer,
@@ -18,7 +18,11 @@ import {
   ProgressWrapper,
   ProgressText,
   BottomPrices,
-  SaveText
+  SaveText,
+  GendersDiv,
+  MenIcon,
+  WomenIcon,
+  YouthLabel
 } from './styledComponents'
 
 const MAX_PERCENT = 100
@@ -31,6 +35,7 @@ interface Props {
   progress: number
   code: string
   targetRange?: Filter
+  genders?: ItemDetailType[]
   onDemandMode?: boolean
   isResellerStore?: boolean
   isResellerOwner?: boolean
@@ -54,6 +59,7 @@ const FooterThumbnailTeamStore = ({
   isResellerOwner,
   fixedPrice,
   currentPrice,
+  genders,
   priceRange = [],
   currentRangeAttributes,
   suggestedSaveText
@@ -74,7 +80,22 @@ const FooterThumbnailTeamStore = ({
       )
     }
   }
-
+  let menAvailable = false
+  let womenAvailable = false
+  let youthAvailable = false
+  if (genders) {
+    genders.forEach((genderItem: ItemDetailType) => {
+      if (genderItem.name === 'Men') {
+        menAvailable = true
+      }
+      if (genderItem.name === 'Women') {
+        womenAvailable = true
+      }
+      if (genderItem.name === 'Youth') {
+        youthAvailable = true
+      }
+    })
+  }
   if (!onDemandMode && !fixedPrice && currentRangeAttributes) {
     const percentAmount = MAX_PERCENT / currentRangeAttributes.range
     let relativePercent =
@@ -86,7 +107,16 @@ const FooterThumbnailTeamStore = ({
 
   return (
     <Footer>
-      <Type>{name}</Type>
+      <Type>
+        {name}
+        {genders && genders.length > 0 &&
+          <GendersDiv>
+            {menAvailable && <MenIcon type="man" />}
+            {womenAvailable && <WomenIcon type="woman" />}
+            {youthAvailable && <YouthLabel><FormattedMessage {...messages.youth} /></YouthLabel>}
+          </GendersDiv>
+        }
+      </Type>
       <Description>{description}</Description>
       <Description>{code}</Description>
       <BottomPrices>

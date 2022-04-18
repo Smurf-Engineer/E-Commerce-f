@@ -246,6 +246,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       currentRangeAttributes,
                       suggestedSaveText
                     }}
+                    genders={product.genders}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
                     priceRange={priceRanges}

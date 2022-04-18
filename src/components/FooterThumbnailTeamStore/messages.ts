@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'components.FooterThumbnailTeamStore.purchasePrice',
     defaultMessage: 'Dealer price'
   },
+  youth: {
+    id: 'components.FooterThumbnailTeamStore.youth',
+    defaultMessage: 'Youth Available'
+  },
   listPrice: {
     id: 'components.FooterThumbnailTeamStore.listPrice',
     defaultMessage: 'List price'
