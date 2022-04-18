@@ -1,8 +1,9 @@
 /**
  * Styled Components - Created by gustavomedina on 12/04/18.
  */
+import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
-import { GREEN_TRANSPARENT, GREEN } from '../../theme/colors'
+import { GREEN_TRANSPARENT, GREEN, BLUE_SKY } from '../../theme/colors'
 
 export const Footer = styled.div`
   padding: 4px;
@@ -16,10 +17,40 @@ export const Type = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 220px;
-
+  display: flex;
+  margin-top: 4px;
+  justify-content: space-between;
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
   }
+`
+
+export const GendersDiv = styled.div`
+  display: inline-flex;
+  margin-right: 14px;
+`
+
+export const MenIcon = styled(Icon)`
+  margin-left: 8px;
+  color: ${BLUE_SKY};
+  margin-top: 4px;
+`
+
+export const YouthLabel = styled.div`
+  font-size: 11px;
+  color: #549c8c;
+  margin-left: 2px;
+  display: inline-block;
+  vertical-align: bottom;
+  max-width: 54px;
+  text-align: right;
+  line-height: 15px;
+`
+
+export const WomenIcon = styled(Icon)`
+  margin-left: 8px;
+  color: deeppink;
+  margin-top: 4px;
 `
 
 export const Description = styled.div`
