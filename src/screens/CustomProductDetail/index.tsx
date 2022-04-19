@@ -10,6 +10,7 @@ import queryString from 'query-string'
 import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
 import filter from 'lodash/filter'
+import zenscroll from 'zenscroll'
 import isEmpty from 'lodash/isEmpty'
 import AntdModal from 'antd/lib/modal'
 import * as customProductDetailActions from './actions'
@@ -60,6 +61,8 @@ import {
   BackTopStyled,
   BackButton,
   BackIcon,
+  CartLabel,
+  CartIcon,
   // ColorButtons,
   // ToneButton
 } from './styledComponents'
@@ -155,13 +158,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   state = {
     tone: '',
     hideControls: true,
+    invalidData: false
   }
-
   constructor(props: any) {
     super(props)
     this.customerReviewRef = React.createRef()
   }
-
+  private buyOptions: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     this.handleSetLoading(false)
@@ -259,7 +262,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       selectedBottomSize
     } = this.props
     const { formatMessage } = intl
-    const { hideControls } = this.state
+    const { hideControls, invalidData } = this.state
     const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 480px)').matches
     const queryParams = queryString.parse(search)
     const { comission = 0, margin = 0, status: resellerStatus } = get(profileData, 'profileData.reseller', {})
@@ -423,6 +426,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           <SectionButton
             selected={id === selectedGender.id}
             large={true}
+            highlight={invalidData && !selectedGender.id}
             onClick={this.handleSelectedGender({ id, name: genderName })}
           >
             {genderName}
@@ -444,6 +448,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         <div {...{ key }}>
           <SectionButton
             range={true}
+            highlight={invalidData && !selectedSize.id}
             selected={id === selectedSize.id}
             onClick={this.handleSelectedSize({
               id: Number(id),
@@ -462,6 +467,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       sizeRange.map(({ id, name: sizeName, isYouth }: ItemDetailType, key: number) => (
         <div {...{ key }}>
           <SectionButton
+            highlight={invalidData && !selectedTopSize.id}
             selected={id === selectedTopSize.id}
             onClick={this.handleSelectedTopSize({
               id: Number(id),
@@ -480,6 +486,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       sizeRange.map(({ id, name: sizeName, isYouth }: ItemDetailType, key: number) => (
         <div {...{ key }}>
           <SectionButton
+            highlight={invalidData && !selectedBottomSize.id}
             selected={id === selectedBottomSize.id}
             onClick={this.handleSelectedBottomSize({
               id: Number(id),
@@ -498,6 +505,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           id && (
             <div key={index}>
               <SectionButton
+                highlight={invalidData && !selectedFit.id}
                 selected={id === selectedFit.id}
                 large={true}
                 onClick={this.handleSelectedFit({ id, name: fitName })}
@@ -509,6 +517,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       )) || (
         <SectionButton
           selected={1 === selectedFit.id}
+          highlight={invalidData && !selectedFit.id}
           onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
         >
           {formatMessage(messages.standard)}
@@ -584,13 +593,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       itemDetails.push(detail)
     }
 
+    const cartDisabled = !this.validCart()
+
     const itemToAdd = Object.assign({}, { product }, { itemDetails })
     const addToCartRow = (
-      <ButtonsRow>
+      <ButtonsRow disabled={cartDisabled}>
         {(active || onlyProDesign) &&
           <AddtoCartButton
             onClick={this.validateAddtoCart}
-            label={formatMessage(messages.addToCartButton)}
+            label={<CartLabel><CartIcon type="shopping-cart" />{formatMessage(messages.addToCartButton)}</CartLabel>}
             item={itemToAdd}
             itemProdPage={true}
             withoutTop={true}
@@ -618,7 +629,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const sizeChartButton = !!chart && <SizeChart onClick={this.goToChart} src={sizeChartSvg} />
 
     const collectionSelection = (
-      <BuyNowOptions>
+      <BuyNowOptions
+        innerRef={buyOption => {
+          this.buyOptions = buyOption
+        }}
+      >
         {gendersSection}
         {!twoPieces && sizeSection}
         {twoPieces && topSizeSection}
@@ -840,21 +855,25 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   handleSelectedFit = (fitStyle: SelectedType) => () => {
     const { setSelectedFitAction } = this.props
     setSelectedFitAction(fitStyle)
+    this.setState({ invalidData: false })
   }
 
   handleSelectedSize = (size: SelectedType) => () => {
     const { setSelectedSizeAction } = this.props
     setSelectedSizeAction(size)
+    this.setState({ invalidData: false })
   }
 
   handleSelectedTopSize = (size: SelectedType) => () => {
     const { setSelectedTopSizeAction } = this.props
     setSelectedTopSizeAction(size)
+    this.setState({ invalidData: false })
   }
 
   handleSelectedBottomSize = (size: SelectedType) => () => {
     const { setSelectedBottomSizeAction } = this.props
     setSelectedBottomSizeAction(size)
+    this.setState({ invalidData: false })
   }
 
   handleSelectedGender = (gender: SelectedType) => () => {
@@ -890,6 +909,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     if (genderYouth && hideFitStyles) {
       setSelectedFitAction({})
     }
+    this.setState({ invalidData: false })
   }
 
   goToChart = () => {
@@ -932,7 +952,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     openFitInfoAction(false)
   }
 
-  validateAddtoCart = () => {
+  validCart = () => {
     const {
       selectedSize,
       selectedGender,
@@ -957,6 +977,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     return ((!twoPieces && selectedSize.id >= 0) || (twoPieces && selectedTopSize.id > 0 &&
       selectedBottomSize.id > 0)) && selectedGender.id
+  }
+
+  validateAddtoCart = () => {
+    this.setState({ invalidData: false })
+    const validCart = this.validCart()
+    this.setState({ invalidData: !validCart })
+    if (!validCart && this.buyOptions) {
+      zenscroll.to(this.buyOptions)
+    }
+    return validCart
   }
 
   toggleProductInfo = (id: string) => {

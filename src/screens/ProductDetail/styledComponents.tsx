@@ -29,6 +29,8 @@ interface StyledProps {
   selected?: boolean
   withBorder?: boolean
   marginLeft?: string
+  disabled?: boolean
+  highlight?: boolean
 }
 
 export const Container = styled.div`
@@ -341,13 +343,30 @@ export const ButtonsRow = styled.div`
   margin: 20px 0 25px;
 
   .ant-btn {
+    color: ${({ disabled }: StyledProps) => disabled ? GRAY : WHITE} !important;
+    border-color: ${({ disabled }: StyledProps) => disabled ? GRAY_HEADER : BLUE} !important;
+    background-color: ${({ disabled }: StyledProps) => disabled ? GRAY_HEADER : BLUE} !important;
     font-size: 16px;
+    border-radius: 3px;
     line-height: 22px;
     text-align: center;
+    box-shadow: 1px 2px 5px 0px #b4b4b4;
+    &:hover {
+      cursor: ${({ disabled }: StyledProps) => disabled ? 'not-allowed' : 'pointer'};
+    }
   }
   @media (min-width: 320px) and (max-width: 480px) {
     flex-flow: column;
   }
+  &:hover {
+    cursor: ${({ disabled }: StyledProps) => disabled ? 'not-allowed' : 'pointer'};
+  }
+`
+
+export const CartLabel = styled.div``
+
+export const CartIcon = styled(Icon)`
+  margin-right: 10px;
 `
 
 export const StyledButtonWrapper = styled.div`
@@ -526,12 +545,13 @@ export const SectionButton = styled.div`
   color: ${({ selected }: ButtonProps) => selected ? WHITE : 'rgba(0, 0, 0, 0.65)'};
   border: ${({ selected }: ButtonProps) =>
     selected ? `0.5px solid ${BLACK_BG}` : '0.5px solid #dcdcdc'};
-  border-radius: 2px;
+  border-radius: 4px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   display: flex;
   height: 50px;
   margin-right: 14px;
   padding: 14px;
+  transition: all .25s;
   margin-bottom: ${({ range }: ButtonProps) => (range ? '14px' : 'unset')};
   justify-content: center;
   width: ${({ large, oneSize }: ButtonProps) => {
@@ -549,6 +569,29 @@ export const SectionButton = styled.div`
   @media (min-width: 320px) and (max-width: 768px) {
     margin-bottom: 15px;
   }
+  ${({ highlight }: StyledProps) => highlight ? `
+    animation: pulse 1s 0.5s 2;
+    @keyframes pulse {
+      0% {
+        filter: drop-shadow(0 0 0 rgba(255, 0, 0, 1));
+        transform: scale(1);
+        background-color: #fff3f3 !important;
+      }
+    
+      70% {
+        filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0));
+        transform: scale(1.05);
+        background-color: #white !important;
+      }
+    
+      100% {
+        filter: drop-shadow(0 0 0 rgba(255, 0, 0, 0));
+        transform: scale(1);
+        background-color: #fff3f3 !important;
+      }
+    }
+    background-color: #fff3f3 !important;
+  ` : ''}
 `
 
 export const SectionRow = styled.div`

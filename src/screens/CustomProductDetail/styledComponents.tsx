@@ -3,7 +3,18 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, GRAY_LIGHTEST, GRAY_STRONG, BLACK_BG } from '../../theme/colors'
+import {
+  WHITE,
+  GREEN_BRIGHT,
+  GRAY_DARK,
+  GREEN_STATUS,
+  GRAY_LIGHTEST,
+  GRAY_STRONG,
+  BLACK_BG,
+  BLUE,
+  GRAY_HEADER,
+  GRAY
+} from '../../theme/colors'
 import Input from 'antd/lib/input'
 import BackTop from 'antd/lib/back-top'
 import Icon from 'antd/lib/icon'
@@ -11,6 +22,7 @@ import Icon from 'antd/lib/icon'
 interface DivProps {
   isTeamStore?: boolean
   selected?: boolean
+  disabled?: boolean
 }
 
 export const Container = styled.div`
@@ -341,6 +353,7 @@ interface ButtonProps {
   selected: boolean
   large?: boolean
   range?: boolean
+  highlight?: boolean
 }
 
 export const SectionButton = styled.div`
@@ -349,7 +362,7 @@ export const SectionButton = styled.div`
   color: ${({ selected }: ButtonProps) => selected ? WHITE : 'rgba(0, 0, 0, 0.65)'};
   border: ${({ selected }: ButtonProps) =>
     selected ? `0.5px solid ${BLACK_BG}` : '0.5px solid #dcdcdc'};
-  border-radius: 2px;
+  border-radius: 4px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   display: flex;
   height: 50px;
@@ -358,7 +371,7 @@ export const SectionButton = styled.div`
   margin-bottom: ${({ range }: ButtonProps) => range ? '14px' : 'unset'};
   justify-content: center;
   width: ${({ large }: ButtonProps) => (large ? '139px;' : '55px;')};
-
+  transition: all .25s;
   &:hover {
     cursor: pointer;
   }
@@ -366,6 +379,29 @@ export const SectionButton = styled.div`
   @media (min-width: 320px) and (max-width: 768px) {
     margin-bottom: 15px;
   }
+  ${({ highlight }: ButtonProps) => highlight ? `
+    animation: pulse 1s 0.5s 2;
+    @keyframes pulse {
+      0% {
+        filter: drop-shadow(0 0 0 rgba(255, 0, 0, 1));
+        transform: scale(1);
+        background-color: #fff3f3 !important;
+      }
+    
+      70% {
+        filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0));
+        transform: scale(1.05);
+        background-color: #white !important;
+      }
+    
+      100% {
+        filter: drop-shadow(0 0 0 rgba(255, 0, 0, 0));
+        transform: scale(1);
+        background-color: #fff3f3 !important;
+      }
+    }
+    background-color: #fff3f3 !important;
+  ` : ''}
 `
 export const SizeRowTitleRow = styled.div`
   display: flex;
@@ -401,12 +437,29 @@ export const ButtonsRow = styled.div`
   margin: 30px 0 25px;
 
   .ant-btn {
-    color: #e61737;
+    color: ${({ disabled }: DivProps) => disabled ? GRAY : WHITE} !important;
+    border-color: ${({ disabled }: DivProps) => disabled ? GRAY_HEADER : BLUE} !important;
+    background-color: ${({ disabled }: DivProps) => disabled ? GRAY_HEADER : BLUE} !important;
     font-size: 16px;
+    border-radius: 3px;
     line-height: 22px;
     text-align: center;
+    box-shadow: 1px 2px 5px 0px #b4b4b4;
+    &:hover {
+      cursor: ${({ disabled }: DivProps) => disabled ? 'not-allowed' : 'pointer'};
+    }
+  }
+  &:hover {
+    cursor: ${({ disabled }: DivProps) => disabled ? 'not-allowed' : 'pointer'};
   }
 `
+
+export const CartLabel = styled.div``
+
+export const CartIcon = styled(Icon)`
+  margin-right: 10px;
+`
+
 export const DetailsList = styled.ul`
   padding: 10px 0px 0px 20px;
 `
