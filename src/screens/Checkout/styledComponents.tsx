@@ -8,6 +8,10 @@ import { BLUE, WHITE, GRAY_DARK, BLACK_SHADOW, GREEN } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
 import Spin from 'antd/lib/spin'
 
+interface DivProps {
+  show?: boolean
+}
+
 export const Container = styled.div`
   padding: 40px 32px;
   background-color: ${WHITE};
@@ -289,5 +293,58 @@ export const MaintenaceLink = styled.div`
   &:hover {
     cursor: pointer;
     opacity: 0.7;
+  }
+`
+
+export const DeliveryDiv = styled.div`
+  display: flex;
+  position: absolute;
+  top: 30px;
+  right: 42px;
+  animation: fade-in-right 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-right {
+    0% {
+      transform: translateX(12px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @media(max-width: 480px) {
+    display: ${({ show }: DivProps) => show ? 'flex' : 'none'};
+    position: unset;
+    justify-content: center;
+    margin-bottom: -8px;
+  }
+`
+
+export const DeliveryLabels = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-flow: column;
+  align-items: flex-end;
+  margin-right: 16px;
+  font-size: 13px;
+  @media (max-width: 480px) {
+    flex-flow: row;
+    align-items: center;
+  }
+`
+
+export const DeliveryValue = styled.div`
+  font-weight: bold;
+  font-family: Avenir;
+  @media (max-width: 480px) {
+    margin-left: 8px;
+  }
+`
+
+export const PackageIcon = styled.img`
+  max-width: 40px;
+  @media (max-width: 480px) {
+    max-width: 38px;
+    margin-top: -8px;
   }
 `
