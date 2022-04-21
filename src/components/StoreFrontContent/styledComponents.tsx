@@ -124,6 +124,12 @@ export const ErrorTitle = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
+  flex-flow: column;
+`
+
+export const ClosedStore = styled.img`
+  margin-top: 30px;
+  max-width: 168px;
 `
 
 export const AboutContainer = styled.div`
