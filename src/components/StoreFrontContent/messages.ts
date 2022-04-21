@@ -47,7 +47,7 @@ export default defineMessages({
   },
   storeClosed: {
     id: 'screens.StoreFrontContent.storeClosed',
-    defaultMessage: 'STORE CLOSED'
+    defaultMessage: 'STORE NOT AVAILABLE'
   },
   priceDropMessage: {
     id: 'screens.StoreFrontContent.priceDropMessage',

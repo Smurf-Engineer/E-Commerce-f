@@ -62,8 +62,10 @@ import {
   SectionLink,
   CutOffDiv,
   CutOffTime,
+  ClosedStore,
 } from './styledComponents'
 import PinSVG from '../../assets/pin.svg'
+import storeClosedImage from '../../assets/storeclosed.png'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
 import ProductList from '../../components/DesignsCatalogueThumbnailList'
@@ -350,7 +352,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
         ) : (
           <React.Fragment>
             {getTeamStore && getTeamStore.id === STORE_CLOSED_CODE ? (
-              <ErrorTitle>{formatMessage(messages.storeClosed)}</ErrorTitle>
+              <ErrorTitle>{formatMessage(messages.storeClosed)}<ClosedStore src={storeClosedImage} /></ErrorTitle>
             ) : (
               <MainContainer>
                 {!teamStoreBanner ? (
