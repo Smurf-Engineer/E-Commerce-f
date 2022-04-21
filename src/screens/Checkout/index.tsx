@@ -78,7 +78,10 @@ import {
   DeliveryDiv,
   DeliveryValue,
   PackageIcon,
-  DeliveryLabels
+  DeliveryLabels,
+  StyledPopOver,
+  PopoverText,
+  InfoIcon
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -595,6 +598,16 @@ class Checkout extends React.Component<Props, {}> {
             <SummaryContainer>
               {deliveryDate &&
                 <DeliveryDiv show={currentStep === ReviewTab}>
+                  <StyledPopOver
+                    overlayClassName="innerClassTooltip"
+                    title={
+                      <PopoverText>
+                        {intl.formatMessage(messages.deliveryInfo)}
+                      </PopoverText>
+                    }
+                  >
+                    <InfoIcon type="question-circle" />
+                  </StyledPopOver>
                   <DeliveryLabels>
                     {intl.formatMessage(messages.estimatedDelivery)}
                     <DeliveryValue>
