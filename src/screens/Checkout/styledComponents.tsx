@@ -4,9 +4,10 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
-import { BLUE, WHITE, GRAY_DARK, BLACK_SHADOW, GREEN } from '../../theme/colors'
+import { BLUE, WHITE, GRAY_DARK, BLACK_SHADOW, GREEN, BLACK } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
 import Spin from 'antd/lib/spin'
+import Tooltip from 'antd/lib/tooltip'
 
 interface DivProps {
   show?: boolean
@@ -318,6 +319,24 @@ export const DeliveryDiv = styled.div`
     justify-content: center;
     margin-bottom: -8px;
   }
+`
+
+export const StyledPopOver = styled(Tooltip)`
+  cursor: pointer;
+`
+
+export const InfoIcon = styled(Icon)`
+  display: inline-flex;
+  margin-top: 5px;
+  margin-right: 8px;
+  font-size: 12px;
+`
+
+export const PopoverText = styled.div`
+  font-size: 12px;
+  color: ${BLACK};
+  font-family: Avenir;
+  font-weight: normal;
 `
 
 export const DeliveryLabels = styled.div`

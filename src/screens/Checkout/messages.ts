@@ -25,6 +25,11 @@ export default defineMessages({
     id: 'screens.Checkout.estimatedDelivery',
     defaultMessage: 'Estimated Delivery Date:'
   },
+  deliveryInfo: {
+    id: 'screens.Checkout.deliveryInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'JAKROO shall use reasonable efforts to initiate shipment and schedule delivery as close as possible. You acknowledge that any delivery dates provided by Company are estimates only and that Company is not liable for failure to deliver on such dates.'
+  },
   warningQuantity: {
     id: 'screens.Checkout.warningQuantity',
     // tslint:disable-next-line: max-line-length
