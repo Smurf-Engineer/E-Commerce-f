@@ -568,6 +568,7 @@ const ThumbnailsListEnhance = compose(
           offset: skip ? skip : null,
           searchText,
           onlyActive: !isAdmin,
+          excludeDesigns: fromIntakeForm && !isAdmin,
           isAdminIntake: isAdmin && fromIntakeForm
         },
         skip: !!designs
