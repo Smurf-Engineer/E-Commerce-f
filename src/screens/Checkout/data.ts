@@ -87,9 +87,10 @@ export const profileSettingsQuery = gql`
 `
 
 export const getDesignLabInfo = gql`
-  query getDesignLabInfo {
+  query getDesignLabInfo($teamStoreId: String) {
     getDesignLabInfo {
       underMaintenance: under_maintenance
     }
+    deliveryDate: getDeliveryDate(teamStoreId: $teamStoreId)
   }
 `

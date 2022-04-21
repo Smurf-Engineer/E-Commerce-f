@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'screens.Checkout.processing',
     defaultMessage: 'Processing order...'
   },
+  estimatedDelivery: {
+    id: 'screens.Checkout.estimatedDelivery',
+    defaultMessage: 'Estimated Delivery Date:'
+  },
   warningQuantity: {
     id: 'screens.Checkout.warningQuantity',
     // tslint:disable-next-line: max-line-length

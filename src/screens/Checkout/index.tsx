@@ -18,6 +18,7 @@ import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import * as checkoutActions from './actions'
 import * as thunkActions from './thunkActions'
+import packageIcon from '../../assets/packageicon.png'
 import invoiceAnimation from '../../assets/invoiceanimation.gif'
 import maintenanceImage from '../../assets/maintenance.png'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
@@ -73,7 +74,11 @@ import {
   SpinStyled,
   MaintenanceLayout,
   MaintenanceImage,
-  MaintenaceLink
+  MaintenaceLink,
+  DeliveryDiv,
+  DeliveryValue,
+  PackageIcon,
+  DeliveryLabels
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -346,6 +351,7 @@ class Checkout extends React.Component<Props, {}> {
       paymentClientSecret
     } = this.props
     const underMaintenance = get(designLabInfo, 'getDesignLabInfo.underMaintenance', false)
+    const deliveryDate = get(designLabInfo, 'deliveryDate', '')
     if (underMaintenance) {
       return (
         <Layout {...{ history, intl }}>
@@ -587,6 +593,17 @@ class Checkout extends React.Component<Props, {}> {
               </SwipeableViews>
             </StepsContainer>
             <SummaryContainer>
+              {deliveryDate &&
+                <DeliveryDiv show={currentStep === ReviewTab}>
+                  <DeliveryLabels>
+                    {intl.formatMessage(messages.estimatedDelivery)}
+                    <DeliveryValue>
+                      {deliveryDate}
+                    </DeliveryValue>
+                  </DeliveryLabels>
+                  <PackageIcon src={packageIcon} />
+                </DeliveryDiv>
+              }
               <CheckoutSummary
                 subtotal={total}
                 country={billingCountry}
@@ -1389,6 +1406,10 @@ class Checkout extends React.Component<Props, {}> {
   }
 }
 
+type OwnProps = {
+  location?: any
+}
+
 const mapStateToProps = (state: any) => {
   const checkoutProps = state.get('checkout').toJS()
   const langProps = state.get('languageProvider').toJS()
@@ -1422,8 +1443,16 @@ const CheckoutEnhance = compose(
     name: 'profileData',
   }),
   graphql(getDesignLabInfo, {
-    options: {
-      fetchPolicy: 'network-only'
+    options: ({ location }: OwnProps) => {
+      let teamStoreId
+      const shoppingCart = get(location, 'state.cart', [])
+      if (shoppingCart && shoppingCart.length > 0 && some(shoppingCart, 'isFixed')) {
+        teamStoreId = shoppingCart[0].teamStoreId || ''
+      } 
+      return {
+        variables: { teamStoreId },
+        fetchPolicy: 'network-only'
+      }
     },
     name: 'designLabInfo'
   })
