@@ -24,6 +24,7 @@ type StyledProps = {
   designLab?: boolean
   selectedIndex?: number
   fromTop?: boolean
+  fromYotpo?: boolean
 }
 
 export const ImageContainer = styled.div`
@@ -75,7 +76,10 @@ export const Page = styled.div`
   user-select: none;
   height: 200.29px;
   text-align: center;
-
+  ${({ fromYotpo }: StyledProps) => fromYotpo ? `
+    background: ${GRAY_LIGHTEST};
+    border-radius: 5px;
+  ` : ''}
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
     height: 180px;

@@ -195,6 +195,9 @@ export const InfoContainer = styled.div`
     flex-wrap: wrap;
   }
 `
+
+export const ProductName = styled.div``
+
 export const Label = styled.div`
   color: #5f6062;
   display: flex;

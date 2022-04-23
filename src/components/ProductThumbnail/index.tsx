@@ -24,7 +24,8 @@ import {
   ImgIcon,
   RetailColors,
   NotificationsBadge,
-  YouthLabel
+  YouthLabel,
+  ProductName
 } from './styledComponents'
 import messages from './messages'
 import { getProductQuery } from './data'
@@ -92,6 +93,9 @@ interface Props {
   proCertified?: boolean
   qualityWarning?: boolean
   showTooltips?: boolean
+  name?: string
+  code?: string
+  fromYotpo?: boolean
   lastTask?: any
   setSeen: () => void
   deleteItem?: () => void
@@ -217,12 +221,12 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handlePressThumbnail = () => {
-    const { history, onPressThumbnail, isProDesign, clickDisabled = false } = this.props
+    const { history, onPressThumbnail, isProDesign, clickDisabled = false, fromYotpo } = this.props
     const { isTablet, isMobile } = this.state
     if (onPressThumbnail) {
       onPressThumbnail()
     }
-    if (!clickDisabled && !isProDesign) {
+    if (!clickDisabled && !isProDesign && !fromYotpo) {
       if (isTablet || isMobile) {
         window.open(this.getUrlProduct())
       } else {
@@ -339,6 +343,9 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       intl,
       proStatus,
       isProDesign,
+      fromYotpo,
+      name: designName,
+      code,
       reversePriceRange,
       proDesign,
       fromIntakeForm,
@@ -441,6 +448,9 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             isProDesign,
             proStatus,
             isTopProduct,
+            fromYotpo,
+            designName,
+            code,
             formatMessage,
             isHovered,
             images,
@@ -487,7 +497,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
         ) : (
           <Footer>
             <Type {...{ fitContainer, fromTop }}>
-              {type}
+              {fromYotpo ? designName : type}
               <GendersContainer>
                 {menAvailable && <MenIcon type="man" />}
                 {womenAvailable && <WomenIcon type="woman" />}
@@ -496,7 +506,10 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             </Type>
             <Description {...{ fitContainer }}>{description}</Description>
             <InfoContainer>
-              {!isProDesign ? colorOptions : null}
+              {!fromYotpo ? 
+                (!isProDesign ? colorOptions : null) : 
+                <ProductName>{type}</ProductName>
+              }
               <Price {...{ fromTop }}>{price}</Price>
             </InfoContainer>
             {isProDesign &&

@@ -14,10 +14,10 @@ export const Title = styled.div`
   text-transform: uppercase;
   justify-content: center;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: bold;
   letter-spacing: 0.93px;
   line-height: 18px;
-
+  font-family: Avenir;
   @media (min-width: 1440px) {
     padding: 0px 10%;
   }
@@ -28,12 +28,19 @@ export const Divider = styled(AntDivider)`
   width: auto;
   min-width: 20px;
 `
+
+export const DivList = styled.div`
+  width: 100%;
+  justify-content: center;
+  display: flex;
+`
+
 export const ProductsContainer = styled.div`
   display: flex;
   flex-direction: row;
   overflow: auto;
   white-space: nowrap;
-
+  justify-content: flex-start;
   section {
     margin: 0px 40px 0px 0px;
   }

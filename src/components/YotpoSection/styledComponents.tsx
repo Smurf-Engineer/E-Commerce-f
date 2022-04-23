@@ -48,3 +48,22 @@ export const RelatedProductsContainer = styled.div`
   margin-bottom: 80px;
   padding: 0px 32px;
 `
+
+export const ListContainer = styled.div`
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: -12px;
+  padding-right: 26px;
+  padding-left: 26px;
+  @media (min-width: 320px) and (max-width: 748px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+`
+
+export const StoreLabel = styled.div`
+  font-weight: bold;
+  text-align: center;
+  font-family: Avenir;
+`

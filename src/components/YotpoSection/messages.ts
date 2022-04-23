@@ -16,5 +16,9 @@ export default defineMessages({
   customerReview: {
     id: 'screens.YotpoSection.customerReview',
     defaultMessage: 'CUSTOMER REVIEW'
+  },
+  moreTeamProducts: {
+    id: 'screens.YotpoSection.moreTeamProducts',
+    defaultMessage: 'MORE TEAM PRODUCTS'
   }
 })

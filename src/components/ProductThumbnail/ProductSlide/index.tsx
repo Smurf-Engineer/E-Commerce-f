@@ -80,6 +80,9 @@ interface Props {
   qualityWarning?: boolean
   designLab?: boolean
   lastTask?: any
+  designName?: string
+  code?: string
+  fromYotpo?: boolean
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -122,6 +125,9 @@ const ProductSlide = ({
   backgroundColor,
   proDesign,
   isOwner = true,
+  designName,
+  code,
+  fromYotpo,
   formatMessage,
   showTooltips,
   setSeen,
@@ -260,7 +266,7 @@ const ProductSlide = ({
             </TopContainer>
           )}
         </ImageTop>
-        <Page>
+        <Page {...{ fromYotpo }}>
           {/* <a href={urlProduct}> TODO: WIP new way to right click */}
           <Image
             src={image} 

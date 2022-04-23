@@ -2,12 +2,16 @@ import styled from 'styled-components'
 import InfiniteScroll from 'react-infinite-scroller'
 import { WHITE } from '../../theme/colors'
 
+interface DivProps {
+  fromYotpo?: boolean
+}
+
 export const Container = styled.div``
 export const Content = styled.div`
-  height: 70vh;
+  height: ${({ fromYotpo }: DivProps) => !fromYotpo ? '70vh' : ''};
   overflow: auto;
-  border-top: 2px solid #e8e6e6;
-  border-bottom: 2px solid #e8e6e6;
+  border-top: ${({ fromYotpo }: DivProps) => !fromYotpo ? '2px solid #e8e6e6' : ''};
+  border-bottom: ${({ fromYotpo }: DivProps) => !fromYotpo ? '2px solid #e8e6e6' : ''};
   @media(max-width: 714px) {
     border-top: 2px solid #c0c0c0;
     border-bottom: 2px solid #c0c0c0;
@@ -23,6 +27,7 @@ export const Text = styled.div`
 
 interface HeadRowProps {
   withoutPadding?: boolean
+  fromYotpo?: boolean
 }
 
 export const HeadRow = styled.div`
@@ -73,9 +78,19 @@ export const ThumbnailsList = styled.ul`
   align-items: flex-start;
   justify-content: center;
   padding: 0;
-  background: #f8f8f8;
+  background: ${({ fromYotpo }: HeadRowProps) => !fromYotpo ? '#f8f8f8' : WHITE};
   margin-left: ${({ withoutPadding }: HeadRowProps) =>
     withoutPadding ? '-54px' : '0'};
+  ${({ fromYotpo }: HeadRowProps) => fromYotpo ? `
+    margin-bottom: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 100%;
+    overflow-x: scroll;
+    width: auto;
+    max-width: 100%;
+  ` : ''}
 `
 
 export const ThumbnailListItem = styled.li`
@@ -100,6 +115,9 @@ export const ThumbnailListItem = styled.li`
     min-width: unset;
     width: calc(100% / 2);
     margin-bottom: 17px;
+    ${({ fromYotpo }: DivProps) => fromYotpo ? `
+      margin-left: 22px;
+    ` : ''}
   }
 `
 
@@ -131,4 +149,8 @@ export const NoResultsFound = styled.div`
 
 export const InfiniteScrollStyled = styled(InfiniteScroll)`
   height: 100%;
+  ${({ fromYotpo }: DivProps) => fromYotpo ? `
+    display: flex;
+    justify-content: center;
+  ` : ''}
 `
