@@ -15,6 +15,7 @@ interface Props {
   yotpoId: string
   name: string
   noCarousel?: boolean
+  hideFeatured?: boolean
 }
 
 declare global {
@@ -61,12 +62,14 @@ class YotpoReviews extends React.Component<Props, any> {
   }
 
   render() {
-    const { children, name } = this.props
+    const { children, name, hideFeatured } = this.props
     return (
       <Container {...{ name }}>
-        <YotpoCarouselContainer>
-          <YotpoCarousel innerRef={yotpo => (this.yotpoGallery = yotpo)} />
-        </YotpoCarouselContainer>
+        {!hideFeatured &&
+          <YotpoCarouselContainer>
+            <YotpoCarousel innerRef={yotpo => (this.yotpoGallery = yotpo)} />
+          </YotpoCarouselContainer>
+        }
         {children}
         <YotpoReviewsContainer innerRef={this.props.innerRef}>
           <YotpoReviewsElement innerRef={yotpo => (this.yotpo = yotpo)} />

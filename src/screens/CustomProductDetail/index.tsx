@@ -90,6 +90,7 @@ import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
 import ImagesSlider from '../../components/ImageSlider'
 import PriceQuantity from '../../components/PriceQuantity'
+import { openQuickViewAction } from '../../components/MainLayout/actions'
 import Ratings from '../../components/Ratings'
 import FitInfo from '../../components/FitInfo'
 import AddtoCartButton from '../../components/AddToCartButton'
@@ -150,6 +151,7 @@ interface Props extends RouteComponentProps<any> {
   setShowDetailsAction: (show: boolean) => void
   setShowSpecsAction: (show: boolean) => void
   resetDataAction: () => void
+  openQuickView: (id: number, yotpoId: string | null) => void
   setSelectedTopSizeAction: (selected: SelectedType) => void
   setSelectedBottomSizeAction: (selected: SelectedType) => void
 }
@@ -249,6 +251,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       selectedGender,
       selectedSize,
       selectedFit,
+      openQuickView,
       openFitInfo,
       setLoadingModel,
       profileData,
@@ -727,7 +730,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   {(user && (user.id === 'HkuTqBauQ' || user.id === 'H1R0yFr0V')) &&
                     <StyledInput onChange={this.changeTone} value={tone} />
                   }
-                  <Render3D
+                  {false && <Render3D
                     customProduct={true}
                     textColor="white"
                     disableControls={isMobile ? hideControls : false}
@@ -736,7 +739,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     zoomedIn={true}
                     light={tone}
                     asImage={phone}
-                  />
+                  />}
                   {isMobile &&
                     <ThreeDButton 
                       onTouchEnd={this.onTouchEndAction}
@@ -837,10 +840,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               relatedItemTag,
               moreTag,
               name,
+              openQuickView,
+              teamStoreShortId,
+              designId,
               history,
+              resellerStatus,
               formatMessage,
               currentCurrency
             }}
+            resellerComission={comissionToApply}
             ref={this.customerReviewRef}
             hideFeatured={true}
           />
@@ -1018,7 +1026,7 @@ type OwnProps = {
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, { ...customProductDetailActions }),
+  connect(mapStateToProps, { ...customProductDetailActions, openQuickView: openQuickViewAction }),
   graphql(profileSettingsQuery, {
     options: ({ user }: OwnProps) => ({
       fetchPolicy: 'network-only',

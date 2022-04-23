@@ -38,6 +38,7 @@ export const Container = styled.div`
   max-width: 1452px;
   width: 100%;
   margin: 0 auto;
+  box-shadow: 0px 5px 14px 8px #c7c7c7;
   @media (max-width: 700px) {
     user-select: none !important;
   }
@@ -729,7 +730,7 @@ export const Loading = styled.div`
 `
 
 export const layoutStyle = {
-  backgroundColor: WHITE,
+  backgroundColor: GRAY_HEADER,
 }
 
 export const InfoTag = styled.div`

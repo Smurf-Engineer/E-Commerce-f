@@ -64,6 +64,7 @@ interface Props {
   limit?: number
   teamStoreShortId?: string
   isResellerStore?: boolean
+  fromYotpo?: boolean
   isResellerOwner?: boolean
   designs?: TeamStoreItemtype[]
   withoutPadding?: boolean
@@ -98,6 +99,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       onDemandMode,
       withoutPadding,
       targetRange,
+      fromYotpo,
       currentRange,
       currentCurrency = config.defaultCurrency,
       teamStoreName,
@@ -223,7 +225,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             })
             : ''
           return (
-            <ThumbnailListItem key={index}>
+            <ThumbnailListItem {...{ fromYotpo }} key={index}>
               <ProductThumbnail
                 id={product.id}
                 backgroundColor={GRAY_LIGHTEST}
@@ -291,14 +293,15 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       )
       renderThumbnailList = (
         <InfiniteScrollStyled
+          {...{ fromYotpo }}
           useWindow={false}
           pageStart={0}
           threshold={728}
           loadMore={handleChangePage}
-          hasMore={totalDesigns > designs.length}
+          hasMore={fromYotpo ? false : totalDesigns > designs.length}
           loader={<Loading><Spin /></Loading>}
         >
-          <ThumbnailsList withoutPadding={!!withoutPadding}>
+          <ThumbnailsList {...{ fromYotpo }} withoutPadding={!!withoutPadding}>
             {thumbnailsList}
           </ThumbnailsList>
         </InfiniteScrollStyled>
@@ -338,7 +341,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
 
       renderThumbnailList =
         catalogue.length > 0 ? (
-          <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
+          <ThumbnailsList {...{ fromYotpo }}>{thumbnailsList}</ThumbnailsList>
         ) : (
             <NoResultsFound>
               {formatMessage(messages.emptyResults)}
@@ -363,9 +366,11 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     return (
       <Container>
         <HeadRow withoutPadding={!!withoutPadding}>
-          <TotalItems>
-            <FormattedMessage {...messages.items} values={{ total, totalDesigns }} />
-          </TotalItems>
+          {!fromYotpo &&
+            <TotalItems>
+              <FormattedMessage {...messages.items} values={{ total, totalDesigns }} />
+            </TotalItems>
+          }
           {sortOptions && (
             <SortOptions>
               <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>
@@ -376,7 +381,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             </SortOptions>
           )}
         </HeadRow>
-        <Content>
+        <Content {...{ fromYotpo }}>
           {renderThumbnailList}
         </Content>
       </Container>
