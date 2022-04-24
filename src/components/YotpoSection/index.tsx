@@ -163,7 +163,7 @@ const YotpoSection = ({
               />
             </ListContainer>
           }
-          {!!products.length && (
+          {/* {!!products.length && (
             <RelatedProductsContainer>
               <RelatedProducts
                 products={data.products}
@@ -172,7 +172,7 @@ const YotpoSection = ({
                 {...{ history, formatMessage, dispatch }}
               />
             </RelatedProductsContainer>
-          )}
+          )} */}
           <Separator>
             <FormattedMessage {...messages.customerReview} />
           </Separator>
@@ -214,7 +214,7 @@ const YotpoSection = ({
               />
             </RelatedProductsContainer>
           )}
-          {!!products.length && (
+          {/* {!!products.length && (
             <RelatedProductsContainer>
               <RelatedProducts
                 products={data.products}
@@ -223,7 +223,7 @@ const YotpoSection = ({
                 {...{ history, formatMessage, dispatch }}
               />
             </RelatedProductsContainer>
-          )}
+          )} */}
           <Separator>
             <FormattedMessage {...messages.customerReview} />
           </Separator>
@@ -286,12 +286,12 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const YotpoSectionEnhance = compose(
   graphql<Data>(getRelatedProducts, {
-    options: ({ productId, relatedItemTag }: OwnProps) => ({
+    options: ({ productId, relatedItemTag, teamStoreShortId }: OwnProps) => ({
       variables: {
         productId,
         relatedItemTag
       },
-      skip: !productId || !relatedItemTag
+      skip: !productId || !relatedItemTag || teamStoreShortId
     })
   }),
   graphql<Data>(getRelatedDesigns, {
