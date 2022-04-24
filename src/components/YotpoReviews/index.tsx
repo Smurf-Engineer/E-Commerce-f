@@ -5,9 +5,7 @@ import * as React from 'react'
 import {
   Container,
   YotpoReviewsContainer,
-  YotpoReviewsElement,
-  YotpoCarouselContainer,
-  YotpoCarousel
+  YotpoCarouselContainer
 } from './styledComponents'
 import ReactDOM from 'react-dom'
 
@@ -27,16 +25,16 @@ declare global {
 class YotpoReviews extends React.Component<Props, any> {
   yotpo: any
   yotpoGallery: any
-  componentWillReceiveProps({ yotpoId }: Props) {
-    const { yotpoId: oldYotpoId } = this.props
-    if (yotpoId !== oldYotpoId) {
-      this.updateYotpoWidget(yotpoId)
+  componentDidUpdate() {
+    if (typeof window !== 'undefined' && window.yotpo && window.yotpo.inview) {
+      window.yotpo.refreshWidgets()
     }
   }
 
   componentDidMount() {
-    const { yotpoId } = this.props
-    this.updateYotpoWidget(yotpoId)
+    if (typeof window !== 'undefined' && window.yotpo && window.yotpo.inview) {
+      window.yotpo.refreshWidgets()
+    }
   }
 
   updateYotpoWidget = (id: string) => {
@@ -62,17 +60,27 @@ class YotpoReviews extends React.Component<Props, any> {
   }
 
   render() {
-    const { children, name, hideFeatured } = this.props
+    const { children, name, hideFeatured, yotpoId } = this.props
     return (
       <Container {...{ name }}>
         {!hideFeatured &&
           <YotpoCarouselContainer>
-            <YotpoCarousel innerRef={yotpo => (this.yotpoGallery = yotpo)} />
+            <div
+              class="yotpo yotpo-slider yotpo-size-7"
+              data-product-id={yotpoId}
+              data-yotpo-element-id="3"
+            />
           </YotpoCarouselContainer>
         }
         {children}
         <YotpoReviewsContainer innerRef={this.props.innerRef}>
-          <YotpoReviewsElement innerRef={yotpo => (this.yotpo = yotpo)} />
+          <div
+            class="yotpo yotpo-main-widget"
+            data-product-id={yotpoId}
+            data-price="Product Price"
+            data-currency="Price Currency"
+            data-name="Product Title"
+          />
         </YotpoReviewsContainer>
       </Container>
     )
