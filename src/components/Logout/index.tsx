@@ -139,10 +139,11 @@ class Logout extends React.PureComponent<Props, {}> {
     const isTablet = typeof window !== 'undefined' && window.matchMedia(
       '(min-width: 481px) and (max-width: 1024px)'
     ).matches
+    const aboveMin = typeof window !== 'undefined' && window.matchMedia('(min-width: 992px)').matches
     return (
       <MediaQuery minWidth={992}>
         {matches => {
-          if (matches) {
+          if (matches || aboveMin) {
             return (
               <PopoverStyled
                 overlayStyle={overStyle}
@@ -156,14 +157,14 @@ class Logout extends React.PureComponent<Props, {}> {
           } else {
             return (
               <Container>
-                {openedMenu && <LeftIcon onClick={closeMenu} type="left" />}
+                {openedMenu && <LeftIcon onTouchEnd={closeMenu} onClick={closeMenu} type="left" />}
                 <Icon type="user" />
                 <Text {...{darkMode}}>
-                  <Menu onClick={openMenu} style={OverviewStyle}>
+                  <Menu onTouchEnd={openMenu} onClick={openMenu} style={OverviewStyle}>
                     <Menu.Item style={titleStyle} key={OVERVIEW}>{toUpper(title)}</Menu.Item>
                   </Menu>
                 </Text>
-                {!openedMenu && <RightIcon onClick={openMenu} type="right" />}
+                {!openedMenu && <RightIcon onTouchEnd={openMenu} onClick={openMenu} type="right" />}
               </Container>
             )
           }

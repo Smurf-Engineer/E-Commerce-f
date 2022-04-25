@@ -22,7 +22,7 @@ import {
   // TeamStoresMenuContainer,
   // TeamStoresMenuTitle,
   notificationStyles,
-  Icon
+  IconStyled
 } from './styledComponents'
 import {
   profileSettingsQuery,
@@ -352,9 +352,9 @@ class MenuBar extends React.Component<Props, StateProps> {
     const showProDesign = get(profileData, 'profileData.userProfile.showProDesign', false)
 
     const notifications = get(notificationsData, 'notifications.list', [])
-    const loggedUser = !user ? (
-      <TopText onClick={this.handleOpenLogin} {...{ darkMode }}>
-        <Icon type="user" />
+    const loggedUser = !userName ? (
+      <TopText onTouchEnd={this.handleOpenLogin} onClick={this.handleOpenLogin} {...{ darkMode }}>
+        <IconStyled type="user" />
         {formatMessage(messages.title)}
       </TopText>
     ) : (
@@ -404,7 +404,7 @@ class MenuBar extends React.Component<Props, StateProps> {
         <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
       </BottomRow>
     )
-
+    const aboveMin = typeof window !== 'undefined' && window.matchMedia('(min-width: 992px)').matches
     return (
       <div>
         <MediaQuery
@@ -412,7 +412,7 @@ class MenuBar extends React.Component<Props, StateProps> {
           values={{ width: fakeWidth, deviceWidth: fakeWidth }}
         >
           {(matches) => {
-            if (matches) {
+            if (matches || aboveMin) {
               return (
                 <Container {...{ darkMode }}>
                   {!hideTop && (

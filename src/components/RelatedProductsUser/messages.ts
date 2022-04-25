@@ -1,28 +1,28 @@
 /**
- * RelatedProducts -  Messages
+ * RelatedProductsUser -  Messages
  */
 
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   title: {
-    id: 'components.RelatedProducts.tittle',
-    defaultMessage: 'MORE LOCKER DESIGNS'
+    id: 'components.RelatedProductsUser.tittle',
+    defaultMessage: 'LOCKER DESIGNS'
   },
   addToCart: {
-    id: 'components.RelatedProducts.addToCart',
+    id: 'components.RelatedProductsUser.addToCart',
     defaultMessage: 'ADD TO CART'
   },
   customize: {
-    id: 'components.RelatedProducts.customize',
+    id: 'components.RelatedProductsUser.customize',
     defaultMessage: 'CUSTOMIZE'
   },
   customizableLabel: {
-    id: 'components.RelatedProducts.customizableLabel',
+    id: 'components.RelatedProductsUser.customizableLabel',
     defaultMessage: 'Customize'
   },
   viewFullDetailsLabel: {
-    id: 'components.RelatedProducts.viewFullDetailsLabel',
+    id: 'components.RelatedProductsUser.viewFullDetailsLabel',
     defaultMessage: 'FULL DETAILS'
   }
 })

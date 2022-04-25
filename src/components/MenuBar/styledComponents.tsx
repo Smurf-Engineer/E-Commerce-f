@@ -41,7 +41,7 @@ export const TopRow = styled.div`
   }
 `
 
-export const Icon = styled(icon)`
+export const IconStyled = styled(icon)`
   margin-right: 14px;
   padding-left: 8px;
   font-size: 15px;
