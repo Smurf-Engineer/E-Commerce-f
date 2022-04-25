@@ -31,7 +31,7 @@ import ProductList from '../DesignsCatalogueThumbnailList'
 import RelatedProductsUser from '../RelatedProductsUser'
 import moment from 'moment'
 import find from 'lodash/find'
-const LIMIT = 25
+const LIMIT = 50
 
 interface Data extends QueryProps {
   products: [Product]
