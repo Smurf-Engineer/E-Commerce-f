@@ -7,12 +7,14 @@ import { GREEN_TRANSPARENT, GREEN, BLUE_SKY } from '../../theme/colors'
 
 export const Footer = styled.div`
   padding: 4px;
+  position: relative;
 `
 
 export const Type = styled.div`
   color: #5f6062;
   font-size: 14px;
   font-weight: bold;
+  font-family: Avenir;
   line-height: 19px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -28,16 +30,22 @@ export const Type = styled.div`
 export const GendersDiv = styled.div`
   display: inline-flex;
   margin-right: 14px;
+  position: absolute;
+  top: -38px;
+  right: 0;
+  align-items: flex-end;
+  filter: drop-shadow(0px 0px 3px #f1f4f5);
+  height: 30px;
 `
 
 export const MenIcon = styled(Icon)`
   margin-left: 8px;
   color: ${BLUE_SKY};
-  margin-top: 4px;
+  margin-bottom: 4px;
 `
 
 export const YouthLabel = styled.div`
-  font-size: 11px;
+  font-size: 10px;
   color: #549c8c;
   margin-left: 2px;
   display: inline-block;
@@ -50,7 +58,7 @@ export const YouthLabel = styled.div`
 export const WomenIcon = styled(Icon)`
   margin-left: 8px;
   color: deeppink;
-  margin-top: 4px;
+  margin-bottom: 4px;
 `
 
 export const Description = styled.div`

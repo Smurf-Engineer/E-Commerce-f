@@ -62,6 +62,15 @@ export const ItemDetailsHeaderName = styled.div`
   letter-spacing: 0.23px;
   line-height: 25px;
   text-transform: uppercase;
+  @media(max-width: 767px) {
+    font-size: 14px;
+  }
+  @media(max-width: 480px) {
+    font-size: 13px;
+  }
+  @media(max-width: 380px) {
+    font-size: 12px;
+  }
 `
 
 export const ItemDetailsHeaderNameDetail = styled.div`
@@ -69,6 +78,15 @@ export const ItemDetailsHeaderNameDetail = styled.div`
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
+  @media(max-width: 767px) {
+    font-size: 13px;
+  }
+  @media(max-width: 480px) {
+    font-size: 12px;
+  }
+  @media(max-width: 380px) {
+    font-size: 11px;
+  }
 `
 
 export const ItemDetailsHeaderPrice = styled.div`
