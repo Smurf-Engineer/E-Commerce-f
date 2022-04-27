@@ -234,6 +234,12 @@ export const ButtonContainer = styled.div`
   ${({ fromTop }: ButtonContainerProps) => fromTop ? `
     top: 140px;
   ` : ''}
+  z-index: 2;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    filter: brightness(1.7);
+  }
 `
 
 export const CustomizeButton = styled.div`
@@ -247,6 +253,12 @@ export const CustomizeButton = styled.div`
   align-items: center;
   border-radius: 2px;
   padding: 6px 16px;
+  z-index: 2;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    filter: brightness(1.7);
+  }
 `
 
 interface ProApprovedProps {

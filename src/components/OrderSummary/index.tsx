@@ -238,7 +238,7 @@ export class OrderSummary extends React.Component<Props, {}> {
         {!onlyRead && showCouponInput ? (
           <CollapseWrapper>
             {!couponCode && 
-              <Collapse bordered={false}>
+              <Collapse defaultActiveKey="1" bordered={false}>
                 <Panel header={formatMessage(messages.discountCode)} key="1">
                   <ZipCodeInputWrapper>
                     <InputSearch

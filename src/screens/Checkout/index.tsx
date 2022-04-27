@@ -81,7 +81,8 @@ import {
   DeliveryLabels,
   StyledPopOver,
   PopoverText,
-  InfoIcon
+  InfoIcon,
+  DeliveryDivMobile
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -491,6 +492,27 @@ class Checkout extends React.Component<Props, {}> {
     return (
       <Layout {...{ history, intl }} hideTopHeader={true} hideBottomHeader={true}>
         <Container>
+          {deliveryDate &&
+            <DeliveryDiv show={currentStep === ReviewTab}>
+              <StyledPopOver
+                overlayClassName="innerClassTooltip"
+                title={
+                  <PopoverText>
+                    {intl.formatMessage(messages.deliveryInfo)}
+                  </PopoverText>
+                }
+              >
+                <InfoIcon type="question-circle" />
+              </StyledPopOver>
+              <DeliveryLabels>
+                {intl.formatMessage(messages.estimatedDelivery)}
+                <DeliveryValue>
+                  {deliveryDate}
+                </DeliveryValue>
+              </DeliveryLabels>
+              <PackageIcon src={packageIcon} />
+            </DeliveryDiv>
+          }
           <CheckoutTitle>
             {intl.formatMessage(messages.title).toLocaleUpperCase()}
           </CheckoutTitle>
@@ -597,7 +619,7 @@ class Checkout extends React.Component<Props, {}> {
             </StepsContainer>
             <SummaryContainer>
               {deliveryDate &&
-                <DeliveryDiv show={currentStep === ReviewTab}>
+                <DeliveryDivMobile show={currentStep === ReviewTab}>
                   <StyledPopOver
                     overlayClassName="innerClassTooltip"
                     title={
@@ -615,7 +637,7 @@ class Checkout extends React.Component<Props, {}> {
                     </DeliveryValue>
                   </DeliveryLabels>
                   <PackageIcon src={packageIcon} />
-                </DeliveryDiv>
+                </DeliveryDivMobile>
               }
               <CheckoutSummary
                 subtotal={total}

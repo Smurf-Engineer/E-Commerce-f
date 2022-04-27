@@ -213,7 +213,11 @@ export const getOrderQuery = gql`
         designOwner
         unitPrice
         variableOne
+        oneLength
+        variableOneCaps
         variableTwo
+        twoLength
+        variableTwoCaps
         productTotal
         designName
         designImage
