@@ -16,7 +16,7 @@ interface DivProps {
 export const Container = styled.div`
   padding: 40px 32px;
   background-color: ${WHITE};
-
+  position: relative;
   @media (max-width: 480px) {
     padding: 20px 10px 40px 10px;
   }
@@ -299,6 +299,27 @@ export const MaintenaceLink = styled.div`
 
 export const DeliveryDiv = styled.div`
   display: flex;
+  position: absolute;
+  top: 30px;
+  right: 42px;
+  animation: fade-in-right 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-right {
+    0% {
+      transform: translateX(12px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @media(max-width: 480px) {
+    display: none;
+  }
+`
+
+export const DeliveryDivMobile = styled.div`
+  display: none;
   position: absolute;
   top: 30px;
   right: 42px;

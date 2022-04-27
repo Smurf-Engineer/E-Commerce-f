@@ -10,7 +10,7 @@ import domtoimage from 'dom-to-image'
 import moment from 'moment'
 import get from 'lodash/get'
 import messages from './messages'
-import { OrderDetailsInfo, QueryProps, FulfillmentNetsuite } from '../../types/common'
+import { OrderDetailsInfo, QueryProps, FulfillmentNetsuite, CartItems } from '../../types/common'
 import Modal from 'antd/lib/modal'
 import { getOrderQuery, deleteOrderMutation } from './data'
 import Icon from 'antd/lib/icon'
@@ -391,6 +391,16 @@ export class OrderDetails extends React.Component<Props, {}> {
     if (fixedPriceStore) {
       cart = cartOriginal.map((item) => ({...item, fixedPrice: true }))
     }
+    cart.forEach((item: CartItems) => {
+      if (item.product) {
+        item.product.variableOne = item.variableOne
+        item.product.oneLength = item.oneLength
+        item.product.variableOnecaps = item.variableOneCaps
+        item.product.variableTwo = item.variableTwo
+        item.product.twoLength = item.twoLength
+        item.product.variableTwoCaps = item.variableTwoCaps
+      }
+    })
     const cartItems = cart || []
     const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     const renderItemList = cart

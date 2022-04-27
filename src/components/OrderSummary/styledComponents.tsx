@@ -221,6 +221,11 @@ export const CollapseWrapper = styled.div`
     display: inline;
     width: auto;
   }
+  .ant-collapse-content > .ant-collapse-content-box {
+    padding: unset;
+    padding-top: 4px;
+    padding-bottom: 16px;
+  }
 
   .ant-collapse-borderless .ant-collapse-item .ant-collapse-content {
     padding: 0 0 0 0;

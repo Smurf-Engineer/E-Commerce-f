@@ -268,7 +268,9 @@ export class AddToCartButton extends PureComponent<Props, {}> {
                   replaceOrder,
                   i.proCertified,
                   i.proDesign,
-                  i.fixedPrice
+                  i.fixedPrice,
+                  i.variableOneValue,
+                  i.variableTwoValue
                 )
               )
             )
@@ -340,7 +342,9 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     replaceOrder: string = '',
     proCertified?: boolean,
     proDesign?: boolean,
-    fixedPrice?: boolean
+    fixedPrice?: boolean,
+    variableOneValue?: string,
+    variableTwoValue?: string
   ) => {
     const details = [] as CartItemDetail[]
     const upgradeOne = get(item, 'product.upgradeOne', {})
@@ -419,7 +423,9 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       { replaceOrder },
       { proCertified },
       { proDesign },
-      { fixedPrice }
+      { fixedPrice },
+      { variableOneValue },
+      { variableTwoValue }
     )
     return itemToAdd
   }
