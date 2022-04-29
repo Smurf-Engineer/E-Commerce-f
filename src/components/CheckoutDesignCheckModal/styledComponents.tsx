@@ -14,6 +14,10 @@ export const OptionalLabel = styled.span`
   letter-spacing: 0.25px;
   line-height: 22px;
   font-weight: normal;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: none;
+  }
 `
 
 export const ProReviewTitle = styled.img`
@@ -21,6 +25,10 @@ export const ProReviewTitle = styled.img`
   height: 24px;
   display: flex;
   align-items: flex-start;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin: 0 -6px 6px -10px;
+  }
 `
 
 export const ProDesignReviewContent = styled.div`
@@ -53,6 +61,18 @@ export const ProDesignReviewContent = styled.div`
     list-style: none;
     padding-left: 0;
   }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin: 0 -6px 10px -6px;
+    font-size: 13px;
+    line-height: 18px;
+    p {
+      margin-bottom: 6px
+    }
+    ul {
+      margin-bottom: 6px;
+    }
+  }
 `
 
 export const ModalButtonsWrapper = styled.div`
@@ -66,6 +86,12 @@ export const ModalButtonsWrapper = styled.div`
     grid-template-columns: 1fr;
     grid-template-areas: 'review' 'continue';
   }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-left: -6px;
+    margin-right: -6px;
+    grid-gap: 10px;
+  }
 `
 
 export const ContinueButton = styled(Button)`
@@ -76,8 +102,13 @@ export const ContinueButton = styled(Button)`
   border-radius: 2px;
   color: ${RED};
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (max-width: 550px) {
     width: 100%;
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    height: 42px;
+    font-size: 13px;
   }
 `
 
@@ -99,6 +130,8 @@ export const ReviewButton = styled(Button)`
 
   @media (max-width: 550px) {
     width: 100%;
+    height: 42px;
+    font-size: 13px;
   }
 `
 
@@ -113,4 +146,10 @@ export const Paragraph = styled.div`
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin: 10px -6px 0 -6px;
+    font-size: 13px;
+    line-height: 18px;
+  }
 `
