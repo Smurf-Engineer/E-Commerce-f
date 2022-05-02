@@ -321,7 +321,8 @@ import {
   PROJECT_COMMENT,
   PROJECT_MESSAGE,
   PROJECT_REVIEW,
-  TIME_FORMAT
+  TIME_FORMAT,
+  VIEW_2D_PREVIEW
 } from '../../constants'
 import moment from 'moment'
 import messages from './messages'
@@ -1372,6 +1373,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
 
   openPreview = () => {
     const { openPrintPreview } = this.state
+    if (!openPrintPreview) {
+      const { data } = this.props
+      const designCode = get(data, 'projectItem.code', '')
+      window.dataLayer.push({ event: VIEW_2D_PREVIEW, label: designCode })
+    }
     this.setState({ openPrintPreview: !openPrintPreview })
   }
 
