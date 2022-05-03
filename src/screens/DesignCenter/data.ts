@@ -198,6 +198,11 @@ export const getDesignLabInfo = gql`
         timeZone
       }
     }
+  }
+`
+
+export const getUserInfoQuery = gql`
+  query getUserInfo {
     profileData: getUserProfile {
       userProfile {
         userId: id

@@ -92,6 +92,7 @@ import {
   DesignLabInfo,
   ProAssistItem,
   UserType,
+  User,
 } from '../../types/common'
 import {
   getProductQuery,
@@ -103,6 +104,7 @@ import {
   getVariantsFromProduct,
   getProAssist,
   getProTicket,
+  getUserInfoQuery,
 } from './data'
 import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -130,6 +132,10 @@ interface DataDesignLabInfo extends QueryProps {
   designInfo?: DesignLabInfo
 }
 
+interface DataUserInfo extends QueryProps {
+  profileData?: User
+}
+
 interface ProAssistInfo extends QueryProps {
   proAssist?: ProAssistItem
 }
@@ -138,6 +144,7 @@ interface Props extends RouteComponentProps<any> {
   dataProduct?: DataProduct
   dataDesign?: DataDesign
   dataDesignLabInfo?: DataDesignLabInfo
+  dataUserInfo?: DataUserInfo
   intl: InjectedIntl
   client: any
   currentTab: number
@@ -742,6 +749,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       designCheckModalOpen,
       loadingPro,
       dataDesignLabInfo,
+      dataUserInfo,
       ticket,
       userId,
       proAssist,
@@ -796,7 +804,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       ''
     )
     const managerName = get(
-      dataDesignLabInfo,
+      dataUserInfo,
       'profileData.userProfile.managerName',
       ''
     )
@@ -1498,6 +1506,12 @@ const DesignCenterEnhance = compose(
       },
     }),
     name: 'dataDesignLabInfo',
+  }),
+  graphql<DataDesign>(getUserInfoQuery, {
+    options: ({ user }: OwnProps) => ({
+      skip: !user || (user && !user.id),
+    }),
+    name: 'dataUserInfo',
   }),
   graphql<DataDesign>(getDesignQuery, {
     options: ({ location }: OwnProps) => {

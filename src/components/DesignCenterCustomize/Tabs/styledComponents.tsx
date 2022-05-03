@@ -44,13 +44,13 @@ export const Container = styled.div`
   @media (max-width: 1600px) {
     & .ant-tabs-nav .ant-tabs-tab {
       margin: 0px;
-      padding: 12px;
+      padding: 12px 16px;
     }
   }
 
   @media (max-width: 1360px) {
     & .ant-tabs-nav .ant-tabs-tab {
-      padding: 10px;
+      padding: 10px 12px;
     }
   }
 
