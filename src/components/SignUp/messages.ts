@@ -56,7 +56,7 @@ export default defineMessages({
   },
   haveAccount: {
     id: 'compoenents.signUp.haveAccount',
-    defaultMessage: 'Have an account?',
+    defaultMessage: 'Already have an account?',
   },
   loginLabel: {
     id: 'components.signUp.loginLabel',

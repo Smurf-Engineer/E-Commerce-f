@@ -159,7 +159,7 @@ export const HaveAnAccountRow = styled.div`
   color: ${BLACK};
   padding: 10px 0 10px;
   text-align: center;
-  font-size: 16px;
+  font-size: 17px;
   animation: fade-in-top 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   @keyframes fade-in-top {
     0% {

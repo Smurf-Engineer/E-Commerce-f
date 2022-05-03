@@ -282,7 +282,7 @@
   "components.signUp.newsLetterSignUp": "Sign me up to Jakroo's newsletter",
   "components.signUp.termsAndPolicyLegend": "By creating an account, you agree to Jakroo's Privacy Policy and Terms of Use",
   "components.signUp.createAccountButtonLabel": "CREATE YOUR FREE ACCOUNT",
-  "compoenents.signUp.haveAccount": "Have an account?",
+  "compoenents.signUp.haveAccount": "Already have an account?",
   "components.signUp.loginLabel": "LOG IN",
   "components.signUp.welcomeMessage": "Hi {name}! Welcome to Jakroo",
   "components.signUp.passwordLengthError": "Password must be at least 8 characters",
