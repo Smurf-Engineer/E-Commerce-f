@@ -283,7 +283,7 @@ class Render3D extends PureComponent {
   }
 
   componentDidMount() {
-    const { isEditing, design, showBranding = true, product } = this.props
+    const { isEditing, design, showBranding = true, product, loggedUserId } = this.props
     const { modalText } = product || {}
     const cornerSize =
       (isEditing && design.highResolution) || !isEditing
@@ -296,19 +296,28 @@ class Render3D extends PureComponent {
     const { clientWidth, clientHeight } = this.container
     const devicePixelRatio = window.devicePixelRatio || 1
 
-    const precision = 'highp'
+    const lowResolution =
+      loggedUserId === 'rydjiGhdm' ||
+      loggedUserId === 'HkuTqBauQ' ||
+      loggedUserId === 'H1R0yFr0V'
+
+    const precision = lowResolution ? 'mediump' : 'highp'
+
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: true,
+      antialias: !lowResolution,
       precision,
-      preserveDrawingBuffer: true
+      preserveDrawingBuffer: true,
+      powerPreference: lowResolution ? 'high-performance' : 'default'
     })
 
-    renderer.setPixelRatio(devicePixelRatio)
+    renderer.setPixelRatio(lowResolution ? (devicePixelRatio * 0.75) : devicePixelRatio)
     renderer.setClearColor(0x000000, 0)
     renderer.setSize(clientWidth, clientHeight)
-    renderer.shadowMap.enabled = true
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    if (!lowResolution) {
+      renderer.shadowMap.enabled = true
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    }
     /* Camera */
     const aspect = clientWidth / clientHeight
     const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
@@ -369,38 +378,41 @@ class Render3D extends PureComponent {
     scene.add(leftDirectionLight)
     scene.add(backDirectionLight)
 
-    directionalLight.castShadow = true;
-    directionalLight.shadowDarkness = 1;
-    directionalLight.shadow.darkness = 1;
-    directionalLight.shadowCameraVisible = true;
-    directionalLight.shadow.camera.visible = true;
-    directionalLight.shadow.camera.near = 60;
-    directionalLight.shadow.camera.far = 135;
-    directionalLight.shadow.camera.right = 25;
-    directionalLight.shadow.camera.left = - 25;
-    directionalLight.shadow.camera.top = 25;
-    directionalLight.shadow.camera.bottom = - 25;
-    directionalLight.shadow.mapSize.width = 28;
-    directionalLight.shadow.mapSize.height = 28;
+    if (!lowResolution) {
+      directionalLight.castShadow = true;
+      directionalLight.shadowDarkness = 1;
+      directionalLight.shadow.darkness = 1;
+      directionalLight.shadowCameraVisible = true;
+      directionalLight.shadow.camera.visible = true;
+      directionalLight.shadow.camera.near = 60;
+      directionalLight.shadow.camera.far = 135;
+      directionalLight.shadow.camera.right = 25;
+      directionalLight.shadow.camera.left = - 25;
+      directionalLight.shadow.camera.top = 25;
+      directionalLight.shadow.camera.bottom = - 25;
+      directionalLight.shadow.mapSize.width = 28;
+      directionalLight.shadow.mapSize.height = 28;
 
-    const geometry = new THREE.PlaneGeometry(10, 10);
-    const material = new THREE.ShadowMaterial({
-      side: THREE.BackSide,
-      opacity: 0.2,
-      color: new THREE.Color('rgb(0, 0, 0)')
-    });
+      const geometry = new THREE.PlaneGeometry(10, 10);
+      const material = new THREE.ShadowMaterial({
+        side: THREE.BackSide,
+        opacity: 0.2,
+        color: new THREE.Color('rgb(0, 0, 0)')
+      });
 
-    const ground = new THREE.Mesh(geometry, material);
-    ground.scale.multiplyScalar(5);
-    ground.rotateX(Math.PI / 2);
-    ground.position.y = -30;
-    ground.castShadow = false;
-    ground.receiveShadow = true;
+      const ground = new THREE.Mesh(geometry, material);
+      ground.scale.multiplyScalar(5);
+      ground.rotateX(Math.PI / 2);
+      ground.position.y = -30;
+      ground.castShadow = false;
+      ground.receiveShadow = true;
 
-    // const cameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-    // scene.add(cameraHelper)
 
-    scene.add(ground);
+      // const cameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+      // scene.add(cameraHelper)
+
+      scene.add(ground);
+    }
     scene.add(directionalLight)
     /* Loaders */
     const mtlLoader = new THREE.MTLLoader()
