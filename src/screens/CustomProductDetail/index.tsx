@@ -172,6 +172,17 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     this.handleSetLoading(false)
   }
 
+  componentDidUpdate(prevProps: Props) {
+    const { location: prevLocation } = prevProps
+    const { location, resetDataAction } = this.props
+    const { search: oldSearch } = prevLocation || {}
+    const { search } = location || {}
+    if (search !== oldSearch) {
+      resetDataAction()
+      this.handleSetLoading(false)
+    }
+  }
+
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
