@@ -221,10 +221,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: Props) {
     const { loadingImage, setLoadingImageAction } = this.props
     if (loadingImage) {
       setLoadingImageAction(false)
+    }
+    const { location: prevLocation } = prevProps
+    const { location, resetReducerAction } = this.props
+    const { search: oldSearch } = prevLocation || {}
+    const { search } = location || {}
+    if (search !== oldSearch) {
+      resetReducerAction()
     }
   }
 
