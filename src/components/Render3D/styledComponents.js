@@ -23,10 +23,15 @@ export const Container = styled.div`
 `
 
 export const Render = styled.div`
-  height: ${({ customProduct, designSearch }) =>
-    customProduct || designSearch ? '515px' : '90vh'};
+  height: ${({ customProduct, designSearch, maxHeight }) =>
+    customProduct || designSearch ? (maxHeight ? '656px' : '515px') : '90vh'};
   width: 100%;
   cursor: grab;
+  ${({ maxHeight, customProduct, designSearch }) => maxHeight ? `
+    @media (max-width: 572px) {
+      height: ${customProduct || designSearch ? '515px' : '90vh'};
+    }
+  ` : ''}
   @media (max-width: 375px) {
     height: 25em;
     ${({ fullHeight, proDesign }) => fullHeight && proDesign ? `
