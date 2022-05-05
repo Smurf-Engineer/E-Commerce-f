@@ -15,3 +15,6 @@ export const SET_FITS_MODAL = `${namespace}/SET_FITS_MODAL`
 export const SET_LOADING_ACTION = `${namespace}/SET_LOADING_ACTION`
 export const SET_TOP_SELECTED_SIZE = `${namespace}/SET_TOP_SELECTED_SIZE`
 export const SET_BOTTOM_SELECTED_SIZE = `${namespace}/SET_BOTTOM_SELECTED_SIZE`
+
+// tslint:disable-next-line: max-line-length
+export const FIT_FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSc0i-4_eeZe5N6EFFktysXffdGHcmvdXtycNc_F3kvE8Hr-YA/viewform'

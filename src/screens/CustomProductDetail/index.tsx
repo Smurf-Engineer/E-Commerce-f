@@ -63,6 +63,8 @@ import {
   BackIcon,
   CartLabel,
   CartIcon,
+  AssistanceDiv,
+  SectionLink,
   // ColorButtons,
   // ToneButton
 } from './styledComponents'
@@ -107,6 +109,7 @@ import { APPROVED, DATE_FORMAT, PREDYED_TRANSPARENT } from '../../constants'
 import { getRangeLabel } from '../../utils/utilsShoppingCart'
 import message from 'antd/lib/message'
 import moment from 'moment'
+import { FIT_FORM } from './constants'
 
 const { warning } = AntdModal
 
@@ -642,6 +645,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const sizeChartButton = !!chart && <SizeChart onClick={this.goToChart} src={sizeChartSvg} />
 
+    const assistanceDiv = 
+      <AssistanceDiv>
+        <b>
+          <FormattedMessage {...messages.needAssistance} />
+        </b>
+        <SectionLink target="_blank" href={FIT_FORM}>
+          <FormattedMessage {...messages.tryFreeService} />
+        </SectionLink>
+      </AssistanceDiv>
+
     const collectionSelection = (
       <BuyNowOptions
         innerRef={buyOption => {
@@ -655,6 +668,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         {sizeChartButton}
         {fitSection}
         {addToCartRow}
+        {assistanceDiv}
       </BuyNowOptions>
     )
 

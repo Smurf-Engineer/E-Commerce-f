@@ -299,7 +299,8 @@ class Render3D extends PureComponent {
     const lowResolution =
       loggedUserId === 'rydjiGhdm' ||
       loggedUserId === 'HkuTqBauQ' ||
-      loggedUserId === 'H1R0yFr0V'
+      loggedUserId === 'H1R0yFr0V' ||
+      loggedUserId === 'ryIYkbqtU'
 
     const precision = lowResolution ? 'mediump' : 'highp'
 
