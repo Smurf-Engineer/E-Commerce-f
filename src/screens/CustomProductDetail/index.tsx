@@ -644,8 +644,26 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     )
 
     const sizeChartButton = !!chart && <SizeChart onClick={this.goToChart} src={sizeChartSvg} />
+    const notAllowed =
+        productId === 90 ||
+        productId === 14 ||
+        productId === 91 ||
+        productId === 315 ||
+        productId === 338 ||
+        productId === 3 ||
+        productId === 9 ||
+        productId === 153 ||
+        productId === 154 ||
+        productId === 128 ||
+        productId === 93 ||
+        productId === 238 ||
+        productId === 237 ||
+        productId === 325 ||
+        productId === 324 ||
+        productId === 168 ||
+        productId === 243
 
-    const assistanceDiv = 
+    const assistanceDiv = (active || onlyProDesign) && !notAllowed ? 
       <AssistanceDiv>
         <b>
           <FormattedMessage {...messages.needAssistance} />
@@ -653,7 +671,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         <SectionLink target="_blank" href={FIT_FORM}>
           <FormattedMessage {...messages.tryFreeService} />
         </SectionLink>
-      </AssistanceDiv>
+      </AssistanceDiv> : null
 
     const collectionSelection = (
       <BuyNowOptions
