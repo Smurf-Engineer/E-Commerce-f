@@ -21,6 +21,14 @@ export default defineMessages({
     id: 'screens.CustomProductDetail.teamPrice',
     defaultMessage: 'Team Price'
   },
+  needAssistance: {
+    id: 'screens.CustomProductDetail.needAssistance',
+    defaultMessage: 'Need help determining your size?'
+  },
+  tryFreeService: {
+    id: 'screens.CustomProductDetail.tryFreeService',
+    defaultMessage: 'Try our free Size Recommendation Service'
+  },
   regularPrice: {
     id: 'screens.CustomProductDetail.regularPrice',
     defaultMessage: 'Regular Price'

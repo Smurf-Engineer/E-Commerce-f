@@ -322,7 +322,45 @@ export const AvailableLabel = styled.div`
 export const BuyNowOptions = styled.div`
   margin-bottom: 40px;
   margin-top: 15px;
+  position: relative;
 `
+
+export const AssistanceDiv = styled.div`
+  position: absolute;
+  bottom: -4px;
+  right: 8px;
+  width: fit-content;
+  padding: 8px 20px;
+  text-align: center;
+  font-size: 13px;
+  background-color: #e6ffe5;
+  border-radius: 5px;
+  border: 1px solid #bfe5b8;
+  @media (max-width: 1128px) {
+    position: unset;
+  }
+  @media (max-width: 768px) {
+    font-size: 10px;
+    padding: 10px 18px;
+  }
+  @media (max-width: 740px) {
+    justify-content: center;
+    margin-top: 18px;
+  }
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+`
+
+export const SectionLink = styled.a`
+  color: ${BLUE};
+  margin-top: 8px;
+  display: block;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
 export const SectionRow = styled.div`
   margin-bottom: 20px;
 `
