@@ -748,6 +748,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     hidePredyed={predyedName === PREDYED_TRANSPARENT}
                     {...{ designId, modelSize }}
                     zoomedIn={true}
+                    maxHeight={true}
                     light={tone}
                     asImage={phone}
                   />
