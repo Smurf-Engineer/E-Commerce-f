@@ -26,10 +26,12 @@ import {
   AccesoryColor,
   Product,
   UserInfo,
-  Color
+  Color,
+  Style
 } from '../../../types/common'
 import MyPalette from '../MyPalette'
 import ColorList from '../ColorList'
+import { EXCLUDED_AREAS } from '../../../constants'
 
 interface State {
   index: number
@@ -52,6 +54,7 @@ interface Props {
   bindingName: string
   disableTooltip: boolean
   colorsList: any
+  currentStyle: Style
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
@@ -126,6 +129,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
       bindingColor,
       zipperColor,
       bindingName,
+      currentStyle,
       bibColor,
       onAccessoryColorSelected,
       product,
@@ -158,7 +162,9 @@ class ColorsTab extends React.PureComponent<Props, State> {
     const stitchingTab = index === STITCHING_COLORS_INDEX
     const predyedLabel = !!product ? product.predyedlabel : ''
     let topMessage = messages.selectColors
-
+    const excludedThemes = product ? EXCLUDED_AREAS[product.id] : {}
+    const styleName = currentStyle && currentStyle.name ? currentStyle.name.toLowerCase() : ''
+    const excludedAreas = styleName && excludedThemes ? excludedThemes[styleName] : {}
     if (palettesTab) {
       topMessage = messages.myPalettes
     }
@@ -195,6 +201,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
               colorsList,
               onSelectPredyed,
               names,
+              excludedAreas,
               stitchingColor,
               bindingColor,
               zipperColor,
@@ -233,6 +240,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
               colorBlockHovered,
               colors,
               names,
+              excludedAreas,
               styleColors,
               formatMessage,
               disableTooltip,
@@ -308,8 +316,19 @@ class ColorsTab extends React.PureComponent<Props, State> {
   }
 
   handleShuffleColors = () => {
-    const { colors, onSelectPalette } = this.props
-    onSelectPalette(shuffle(colors))
+    const { colors, onSelectPalette, product, currentStyle } = this.props
+
+    const excludedThemes = product ? EXCLUDED_AREAS[product.id] : {}
+    const styleName = currentStyle && currentStyle.name ? currentStyle.name.toLowerCase() : ''
+    const excludedAreas = styleName && excludedThemes ? excludedThemes[styleName] : {}
+
+    const shuffledColors = shuffle(colors)
+    const indexes = excludedAreas ? Object.keys(excludedAreas) : []
+    indexes.forEach((area) => {
+      shuffledColors[area] = colors[area]
+    })
+
+    onSelectPalette(shuffledColors)
   }
 }
 

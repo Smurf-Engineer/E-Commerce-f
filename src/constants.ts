@@ -194,6 +194,14 @@ export const blackProducts = {
   322: true
 }
 
+export const EXCLUDED_AREAS = {
+  337: {
+    'tiki': {
+      4: true
+    }
+  }
+}
+
 // Affiliate status
 export const PENDING = `Pending approval`
 export const APPROVED = 'Approved'

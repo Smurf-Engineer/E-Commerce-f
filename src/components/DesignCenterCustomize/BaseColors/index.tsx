@@ -15,6 +15,7 @@ interface Props {
   showContent: boolean
   disableTooltip: boolean
   colorsList: any
+  excludedAreas: any
   onSelectColor: (color: string, name: string) => void
   onSelectShuffle: () => void
   onSelectColorBlock: (index: number) => void
@@ -32,6 +33,7 @@ class ColorTab extends React.PureComponent<Props, {}> {
       colorBlock,
       colorBlockHovered,
       colors,
+      excludedAreas,
       showContent,
       formatMessage,
       names,
@@ -47,6 +49,7 @@ class ColorTab extends React.PureComponent<Props, {}> {
           {...{
             names,
             colors,
+            excludedAreas,
             colorBlock,
             onSelectColorBlock,
             onSelectShuffle,
