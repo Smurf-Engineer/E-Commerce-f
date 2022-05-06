@@ -5,13 +5,17 @@ import * as React from 'react'
 import {
   Container,
   YotpoReviewsContainer,
-  YotpoCarouselContainer
+  YotpoCarouselContainer,
+  Separator
 } from './styledComponents'
 import ReactDOM from 'react-dom'
+import messages from './messages'
 
 interface Props {
   yotpoId: string
   name: string
+  formatMessage?: (messageDescriptor: any) => string
+  productDetail?: boolean
   noCarousel?: boolean
   hideFeatured?: boolean
 }
@@ -60,8 +64,35 @@ class YotpoReviews extends React.Component<Props, any> {
   }
 
   render() {
-    const { children, name, hideFeatured, yotpoId } = this.props
-    return (
+    const { children, formatMessage, name, hideFeatured, yotpoId, productDetail } = this.props
+    return productDetail ? (
+      <Container {...{ name }}>
+        {children}
+        {!hideFeatured &&
+          <YotpoCarouselContainer>
+            <div
+              class="yotpo yotpo-slider yotpo-size-7"
+              data-product-id={yotpoId}
+              data-yotpo-element-id="3"
+            />
+          </YotpoCarouselContainer>
+        }
+        {formatMessage &&
+          <Separator>
+            {formatMessage(messages.customerReview)}
+          </Separator>
+        }
+        <YotpoReviewsContainer innerRef={this.props.innerRef}>
+          <div
+            class="yotpo yotpo-main-widget"
+            data-product-id={yotpoId}
+            data-price="Product Price"
+            data-currency="Price Currency"
+            data-name="Product Title"
+          />
+        </YotpoReviewsContainer>
+      </Container>
+    ) : (
       <Container {...{ name }}>
         {!hideFeatured &&
           <YotpoCarouselContainer>

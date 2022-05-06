@@ -96,9 +96,9 @@ const StoreForm = ({
     let momentStartDate
     if (storeId && !datesEdited) {
       momentStartDate = moment(initialStartDate || date)
-      momentStartDate.add('17', 'days')
+      momentStartDate.add('7', 'days')
     } else {
-      date.add('14', 'days')
+      date.add('21', 'days')
       momentStartDate = date.valueOf()
     }
     const isGreaterThanFourteenDays = current.valueOf() > momentStartDate
