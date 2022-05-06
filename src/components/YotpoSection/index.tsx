@@ -58,6 +58,7 @@ interface Props {
   resellerComission: number
   resellerStatus: string
   designId: string
+  productDetail: boolean
   dataDesigns: DataDesign
   teamStoreShortId: string
   teamStoreData: DataStore
@@ -73,6 +74,7 @@ const YotpoSection = ({
   name,
   hideFeatured = false,
   history,
+  productDetail,
   formatMessage,
   dispatch,
   resellerComission,
@@ -233,7 +235,7 @@ const YotpoSection = ({
   } else {
     return (
       <Container>
-        <YotpoReviews ref={innerRef} {...{ yotpoId, name, hideFeatured }}>
+        <YotpoReviews ref={innerRef} {...{ formatMessage, productDetail, yotpoId, name, hideFeatured }}>
           {mediaFiles && !!mediaFiles.length && !hideFeatured && (
             <div>
               <Separator>
@@ -256,7 +258,7 @@ const YotpoSection = ({
             </div>
           )}
           {!!products.length && (
-            <RelatedProductsContainer>
+            <RelatedProductsContainer {...{ productDetail }}>
               <RelatedProducts
                 products={data.products}
                 title={`${formatMessage(messages.more)} ${moreTag}`}
@@ -265,9 +267,11 @@ const YotpoSection = ({
               />
             </RelatedProductsContainer>
           )}
-          <Separator>
-            <FormattedMessage {...messages.customerReview} />
-          </Separator>
+          {!productDetail &&
+            <Separator>
+              <FormattedMessage {...messages.customerReview} />
+            </Separator>
+          }
         </YotpoReviews>
       </Container>
     )

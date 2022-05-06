@@ -3,6 +3,10 @@
  */
 import styled from 'styled-components'
 
+interface StyledProps {
+  productDetail?: boolean
+}
+
 export const Container = styled.div``
 
 export const Separator = styled.div`
@@ -45,7 +49,7 @@ export const SlideImageContainer = styled.div`
   align-items: center;
 `
 export const RelatedProductsContainer = styled.div`
-  margin-bottom: 80px;
+  margin-bottom: ${({ productDetail }: StyledProps) => productDetail ? '54px' : '80px'};
   padding: 0px 32px;
 `
 

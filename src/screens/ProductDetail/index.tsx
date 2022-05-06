@@ -183,7 +183,7 @@ interface StateProps {
 
 export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
-    showDetails: false,
+    showDetails: true,
     showFits: false,
     tone: '',
     hideControls: true,
@@ -889,6 +889,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                           designId={0}
                           disableControls={isMobile ? hideControls : false}
                           textColor="white"
+                          maxHeight={true}
                           isProduct={true}
                           asImage={phone}
                           light={tone}
@@ -1046,6 +1047,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               formatMessage,
               currentCurrency,
             }}
+            productDetail={true}
             ref={this.customerReviewRef}
           />
         </Container>
