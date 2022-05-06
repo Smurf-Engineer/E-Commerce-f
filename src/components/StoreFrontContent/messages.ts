@@ -55,6 +55,16 @@ export default defineMessages({
       This store is currently closed for ordering.<br/>
       Please <a>contact</a> the Store Manager for details.`
   },
+  oops: {
+    id: 'screens.StoreFrontContent.oops',
+    defaultMessage: 'Oops!'
+  },
+  notExistingBanner: {
+    id: 'screens.StoreFrontContent.notExistingBanner',
+    defaultMessage: `
+      The store you are trying to reach has been removed or is no longer available.<br/>
+      Please <a>contact</a> Customer Support for assistance.`
+  },
   priceDropMessage: {
     id: 'screens.StoreFrontContent.priceDropMessage',
     defaultMessage:

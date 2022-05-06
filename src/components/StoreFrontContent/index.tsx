@@ -62,12 +62,10 @@ import {
   SectionLink,
   CutOffDiv,
   CutOffTime,
-  ClosedStore,
   ClosedBanner,
   DarkBg,
 } from './styledComponents'
 import PinSVG from '../../assets/pin.svg'
-import storeClosedImage from '../../assets/storeclosed.png'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
 import ProductList from '../../components/DesignsCatalogueThumbnailList'
@@ -243,7 +241,13 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     this.setState({ pricingModalOpen: !this.state.pricingModalOpen } as any)
   }
 
-  handleClickBanner = (event: any) => {
+  handleContactStoreManager = (event: any) => {
+    if (event.target instanceof HTMLAnchorElement) {
+      this.handlContactClick()
+    }
+  }
+
+  handleContactSupport = (event: any) => {
     if (event.target instanceof HTMLAnchorElement) {
       this.handlContactClick()
     }
@@ -360,17 +364,22 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
         ) : (
           <React.Fragment>
             {getTeamStore && getTeamStore.id === STORE_CLOSED_CODE ? (
-              <ErrorTitle>{formatMessage(messages.storeClosed)}<ClosedStore src={storeClosedImage} /></ErrorTitle>
+              <ErrorTitle onClick={this.handleContactSupport}>
+                <b><FormattedMessage {...messages.oops} /></b>
+                <FormattedHTMLMessage
+                  {...messages.notExistingBanner}
+                />
+              </ErrorTitle>
             ) : (
               <React.Fragment>
-                <MainContainer closed={closed}>
+                <MainContainer>
                   {!teamStoreBanner ? (
                     <div />
                   ) : (
                     <ImageBanner src={teamStoreBanner} />
                   )}
                   <FlexContainer>
-                    <ButtonsContainer>
+                    <ButtonsContainer closed={closed}>
                       <ButtonWrapper>
                         <Button type="primary" onClick={this.handlShareClick}>
                           <FormattedMessage {...messages.share} />
@@ -669,7 +678,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 </MainContainer>
                 {closed && 
                   <DarkBg>
-                    <ClosedBanner onClick={this.handleClickBanner}>
+                    <ClosedBanner onClick={this.handleContactStoreManager}>
                       <FormattedHTMLMessage
                         {...messages.closedBanner}
                       />

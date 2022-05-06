@@ -29,7 +29,6 @@ export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 20px;
-  opacity: ${({ closed }: ContainerProps) => closed ? 0.3 : 1};
 `
 
 export const DarkBg = styled.div`
@@ -146,12 +145,8 @@ export const StoreBox = styled.div`
 `
 
 export const ErrorTitle = styled.div`
-  color: #e21530;
-  font-size: 24px;
-  font-weight: bold;
-  letter-spacing: 0.3px;
+  font-size: 18px;
   line-height: 33px;
-  text-transform: uppercase;
   text-align: center;
   margin-top: 50px;
   margin-bottom: 50px;
@@ -160,11 +155,10 @@ export const ErrorTitle = styled.div`
   justify-content: center;
   display: flex;
   flex-flow: column;
-`
 
-export const ClosedStore = styled.img`
-  margin-top: 30px;
-  max-width: 168px;
+  a {
+    color: ${BLUE};
+  }
 `
 
 export const AboutContainer = styled.div`
@@ -416,7 +410,7 @@ export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  z-index: 3;
+  z-index: ${({ closed }: ContainerProps) => closed ? 0 : 3};;
 `
 
 export const DatesTitle = styled.div`
