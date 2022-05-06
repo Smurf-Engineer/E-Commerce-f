@@ -283,7 +283,7 @@ class Render3D extends PureComponent {
   }
 
   componentDidMount() {
-    const { isEditing, design, showBranding = true, product, loggedUserId } = this.props
+    const { isEditing, design, showBranding = true, product, lowResolution, isMobile } = this.props
     const { modalText } = product || {}
     const cornerSize =
       (isEditing && design.highResolution) || !isEditing
@@ -292,15 +292,9 @@ class Render3D extends PureComponent {
     fabricJsConfig.settings.cornerSize = cornerSize
     /* Renderer config */
     fabric.Object.prototype.customiseCornerIcons(fabricJsConfig)
-    const { isMobile } = this.props
+
     const { clientWidth, clientHeight } = this.container
     const devicePixelRatio = window.devicePixelRatio || 1
-
-    const lowResolution =
-      loggedUserId === 'rydjiGhdm' ||
-      loggedUserId === 'HkuTqBauQ' ||
-      loggedUserId === 'H1R0yFr0V' ||
-      loggedUserId === 'ryIYkbqtU'
 
     const precision = lowResolution ? 'mediump' : 'highp'
 

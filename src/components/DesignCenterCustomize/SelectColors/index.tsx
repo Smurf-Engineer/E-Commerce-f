@@ -48,6 +48,7 @@ interface Props {
   hasBranding: boolean
   hasBinding: boolean
   hasBibBrace: boolean
+  excludedAreas: any
   bindingName: string
   colorBlockHovered: number
   colorChartSending: boolean
@@ -97,6 +98,7 @@ class SelectColors extends React.PureComponent<Props, State> {
       bindingColor,
       zipperColor,
       bibColor,
+      excludedAreas,
       onSelectPredyed = () => { },
       onAccessoryColorSelected = () => { },
       hasStitching,
@@ -153,6 +155,7 @@ class SelectColors extends React.PureComponent<Props, State> {
               onSelectColorBlock,
               colorBlockHovered,
               onHoverColorBlock,
+              excludedAreas,
               formatMessage
             }}
           />

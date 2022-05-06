@@ -12,6 +12,7 @@ interface Props {
   colorBlockHovered: number
   colors: string[]
   names: string[]
+  excludedAreas: any
   onSelectColorBlock: (index: number) => void
   onSelectShuffle: () => void
   onHoverColorBlock: (index: number) => void
@@ -28,13 +29,14 @@ class ColorButtons extends React.Component<Props, {}> {
       onSelectColorBlock,
       onHoverColorBlock,
       onSelectShuffle,
+      excludedAreas = {},
       colors,
       colorBlock = -1,
       names
     } = this.props
     const colorButtons = colors.map((label, index) => {
       const name = names[index]
-      return (
+      return !excludedAreas[index] ? (
         <ColorButton
           key={index}
           label={formatMessage(area, { index: index + 1 })}
@@ -48,7 +50,7 @@ class ColorButtons extends React.Component<Props, {}> {
           currentColor={colors[index]}
           selected={colorBlock === index}
         />
-      )
+      ) : null
     })
     return (
       <Container>

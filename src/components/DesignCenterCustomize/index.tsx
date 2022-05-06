@@ -397,6 +397,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               layers,
               selectedElement,
               textFormat,
+              currentStyle,
               artFormat,
               onSelectTextFormat,
               onSelectArtFormat,
@@ -479,6 +480,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           <Render3D
             ref={render3D => (this.render3D = render3D)}
             openLoginAction={this.handleOnOpenLogin}
+            lowResolution={true}
             showBranding={selectedPredyed !== PREDYED_TRANSPARENT}
             {...{
               text,
