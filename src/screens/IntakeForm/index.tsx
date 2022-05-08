@@ -255,7 +255,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     this.setState({ isMobile, isTablet })
     const { location: { search }, goToPage } = this.props
     const queryParams = queryString.parse(search)
-    const { id: projectId, admProject, user: adminSelectedUser } = queryParams || {}
+    const { id: projectId, admProject, user: adminSelectedUser, admUser } = queryParams || {}
+    if ((!!admProject || !!admUser) && typeof window !== 'undefined') {
+      const user = JSON.parse(localStorage.getItem('user') !== undefined ? localStorage.getItem('user') || '{}' : '')
+      if (!user || (user && !user.administrator)) {
+        window.location.replace('/pro-design')
+      }
+    }
     if (!!projectId || !!admProject) {
       goToPage(Sections.PRODUCTS)
 
