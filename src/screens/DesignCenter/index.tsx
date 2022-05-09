@@ -28,6 +28,7 @@ import {
   TABLET_RES,
   DESKTOP_RES,
   DATE_FORMAT,
+  DIY_2D_PREVIEW,
 } from '../../constants'
 import {
   openQuickViewAction,
@@ -404,6 +405,10 @@ export class DesignCenter extends React.Component<Props, {}> {
   openPreview = async (savedDesign: SaveDesignType) => {
     const { openPreviewModal } = this.state
     if (this.saveClass && !openPreviewModal) {
+      const { dataProduct, dataDesign } = this.props
+      const designCode = get(dataDesign, 'designData.code', '')
+      const productName = get(dataProduct, 'product.name', '')
+      window.dataLayer.push({ event: DIY_2D_PREVIEW, label: designCode || productName })
       const instance = get(
         this.saveClass.getWrappedInstance(),
         'wrappedInstance.wrappedInstance.wrappedInstance',
