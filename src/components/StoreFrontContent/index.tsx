@@ -657,24 +657,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     {...{ formatMessage }}
                   />
 
-                  <EmailContact
-                    {...{
-                      formatMessage,
-                      user,
-                      handleInputChange,
-                      contactInfo,
-                    }}
-                    open={openEmailContact}
-                    requestClose={this.closeEmailContactModal}
-                    onSetEmail={setEmailContactAction}
-                    onSetMesage={setEmailMessageAction}
-                    teamStoreId={teamStoreShortId}
-                    emailContact={emailContact}
-                    emailMessage={emailMessage}
-                    sendMessageLoading={sendMessageLoading}
-                    setSendMessageLoading={sendMessageLoadingAction}
-                    ownerName={ownerName}
-                  />
                 </MainContainer>
                 {closed && 
                   <DarkBg>
@@ -687,6 +669,25 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 }
               </React.Fragment>
             )}
+            <EmailContact
+              {...{
+                formatMessage,
+                user,
+                handleInputChange,
+                contactInfo,
+              }}
+              open={openEmailContact}
+              requestClose={this.closeEmailContactModal}
+              onSetEmail={setEmailContactAction}
+              onSetMesage={setEmailMessageAction}
+              teamStoreId={teamStoreShortId}
+              emailContact={emailContact}
+              emailMessage={emailMessage}
+              sendMessageLoading={sendMessageLoading}
+              setSendMessageLoading={sendMessageLoadingAction}
+              ownerName={ownerName}
+              support={true}
+            />
           </React.Fragment>
         )}
         <TeamPassCode

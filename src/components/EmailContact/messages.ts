@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'components.EmailContact.tittle',
     defaultMessage: 'CONTACT STORE MANAGER'
   },
+  supportTitle: {
+    id: 'components.EmailContact.supportTitle',
+    defaultMessage: 'CONTACT CUSTOMER SUPPORT'
+  },
   send: {
     id: 'components.EmailContact.send',
     defaultMessage: 'Send'
@@ -20,6 +24,10 @@ export default defineMessages({
   nameLabel: {
     id: 'components.EmailContact.nameLabel',
     defaultMessage: 'Write message to '
+  },
+  customerSupport: {
+    id: 'components.EmailContact.customerSupport',
+    defaultMessage: 'Customer Support'
   },
   invalidMessage: {
     id: 'components.EmailContact.invalidMessage',

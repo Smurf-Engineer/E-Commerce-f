@@ -39,6 +39,7 @@ interface Props {
   ownerName: string
   user: UserType
   contactInfo: ContactInformation
+  support?: boolean
 }
 
 const fields = {
@@ -136,7 +137,8 @@ export class EmailContact extends React.Component<Props, {}> {
       ownerName,
       user,
       handleInputChange,
-      contactInfo
+      contactInfo,
+      support
     } = this.props
 
     const fieldsToRender = []
@@ -166,10 +168,10 @@ export class EmailContact extends React.Component<Props, {}> {
           requestClose={this.handleCancel}
           withLogo={false}
         >
-          <Title>{formatMessage(messages.title)}</Title>
+          <Title>{formatMessage(!support ? messages.title : messages.supportTitle)}</Title>
           {<ExtraFields>{extraFields}</ExtraFields>}
-          <TitleLabel>{`${formatMessage(messages.nameLabel)} ${ownerName ||
-            formatMessage(messages.storeManager)}`}</TitleLabel>
+          <TitleLabel>{`${formatMessage(messages.nameLabel)} ${!support ? (ownerName ||
+            formatMessage(messages.storeManager)) : formatMessage(messages.customerSupport)}`}</TitleLabel>
           <TextArea
             id="emailMessage"
             rows={7}
