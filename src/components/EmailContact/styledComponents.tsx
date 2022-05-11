@@ -61,9 +61,11 @@ export const ButtonWrapper = styled.div`
   .ant-btn-primary {
     background-color: #4a90e2;
     border-color: #4a90e2;
-    width: 150px;
+    max-width: 120px;
+    width: 100%;
     display: inline-flex;
     justify-content: space-evenly;
+    align-items: center;
   }
   .ant-btn-primary:hover {
     background-color: #4a90e2;

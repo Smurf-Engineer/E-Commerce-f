@@ -686,7 +686,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
               sendMessageLoading={sendMessageLoading}
               setSendMessageLoading={sendMessageLoadingAction}
               ownerName={ownerName}
-              support={true}
+              support={getTeamStore && getTeamStore.id === STORE_CLOSED_CODE}
             />
           </React.Fragment>
         )}
