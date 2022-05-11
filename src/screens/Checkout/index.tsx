@@ -1160,7 +1160,8 @@ class Checkout extends React.Component<Props, {}> {
       getTotalItemsIncart: getTotalItemsIncartAction,
       stripeToken,
       paymentClientSecret,
-      history
+      history,
+      user
     } = this.props
 
     try {
@@ -1175,6 +1176,8 @@ class Checkout extends React.Component<Props, {}> {
         message.error('Invalid card/not available, please try another.')
         return
       }
+      const usedBy = get(user, 'usedBy', '')
+      orderObj.placedBy = usedBy || ''
       const response = await placeOrder({
         variables: { orderObj }
       })
@@ -1446,9 +1449,11 @@ type OwnProps = {
 }
 
 const mapStateToProps = (state: any) => {
+  const appState = state.get('app').toJS()
   const checkoutProps = state.get('checkout').toJS()
   const langProps = state.get('languageProvider').toJS()
   return {
+    ...appState,
     ...checkoutProps,
     ...langProps
   }

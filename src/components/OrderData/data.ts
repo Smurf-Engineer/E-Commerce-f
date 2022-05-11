@@ -44,6 +44,10 @@ export const getOrderQuery = gql`
       currency {
         shortName: short_name
       }
+      placedAuthor: placed_author {
+        firstName: first_name
+        lastName: last_name
+      }
       payment: payment_object {
         paypalCharge {
           id

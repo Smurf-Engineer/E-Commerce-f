@@ -331,6 +331,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       taxFee,
       total,
       discount,
+      placedAuthor,
       teamStoreId,
       lastDrop,
       canUpdatePayment,
@@ -572,6 +573,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                   <DeliveryLabel>
                     {formatMessage(messages.lastUpdated)}
                   </DeliveryLabel>
+                  {placedAuthor && placedAuthor.firstName &&
+                    <DeliveryLabel>
+                      {formatMessage(messages.placedBy)}
+                    </DeliveryLabel>
+                  }
                 </DeliveryLabels>
                 <DeliveryData>
                   <Info {...{ savingPdf }}>
@@ -603,6 +609,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                   <Info {...{ savingPdf }}>
                     {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
                   </Info>
+                  {placedAuthor && placedAuthor.firstName &&
+                    <Info {...{ savingPdf }}>
+                      {placedAuthor.firstName} {placedAuthor.lastName}  (Jakroo)
+                    </Info>
+                  }
                 </DeliveryData>
               </DeliveryInfo>
             </OrderDelivery>

@@ -46,6 +46,10 @@ export const getOrderQuery = gql`
       lastDrop: last_drop
       orderDate: created_at
       estimatedDate: estimated_date
+      placedAuthor: placed_author {
+        firstName: first_name
+        lastName: last_name
+      }
       netsuite: netsuit_order {
         orderStatus {
           internalId
