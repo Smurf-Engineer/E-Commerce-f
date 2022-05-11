@@ -80,7 +80,8 @@ export class EmailContact extends React.Component<Props, {}> {
       setSendMessageLoading,
       formatMessage,
       contactInfo,
-      user
+      user,
+      support
     } = this.props
     if (!emailMessage) {
       message.error(formatMessage(messages.invalidMessage))
@@ -103,7 +104,7 @@ export class EmailContact extends React.Component<Props, {}> {
     try {
       setSendMessageLoading(true)
       const response = await contactManagerMutation({
-        variables: { teamStoreId, text: emailMessage, name, phone, email }
+        variables: { teamStoreId, text: emailMessage, name, phone, email, support }
       })
       setSendMessageLoading(false)
       const data = get(response, 'data.contactEmail', false)
