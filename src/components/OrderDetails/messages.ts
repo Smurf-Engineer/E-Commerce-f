@@ -249,6 +249,10 @@ export default defineMessages({
     id: 'components.OrderDetails.orderPoint',
     defaultMessage: 'Order Point'
   },
+  placedBy: {
+    id: 'components.OrderDetails.placedBy',
+    defaultMessage: 'Placed By'
+  },
   cart: {
     id: 'components.OrderDetails.cart',
     defaultMessage: 'Cart'

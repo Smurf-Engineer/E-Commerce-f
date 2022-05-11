@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Carousel from 'antd/lib/carousel'
-import { WHITE, AUBERGINE, BLACK_LABEL } from '../../theme/colors'
+import { WHITE, AUBERGINE, BLACK_LABEL, RED_DARK, RED } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 const HEADER_TOP_SIZE = 38
@@ -145,5 +145,50 @@ export const EditorWrapper = styled.div`
   @media (max-width: 768px) {
     padding: 0 13px;
     margin-bottom: 28px;
+  }
+`
+
+export const BehalfDiv = styled.div`
+  position: fixed;
+  bottom: -2px;
+  left: calc(50vw - 126px);
+  z-index: 99999;
+  display: flex;
+  background: white;
+  padding: 10px 24px;
+  border: 1px solid ${RED_DARK};
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  color: ${RED_DARK};
+  font-size: 12px;
+  align-items: center;
+`
+
+export const BehalfText = styled.div`
+  font-family: Avenir;
+  display: flex;
+  color: #bd3849;
+`
+
+export const UserIcon = styled(Icon)`
+  margin-right: 10px;
+  margin-bottom: 2px;
+`
+
+export const UserDiv = styled.div`
+  margin-left: 6px;
+  font-family: Avenir;
+  font-weight: bold;
+`
+
+export const LogoutIcon = styled(Icon)`
+  margin-left: 14px;
+  color: ${RED};
+  margin-bottom: 2px;
+  font-size: 13px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
   }
 `

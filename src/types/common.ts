@@ -1034,6 +1034,7 @@ export interface OrderDetailsInfo {
   payment: PaymentCharges
   cart: CartItems[]
   status: string
+  placedBy?: string
   currency: Currency
   taxAmount: number
   shippingAmount: number
@@ -1077,6 +1078,8 @@ export interface OrderDataInfo {
   cart: CartItems[]
   invoiceTerms: string
   paymentMethod: string
+  placedBy?: string
+  placedAuthor?: User
   currency: Currency
   shippingAmount: number
   taxAmount: number

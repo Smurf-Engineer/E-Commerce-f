@@ -218,6 +218,7 @@ class OrderData extends React.Component<Props, {}> {
           resellerMargin = 0,
           phone,
           city,
+          placedAuthor,
           freeShipping,
           couponType,
           invoiceTerms,
@@ -435,6 +436,12 @@ class OrderData extends React.Component<Props, {}> {
                 {netsuiteStatus || status}
               </StyledText>
             </OrderNumberContainer>
+            {placedAuthor && placedAuthor.firstName &&
+              <OrderNumberContainer {...{ savingPdf }}>
+                <TitleStyled>{formatMessage(messages.placedBy)}</TitleStyled>
+                <StyledText>{placedAuthor.firstName} {placedAuthor.lastName}  (Jakroo)</StyledText>
+              </OrderNumberContainer>
+            }
             <StyledInfoText>
               <FormattedHTMLMessage
                 {...messages[

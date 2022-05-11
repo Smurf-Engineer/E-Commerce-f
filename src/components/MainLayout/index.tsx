@@ -37,6 +37,11 @@ import {
   StyledCarousel,
   CarouselContainer,
   CloseIcon,
+  BehalfDiv,
+  UserIcon,
+  LogoutIcon,
+  BehalfText,
+  UserDiv,
 } from './styledComponents'
 import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
@@ -306,6 +311,19 @@ class MainLayout extends React.Component<Props, {}> {
     openResellerAction(false)
   }
 
+  behalfLogout = () => {
+    const {
+      deleteUserSession,
+      client,
+    } = this.props
+    client.resetStore()
+    deleteUserSession()
+    if (typeof window.Intercom === 'function') {
+      window.Intercom('update', { name: '', email: null, user_id: null })
+    }
+    window.location.replace('/admin')
+  }
+
   onLogout = () => {
     const {
       deleteUserSession,
@@ -401,8 +419,21 @@ class MainLayout extends React.Component<Props, {}> {
     const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches
     const hideCarouselMobileValue = typeof window !== 'undefined' ? sessionStorage.getItem('hideCarouselMobile') : ''
     const hideCarouselMobile = isMobile ? (hideCarouselMobileValue && hideCarouselMobileValue === 'true') : false
+
     return (
       <Layout {...{ style }}>
+        {user && user.onBehalf &&
+          <BehalfDiv>
+            <UserIcon type="user" />
+            <BehalfText>
+              Logged in as:
+              <UserDiv>
+                {user.name} {user.lastName}
+              </UserDiv>
+            </BehalfText>
+            <LogoutIcon onClick={this.behalfLogout} type="logout" />
+          </BehalfDiv>
+        }
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         {/* Carousel for the alerts */}
         {typeof window !== 'undefined' && readyEditors.length > 0 && !hideAlerts && !hideCarouselMobile && (

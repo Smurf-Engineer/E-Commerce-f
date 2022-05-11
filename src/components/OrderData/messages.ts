@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.OrderData.payment',
     defaultMessage: 'Payment Method'
   },
+  placedBy: {
+    id: 'components.OrderData.placedBy',
+    defaultMessage: 'Placed By'
+  },
   statusLabel: {
     id: 'components.OrderData.statusLabel',
     defaultMessage: 'Your Order has been received and is being processed'
