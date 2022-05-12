@@ -64,8 +64,10 @@ import {
   CutOffTime,
   ClosedBanner,
   DarkBg,
+  NoStore,
 } from './styledComponents'
 import PinSVG from '../../assets/pin.svg'
+import NoStorePng from '../../assets/no-store.png'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
 import ProductList from '../../components/DesignsCatalogueThumbnailList'
@@ -365,6 +367,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
           <React.Fragment>
             {getTeamStore && getTeamStore.id === STORE_CLOSED_CODE ? (
               <ErrorTitle onClick={this.handleContactSupport}>
+                <NoStore src={NoStorePng} />
                 <b><FormattedMessage {...messages.oops} /></b>
                 <FormattedHTMLMessage
                   {...messages.notExistingBanner}

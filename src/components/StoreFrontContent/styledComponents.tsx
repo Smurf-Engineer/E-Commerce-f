@@ -161,6 +161,11 @@ export const ErrorTitle = styled.div`
   }
 `
 
+export const NoStore = styled.img`
+  max-width: 360px;
+  margin-bottom: 10px;
+`
+
 export const AboutContainer = styled.div`
   padding: 30px;
 `
