@@ -9,6 +9,7 @@ import message from 'antd/lib/message'
 import domtoimage from 'dom-to-image'
 import moment from 'moment'
 import get from 'lodash/get'
+import cloneDeep from 'lodash/cloneDeep'
 import messages from './messages'
 import { OrderDetailsInfo, QueryProps, FulfillmentNetsuite, CartItems } from '../../types/common'
 import Modal from 'antd/lib/modal'
@@ -399,9 +400,6 @@ export class OrderDetails extends React.Component<Props, {}> {
       default:
         break
     }
-    if (fixedPriceStore) {
-      cart = cartOriginal.map((item) => ({...item, fixedPrice: true }))
-    }
     cart.forEach((item: CartItems) => {
       if (item.product) {
         item.product.variableOne = item.variableOne
@@ -411,8 +409,28 @@ export class OrderDetails extends React.Component<Props, {}> {
         item.product.twoLength = item.twoLength
         item.product.variableTwoCaps = item.variableTwoCaps
       }
+      if (fixedPriceStore) {
+        item.fixedPrice = true
+      }
     })
     const cartItems = cart || []
+    const isResellerUser = resellerComission > 0 || resellerInline > 0
+    let cartToEdit = cartItems || []
+    if (isResellerUser && onBehalf) {
+      cartToEdit = cloneDeep(cartItems)
+      cartToEdit.forEach((item: CartItems) => {
+        if ((userId === item.designOwner) || (!item.designId)) {
+          let comissionToApply = item.designId ? resellerComission : resellerInline
+          if (item.teamStoreId && item.designId) {
+            comissionToApply = resellerMargin
+          }
+          item.product.priceRange = item.product.priceRange.map((priceItem) => {
+            const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
+            return { ...priceItem, price }
+          })
+        }
+      })
+    }
     const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     const renderItemList = cart
       ? cart.map((cartItem, index) => {
@@ -431,7 +449,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           teamPrice
         } = cartItem
         let priceRange = productRange
-        const isReseller = resellerComission > 0 || resellerInline > 0
+        const isReseller = resellerComission > 0 || resellerInline > 0
         if ((userId === designOwner && isReseller) || (isReseller && !designId)) {
           let comissionToApply = cartItem.designId ? resellerComission :  resellerInline
           if (cartItem.teamStoreId && cartItem.designId) {
@@ -698,7 +716,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                   }}
                   label={formatMessage(messages.reorderAll)}
                   renderForThumbnail={false}
-                  items={cart}
+                  items={cartToEdit}
                   {...{ formatMessage }}
                   withoutTop={true}
                   fixedPrice={fixedPriceStore}
@@ -754,7 +772,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             }}
             label={formatMessage(messages.edit)}
             renderForThumbnail={false}
-            items={cart}
+            items={cartToEdit}
             {...{ formatMessage }}
             withoutTop={true}
             myLockerList={false}
