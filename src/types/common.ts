@@ -1676,6 +1676,8 @@ export interface User {
   socialMethod: string
   administrator: boolean
   netsuiteId?: string
+  onBehalf?: boolean
+  usedBy?: string
   billingCountry?: string
   createdAt?: string
   shortId?: string

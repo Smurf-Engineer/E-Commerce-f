@@ -36,6 +36,7 @@ interface Props {
   orderBy: string
   userId: string
   sort: sorts
+  onBehalf: boolean
   withPagination?: boolean
   withoutPadding?: boolean
   editOrder: (orderId: string) => void
@@ -58,6 +59,7 @@ const OrdersList = ({
   deleteOrder,
   editOrder,
   userId,
+  onBehalf,
   withPagination = true,
   withoutPadding = false
 }: Props) => {
@@ -176,6 +178,7 @@ const OrdersList = ({
           currency={currency && currency.shortName ? currency.shortName.toUpperCase() : ''}
           {...{
             editOrder,
+            onBehalf,
             deleteOrder,
             formatMessage,
             shortId,
