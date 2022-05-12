@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { Container, Cell, DeleteButton, EditIcon } from './styledComponents'
 import upperFirst from 'lodash/upperFirst'
-import { CANCELLED, INVOICE_SENT, PAYMENT_ISSUE, PREORDER } from '../../../constants'
+import { CANCELLED, INVOICE_SENT, PAID_STATUS, PAYMENT_ISSUE, PREORDER } from '../../../constants'
 
 interface Props {
   date: string
@@ -15,6 +15,7 @@ interface Props {
   currency: string
   service: string
   shortId: string
+  onBehalf: boolean
   canUpdatePayment: boolean
   owner: boolean
   teamStoreId: string
@@ -35,6 +36,7 @@ const ItemOrder = ({
   owner,
   canUpdatePayment,
   teamStoreId,
+  onBehalf,
   editOrder,
   deleteOrder,
   onOrderClick,
@@ -67,12 +69,18 @@ const ItemOrder = ({
         {upperFirst(status === INVOICE_SENT ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
       </Cell>
       <Cell>
-        {teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED &&
+        {(
+          (teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED) ||
+          (onBehalf && status === PAID_STATUS && owner)
+        ) &&
           <EditIcon type="edit" onClick={editOrderAction}>Edit</EditIcon>
         }
       </Cell>
       <Cell>
-        {teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED &&
+        {(
+          (teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED) || 
+          (onBehalf && status === PAID_STATUS && owner)
+        ) &&
           <DeleteButton onClick={deleteOrderAction}>
             Cancel
           </DeleteButton>

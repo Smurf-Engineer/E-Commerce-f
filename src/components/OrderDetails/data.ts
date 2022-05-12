@@ -263,8 +263,8 @@ export const getOrderQuery = gql`
 
 export const deleteOrderMutation = graphql(
   gql`
-    mutation cancelOrder($orderId: String!) {
-      cancelOrder(orderId: $orderId) {
+    mutation cancelOrder($orderId: String!, $adminUser: String) {
+      cancelOrder(orderId: $orderId, adminUser: $adminUser) {
         message
       }
     }

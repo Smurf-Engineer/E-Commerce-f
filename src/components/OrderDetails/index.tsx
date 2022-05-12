@@ -98,7 +98,8 @@ import {
   PAID,
   PENDING_APPROVAL,
   IN_PRODUCTION,
-  SHIPPED
+  SHIPPED,
+  PAID_STATUS
 } from '../../constants'
 import ProductInfo from '../ProductInfo'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
@@ -122,6 +123,8 @@ interface Props {
   showDelete: boolean
   showEdit: boolean
   history: any
+  onBehalf?: boolean
+  adminUser?: string
   formatMessage: (messageDescriptor: any, variables?: {}) => string
   onReturn: (id: string) => void
   deleteOrder: (variables: {}) => Promise<any>
@@ -158,7 +161,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     this.setState({ showPaymentIssue: true, shownAction: false })
   }
   componentDidUpdate() {
-    const { data, formatMessage, showEdit, showDelete } = this.props
+    const { data, formatMessage, showEdit, showDelete, onBehalf } = this.props
     const { showPaymentIssue, shownAction } = this.state
     const invoiceLink = get(data, 'orderQuery.invoiceLink', '')
     const status = get(data, 'orderQuery.status', '')
@@ -180,7 +183,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       })
     }
     if (!shownAction && data && !data.loading && (showEdit || showDelete) && 
-        (canUpdatePayment || status === PREORDER) && !invoiceLink) {
+        ((canUpdatePayment || status === PREORDER) || (onBehalf && status === PAID_STATUS)) && !invoiceLink) {
       this.setState({ shownAction: true })
       if (showEdit) {
         this.handleOnEditOrder()
@@ -253,6 +256,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       data,
       orderId,
       from,
+      onBehalf,
       formatMessage,
       currentCurrency
     } = this.props
@@ -527,7 +531,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           <ScreenTitle>
             <FormattedMessage {...messages.title} />
           </ScreenTitle>
-          {status !== PREORDER &&
+          {status !== PREORDER && !onBehalf &&
             <DownloadInvoice onClick={this.downloadInvoice}>
               {savingPdf ? 
                 <Spin size="small" /> :
@@ -624,8 +628,14 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {formatMessage(messages.aboutDynamicPricing)}
                 </AboutCollab>
               }
-              {(teamStoreId && owner) && !savingPdf &&
-                (status === PREORDER || canUpdatePayment) && status !== CANCELLED && !invoiceLink &&
+              {(
+                (
+                  (teamStoreId && owner) && !savingPdf &&
+                  (status === PREORDER || canUpdatePayment) && status !== CANCELLED
+                ) ||
+                (onBehalf && status === PAID_STATUS && owner)
+              ) 
+                && !invoiceLink &&
                   <OrderActions>
                     {status === PAYMENT_ISSUE ?
                       <ButtonEdit onClick={this.handleOnEditOrder}>
@@ -947,7 +957,7 @@ export class OrderDetails extends React.Component<Props, {}> {
   }
 
   deleteOrder = async () => {
-    const { deleteOrder, data } = this.props
+    const { deleteOrder, data, adminUser } = this.props
     const { shortId } = data.orderQuery
     try {
       if (typeof window !== 'undefined') {
@@ -957,7 +967,7 @@ export class OrderDetails extends React.Component<Props, {}> {
         }
       }
       const response = await deleteOrder({
-        variables: { orderId: shortId }
+        variables: { orderId: shortId, adminUser }
       })
       const responseMessage = get(response, 'data.cancelOrder.message', '')
       message.success(responseMessage)

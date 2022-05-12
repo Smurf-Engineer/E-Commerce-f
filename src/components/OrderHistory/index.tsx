@@ -69,6 +69,8 @@ class OrderHistory extends React.Component<Props, {}> {
   render() {
     const { currentPage, user, orderBy, currentCurrency, sort, formatMessage, orderId, isService, history } = this.props
     const userId = user ? user.id : ''
+    const onBehalf = user ? user.onBehalf : false
+    const adminUser = user ? user.usedBy : false
     const { deleteOrder, editOrder } = this.state
     return (
       <SwipeableViews
@@ -80,7 +82,7 @@ class OrderHistory extends React.Component<Props, {}> {
             <FormattedMessage {...messages.title} />
           </ScreenTitle>
           <List
-            {...{ formatMessage, currentPage, orderBy, sort, userId }}
+            {...{ formatMessage, currentPage, orderBy, sort, userId, onBehalf }}
             onSortClick={this.handleOnSortClick}
             onOrderClick={this.handleOnOrderClick}
             editOrder={this.editOrderAction}
@@ -101,7 +103,7 @@ class OrderHistory extends React.Component<Props, {}> {
             goToCart={this.goToCart}
             showEdit={editOrder}
             showDelete={deleteOrder}
-            {...{ orderId, formatMessage, currentCurrency, history }}
+            {...{ orderId, formatMessage, onBehalf, currentCurrency, history, adminUser }}
           />
         }
       </SwipeableViews>
