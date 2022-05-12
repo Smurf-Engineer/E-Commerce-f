@@ -80,7 +80,7 @@ export class EmailContact extends React.Component<Props, {}> {
       setSendMessageLoading,
       formatMessage,
       contactInfo,
-      user,
+      // user,
       support
     } = this.props
     if (!emailMessage) {
@@ -90,11 +90,11 @@ export class EmailContact extends React.Component<Props, {}> {
 
     let { email, name } = contactInfo
 
-    if (user) {
-      const { email: userEmail, name: firstName, lastName } = user
-      email = userEmail
-      name = `${firstName} ${lastName}`
-    }
+    // if (user) {
+    //   const { email: userEmail, name: firstName, lastName } = user
+    //   email = userEmail
+    //   name = `${firstName} ${lastName}`
+    // }
 
     if (!email.length || !name.length) {
       message.error(formatMessage(messages.fillFields))
@@ -136,16 +136,16 @@ export class EmailContact extends React.Component<Props, {}> {
       emailMessage,
       sendMessageLoading,
       ownerName,
-      user,
+      // user,
       handleInputChange,
       contactInfo,
       support
     } = this.props
 
     const fieldsToRender = []
-    if (!user) {
-      fieldsToRender.push('name', 'email')
-    }
+    // if (!user) {
+    fieldsToRender.push('name', 'email')
+    // }
     fieldsToRender.push('phone')
     const extraFields = fieldsToRender.map((field, index) => (
       <FieldContainer>
