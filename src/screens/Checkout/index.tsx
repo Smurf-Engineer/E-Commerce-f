@@ -31,7 +31,11 @@ import {
   AddCardMutation,
   isScaPaymentQuery,
   profileSettingsQuery,
-  getDesignLabInfo
+  getDesignLabInfo,
+  profileNotificationSettingsQuery,
+  profilePhoneSettingsQuery,
+  UpdateNotificationSettingMutation,
+  UpdatePhoneSettingMutation
 } from './data'
 import {
   CheckoutTabs,
@@ -101,7 +105,9 @@ import {
   PaymentIntent,
   QueryProps,
   IProfileSettings,
-  DesignLabInfo
+  DesignLabInfo,
+  NotificationSettings,
+  NotificationOption
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData, getPriceRangeToApply } from '../../utils/utilsShoppingCart'
@@ -113,6 +119,7 @@ import { message } from 'antd'
 import some from 'lodash/some'
 import { updateAddressMutation } from '../../components/MyAddresses/data'
 import moment from 'moment'
+import SMSAlertsModal from '../../components/SMSAlertsModal'
 
 const { info } = Modal
 
@@ -147,6 +154,16 @@ interface CartItems {
   itemDetails: CartItemDetail[]
   teamStoreId?: string
   isFixed?: boolean
+}
+
+export interface NotificationSetting {
+  notificationData: NotificationSettings
+}
+
+export interface PhoneSetting {
+  phoneData: {
+    phone: String
+  }
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -211,6 +228,8 @@ interface Props extends RouteComponentProps<any> {
   paymentClientSecret: string
   intentId: string
   subsidiaryQuery?: number
+  notificationSettings: NotificationSetting
+  phoneSettings: PhoneSetting
   // Redux actions
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
   setStripeIbanDataAction: (iban: IbanData) => void
@@ -259,6 +278,8 @@ interface Props extends RouteComponentProps<any> {
   savePaymentId: (paymentIntent: PaymentIntent) => void
   removeClientSecretAction: () => void
   addNewCard: (variables: {}) => Promise<any>
+  updateNotification: (variables: {}) => void
+  updatePhone: (variables: {}) => void
 }
 
 const { confirm } = Modal
@@ -269,6 +290,7 @@ class Checkout extends React.Component<Props, {}> {
   state = {
     stripe: null,
     checked: false,
+    smsAlertsModal: true
   }
   payReference: any
   componentDidMount() {
@@ -352,8 +374,20 @@ class Checkout extends React.Component<Props, {}> {
       couponCode,
       setCouponCodeAction,
       deleteCouponCodeAction,
-      paymentClientSecret
+      paymentClientSecret,
+      notificationSettings: { notificationData },
+      phoneSettings: { phoneData },
+      user,
+      updateNotification,
+      updatePhone
     } = this.props
+    const { smsAlertsModal } = this.state
+
+    const openSMSAlertsModal = !(notificationData &&
+      (notificationData.notifyOrderPayment === NotificationOption.BOTH || 
+      notificationData.notifyOrderPayment === NotificationOption.SMS) &&
+      phoneData && phoneData.phone)
+
     const underMaintenance = get(designLabInfo, 'getDesignLabInfo.underMaintenance', false)
     const deliveryDate = get(designLabInfo, 'deliveryDate', '')
     if (underMaintenance) {
@@ -485,7 +519,12 @@ class Checkout extends React.Component<Props, {}> {
 
     const simpleCart = this.getSimpleCart()
     const productsPrices = this.getProductsPrice()
-    if (!checked && paymentMethod === PaymentOptions.PAYPAL && showOrderButton && !isFixedTeamstore) {
+    if (
+      !(smsAlertsModal && openSMSAlertsModal) && 
+      !checked && paymentMethod === PaymentOptions.PAYPAL && 
+      showOrderButton && 
+      !isFixedTeamstore
+    ) {
       this.confirmOrder(true)
     }
 
@@ -688,6 +727,18 @@ class Checkout extends React.Component<Props, {}> {
             </PlaceOrderLoading>
           )}
         </Container>
+        {currentStep === ReviewTab && openSMSAlertsModal && smsAlertsModal && 
+          <SMSAlertsModal
+            user={user}
+            notificationData={notificationData || {}}
+            phoneData={phoneData || {}}
+            updateNotification={updateNotification}
+            updatePhone={updatePhone}
+            onClose={() => this.setState( { smsAlertsModal: false } )}
+            formatMessage={intl.formatMessage}
+            notifyOrderPayment={true}
+          />
+        }
       </Layout>
     )
   }
@@ -1466,6 +1517,8 @@ const CheckoutEnhance = compose(
   CreatePaymentIntentMutation,
   AddCardMutation,
   updateAddressMutation,
+  UpdateNotificationSettingMutation,
+  UpdatePhoneSettingMutation,
   withApollo,
   connect(
     mapStateToProps,
@@ -1495,7 +1548,19 @@ const CheckoutEnhance = compose(
       }
     },
     name: 'designLabInfo'
-  })
+  }),
+  graphql(profileNotificationSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'notificationSettings'
+  }),
+  graphql(profilePhoneSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'phoneSettings'
+  }),
 )(Checkout)
 
 export default CheckoutEnhance

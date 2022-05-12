@@ -34,6 +34,7 @@ import {
 interface Props {
   user: UserType
   notificationData: NotificationSettings
+  notifyOrderPayment?: boolean
   phoneData: { phone: String }
   formatMessage: (messageDescriptor: Message) => string
   updateNotification: (variables: {}) => void
@@ -73,8 +74,8 @@ class SMSAlertsModal extends React.Component<Props, {}> {
     }
   }
   changeNotificationSettings = () => {
-    const { notificationData, updateNotification } = this.props
-    const key = 'notifyProDesign'
+    const { notificationData, updateNotification, notifyOrderPayment } = this.props
+    const key = !notifyOrderPayment ? 'notifyProDesign' : 'notifyOrderPayment'
     const currentValue = notificationData ? notificationData[key] : 0
     let newValue = notificationData && notificationData[key] ? -1 : 2
     switch (currentValue) {
