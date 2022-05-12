@@ -99,7 +99,8 @@ import {
   PENDING_APPROVAL,
   IN_PRODUCTION,
   SHIPPED,
-  PAID_STATUS
+  PAID_STATUS,
+  INVOICED
 } from '../../constants'
 import ProductInfo from '../ProductInfo'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
@@ -183,7 +184,12 @@ export class OrderDetails extends React.Component<Props, {}> {
       })
     }
     if (!shownAction && data && !data.loading && (showEdit || showDelete) && 
-        ((canUpdatePayment || status === PREORDER) || (onBehalf && status === PAID_STATUS)) && !invoiceLink) {
+        (
+          (canUpdatePayment || status === PREORDER) || 
+          (onBehalf && (status === PAID_STATUS || status === INVOICED))
+        ) 
+        && !invoiceLink
+      ) {
       this.setState({ shownAction: true })
       if (showEdit) {
         this.handleOnEditOrder()
@@ -633,7 +639,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                   (teamStoreId && owner) && !savingPdf &&
                   (status === PREORDER || canUpdatePayment) && status !== CANCELLED
                 ) ||
-                (onBehalf && status === PAID_STATUS && owner)
+                (onBehalf && (status === PAID_STATUS || status === INVOICED) && owner)
               ) 
                 && !invoiceLink &&
                   <OrderActions>
