@@ -47,7 +47,23 @@ export default defineMessages({
   },
   storeClosed: {
     id: 'screens.StoreFrontContent.storeClosed',
-    defaultMessage: 'STORE NOT AVAILABLE'
+    defaultMessage: 'STORE CLOSED'
+  },
+  closedBanner: {
+    id: 'screens.StoreFrontContent.closedBanner',
+    defaultMessage: `
+      This store is currently closed for ordering.<br/>
+      Please <a>contact</a> the Store Manager for details.`
+  },
+  oops: {
+    id: 'screens.StoreFrontContent.oops',
+    defaultMessage: 'Oops!'
+  },
+  notExistingBanner: {
+    id: 'screens.StoreFrontContent.notExistingBanner',
+    defaultMessage: `
+      The store you are trying to reach has been removed or is no longer available.<br/>
+      Please <a>contact</a> Customer Support for assistance.`
   },
   priceDropMessage: {
     id: 'screens.StoreFrontContent.priceDropMessage',

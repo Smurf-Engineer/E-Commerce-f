@@ -9,6 +9,7 @@ export const contactManager = graphql(
       $name: String
       $phone: String
       $email: String
+      $support: Boolean
     ) {
       contactEmail(
         teamStoreId: $teamStoreId
@@ -16,6 +17,7 @@ export const contactManager = graphql(
         name: $name
         phone: $phone
         email: $email
+        support: $support
       ) {
         message
       }

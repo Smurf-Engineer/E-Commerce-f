@@ -12,7 +12,8 @@ import {
   GRAY_SKELETON,
   BLUE,
   GRAY_DARK,
-  RED
+  RED,
+  BLUE_LIGHTEST
 } from '../../theme/colors'
 type DivProps = {
   onDemandMode?: boolean
@@ -20,10 +21,43 @@ type DivProps = {
   left?: boolean
 }
 
+type ContainerProps = {
+  closed?: boolean
+}
+
 export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 20px;
+`
+
+export const DarkBg = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+`
+
+export const ClosedBanner = styled.div`
+  position: fixed;
+  background-color: ${BLUE_LIGHTEST};
+  left: 0;
+  right: 0;
+  top: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 18px;
+  padding: 20px;
+
+  a {
+    color: ${BLUE};
+  }
 `
 
 export const Container = styled.div`
@@ -111,12 +145,8 @@ export const StoreBox = styled.div`
 `
 
 export const ErrorTitle = styled.div`
-  color: #e21530;
-  font-size: 24px;
-  font-weight: bold;
-  letter-spacing: 0.3px;
+  font-size: 18px;
   line-height: 33px;
-  text-transform: uppercase;
   text-align: center;
   margin-top: 50px;
   margin-bottom: 50px;
@@ -125,11 +155,15 @@ export const ErrorTitle = styled.div`
   justify-content: center;
   display: flex;
   flex-flow: column;
+
+  a {
+    color: ${BLUE};
+  }
 `
 
-export const ClosedStore = styled.img`
-  margin-top: 30px;
-  max-width: 168px;
+export const NoStore = styled.img`
+  max-width: 360px;
+  margin-bottom: 10px;
 `
 
 export const AboutContainer = styled.div`
@@ -381,7 +415,7 @@ export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  z-index: 3;
+  z-index: ${({ closed }: ContainerProps) => closed ? 0 : 3};;
 `
 
 export const DatesTitle = styled.div`

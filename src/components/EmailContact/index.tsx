@@ -39,6 +39,7 @@ interface Props {
   ownerName: string
   user: UserType
   contactInfo: ContactInformation
+  support?: boolean
 }
 
 const fields = {
@@ -79,7 +80,8 @@ export class EmailContact extends React.Component<Props, {}> {
       setSendMessageLoading,
       formatMessage,
       contactInfo,
-      user
+      // user,
+      support
     } = this.props
     if (!emailMessage) {
       message.error(formatMessage(messages.invalidMessage))
@@ -88,11 +90,11 @@ export class EmailContact extends React.Component<Props, {}> {
 
     let { email, name } = contactInfo
 
-    if (user) {
-      const { email: userEmail, name: firstName, lastName } = user
-      email = userEmail
-      name = `${firstName} ${lastName}`
-    }
+    // if (user) {
+    //   const { email: userEmail, name: firstName, lastName } = user
+    //   email = userEmail
+    //   name = `${firstName} ${lastName}`
+    // }
 
     if (!email.length || !name.length) {
       message.error(formatMessage(messages.fillFields))
@@ -102,7 +104,7 @@ export class EmailContact extends React.Component<Props, {}> {
     try {
       setSendMessageLoading(true)
       const response = await contactManagerMutation({
-        variables: { teamStoreId, text: emailMessage, name, phone, email }
+        variables: { teamStoreId, text: emailMessage, name, phone, email, support }
       })
       setSendMessageLoading(false)
       const data = get(response, 'data.contactEmail', false)
@@ -134,15 +136,16 @@ export class EmailContact extends React.Component<Props, {}> {
       emailMessage,
       sendMessageLoading,
       ownerName,
-      user,
+      // user,
       handleInputChange,
-      contactInfo
+      contactInfo,
+      support
     } = this.props
 
     const fieldsToRender = []
-    if (!user) {
-      fieldsToRender.push('name', 'email')
-    }
+    // if (!user) {
+    fieldsToRender.push('name', 'email')
+    // }
     fieldsToRender.push('phone')
     const extraFields = fieldsToRender.map((field, index) => (
       <FieldContainer>
@@ -166,10 +169,10 @@ export class EmailContact extends React.Component<Props, {}> {
           requestClose={this.handleCancel}
           withLogo={false}
         >
-          <Title>{formatMessage(messages.title)}</Title>
+          <Title>{formatMessage(!support ? messages.title : messages.supportTitle)}</Title>
           {<ExtraFields>{extraFields}</ExtraFields>}
-          <TitleLabel>{`${formatMessage(messages.nameLabel)} ${ownerName ||
-            formatMessage(messages.storeManager)}`}</TitleLabel>
+          <TitleLabel>{`${formatMessage(messages.nameLabel)} ${!support ? (ownerName ||
+            formatMessage(messages.storeManager)) : formatMessage(messages.customerSupport)}`}</TitleLabel>
           <TextArea
             id="emailMessage"
             rows={7}
