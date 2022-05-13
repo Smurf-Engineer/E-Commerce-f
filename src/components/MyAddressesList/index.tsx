@@ -96,7 +96,6 @@ export class MyAddressesList extends React.Component<Props, {}> {
       multiButtons,
       formatMessage,
       listForMyAccount = false,
-      showAddressFormAction,
       showConfirmDeleteAction,
       indexAddressSelected,
       renderForModal,
@@ -156,7 +155,6 @@ export class MyAddressesList extends React.Component<Props, {}> {
           {...{
             key,
             formatMessage,
-            showAddressFormAction,
             showConfirmDeleteAction,
             isSelected,
             phone,
@@ -269,7 +267,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
 
   showAddressForm = () => {
     const { showAddressFormAction, showForm } = this.props
-    showAddressFormAction(!showForm)
+    showAddressFormAction(!showForm, false)
   }
 
   handleOnSelectAddress = (index: number) => {
