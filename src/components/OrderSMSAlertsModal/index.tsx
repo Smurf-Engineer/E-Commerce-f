@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Button } from 'antd'
 import Modal from 'antd/lib/modal'
 import MessageBar from 'antd/lib/message'
 import PhoneInput from 'react-phone-input-2'
@@ -8,7 +7,7 @@ import {
   profileNotificationSettingsQuery,
   profilePhoneSettingsQuery,
 } from '../Notifications/Preferences/data'
-import SMSBanner from '../../assets/sms_banner.jpg'
+import NotificationImage from '../../assets/notification.jpg'
 import {
   Message,
   NotificationOption,
@@ -30,10 +29,12 @@ import {
   ConfirmButton,
   StyledCheckbox,
   OptOutMessage,
+  Footer
 } from './styledComponents'
 interface Props {
   user: UserType
   notificationData: NotificationSettings
+  notifyOrderPayment?: boolean
   phoneData: { phone: String }
   formatMessage: (messageDescriptor: Message) => string
   updateNotification: (variables: {}) => void
@@ -41,7 +42,7 @@ interface Props {
   onClose: () => void
 }
 
-class SMSAlertsModal extends React.Component<Props, {}> {
+class OrderSMSAlertsModal extends React.Component<Props, {}> {
   state = {
     phoneNumber: '',
     checked: false,
@@ -73,8 +74,8 @@ class SMSAlertsModal extends React.Component<Props, {}> {
     }
   }
   changeNotificationSettings = () => {
-    const { notificationData, updateNotification } = this.props
-    const key = 'notifyProDesign'
+    const { notificationData, updateNotification, notifyOrderPayment } = this.props
+    const key = !notifyOrderPayment ? 'notifyProDesign' : 'notifyOrderPayment'
     const currentValue = notificationData ? notificationData[key] : 0
     let newValue = notificationData && notificationData[key] ? -1 : 2
     switch (currentValue) {
@@ -140,9 +141,12 @@ class SMSAlertsModal extends React.Component<Props, {}> {
     this.setState({ checked: e.target.checked })
   }
 
-  handleConfirm = () => {
+  handleOk = () => {
     const { formatMessage } = this.props
-    const { phoneNumber } = this.state
+    const { checked, phoneNumber } = this.state
+    if (!checked) {
+      this.props.onClose()
+    }
     if (phoneNumber && phoneNumber.length < 11) {
       MessageBar.error(formatMessage(messages.invalidPhone))
       return
@@ -152,10 +156,6 @@ class SMSAlertsModal extends React.Component<Props, {}> {
       this.changeNotificationSettings()
       this.props.onClose()
     }
-  }
-
-  handleNoThanks = () => {
-    this.props.onClose()
   }
 
   render() {
@@ -195,21 +195,21 @@ class SMSAlertsModal extends React.Component<Props, {}> {
               <OptOutMessage>
                 {formatMessage(messages.optOut)}
               </OptOutMessage>
-              <ButtonGroup>
-                <ConfirmButton disabled={!checked} onClick={this.handleConfirm}>
-                  {formatMessage(messages.confirm)}
-                </ConfirmButton>
-                <Button onClick={this.handleNoThanks}>
-                  {formatMessage(messages.noThanks)}
-                </Button>
-              </ButtonGroup>
             </InputContainer>
-            <BannerImage src={SMSBanner} />
+            <BannerImage src={NotificationImage} />
           </BodyContent>
+          <ButtonGroup>
+            <ConfirmButton onClick={this.handleOk}>
+              {formatMessage(messages.ok)}
+            </ConfirmButton>
+          </ButtonGroup>
+          <Footer dangerouslySetInnerHTML={{
+            __html: formatMessage(messages.footer)
+          }} />
         </ModalContainer>
       </Modal>
     )
   }
 }
 
-export default SMSAlertsModal
+export default OrderSMSAlertsModal

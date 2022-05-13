@@ -119,7 +119,7 @@ import { message } from 'antd'
 import some from 'lodash/some'
 import { updateAddressMutation } from '../../components/MyAddresses/data'
 import moment from 'moment'
-import SMSAlertsModal from '../../components/SMSAlertsModal'
+import OrderSMSAlertsModal from '../../components/OrderSMSAlertsModal'
 
 const { info } = Modal
 
@@ -728,7 +728,7 @@ class Checkout extends React.Component<Props, {}> {
           )}
         </Container>
         {currentStep === ReviewTab && openSMSAlertsModal && smsAlertsModal && 
-          <SMSAlertsModal
+          <OrderSMSAlertsModal
             user={user}
             notificationData={notificationData || {}}
             phoneData={phoneData || {}}
