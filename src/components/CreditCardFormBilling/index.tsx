@@ -7,6 +7,7 @@ import AnimateHeight from 'react-animate-height'
 import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
+import zenscroll from 'zenscroll'
 import { isApoCity, isNumberValue, isPoBox, isValidCity, isValidZip } from '../../utils/utilsAddressValidation'
 import messages from './messages'
 import { PHONE_FIELD, PHONE_MINIMUM } from '../../constants'
@@ -87,6 +88,7 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
     hasError: false
   }
   private addressListRef: any
+  private formDiv: any
 
   render() {
     const {
@@ -120,7 +122,6 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
       indexAddressSelected,
       showBillingForm,
       showBillingModal,
-      showBillingAddressFormAction,
       isEuSubsidiary
     } = this.props
     const { 
@@ -148,7 +149,7 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
           billingAddress={true}
           simple={true}
           showForm={showBillingForm}
-          showAddressFormAction={(show: boolean) => showBillingAddressFormAction(show, true)}
+          showAddressFormAction={(show: boolean, modal = true) => this.handleShowForm(show, modal)}
           setAddressToUpdateAction={this.setAddressToUpdateAction}
           {...{
             withPagination,
@@ -234,27 +235,33 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
             />
           )) ||
             renderAddresses(4, false, false)}
-          <AnimateHeight duration={500} height={showBillingForm ? 'auto' : 0}>
-            <ShippingAddressForm
-              {...{
-                firstName,
-                lastName,
-                street,
-                apartment,
-                country,
-                stateProvince,
-                stateProvinceCode,
-                city,
-                zipCode,
-                phone,
-                hasError,
-                selectDropdownAction,
-                inputChangeAction,
-                formatMessage
-              }}
-              isCard={true}
-            />
-          </AnimateHeight>
+          <div
+            ref={(input) => {
+              this.formDiv = input
+            }}
+          >
+            <AnimateHeight duration={500} height={showBillingForm ? 'auto' : 0}>
+              <ShippingAddressForm
+                {...{
+                  firstName,
+                  lastName,
+                  street,
+                  apartment,
+                  country,
+                  stateProvince,
+                  stateProvinceCode,
+                  city,
+                  zipCode,
+                  phone,
+                  hasError,
+                  selectDropdownAction,
+                  inputChangeAction,
+                  formatMessage
+                }}
+                isCard={true}
+              />
+            </AnimateHeight>
+          </div>
         </ContainerBilling>
         <ContinueButton
           onClick={this.handleOnContinue}
@@ -296,6 +303,14 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
         </Modal>
       </Container>
     )
+  }
+
+  handleShowForm = (show: boolean, modal: boolean) => {
+    const { showBillingAddressFormAction } = this.props
+    showBillingAddressFormAction(show, modal)
+    if (show && this.formDiv) {
+      zenscroll.to(this.formDiv, 700)
+    }
   }
 
   handleReady = (cardElement: stripe.elements.Element) =>
