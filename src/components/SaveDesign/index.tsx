@@ -177,6 +177,7 @@ export class SaveDesign extends React.Component<Props, State> {
       stitchingColor,
       zipperColor,
       bindingColor,
+      canvas: canvasDesign,
       colorsList,
       bibColor,
       isUserAuthenticated,
@@ -212,13 +213,32 @@ export class SaveDesign extends React.Component<Props, State> {
       // tslint:disable-next-line: align
     }, [])
     let arrayColors: Color[] = []
+    let assetsColors: Color[] = []
     let hasFluorescent = false
-    if (colors.length && colorsList && !colorsList.loading) {
+    const texts = get(canvasDesign, 'text', {}) || {}
+    const cliparts = get(canvasDesign, 'path', {}) || {}
+    if (texts) {
+      Object.keys(texts).forEach((item) => {
+        const textItem = texts[item] || {}
+        const { textFormat } = textItem || {}
+        const { fill, stroke } = textFormat || {}
+        assetsColors.push(fill, stroke)
+      })
+    }
+    if (cliparts) {
+      Object.keys(cliparts).forEach((item) => {
+        const clipartItem = cliparts[item] || {}
+        const { fill, stroke } = clipartItem || {}
+        assetsColors.push(fill, stroke)
+      })
+    }
+    const colorsToCheck = [...colors, ...assetsColors]
+    if (colorsToCheck.length && colorsList && !colorsList.loading) {
       try {
         const colorListResult = get(colorsList, 'colorsResult.colors', [])
         arrayColors = JSON.parse(colorListResult)
         hasFluorescent = arrayColors.some(({ type, value }: Color) =>
-          (colors.includes(value) || objectColors.includes(value)) &&
+          (colorsToCheck.includes(value) || objectColors.includes(value)) &&
           type === FLUORESCENT_COLOR
         )
       } catch (e) {
@@ -368,18 +388,38 @@ export class SaveDesign extends React.Component<Props, State> {
       colorsList,
       bindingColor,
       bibColor,
+      canvas: canvasDesign,
       afterSaveDesign,
       isEditing
     } = this.props
     const { designBase64, canvasJson, styleId } = design
     let arrayColors: Color[] = []
+    let assetsColors: Color[] = []
     let hasFluorescent = false
-    if (colors.length && colorsList && !colorsList.loading) {
+    const texts = get(canvasDesign, 'text', {}) || {}
+    const cliparts = get(canvasDesign, 'path', {}) || {}
+    if (texts) {
+      Object.keys(texts).forEach((item) => {
+        const textItem = texts[item] || {}
+        const { textFormat } = textItem || {}
+        const { fill, stroke } = textFormat || {}
+        assetsColors.push(fill, stroke)
+      })
+    }
+    if (cliparts) {
+      Object.keys(cliparts).forEach((item) => {
+        const clipartItem = cliparts[item] || {}
+        const { fill, stroke } = clipartItem || {}
+        assetsColors.push(fill, stroke)
+      })
+    }
+    const colorsToCheck = [...colors, ...assetsColors]
+    if (colorsToCheck.length && colorsList && !colorsList.loading) {
       try {
         const colorListResult = get(colorsList, 'colorsResult.colors', [])
         arrayColors = JSON.parse(colorListResult)
         hasFluorescent = arrayColors.some(({ type, value }: Color) =>
-          colors.includes(value) && type === FLUORESCENT_COLOR
+          colorsToCheck.includes(value) && type === FLUORESCENT_COLOR
         )
       } catch (e) {
         message.error(e)
