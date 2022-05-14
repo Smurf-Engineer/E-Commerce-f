@@ -11,13 +11,36 @@ import get from 'lodash/get'
 import * as thunkActions from './thunkActions'
 import * as storeFrontActions from './actions'
 import { isPhoneNumber } from '../../utils/utilsFiles'
-import { QueryProps, UserType, ContactInformation } from '../../types/common'
-import { Container } from './styledComponents'
+import Badge from 'antd/lib/badge'
+import { QueryProps, UserType, ContactInformation, CartItems } from '../../types/common'
+import {
+  AnimatedDiv,
+  BounceDiv,
+  CartButtonOpen,
+  CartDiv,
+  CartIcon,
+  CartIconMini,
+  CartInfo,
+  CartItemDiv,
+  CartList,
+  CartThumbnail,
+  CartTitle,
+  CartTitleLabel,
+  CloseIcon,
+  Container,
+  DesignCode,
+  DesignName,
+  ProductName,
+  Quantity,
+  ShoppingCartIcon
+} from './styledComponents'
 import TeamsLayout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import StoreFrontContent from '../../components/StoreFrontContent'
 import { getSessionCode } from './thunkActions'
 import Helmet from 'react-helmet'
+import messages from './messages'
+import findIndex from 'lodash/findIndex'
 
 interface Params extends QueryProps {
   teamStoreId: String
@@ -36,6 +59,9 @@ interface Props extends RouteComponentProps<any> {
   sendMessageLoading: boolean
   currentCurrency: string
   user: UserType
+  shoppingCart: any
+  itemsInCart: number
+  openCartDiv: boolean
   contactInfo: ContactInformation
   skip: number
   pageNumber: number
@@ -55,7 +81,9 @@ interface Props extends RouteComponentProps<any> {
 export class StoreFront extends React.Component<Props, {}> {
   state = {
     showDetails: true,
-    showSpecs: true
+    showSpecs: true,
+    openCartDiv: false,
+    bounceCart: false
   }
   componentDidMount() {
     window.scrollTo(0, 0)
@@ -72,6 +100,46 @@ export class StoreFront extends React.Component<Props, {}> {
     }
 
     return {}
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { shoppingCart: prevCart, itemsInCart: prevItems } = prevProps || {}
+    const { shoppingCart, itemsInCart } = this.props
+    let numberOfProducts = 0
+    if (shoppingCart.cart) {
+      const cart = shoppingCart.cart as CartItems[]
+      cart.map((cartItem) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+        numberOfProducts = numberOfProducts + quantitySum
+      })
+    }
+    const newNumber = shoppingCart.cart
+      ? numberOfProducts : itemsInCart
+
+    let numberOfProductsOld = 0
+
+    if (prevCart.cart) {
+      const cart = prevCart.cart as CartItems[]
+      cart.map((cartItem) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        numberOfProductsOld = numberOfProductsOld + quantitySum
+      })
+    }
+
+    const prevNumber = prevCart.cart
+      ? numberOfProductsOld : prevItems
+    
+    if (newNumber !== prevNumber) {
+      this.setState({ bounceCart: true })
+    }
   }
 
   closePassCodeModal = () => {
@@ -95,6 +163,24 @@ export class StoreFront extends React.Component<Props, {}> {
     setContactFieldAction(id, value)
   }
 
+  goToCartPage = () => {
+    const { history } = this.props
+    history.push('/shopping-cart')
+  }
+
+  closeCart = () => {
+    this.setState({ openCartDiv: false })
+  }
+
+  openCart = () => {
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
+    if (isMobile) {
+      this.goToCartPage()
+    } else {
+      this.setState({ openCartDiv: true })
+    }
+  }
+
   render() {
     const {
       intl,
@@ -115,6 +201,8 @@ export class StoreFront extends React.Component<Props, {}> {
       openPassCodeDialogAction,
       currentCurrency,
       user,
+      itemsInCart,
+      shoppingCart,
       contactInfo,
       skip,
       pageNumber,
@@ -123,11 +211,60 @@ export class StoreFront extends React.Component<Props, {}> {
     const {
       location: { search }
     } = this.props
+    const { bounceCart, openCartDiv } = this.state
     const queryParams = queryString.parse(search)
     const storeId = queryParams ? queryParams.storeId || '' : ''
     const titleProp = queryParams ? queryParams.titleProp : ''
     const bannerProp = queryParams ? queryParams.bannerProp : ''
     const storedCode = getSessionCode(storeId)
+    let numberOfProducts = 0
+
+    if (shoppingCart.cart) {
+      const cart = shoppingCart.cart as CartItems[]
+      cart.map((cartItem) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        numberOfProducts = numberOfProducts + quantitySum
+      })
+    }
+
+    const numberOfProductsInCart = shoppingCart.cart
+      ? numberOfProducts : itemsInCart
+    if (bounceCart) {
+      setTimeout(() => { this.setState({ bounceCart: false }) }, 2000)
+    }
+    let cartListFromLS = []
+    let cartList: CartItems[] = []
+    if (typeof window !== 'undefined') {
+      cartListFromLS = JSON.parse(localStorage.getItem('cart') || '{}')
+    }
+    for (let i = 0; i < cartListFromLS.length; i++) {
+      const item = cartListFromLS[i] || {}
+      if (i === 0) {
+        cartList.push(item)
+        continue
+      }
+      const indexOfSameProduct = findIndex(cartList, (cartItem) => {
+        return (
+          cartItem.product.id === item.product.id &&
+          item.designId === cartItem.designId
+        )
+      })
+      if (indexOfSameProduct !== -1) {
+        const itemToUpdate = cartList[indexOfSameProduct]
+        cartList[indexOfSameProduct].itemDetails = [
+          ...itemToUpdate.itemDetails,
+          ...item.itemDetails
+        ]
+      } else {
+        cartList.push(item)
+      }
+    }
+
     // tslint:disable-next-line: max-line-length
     const shareStoreUrl = `https://jakroo.com/store-front?storeId=${storeId}&titleProp=${titleProp}&bannerProp=${bannerProp}`
     return (
@@ -175,6 +312,54 @@ export class StoreFront extends React.Component<Props, {}> {
               skip
             }}
           />
+          <AnimatedDiv>
+            <BounceDiv secondary={bounceCart}>
+              <CartIcon onClick={this.openCart}>
+                <Badge count={numberOfProductsInCart} overflowCount={9}>
+                  <ShoppingCartIcon type="shopping-cart" />
+                </Badge>
+              </CartIcon>
+            </BounceDiv>
+          </AnimatedDiv>
+          {openCartDiv && intl &&
+            <CartDiv>
+              <CartTitle>
+                <CartTitleLabel>
+                  <CartIconMini type="shopping" />
+                  {intl.formatMessage(messages.myCart)} ({numberOfProductsInCart})
+                </CartTitleLabel>
+                <CloseIcon type="close" onClick={this.closeCart}/>
+              </CartTitle>
+              <CartList>
+                {cartList.map((cartItem: CartItems, key: number) => {
+                  const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+                    return itemDetail.quantity
+                  })
+                  const quantitySum = quantities.reduce((a, b) => a + b, 0)
+                  return (
+                    <CartItemDiv {...{ key }}>
+                      <CartThumbnail src={cartItem.designImage} />
+                      <CartInfo>
+                        <DesignName>
+                          {cartItem.designName}
+                        </DesignName>
+                        <DesignCode>
+                          {cartItem.designCode}
+                        </DesignCode>
+                        <ProductName>
+                          {cartItem.product.name} {cartItem.product.description}
+                        </ProductName>
+                        <Quantity>
+                          {quantitySum}
+                        </Quantity>
+                      </CartInfo>
+                    </CartItemDiv>
+                  )}
+                )}
+              </CartList>
+              <CartButtonOpen onClick={this.goToCartPage}>{intl.formatMessage(messages.openCart)}</CartButtonOpen>
+            </CartDiv>
+          }
         </Container>
       </TeamsLayout>
     )
@@ -182,9 +367,17 @@ export class StoreFront extends React.Component<Props, {}> {
 }
 
 const mapStateToProps = (state: any) => {
+  const layoutProps = state.get('layout').toJS()
+  const shoppingCart = state.get('shoppingCartPage').toJS()
   const storeFrontPops = state.get('storeFront').toJS()
   const langProps = state.get('languageProvider').toJS()
-  return { ...storeFrontPops, ...langProps, user: state.get('app').get('user') }
+  return {
+    ...storeFrontPops,
+    ...langProps,
+    user: state.get('app').get('user'),
+    shoppingCart: { ...shoppingCart },
+    itemsInCart: layoutProps.itemsInCart
+  }
 }
 
 const StoreFrontEnhance = compose(

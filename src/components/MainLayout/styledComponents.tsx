@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Carousel from 'antd/lib/carousel'
-import { WHITE, AUBERGINE, BLACK_LABEL, RED_DARK, RED } from '../../theme/colors'
+import { WHITE, AUBERGINE, BLACK_LABEL } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 const HEADER_TOP_SIZE = 38
@@ -154,20 +154,22 @@ export const BehalfDiv = styled.div`
   left: calc(50vw - 126px);
   z-index: 99999;
   display: flex;
-  background: white;
+  background: #bd3348;
   padding: 10px 24px;
-  border: 1px solid ${RED_DARK};
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  color: ${RED_DARK};
+  color: ${WHITE};
   font-size: 12px;
   align-items: center;
+  box-shadow: 0px -1px 5px -1px #767676;
 `
 
 export const BehalfText = styled.div`
   font-family: Avenir;
   display: flex;
-  color: #bd3849;
+  color: ${WHITE};
+  padding-right: 12px;
+  border-right: 1px solid #d16767;
 `
 
 export const UserIcon = styled(Icon)`
@@ -182,11 +184,12 @@ export const UserDiv = styled.div`
 `
 
 export const LogoutIcon = styled(Icon)`
-  margin-left: 14px;
-  color: ${RED};
+  margin-left: 12px;
+  color: ${WHITE};
   margin-bottom: 2px;
   font-size: 13px;
   transition: all .25s;
+  filter: drop-shadow(0px 0px 2px #494949);
   &:hover {
     cursor: pointer;
     opacity: 0.7;
