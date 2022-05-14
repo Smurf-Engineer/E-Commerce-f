@@ -17,6 +17,14 @@ export default defineMessages({
     id: 'screens.StoreFront.orderTitle2',
     defaultMessage: 'and receive your order by'
   },
+  myCart: {
+    id: 'screens.StoreFront.myCart',
+    defaultMessage: 'My Cart'
+  },
+  openCart: {
+    id: 'screens.StoreFront.openCart',
+    defaultMessage: 'OPEN CART'
+  },
   priceDropTitle: {
     id: 'screens.StoreFront.priceDropTitle',
     defaultMessage: 'DYANMIC PRICE DROP'
