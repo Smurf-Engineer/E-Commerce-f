@@ -321,7 +321,6 @@ class Checkout extends React.Component<Props, {}> {
       billingPhone,
       billingHasError,
       profileData,
-      notificationData,
       cardHolderName,
       cardNumber,
       cardExpDate,
@@ -369,6 +368,7 @@ class Checkout extends React.Component<Props, {}> {
     } = this.props
     const { smsAlertsModal } = this.state
     const userPhone = get(profileData, 'profileData.userProfile.phone', '')
+    const notificationData = get(profileData, 'notificationData', {})
 
     const openSMSAlertsModal = !(notificationData &&
       (notificationData.notifyOrderPayment === NotificationOption.BOTH || 
