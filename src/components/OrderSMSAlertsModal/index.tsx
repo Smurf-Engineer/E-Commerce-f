@@ -35,7 +35,7 @@ interface Props {
   user: UserType
   notificationData: NotificationSettings
   notifyOrderPayment?: boolean
-  phoneData: { phone: String }
+  phone: string
   formatMessage: (messageDescriptor: Message) => string
   updateNotification: (variables: {}) => void
   updatePhone: (variables: {}) => void
@@ -49,8 +49,8 @@ class OrderSMSAlertsModal extends React.Component<Props, {}> {
   }
 
   componentDidMount() {
-    const { phoneData } = this.props
-    this.setState({ phoneNumber: phoneData.phone })
+    const { phone } = this.props
+    this.setState({ phoneNumber: phone })
   }
 
   updateSetting = async (payload: {}, mutation: any, successMessage: any) => {

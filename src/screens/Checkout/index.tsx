@@ -32,8 +32,6 @@ import {
   isScaPaymentQuery,
   profileSettingsQuery,
   getDesignLabInfo,
-  profileNotificationSettingsQuery,
-  profilePhoneSettingsQuery,
   UpdateNotificationSettingMutation,
   UpdatePhoneSettingMutation
 } from './data'
@@ -136,6 +134,7 @@ interface DataDesignLabInfo extends QueryProps {
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
+  notificationData: NotificationSettings
 }
 
 interface CartItem {
@@ -154,16 +153,6 @@ interface CartItems {
   itemDetails: CartItemDetail[]
   teamStoreId?: string
   isFixed?: boolean
-}
-
-export interface NotificationSetting {
-  notificationData: NotificationSettings
-}
-
-export interface PhoneSetting {
-  phoneData: {
-    phone: String
-  }
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -228,8 +217,6 @@ interface Props extends RouteComponentProps<any> {
   paymentClientSecret: string
   intentId: string
   subsidiaryQuery?: number
-  notificationSettings: NotificationSetting
-  phoneSettings: PhoneSetting
   // Redux actions
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
   setStripeIbanDataAction: (iban: IbanData) => void
@@ -334,6 +321,7 @@ class Checkout extends React.Component<Props, {}> {
       billingPhone,
       billingHasError,
       profileData,
+      notificationData,
       cardHolderName,
       cardNumber,
       cardExpDate,
@@ -375,18 +363,17 @@ class Checkout extends React.Component<Props, {}> {
       setCouponCodeAction,
       deleteCouponCodeAction,
       paymentClientSecret,
-      notificationSettings: { notificationData },
-      phoneSettings: { phoneData },
       user,
       updateNotification,
       updatePhone
     } = this.props
     const { smsAlertsModal } = this.state
+    const userPhone = get(profileData, 'profileData.userProfile.phone', '')
 
     const openSMSAlertsModal = !(notificationData &&
       (notificationData.notifyOrderPayment === NotificationOption.BOTH || 
       notificationData.notifyOrderPayment === NotificationOption.SMS) &&
-      phoneData && phoneData.phone)
+      userPhone)
 
     const underMaintenance = get(designLabInfo, 'getDesignLabInfo.underMaintenance', false)
     const deliveryDate = get(designLabInfo, 'deliveryDate', '')
@@ -731,7 +718,7 @@ class Checkout extends React.Component<Props, {}> {
           <OrderSMSAlertsModal
             user={user}
             notificationData={notificationData || {}}
-            phoneData={phoneData || {}}
+            phone={userPhone}
             updateNotification={updateNotification}
             updatePhone={updatePhone}
             onClose={() => this.setState( { smsAlertsModal: false } )}
@@ -1548,18 +1535,6 @@ const CheckoutEnhance = compose(
       }
     },
     name: 'designLabInfo'
-  }),
-  graphql(profileNotificationSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
-    name: 'notificationSettings'
-  }),
-  graphql(profilePhoneSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
-    name: 'phoneSettings'
   }),
 )(Checkout)
 

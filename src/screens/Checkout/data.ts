@@ -79,24 +79,11 @@ export const profileSettingsQuery = gql`
         firstName: first_name
         lastName: last_name
         email
+        phone
         invoiceEnabled: invoice_enabled
         invoiceTerms: invoice_terms
       }
     }
-  }
-`
-
-export const getDesignLabInfo = gql`
-  query getDesignLabInfo($teamStoreId: String) {
-    getDesignLabInfo {
-      underMaintenance: under_maintenance
-    }
-    deliveryDate: getDeliveryDate(teamStoreId: $teamStoreId)
-  }
-`
-
-export const profileNotificationSettingsQuery = gql`
-  query notificationSettings {
     notificationData: getProfileNotificationSettings {
       notifyOrderPayment: notify_order_payment
       notifyProDesign: notify_pro_design
@@ -109,11 +96,12 @@ export const profileNotificationSettingsQuery = gql`
   }
 `
 
-export const profilePhoneSettingsQuery = gql`
-  query phoneSettings {
-    phoneData: getProfilePhoneSettings {
-      phone
+export const getDesignLabInfo = gql`
+  query getDesignLabInfo($teamStoreId: String) {
+    getDesignLabInfo {
+      underMaintenance: under_maintenance
     }
+    deliveryDate: getDeliveryDate(teamStoreId: $teamStoreId)
   }
 `
 
