@@ -79,9 +79,19 @@ export const profileSettingsQuery = gql`
         firstName: first_name
         lastName: last_name
         email
+        phone
         invoiceEnabled: invoice_enabled
         invoiceTerms: invoice_terms
       }
+    }
+    notificationData: getProfileNotificationSettings {
+      notifyOrderPayment: notify_order_payment
+      notifyProDesign: notify_pro_design
+      notifyProductService: notify_product_service
+      notifyTeamStore: notify_team_store
+      notifyDesignLab: notify_design_lab
+      notifyComments: notify_comments
+      newsletterSubscribed: newsletter_subscribed
     }
   }
 `
@@ -94,3 +104,29 @@ export const getDesignLabInfo = gql`
     deliveryDate: getDeliveryDate(teamStoreId: $teamStoreId)
   }
 `
+
+export const UpdateNotificationSettingMutation = graphql(
+  gql`
+    mutation updateNotification($setting: String!, $value: Int!) {
+      setNotificationSetting(setting: $setting, value: $value) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'updateNotification'
+  }
+)
+
+export const UpdatePhoneSettingMutation = graphql(
+  gql`
+    mutation changeUserPhone($userId: String!, $phone: String!) {
+      profile: changeUserPhone(userId: $userId, phone: $phone) {
+        phone
+      }
+    }
+  `,
+  {
+    name: 'updatePhone'
+  }
+)
