@@ -146,6 +146,7 @@ class OrderSMSAlertsModal extends React.Component<Props, {}> {
     const { checked, phoneNumber } = this.state
     if (!checked) {
       this.props.onClose()
+      return
     }
     if (phoneNumber && phoneNumber.length < 11) {
       MessageBar.error(formatMessage(messages.invalidPhone))
