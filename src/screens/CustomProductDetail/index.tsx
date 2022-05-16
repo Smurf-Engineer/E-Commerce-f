@@ -631,6 +631,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               designId,
               designName,
               designImage,
+              designCode,
               teamStoreItem,
               fixedPrice,
               formatMessage,

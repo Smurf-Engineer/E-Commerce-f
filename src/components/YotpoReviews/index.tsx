@@ -29,11 +29,11 @@ declare global {
 class YotpoReviews extends React.Component<Props, any> {
   yotpo: any
   yotpoGallery: any
-  componentDidUpdate() {
-    if (typeof window !== 'undefined' && window.yotpo && window.yotpo.inview) {
-      window.yotpo.refreshWidgets()
-    }
-  }
+  // componentDidUpdate() {
+  //   if (typeof window !== 'undefined' && window.yotpo && window.yotpo.inview) {
+  //     window.yotpo.refreshWidgets()
+  //   }
+  // }
 
   componentDidMount() {
     if (typeof window !== 'undefined' && window.yotpo && window.yotpo.inview) {

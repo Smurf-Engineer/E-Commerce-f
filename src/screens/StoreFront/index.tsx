@@ -347,7 +347,7 @@ export class StoreFront extends React.Component<Props, {}> {
                           {cartItem.designCode}
                         </DesignCode>
                         <ProductName>
-                          {cartItem.product.name} {cartItem.product.description}
+                          {cartItem.product.name} {cartItem.product.shortDescription}
                         </ProductName>
                         <Quantity>
                           {quantitySum}
