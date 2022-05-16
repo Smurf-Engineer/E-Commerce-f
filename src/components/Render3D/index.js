@@ -78,7 +78,7 @@ class Render3D extends PureComponent {
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     if (this.container) {
-      const { modelSize, disableControls, maxHeight } = this.props
+      const { modelSize, disableControls, maxHeight, zoomedIn } = this.props
       /* Renderer config */
       const { clientWidth = 0, clientHeight = 0 } = this.container
       const precision = 'highp'
@@ -106,7 +106,7 @@ class Render3D extends PureComponent {
       controls.addEventListener('change', this.lightUpdate)
 
       controls.enableKeys = false
-      controls.minDistance = maxHeight ? 40 : 80
+      controls.minDistance = maxHeight || zoomedIn ? 40 : 80
       controls.maxDistance = 350
       controls.enableZoom = true
       controls.enabled = !disableControls

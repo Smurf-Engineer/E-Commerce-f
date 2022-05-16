@@ -19,7 +19,8 @@ export default defineMessages({
   },
   estimatedDate: {
     id: 'screens.DesignApproval.estimatedDate',
-    defaultMessage: 'The <strong>estimated date</strong> your design will be <strong>ready for review</strong>'
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'This is the <strong>estimated</strong> date your Pro Design will be ready for your review and approval'
   },
   send: {
     id: 'screens.DesignApproval.send',

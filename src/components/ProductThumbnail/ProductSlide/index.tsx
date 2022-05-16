@@ -28,6 +28,8 @@ import {
   TooltipContentModal,
   ScheduledDate,
   DateIcon,
+  StyledPopOver,
+  PopoverText,
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
 import JackrooLogo from '../../../assets/Jackroologo.svg'
@@ -341,10 +343,22 @@ const ProductSlide = ({
         : null
       }
       {lastTask && lastTask.date && proStatus === IN_DESIGN && (
-        <ScheduledDate>
-          <DateIcon type="calendar" />
-          {moment(lastTask.date).format('M/D')}
-        </ScheduledDate>
+        <StyledPopOver
+          placement="bottom"
+          overlayClassName="innerClassTooltip"
+          title={
+            <PopoverText
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.estimatedDate) 
+              }}
+            />
+          }
+        >
+          <ScheduledDate>
+            <DateIcon type="calendar" />
+            {moment(lastTask.date).format('M/D')}
+          </ScheduledDate>
+        </StyledPopOver>
       )}
       <ThumbnailImage
         onClick={!selectProduct ? (designLab ? selectProductToDesign : onPressThumbnail) : undefined}
