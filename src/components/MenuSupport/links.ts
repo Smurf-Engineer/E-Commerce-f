@@ -16,7 +16,7 @@ const links = [
   },
   {
     label: 'pricing',
-    url: `https://storage.googleapis.com/jakroo/homepage/JV2PRICING.pdf`,
+    url: `https://jakroo.com/store_imgs/JV2PRICING.pdf`,
     type: LINK_TYPE_URL
   },
   {
