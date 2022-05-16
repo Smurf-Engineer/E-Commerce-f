@@ -31,5 +31,10 @@ export default defineMessages({
   close: {
     id: 'components.ProductThumbnail.ProductSlide.close',
     defaultMessage: 'Close'
-  }
+  },
+  estimatedDate: {
+    id: 'components.ProductThumbnail.estimatedDate',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'This is the <strong>estimated</strong> date your Pro Design will be ready for your review and approval'
+  },
 })

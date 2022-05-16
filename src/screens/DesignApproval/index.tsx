@@ -2382,6 +2382,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               }
               {lastTask && lastTask.date && itemStatus === IN_DESIGN && (
                 <StyledPopOver
+                  placement="bottom"
                   overlayClassName="innerClassTooltip"
                   title={
                     <PopoverText

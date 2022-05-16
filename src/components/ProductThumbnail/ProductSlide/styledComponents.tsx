@@ -3,6 +3,7 @@
  */
 import Icon from 'antd/lib/icon'
 import Popover from 'antd/lib/popover'
+import Tooltip from 'antd/lib/tooltip'
 import styled from 'styled-components'
 import { 
   GRAY_DARK, 
@@ -13,7 +14,8 @@ import {
   GRAY_LIGHTEST, 
   BLACK_SHADOW, 
   GRAY, 
-  BLUE_LIGHT 
+  BLUE_LIGHT, 
+  BLACK
 } from '../../../theme/colors'
 
 type StyledProps = {
@@ -369,6 +371,17 @@ export const buttonStyle = {
   background: 'none',
   color: RED
 }
+
+export const StyledPopOver = styled(Tooltip)`
+  cursor: pointer;
+`
+
+export const PopoverText = styled.div`
+  max-width: 256px;
+  width: 100%;
+  font-size: 12px;
+  color: ${BLACK};
+`
 
 export const ScheduledDate = styled.div`
   width: fit-content;
