@@ -4,9 +4,9 @@ import MessageBar from 'antd/lib/message'
 import PhoneInput from 'react-phone-input-2'
 import messages from './messages'
 import {
-  profileNotificationSettingsQuery,
   profilePhoneSettingsQuery,
 } from '../Notifications/Preferences/data'
+import DoneAnimation from '../../assets/done.gif'
 import NotificationImage from '../../assets/notification.jpg'
 import {
   Message,
@@ -27,9 +27,13 @@ import {
   InputContainer,
   ButtonGroup,
   ConfirmButton,
-  StyledCheckbox,
   OptOutMessage,
-  Footer
+  Footer,
+  StyledSignUp,
+  SignUpIcon,
+  TelInput,
+  SavedDiv,
+  SavedPhone
 } from './styledComponents'
 interface Props {
   user: UserType
@@ -44,6 +48,7 @@ interface Props {
 
 class OrderSMSAlertsModal extends React.Component<Props, {}> {
   state = {
+    showAnimation: false,
     phoneNumber: '',
     checked: false,
   }
@@ -57,15 +62,7 @@ class OrderSMSAlertsModal extends React.Component<Props, {}> {
     const { formatMessage } = this.props
     try {
       await mutation({
-        variables: payload,
-        refetchQueries: [
-          {
-            query: profileNotificationSettingsQuery,
-            options: {
-              fetchPolicy: 'network-only',
-            },
-          },
-        ],
+        variables: payload
       })
       MessageBar.success(formatMessage(successMessage), 4)
     } catch (error) {
@@ -73,7 +70,7 @@ class OrderSMSAlertsModal extends React.Component<Props, {}> {
       MessageBar.error(errorMessage, 5)
     }
   }
-  changeNotificationSettings = () => {
+  changeNotificationSettings = async () => {
     const { notificationData, updateNotification, notifyOrderPayment } = this.props
     const key = !notifyOrderPayment ? 'notifyProDesign' : 'notifyOrderPayment'
     const currentValue = notificationData ? notificationData[key] : 0
@@ -96,7 +93,7 @@ class OrderSMSAlertsModal extends React.Component<Props, {}> {
           .toLowerCase(),
         value: newValue,
       }
-      this.updateSetting(
+      await this.updateSetting(
         payload,
         updateNotification,
         messages.updateNotificationSuccessMessage
@@ -128,9 +125,9 @@ class OrderSMSAlertsModal extends React.Component<Props, {}> {
       MessageBar.error(errorMessage, 5)
     }
   }
-  handlePhoneChange = (phone: string) => {
+  handlePhoneChange = async (phone: string) => {
     const { user, updatePhone } = this.props
-    this.updatePhoneSetting(
+    await this.updatePhoneSetting(
       { userId: user ? user.id : '', phone },
       updatePhone,
       messages.phoneSaved
@@ -141,26 +138,28 @@ class OrderSMSAlertsModal extends React.Component<Props, {}> {
     this.setState({ checked: e.target.checked })
   }
 
-  handleOk = () => {
-    const { formatMessage } = this.props
-    const { checked, phoneNumber } = this.state
-    if (!checked) {
-      this.props.onClose()
-      return
-    }
+  noThanks = () => {
+    const { onClose } = this.props
+    onClose()
+  }
+
+  handleOk = async () => {
+    const { formatMessage, onClose } = this.props
+    const { phoneNumber } = this.state
     if (phoneNumber && phoneNumber.length < 11) {
       MessageBar.error(formatMessage(messages.invalidPhone))
       return
     }
     if (phoneNumber) {
-      this.handlePhoneChange(phoneNumber)
-      this.changeNotificationSettings()
-      this.props.onClose()
+      await this.handlePhoneChange(phoneNumber)
+      await this.changeNotificationSettings()
+      this.setState({ showAnimation: true })
+      setTimeout(() => { onClose() }, 2500)
     }
   }
 
   render() {
-    const { checked } = this.state
+    const { phoneNumber, showAnimation } = this.state
     const { formatMessage } = this.props
     return (
       <Modal
@@ -170,44 +169,53 @@ class OrderSMSAlertsModal extends React.Component<Props, {}> {
         width={'700px'}
         bodyStyle={{ padding: 0 }}
       >
-        <ModalContainer>
-          <Title>{formatMessage(messages.title)}</Title>
-          <Description>{formatMessage(messages.description)}</Description>
-          <BodyContent>
-            <InputContainer>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.phone)}</Label>
-              </InputTitleContainer>
-              <PhoneInput
-                country={'us'}
-                autoComplete="jv2"
-                countryCodeEditable={false}
-                value={this.state.phoneNumber}
-                onChange={(value) => {
-                  this.setState({ phoneNumber: value })
-                }}
-                inputProps={{ autoComplete: 'jv2' }}
-                inputStyle={{ borderRadius: 0, width: 250 }}
-                copyNumbersOnly={false}
-              />
-              <StyledCheckbox checked={checked} onChange={this.handleCertifyChange}>
-                {formatMessage(messages.certify)}
-              </StyledCheckbox>
-              <OptOutMessage>
-                {formatMessage(messages.optOut)}
-              </OptOutMessage>
-            </InputContainer>
-            <BannerImage src={NotificationImage} />
-          </BodyContent>
-          <ButtonGroup>
-            <ConfirmButton onClick={this.handleOk}>
-              {formatMessage(messages.ok)}
-            </ConfirmButton>
-          </ButtonGroup>
-          <Footer dangerouslySetInnerHTML={{
-            __html: formatMessage(messages.footer)
-          }} />
-        </ModalContainer>
+        {showAnimation ?
+          <SavedDiv>
+            <SavedPhone src={DoneAnimation} />
+          </SavedDiv> :
+          <ModalContainer>
+            <Title>{formatMessage(messages.title)}</Title>
+            <Description>{formatMessage(messages.description)}</Description>
+            <BodyContent>
+              <InputContainer>
+                <InputTitleContainer>
+                  <Label>{formatMessage(messages.phone)}</Label>
+                </InputTitleContainer>
+                <TelInput>
+                  <PhoneInput
+                    country={'us'}
+                    autoComplete="jv2"
+                    countryCodeEditable={false}
+                    value={this.state.phoneNumber}
+                    onChange={(value) => {
+                      this.setState({ phoneNumber: value })
+                    }}
+                    inputProps={{ autoComplete: 'jv2' }}
+                    inputStyle={{ borderRadius: 0, width: 192 }}
+                    copyNumbersOnly={false}
+                    style={{ width: 'auto' }}
+                  />
+                  <StyledSignUp disabled={!phoneNumber} onClick={this.handleOk}>
+                    <SignUpIcon type="check-circle" />
+                    {formatMessage(messages.signUp)}
+                  </StyledSignUp>
+                </TelInput>
+                <OptOutMessage>
+                  {formatMessage(messages.optOut)}
+                </OptOutMessage>
+              </InputContainer>
+              <BannerImage src={NotificationImage} />
+            </BodyContent>
+            <ButtonGroup>
+              <ConfirmButton onClick={this.noThanks}>
+                {formatMessage(messages.noThanks)}
+              </ConfirmButton>
+            </ButtonGroup>
+            <Footer dangerouslySetInnerHTML={{
+              __html: formatMessage(messages.footer)
+            }} />
+          </ModalContainer>
+        }
       </Modal>
     )
   }

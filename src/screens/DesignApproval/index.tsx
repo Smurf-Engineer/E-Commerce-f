@@ -1584,6 +1584,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const ownerName = get(projectItem, 'project.customer', '')
     const ownerEmail = get(projectItem, 'project.customerEmail', '')
     const sessionUser = get(user, 'id', '')
+    const onBehalf = get(user, 'onBehalf', false)
     const {
       id: designSerialId,
       predyedName,
@@ -1790,7 +1791,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                           incomingMessage
                       }}
                     />
-                    {required && !isGuest &&
+                    {required && !isGuest && !onBehalf &&
                       <RequiredText onClick={this.replyMessage(id, incomingMessage)}>
                         {formatMessage(messages.required)}
                       </RequiredText>
@@ -1917,8 +1918,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           }
           {isOwner &&
             <AddMemberButton
-              disabled={projectMembers.length >= 5 || !isOwner}
-              onClick={(projectMembers.length >= 5 || !isOwner) ? () => {} : this.openInviteModal}
+              disabled={projectMembers.length >= 5 || !isOwner || onBehalf}
+              onClick={(projectMembers.length >= 5 || !isOwner || onBehalf) ? () => {} : this.openInviteModal}
             >
               {formatMessage(messages.inviteMembers)}
             </AddMemberButton>
@@ -1959,7 +1960,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   {!member.dateAdded &&
                     <PendingDiv>
                       <PendingLabel>{formatMessage(messages.pending)}</PendingLabel>
-                      {isOwner &&
+                      {(isOwner && !onBehalf) &&
                         <Resend
                           id={member.email}
                           onClick={this.reSendInvitationsAction}
@@ -1971,7 +1972,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                 </MemberData>
                 <MemberType
-                  disabled={!isOwner}
+                  disabled={!isOwner || onBehalf}
                   onChange={(e: string) => this.onSelectRole(e, member.shortId)}
                   value={member.role}>
                   {memberTypeOptions.map((value: string, index: number) => (
@@ -1980,7 +1981,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     </Option>
                   ))}
                 </MemberType>
-                {isOwner && <MemberDelete id={member.shortId} onClick={this.onDeleteMember} type="delete" />}
+                {(isOwner && !onBehalf) && 
+                  <MemberDelete id={member.shortId} onClick={this.onDeleteMember} type="delete" />
+                }
               </Member>
             )}
           </MembersList>
@@ -2206,7 +2209,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
-                disabled={uploadingFileComment || sendingComment}
+                disabled={uploadingFileComment || sendingComment || onBehalf}
                 customRequest={this.uploadCommentFile}
                 beforeUpload={this.beforeUpload}
               >
@@ -2215,7 +2218,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               <InputComment
                 id="commentInput"
                 innerRef={(commentInput: any) => { this.commentInput = commentInput }}
-                disabled={sendingComment}
+                disabled={sendingComment || onBehalf}
                 onChange={this.handleInputComment}
                 onKeyPress={this.inputPressKey}
                 placeholder="You can add multiple text here..."
@@ -2233,7 +2236,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 rows={1}
               />
               <SendCommentButton
-                disabled={(!commentMessage && !commentFile) || sendingComment || uploadingFileComment}
+                disabled={(!commentMessage && !commentFile) || sendingComment || uploadingFileComment || onBehalf}
                 onClick={(
                   (!commentMessage && !commentFile) || sendingComment || uploadingFileComment) ? 
                   () => {} : 
@@ -2490,7 +2493,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </ButtonWrapper>
                 </BottomButtons>
               }
-              {(isOwner || isApprover) &&
+              {(isOwner || isApprover) && !onBehalf &&
                 <RequestButtons>
                   <ApproveButton
                     loading={approveLoading}
@@ -2531,7 +2534,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </RequestEdit>
                 </RequestButtons>
               }
-              {(selectedKeyMobile === '1' || !selectedKeyMobile) && (isOwner || isApprover) &&
+              {(selectedKeyMobile === '1' || !selectedKeyMobile) && (isOwner || isApprover) && !onBehalf &&
                 <MobileRequestButtons>
                   <ApproveButton
                     loading={approveLoading}

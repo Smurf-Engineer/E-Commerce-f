@@ -22,11 +22,15 @@ export default defineMessages({
   },
   optOut: {
     id: 'components.OrderSMSAlertsModal.optOut',
-    defaultMessage: 'Opt out any time by texting STOP',
+    defaultMessage: 'Rates may apply by your carrier. Opt out any time by texting STOP',
   },
   ok: {
     id: 'components.OrderSMSAlertsModal.ok',
     defaultMessage: 'OK',
+  },
+  signUp: {
+    id: 'components.OrderSMSAlertsModal.signUp',
+    defaultMessage: 'Sign Up',
   },
   noThanks: {
     id: 'components.OrderSMSAlertsModal.noThanks',
