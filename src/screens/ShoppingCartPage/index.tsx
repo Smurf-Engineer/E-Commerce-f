@@ -32,7 +32,6 @@ import {
   EmptyItems,
   EmptyTitle,
   EmptyDescription,
-  StyledEmptyButton,
   DeleteConfirmMessage,
   ModalHeader,
   InfoBody,
@@ -50,6 +49,12 @@ import {
   confirmButtonStyle,
   ConfirmTitle,
   ConfirmIcon,
+  EmptyImage,
+  ButtonLocker,
+  LockerImage,
+  ButtonStores,
+  StoresImage,
+  ButtonLabel,
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
 import config from '../../config/index'
@@ -68,6 +73,7 @@ import Modal from 'antd/lib/modal/Modal'
 import Checkbox from 'antd/lib/checkbox'
 import closeIcon from '../../assets/cancel-button.svg'
 import maintenanceImage from '../../assets/maintenance.png'
+import emptyCartImage from '../../assets/emptycart.png'
 import { getShoppingCartData, getPriceRangeByItem, getItemQuantity } from '../../utils/utilsShoppingCart'
 import ModalTitle from '../../components/ModalTitle'
 import ModalFooter from '../../components/ModalFooter'
@@ -529,6 +535,16 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     window.location.replace('/')
   }
 
+  goToLocker = () => {
+    const { history } = this.props
+    history.push('/account?option=myLocker')
+  }
+
+  goToStores = () => {
+    const { history } = this.props
+    history.push('/search-teamstores')
+  }
+
   render() {
     const {
       intl,
@@ -667,15 +683,24 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           {!cart || cart.length < 1 ? (
             <EmptyContainer>
               <EmptyItems>
+                <EmptyImage src={emptyCartImage} />
                 <EmptyTitle>
                   <FormattedMessage {...messages.emptyTitle} />
                 </EmptyTitle>
                 <EmptyDescription>
-                  <FormattedMessage {...messages.emptyMessage} />
+                  <ButtonLocker onClick={this.goToLocker}>
+                    <LockerImage src="https://storage.googleapis.com/jakroo/homepage/clothesicon.png" />
+                    <ButtonLabel>
+                      {formatMessage(messages.addFromLocker)}
+                    </ButtonLabel>
+                  </ButtonLocker>
+                  <ButtonStores onClick={this.goToStores}>
+                    <StoresImage src="https://storage.googleapis.com/jakroo/homepage/storeicon2.png" />
+                    <ButtonLabel>
+                      {formatMessage(messages.addFromStore)}
+                    </ButtonLabel>
+                  </ButtonStores>
                 </EmptyDescription>
-                <StyledEmptyButton type="danger" onClick={this.handleClick}>
-                  {formatMessage(messages.browse)}
-                </StyledEmptyButton>
               </EmptyItems>
             </EmptyContainer>
           ) : (
@@ -760,7 +785,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           </Modal>
         </PageContent>
         {designReviewModal}
-        {cart && cart.length && (
+        {(cart && cart.length > 0) && (
           <FitInfo
             open={openFitInfo}
             product={cart[selectedIndex].product}
