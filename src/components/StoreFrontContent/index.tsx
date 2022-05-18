@@ -396,7 +396,10 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                         </ButtonWrapper>
                       )}
                       {!teamStoreOwner && (
-                        <DefaultButton onClick={this.handlContactClick}>
+                        <DefaultButton 
+                          closed={!display || closed}
+                          onClick={this.handlContactClick}
+                        >
                           <FormattedMessage {...messages.contactManager} />
                         </DefaultButton>
                       )}
@@ -661,7 +664,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                   />
 
                 </MainContainer>
-                {closed && 
+                {(closed || !display) && false &&
                   <DarkBg>
                     <ClosedBanner onClick={this.handleContactStoreManager}>
                       <FormattedHTMLMessage

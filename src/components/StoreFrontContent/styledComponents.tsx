@@ -40,6 +40,7 @@ export const DarkBg = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10;
 `
 
 export const ClosedBanner = styled.div`
@@ -288,6 +289,12 @@ export const Button = styled(AntdButton)`
 
 export const DefaultButton = styled(AntdButton)`
   height: 40px;
+  ${({ closed }: ContainerProps) => closed ? `
+    background: ${RED};
+    color: white;
+    border-color: ${RED};
+    box-shadow: 1px 1px 3px 1px #b4b4b4;
+  ` : ''}
 `
 
 export const ImageBanner = styled.img`

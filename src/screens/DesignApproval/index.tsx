@@ -315,6 +315,7 @@ import {
   itemLabels,
   NEW_PRODUCT,
   OWNER_ROLE,
+  PD_STATUS_MODAL,
   PREDYED_DEFAULT,
   PREDYED_TRANSPARENT,
   PREFLIGHT_STATUS,
@@ -322,7 +323,8 @@ import {
   PROJECT_MESSAGE,
   PROJECT_REVIEW,
   TIME_FORMAT,
-  VIEW_2D_PREVIEW
+  VIEW_2D_PREVIEW,
+  VIEW_ALL_PRO_DESIGNS
 } from '../../constants'
 import moment from 'moment'
 import messages from './messages'
@@ -702,6 +704,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       navigator.vibrate([70, 50, 20])
     }
     this.setState({ openStatusInfo: true })
+    const { data } = this.props
+    const designCode = get(data, 'projectItem.code', '')
+    window.dataLayer.push({ event: PD_STATUS_MODAL, label: designCode })
   }
 
   closeStatusModal = () => {
@@ -873,6 +878,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       setTimeout(() => { this.scrollMessagesComment() }, 800)
     }
     this.setState({ selectedKeyMobile: key })
+    if (key === '4') {
+      const { data } = this.props
+      const designCode = get(data, 'projectItem.code', '')
+      window.dataLayer.push({ event: VIEW_ALL_PRO_DESIGNS, label: designCode })
+    }
   }
 
   handleInputComment = (evt: React.FormEvent<HTMLInputElement>) => {
@@ -1291,6 +1301,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
 
   toggleBottomSheet = () => {
     this.setState(({ openBottom }) => ({ openBottom: !openBottom }))
+    const { data } = this.props
+    const designCode = get(data, 'projectItem.code', '')
+    window.dataLayer.push({ event: VIEW_ALL_PRO_DESIGNS, label: designCode })
   }
 
   replyMessage = (id: string, message: string) => () => {

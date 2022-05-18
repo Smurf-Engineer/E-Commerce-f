@@ -507,7 +507,7 @@ export class Home extends React.Component<Props, {}> {
               />
             ) : null}
           </div>
-          {!!deliveryDaysResponse && (
+          {!!deliveryDaysResponse && !(shortUrl === 'pricing' || sportRoute === 'pricing') && (
             <DeliveryContainer>
               <DeliveryInfo>
                 <OrderInfo>
@@ -614,8 +614,12 @@ export class Home extends React.Component<Props, {}> {
               )}
             </SlideImageContainer>
           ))}
-          <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
-          <YotpoHome {...{ sportRoute }} />
+          {!(shortUrl === 'pricing' || sportRoute === 'pricing') && 
+            <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
+          }
+          {!(shortUrl === 'pricing' || sportRoute === 'pricing') && 
+            <YotpoHome {...{ sportRoute }} />
+          }
         </Container>
         <LoadingContainer {...{ loading }}>
           <Spinner size="large" />
