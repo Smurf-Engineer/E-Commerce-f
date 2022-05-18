@@ -71,7 +71,7 @@ export const saveToStorage = (cart: CartItems[], reset: boolean = false) => {
   }
 }
 
-const setItemDetails = async (cartItem: CartItems, query: any) => {
+export const setItemDetails = async (cartItem: CartItems, query: any) => {
   const {
     itemDetails,
     teamStoreItem,

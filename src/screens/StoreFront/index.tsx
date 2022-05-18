@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
@@ -28,6 +28,7 @@ import {
   CartTitleLabel,
   CloseIcon,
   Container,
+  DeleteIcon,
   DesignCode,
   DesignName,
   ProductName,
@@ -65,6 +66,8 @@ interface Props extends RouteComponentProps<any> {
   contactInfo: ContactInformation
   skip: number
   pageNumber: number
+  client: any
+  setInitialData: (query: any) => void
   teamStoreQuery: (variables: {}) => void
   openShareModalAction: (open: boolean, id?: string) => void
   openQuickView: (id: number, yotpoId: string | null) => void
@@ -179,6 +182,23 @@ export class StoreFront extends React.Component<Props, {}> {
     } else {
       this.setState({ openCartDiv: true })
     }
+  }
+
+  removeItem = (evt: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = evt
+    const { setInitialData, client: { query } } = this.props
+    let cartListFromLS = []
+    if (typeof window !== 'undefined') {
+      cartListFromLS = JSON.parse(localStorage.getItem('cart') || '{}')
+    }
+
+    const newArray = cartListFromLS && cartListFromLS.length > 0 ? 
+      cartListFromLS.filter(({ designId }: CartItems) => designId !== id) : []
+    localStorage.setItem('cart', JSON.stringify(newArray))
+    this.forceUpdate()
+    setInitialData(query)
   }
 
   render() {
@@ -352,6 +372,7 @@ export class StoreFront extends React.Component<Props, {}> {
                         <Quantity>
                           {quantitySum}
                         </Quantity>
+                        <DeleteIcon id={cartItem.designId} onClick={this.removeItem} type="cross" />
                       </CartInfo>
                     </CartItemDiv>
                   )}
@@ -381,6 +402,7 @@ const mapStateToProps = (state: any) => {
 }
 
 const StoreFrontEnhance = compose(
+  withApollo,
   injectIntl,
   connect(
     mapStateToProps,

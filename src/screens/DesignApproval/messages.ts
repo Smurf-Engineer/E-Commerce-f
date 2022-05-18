@@ -265,7 +265,7 @@ export default defineMessages({
   },
   download: {
     id: 'screens.DesignApproval.download',
-    defaultMessage: 'Download file'
+    defaultMessage: 'Open in new window'
   },
   sizeError: {
     id: 'screens.DesignApproval.sizeError',

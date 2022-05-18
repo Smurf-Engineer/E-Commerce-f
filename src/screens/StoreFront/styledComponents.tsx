@@ -253,6 +253,7 @@ export const AnimatedDiv = styled.div`
   position: fixed;
   bottom: 24px;
   left: 30px;
+  z-index: 3;
 `
 
 export const BounceDiv = styled.div`
@@ -388,6 +389,7 @@ export const CartInfo = styled.div`
   margin-top: 10px;
   margin-left: 10px;
   flex: 1;
+  padding-right: 54px;
 `
 
 export const DesignName = styled.div`
@@ -408,7 +410,7 @@ export const ProductName = styled.div`
 export const Quantity = styled.div`
   position: absolute;
   right: 13px;
-  top: calc(50% - 21px);
+  top: calc(50% - 5px);
   background: #202020;
   height: 22px;
   border-radius: 50px;
@@ -418,6 +420,26 @@ export const Quantity = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`
+
+export const DeleteIcon = styled(Icon)`
+  position: absolute;
+  right: 13px;
+  top: 1px;
+  height: 22px;
+  border-radius: 50px;
+  color: #202020;
+  font-size: 10px;
+  width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    border: 1px solid gray;
+  }
 `
 
 export const CartButtonOpen = styled.div`

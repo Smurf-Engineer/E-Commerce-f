@@ -36,6 +36,7 @@ const sportRoutes = [
   '/mountain_bike',
   '/road_bike',
   '/training',
+  '/pricing',
   '/run'
 ]
 server
