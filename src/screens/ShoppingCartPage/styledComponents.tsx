@@ -29,9 +29,11 @@ export const Container = styled.div`
 
 export const EmptyContainer = styled.div`
   display: flex;
-  height: 100vh;
+  height: 64vh;
   justify-content: center;
   background-color: #fff;
+  padding-bottom: 68px;
+  margin-top: -28px;
 `
 
 export const PageContent = styled.div`
@@ -41,8 +43,70 @@ export const PageContent = styled.div`
   }
 `
 
+export const EmptyImage = styled.img`
+  max-width: 268px;
+  margin-bottom: 8px;
+  filter: saturate(0.5);
+`
+
+export const ButtonLocker = styled.div`
+  display: flex;
+  flex-flow: column;
+  border-radius: 5px;
+  margin-right: 30px;
+  box-shadow: 1px 2px 6px 3px #e2e2e2;
+  padding: 0;
+  padding-top: 36px;
+  min-width: 172px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  transition: all .25s;
+  border: 1px solid #67a5d7;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
+
+export const LockerImage = styled.img`
+  padding-top: 3px;
+  max-width: 58px;
+  width: 100%;
+  filter: contrast(0.25);
+`
+
+export const ButtonStores = styled.div`
+  display: flex;
+  flex-flow: column;
+  border-radius: 5px;
+  box-shadow: 1px 2px 6px 3px #e2e2e2;
+  padding: 0px;
+  padding-top: 26px;
+  max-width: 193px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  transition: all .25s;
+  border: 1px solid #67a5d7;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
+
+export const StoresImage = styled.img`
+  padding-top: 11px;
+  max-width: 68px;
+  width: 100%;
+  filter: contrast(0.25);
+`
+
 export const EmptyItems = styled.div`
-  margin-top: 40px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
 `
 
 export const SideBar = styled.div`
@@ -76,13 +140,22 @@ export const StyledEmptyButton = styled(Button)`
 `
 
 export const EmptyDescription = styled.div`
-  color: ${GRAY_DARK};
-  font-size: 16px;
-  letter-spacing: 0.11px;
-  line-height: 23px;
+  display: inline-flex;
+  justify-content: space-between;
+  margin-top: 52px;
+`
+
+export const ButtonLabel = styled.div`
+  border-bottom-left-radius: 5px;
+  padding: 10px 10px;
+  white-space: nowrap;
+  margin-top: 24px;
+  width: 100%;
   text-align: center;
-  padding-top: 10px;
-  padding-bottom: 20px;
+  // background: #67a5d7;
+  background: linear-gradient(133deg, #93c9e9, #71b1e7);
+  border-bottom-right-radius: 5px;
+  color: ${WHITE};
 `
 
 export const OptionMenu = styled.div`

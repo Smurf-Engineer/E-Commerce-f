@@ -15,7 +15,7 @@ export default defineMessages({
   },
   emptyTitle: {
     id: 'screens.ShoppingCartPage.emptyTitle',
-    defaultMessage: 'You don’t have anything in your cart yet!'
+    defaultMessage: 'Your cart is empty!'
   },
   emptyMessage: {
     id: 'screens.ShoppingCartPage.emptyMessage',
@@ -28,6 +28,14 @@ export default defineMessages({
   checkout: {
     id: 'screens.ShoppingCartPage.checkout',
     defaultMessage: 'Checkout'
+  },
+  addFromLocker: {
+    id: 'screens.ShoppingCartPage.addFromLocker',
+    defaultMessage: 'Add from My Locker'
+  },
+  addFromStore: {
+    id: 'screens.ShoppingCartPage.addFromStore',
+    defaultMessage: 'Add from a Team Store'
   },
   subtotal: {
     id: 'screens.ShoppingCartPage.subtotal',

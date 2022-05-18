@@ -1698,7 +1698,7 @@
   "components.QuickViewSlider.customize": "CUSTOMIZE",
   "screens.ShoppingCartPage.tittle": "My cart",
   "screens.ShoppingCartPage.browse": "BROWSE",
-  "screens.ShoppingCartPage.emptyTitle": "You don’t have anything in your cart yet!",
+  "screens.ShoppingCartPage.emptyTitle": "Your cart is empty!",
   "screens.ShoppingCartPage.emptyMessage": "Browse through our selections and see what you like.",
   "screens.ShoppingCartPage.summaryTitle": "Order Summary",
   "screens.ShoppingCartPage.checkout": "Checkout",
