@@ -58,6 +58,7 @@ export const GetDesignByIdQuery = gql`
         mediaFiles: media_files {
           id
           url
+          savedDesignPage: saved_design_page
           urlMobile: url_mobile
         }
         genders {

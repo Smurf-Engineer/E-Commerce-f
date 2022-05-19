@@ -819,6 +819,7 @@ export type ProductFile = {
   urlMobile?: string
   isVideo?: boolean
   active?: boolean
+  savedDesignPage?: boolean
   toUpload?: Blob | boolean
   extension?: string
   name?: string

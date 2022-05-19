@@ -353,7 +353,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       details,
       materials,
       chart,
-      mediaFiles,
+      mediaFiles: mediaFilesOriginal,
       active,
       onlyProDesign,
       modelSize,
@@ -370,6 +370,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const genderId = selectedGender ? selectedGender.id : 0
     const rangeLabel = totalOrders > 5 && !teamOnDemand ? getRangeLabel(totalOrders) : '2-5'
     const genderIndex = findIndex(imagesArray, { genderId })
+    const mediaFiles = mediaFilesOriginal && mediaFilesOriginal.length > 0 ? 
+      mediaFilesOriginal.filter((item: any) => item.savedDesignPage) : []
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/, ' ') : ''
     let images = null
     let moreImages = []
@@ -868,7 +870,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 {teamStoreItem && !teamEnable && !!chart ?
                   sizeChartButton : null
                 }
-                {productInfo}
+                {false ? productInfo : null}
               </ProductData>
               <FitInfo
                 open={openFitInfo}
@@ -896,6 +898,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             resellerComission={comissionToApply}
             ref={this.customerReviewRef}
             hideFeatured={true}
+            showMedia={true}
           />
         </Container>
       </Layout>
