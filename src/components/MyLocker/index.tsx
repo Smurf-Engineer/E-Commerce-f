@@ -11,7 +11,9 @@ import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import Pagination from 'antd/lib/pagination/Pagination'
 import Spin from 'antd/lib/spin'
+import Badge from 'antd/lib/badge'
 import zenscroll from 'zenscroll'
+import * as thunkActions from './thunkActions'
 import * as myLockerActions from './actions'
 import messages from './messages'
 import {
@@ -50,7 +52,26 @@ import {
   SubOptions,
   HelpLink,
   HelpMessage,
-  HelpWrapper
+  HelpWrapper,
+  AnimatedDiv,
+  BounceDiv,
+  CartIcon,
+  ShoppingCartIcon,
+  CartDiv,
+  CartTitle,
+  CartTitleLabel,
+  CartIconMini,
+  CloseIcon,
+  CartList,
+  CartItemDiv,
+  CartThumbnail,
+  CartInfo,
+  CartButtonOpen,
+  DesignName,
+  DesignCode,
+  ProductName,
+  Quantity,
+  DeleteIcon
 } from './styledComponents'
 import {
   DesignResultType,
@@ -59,7 +80,8 @@ import {
   UserType,
   MessagePayload,
   DesignCopyResult,
-  User
+  User,
+  CartItems
 } from '../../types/common'
 import {
   FILTER_TYPE_OPTIONS,
@@ -70,6 +92,7 @@ import {
 } from '../../constants'
 import { designExistsOnCart } from '../../utils/utilsShoppingCart'
 import InfoModal from './MyLockerInfoModal'
+import findIndex from 'lodash/findIndex'
 
 interface Props {
   history: any
@@ -94,6 +117,10 @@ interface Props {
   filterDate: string
   startDate: Moment
   endDate: Moment
+  shoppingCart: any
+  itemsInCart: number
+  openCartDiv: boolean
+  setInitialData: (query: any) => void
   duplicateDesign: (variables: {}) => Promise<MessagePayload>
   setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
   addItemToStore: () => void
@@ -135,11 +162,53 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     startDateFilter: null,
     endDateFilter: null,
     showInfoModal: false,
+    openCartDiv: false,
+    bounceCart: false
   }
   raiseSearchWhenUserStopsTyping = debounce(
     () => this.props.setSearchTextAction(this.state.searchValue),
     600
   )
+
+  componentDidUpdate(prevProps: Props) {
+    const { shoppingCart: prevCart, itemsInCart: prevItems } = prevProps || {}
+    const { shoppingCart, itemsInCart } = this.props
+    let numberOfProducts = 0
+    if (shoppingCart.cart) {
+      const cart = shoppingCart.cart as CartItems[]
+      cart.map((cartItem) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+        numberOfProducts = numberOfProducts + quantitySum
+      })
+    }
+    const newNumber = shoppingCart.cart
+      ? numberOfProducts : itemsInCart
+
+    let numberOfProductsOld = 0
+
+    if (prevCart.cart) {
+      const cart = prevCart.cart as CartItems[]
+      cart.map((cartItem) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        numberOfProductsOld = numberOfProductsOld + quantitySum
+      })
+    }
+
+    const prevNumber = prevCart.cart
+      ? numberOfProductsOld : prevItems
+    
+    if (newNumber !== prevNumber) {
+      this.setState({ bounceCart: true })
+    }
+  }
 
   onSelectTypeFilter = (value: string) => {
     this.setState({ filterType: value })
@@ -384,6 +453,41 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     }
   }
 
+  goToCartPage = () => {
+    const { history } = this.props
+    history.push('/shopping-cart')
+  }
+
+  closeCart = () => {
+    this.setState({ openCartDiv: false })
+  }
+
+  openCart = () => {
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
+    if (isMobile) {
+      this.goToCartPage()
+    } else {
+      this.setState({ openCartDiv: true })
+    }
+  }
+
+  removeItem = (evt: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = evt
+    const { setInitialData, client: { query } } = this.props
+    let cartListFromLS = []
+    if (typeof window !== 'undefined') {
+      cartListFromLS = JSON.parse(localStorage.getItem('cart') || '{}')
+    }
+
+    const newArray = cartListFromLS && cartListFromLS.length > 0 ? 
+      cartListFromLS.filter(({ designId }: CartItems) => designId !== id) : []
+    localStorage.setItem('cart', JSON.stringify(newArray))
+    this.forceUpdate()
+    setInitialData(query)
+  }
+
   handleOnGoBack = () => {
     const { onGoBack } = this.props
     onGoBack('')
@@ -411,6 +515,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       loading,
       currentPage,
       user,
+      itemsInCart,
+      shoppingCart,
       setCurrentShare,
       openAddToStoreModal,
       teamStoreId,
@@ -435,8 +541,58 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       filterDate: stateFilterDate,
       startDateFilter,
       endDateFilter,
-      showInfoModal
+      showInfoModal,
+      bounceCart,
+      openCartDiv
     } = this.state
+
+    let numberOfProducts = 0
+
+    if (shoppingCart.cart) {
+      const cart = shoppingCart.cart as CartItems[]
+      cart.map((cartItem) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        numberOfProducts = numberOfProducts + quantitySum
+      })
+    }
+
+    const numberOfProductsInCart = shoppingCart.cart
+      ? numberOfProducts : itemsInCart
+    if (bounceCart) {
+      setTimeout(() => { this.setState({ bounceCart: false }) }, 2000)
+    }
+    let cartListFromLS = []
+    let cartList: CartItems[] = []
+    if (typeof window !== 'undefined') {
+      cartListFromLS = JSON.parse(localStorage.getItem('cart') || '{}')
+    }
+    for (let i = 0; i < cartListFromLS.length; i++) {
+      const item = cartListFromLS[i] || {}
+      if (i === 0) {
+        cartList.push(item)
+        continue
+      }
+      const indexOfSameProduct = findIndex(cartList, (cartItem) => {
+        return (
+          cartItem.product.id === item.product.id &&
+          item.designId === cartItem.designId
+        )
+      })
+      if (indexOfSameProduct !== -1) {
+        const itemToUpdate = cartList[indexOfSameProduct]
+        cartList[indexOfSameProduct].itemDetails = [
+          ...itemToUpdate.itemDetails,
+          ...item.itemDetails
+        ]
+      } else {
+        cartList.push(item)
+      }
+    }
 
     let alternativeContent = null
     const userName = get(data, 'designsResults.userName', '')
@@ -648,15 +804,71 @@ export class MyLocker extends React.PureComponent<Props, {}> {
           visible={showInfoModal}
           {...{ formatMessage }}
         />
+        <AnimatedDiv>
+          <BounceDiv secondary={bounceCart}>
+            <CartIcon onClick={this.openCart}>
+              <Badge count={numberOfProductsInCart} overflowCount={9}>
+                <ShoppingCartIcon type="shopping-cart" />
+              </Badge>
+            </CartIcon>
+          </BounceDiv>
+        </AnimatedDiv>
+        {openCartDiv && formatMessage &&
+          <CartDiv>
+            <CartTitle>
+              <CartTitleLabel>
+                <CartIconMini type="shopping" />
+                {formatMessage(messages.myCart)} ({numberOfProductsInCart})
+              </CartTitleLabel>
+              <CloseIcon type="close" onClick={this.closeCart}/>
+            </CartTitle>
+            <CartList>
+              {cartList.map((cartItem: CartItems, key: number) => {
+                const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+                  return itemDetail.quantity
+                })
+                const quantitySum = quantities.reduce((a, b) => a + b, 0)
+                return (
+                  <CartItemDiv {...{ key }}>
+                    <CartThumbnail src={cartItem.designImage} />
+                    <CartInfo>
+                      <DesignName>
+                        {cartItem.designName}
+                      </DesignName>
+                      <DesignCode>
+                        {cartItem.designCode}
+                      </DesignCode>
+                      <ProductName>
+                        {cartItem.product.name} {cartItem.product.shortDescription}
+                      </ProductName>
+                      <Quantity>
+                        {quantitySum}
+                      </Quantity>
+                      <DeleteIcon id={cartItem.designId} onClick={this.removeItem} type="cross" />
+                    </CartInfo>
+                  </CartItemDiv>
+                )}
+              )}
+            </CartList>
+            <CartButtonOpen onClick={this.goToCartPage}>{formatMessage(messages.openCart)}</CartButtonOpen>
+          </CartDiv>
+        }
       </Container>
     )
   }
 }
 
 const mapStateToProps = (state: any) => {
+  const layoutProps = state.get('layout').toJS()
+  const shoppingCart = state.get('shoppingCartPage').toJS()
   const myLocker = state.get('myLocker').toJS()
   const app = state.get('app').toJS()
-  return { ...myLocker, ...app }
+  return {
+    ...myLocker,
+    ...app,
+    shoppingCart: { ...shoppingCart },
+    itemsInCart: layoutProps.itemsInCart
+  }
 }
 
 type OwnProps = {
@@ -674,7 +886,7 @@ type OwnProps = {
 }
 const MyLockerEnhance = compose(
   withApollo,
-  connect(mapStateToProps, { ...myLockerActions }),
+  connect(mapStateToProps, { ...myLockerActions, ...thunkActions }),
   graphql(duplicateDesignMutation, { name: 'duplicateDesign' }),
   graphql<Data>(desginsQuery, {
     options: (ownprops: OwnProps) => {
