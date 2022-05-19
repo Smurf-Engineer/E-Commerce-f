@@ -54,6 +54,7 @@ interface Props {
   data: Data
   name: string
   dispatch: any
+  showMedia: boolean
   hideFeatured: boolean
   resellerComission: number
   resellerStatus: string
@@ -72,6 +73,7 @@ const YotpoSection = ({
   data,
   moreTag,
   name,
+  showMedia,
   hideFeatured = false,
   history,
   productDetail,
@@ -110,27 +112,6 @@ const YotpoSection = ({
     return (
       <Container>
         <YotpoReviews ref={innerRef} {...{ yotpoId, name, hideFeatured }}>
-          {mediaFiles && !!mediaFiles.length && !hideFeatured && (
-            <div>
-              <Separator>
-                <FormattedMessage {...messages.features} values={{ name }} />
-              </Separator>
-              {mediaFiles.map(image => (
-                <SlideImageContainer>
-                  {getFileExtension(image.url) === MP4_EXTENSION ? (
-                    <SlideVideo autoPlay={true}>
-                      <source src={image.url} type="video/mp4" />
-                    </SlideVideo>
-                  ) : (
-                      <ImageContainer>
-                        <SlideImage src={image.url} />
-                        <SlideImageMobile src={image.urlMobile} />
-                      </ImageContainer>
-                    )}
-                </SlideImageContainer>
-              ))}
-            </div>
-          )}
           {teamStoreShortId && teamStoreData && getTeamStore && getTeamStore.id &&
             <ListContainer>
               <StoreLabel>
@@ -165,6 +146,27 @@ const YotpoSection = ({
               />
             </ListContainer>
           }
+          {mediaFiles && !!mediaFiles.length && (!hideFeatured || showMedia) && (
+            <div>
+              <Separator>
+                <FormattedMessage {...messages.features} values={{ name }} />
+              </Separator>
+              {mediaFiles.map(image => (
+                <SlideImageContainer>
+                  {getFileExtension(image.url) === MP4_EXTENSION ? (
+                    <SlideVideo autoPlay={true}>
+                      <source src={image.url} type="video/mp4" />
+                    </SlideVideo>
+                  ) : (
+                      <ImageContainer>
+                        <SlideImage src={image.url} />
+                        <SlideImageMobile src={image.urlMobile} />
+                      </ImageContainer>
+                    )}
+                </SlideImageContainer>
+              ))}
+            </div>
+          )}
           {/* {!!products.length && (
             <RelatedProductsContainer>
               <RelatedProducts
@@ -186,7 +188,16 @@ const YotpoSection = ({
     return (
       <Container>
         <YotpoReviews ref={innerRef} {...{ yotpoId, name, hideFeatured }}>
-          {mediaFiles && !!mediaFiles.length && !hideFeatured && (
+          {!!designs.length && (
+            <RelatedProductsContainer>
+              <RelatedProductsUser
+                products={designs}
+                currentCurrency={currentCurrency || config.defaultCurrency}
+                {...{ history, formatMessage, dispatch }}
+              />
+            </RelatedProductsContainer>
+          )}
+          {mediaFiles && !!mediaFiles.length && (!hideFeatured || showMedia) && (
             <div>
               <Separator>
                 <FormattedMessage {...messages.features} values={{ name }} />
@@ -206,15 +217,6 @@ const YotpoSection = ({
                 </SlideImageContainer>
               ))}
             </div>
-          )}
-          {!!designs.length && (
-            <RelatedProductsContainer>
-              <RelatedProductsUser
-                products={designs}
-                currentCurrency={currentCurrency || config.defaultCurrency}
-                {...{ history, formatMessage, dispatch }}
-              />
-            </RelatedProductsContainer>
           )}
           {/* {!!products.length && (
             <RelatedProductsContainer>
@@ -236,7 +238,17 @@ const YotpoSection = ({
     return (
       <Container>
         <YotpoReviews ref={innerRef} {...{ formatMessage, productDetail, yotpoId, name, hideFeatured }}>
-          {mediaFiles && !!mediaFiles.length && !hideFeatured && (
+          {!!products.length && (
+            <RelatedProductsContainer {...{ productDetail }}>
+              <RelatedProducts
+                products={data.products}
+                title={`${formatMessage(messages.more)} ${moreTag}`}
+                currentCurrency={currentCurrency || config.defaultCurrency}
+                {...{ history, formatMessage, dispatch }}
+              />
+            </RelatedProductsContainer>
+          )}
+          {mediaFiles && !!mediaFiles.length && (!hideFeatured || showMedia) && (
             <div>
               <Separator>
                 <FormattedMessage {...messages.features} values={{ name }} />
@@ -256,16 +268,6 @@ const YotpoSection = ({
                 </SlideImageContainer>
               ))}
             </div>
-          )}
-          {!!products.length && (
-            <RelatedProductsContainer {...{ productDetail }}>
-              <RelatedProducts
-                products={data.products}
-                title={`${formatMessage(messages.more)} ${moreTag}`}
-                currentCurrency={currentCurrency || config.defaultCurrency}
-                {...{ history, formatMessage, dispatch }}
-              />
-            </RelatedProductsContainer>
           )}
           {!productDetail &&
             <Separator>

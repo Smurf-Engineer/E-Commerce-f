@@ -2,6 +2,7 @@
  * Styled Components - Created by cazarez on 07/02/18.
  */
 import styled from 'styled-components'
+import { GRAY_DISABLE, GRAY_STRONG } from '../../theme/colors'
 
 interface StyledProps {
   productDetail?: boolean
@@ -11,14 +12,17 @@ export const Container = styled.div``
 
 export const Separator = styled.div`
   text-align: center;
-  margin: 48px 10% 28px 10%;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #dcdcdc;
+  margin-top: 48px;
+  margin-bottom: 28px;
+  padding: 8px;
+  font-family: Avenir;
+  background: ${GRAY_DISABLE};
+  color: ${GRAY_STRONG};
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.93px;
   line-height: 18px;
