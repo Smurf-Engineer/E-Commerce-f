@@ -18,9 +18,11 @@ import {
   GRAY,
   BLACK
 } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 interface DivProps {
   admin?: boolean
+  secondary?: Boolean
 }
 
 export const Container = styled.div`
@@ -338,5 +340,218 @@ export const HelpLink = styled.span`
   }
   @media (min-width: 320px) and (max-width: 768px) {
     margin-top: 4px;
+  }
+`
+
+export const AnimatedDiv = styled.div`
+  position: fixed;
+  bottom: 24px;
+  left: 30px;
+  z-index: 3;
+`
+
+export const BounceDiv = styled.div`
+  ${({ secondary }: DivProps) => secondary ? `
+  animation: wobble-hor-bottom 0.8s 0s 2 both;
+  @keyframes wobble-hor-bottom {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-15px);
+    }
+    60% {
+      transform: translateY(-7px);
+      filter: grayscale(0.7);
+    }
+  }
+  ` : ''}
+`
+
+export const CartIcon = styled.div`
+  background: ${WHITE};
+  border-radius: 50%;
+  width: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 68px;
+  box-shadow: 0px 1px 9px -2px #6e6e6e;
+  transition: all .25s;
+  .ant-badge-count {
+    transform: translateX(30%);
+  }
+  animation: fade-in-leftDesuZ 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 1s both;
+  @keyframes fade-in-leftDesuZ {
+    0% {
+      transform: translateX(-30px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  &:hover {
+    cursor: pointer;
+    filter: opacity(0.7);
+  }
+`
+
+export const ShoppingCartIcon = styled(Icon)`
+  font-size: 32px;
+  color: ${BLACK};
+`
+
+export const CartDiv = styled.div`
+  position: fixed;
+  background: white;
+  height: 100vh;
+  max-width: 428px;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  box-shadow: 1px 0px 14px 4px #b8b8b8;
+  animation: slide-in-left 0.35s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  @keyframes slide-in-left {
+    0% {
+      transform: translateX(-450px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+`
+
+export const CartTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 22px 26px;
+  background: #202020;
+  color: ${WHITE};
+`
+
+export const CartTitleLabel = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+export const CloseIcon = styled(Icon)`
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+`
+
+export const CartIconMini = styled(Icon)`
+  font-size: 18px;
+  margin-right: 12px;
+  margin-top: -3px;
+  color: #fff7da;
+`
+
+export const CartList = styled.div`
+  display: flex;
+  flex-flow: column;
+  margin-top: 30px;
+  overflow-y: scroll;
+  height: calc(100% - 141px);
+`
+
+export const CartItemDiv = styled.div`
+  display: flex;
+  margin-bottom: 18px;
+  margin-left: 8px;
+  margin-right: 8px;
+`
+
+export const CartThumbnail = styled.img`
+  max-width: 128px;
+  width: 100%;
+  object-fit: cover;
+  height: 100px;
+`
+
+export const CartInfo = styled.div`
+  display: flex;
+  flex-flow: column;
+  position: relative;
+  margin-top: 10px;
+  margin-left: 10px;
+  flex: 1;
+  padding-right: 54px;
+`
+
+export const DesignName = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+  font-family: Avenir;
+`
+
+export const DesignCode = styled.div`
+  margin-top: 4px;
+`
+
+export const ProductName = styled.div`
+  font-size: 12px;
+  margin-top: 4px;
+`
+
+export const Quantity = styled.div`
+  position: absolute;
+  right: 13px;
+  top: calc(50% - 5px);
+  background: #202020;
+  height: 22px;
+  border-radius: 50px;
+  color: white;
+  font-size: 10px;
+  width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const DeleteIcon = styled(Icon)`
+  position: absolute;
+  right: 13px;
+  top: 1px;
+  height: 22px;
+  border-radius: 50px;
+  color: #202020;
+  font-size: 10px;
+  width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    border: 1px solid gray;
+  }
+`
+
+export const CartButtonOpen = styled.div`
+  margin: 0 auto;
+  text-align: center;
+  width: 90%;
+  background: #202020;
+  color: white;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 9px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
   }
 `

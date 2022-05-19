@@ -22,6 +22,14 @@ export default defineMessages({
     id: 'components.MyLocker.helpLink',
     defaultMessage: 'We’re here to help.'
   },
+  myCart: {
+    id: 'components.MyLocker.myCart',
+    defaultMessage: 'My Cart'
+  },
+  openCart: {
+    id: 'components.MyLocker.openCart',
+    defaultMessage: 'OPEN CART'
+  },
   titleError: {
     id: 'components.MyLocker.titleError',
     defaultMessage: 'Oops!'
