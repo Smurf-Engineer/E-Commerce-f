@@ -171,7 +171,7 @@ const CheckoutSummary = ({
     youthTotal
   )
   const discount =
-    discountValue > totalWithoutDiscount ? totalWithoutDiscount : discountValue
+    discountValue > subtotal ? subtotal : discountValue
 
   let totalSum = 0
   // calculate totalSum
