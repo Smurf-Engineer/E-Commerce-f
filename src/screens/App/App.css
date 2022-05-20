@@ -91,6 +91,34 @@ body {
   float: unset;
 }
 
+@media (max-width : 767px) {
+  .centeredButtonsModern {
+    max-width: calc(92vw);
+  }
+}
+
+
+
+.centeredButtonsModern .ant-modal-confirm-btns {
+  text-align: center;
+  float: unset;
+  margin-bottom: -58px;
+}
+
+.centeredButtonsModern .ant-modal-confirm-content {
+  margin-top: 0px;
+  margin-left: 0px;
+}
+
+.centeredButtonsModern .ant-modal-body {
+  padding: 0px;
+}
+
+.centeredButtonsModern .ant-modal-content {
+  border-radius: 5px;
+  box-shadow: 1px 3px 23px 6px #2d2d2d;
+}
+
 .centeredButtonsFlex .ant-modal-confirm-btns {
   text-align: center;
   float: unset;

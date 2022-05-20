@@ -22,7 +22,6 @@ import {
   ProductColor,
   QuestionSpan,
   CellContainer,
-  buttonStyle,
   InfoBody,
   InfoTitle,
   InfoImage,
@@ -31,7 +30,10 @@ import {
   UpgradeTitle,
   StyledInput,
   VariableTitle,
-  InfoDescription
+  InfoDescription,
+  InfoBodyModern,
+  maskBlurred,
+  buttonStyleModern
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
 import {
@@ -333,7 +335,7 @@ class CartListItemTable extends React.Component<Props, State> {
       className: 'centeredButtons',
       okText: formatMessage(messages.close),
       okButtonProps: {
-        style: buttonStyle
+        style: buttonStyleModern
       },
       content:
         <InfoBody>
@@ -354,17 +356,18 @@ class CartListItemTable extends React.Component<Props, State> {
       icon: ' ',
       width: 'auto',
       centered: true,
-      className: 'centeredButtons',
+      maskStyle: maskBlurred,
+      className: 'centeredButtonsModern',
       okText: formatMessage(messages.close),
       okButtonProps: {
-        style: buttonStyle
+        style: buttonStyleModern
       },
       content:
-        <InfoBody>
+        <InfoBodyModern>
           <InfoImage src={modalImage} />
           <InfoImageMobile src={mobileImage} />
           <InfoURL target="_blank" href={url}>{url}</InfoURL>
-        </InfoBody>
+        </InfoBodyModern>
     })
   }
 

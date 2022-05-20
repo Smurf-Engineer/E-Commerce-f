@@ -215,6 +215,13 @@ export const InfoBody = styled.div`
   margin-left: -38px;
 `
 
+export const InfoBodyModern = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+`
+
 export const VariableTitle = styled.div`
   font-size: 14px;
   margin-top: 12px;
@@ -246,8 +253,7 @@ export const InfoDescription = styled.div`
 
 export const InfoImage = styled.img`
   max-width: 75vw;
-  margin: 4px 0;
-  margin-top: 0px;
+  border-radius: 5px;
   display: block;
   width: 100%;
   @media (max-width: 768px) {
@@ -257,7 +263,7 @@ export const InfoImage = styled.img`
 
 export const InfoImageMobile = styled.img`
   max-width: 886px;
-  margin: 4px 0;
+  border-radius: 5px;
   width: 100%;
   display: none;
   margin-top: 0px;
@@ -275,6 +281,17 @@ export const buttonStyle = {
   color: GRAY_DARK,
   borderColor: GRAY_LIGHT,
   boxShadow: 'none'
+}
+
+export const buttonStyleModern = {
+  background: '#3c3c3c',
+  color: WHITE,
+  borderColor: WHITE,
+  boxShadow: 'none'
+}
+
+export const maskBlurred = {
+  backdropFilter: 'blur(3px)'
 }
 
 export const MobileEmtpytable = styled.div`
