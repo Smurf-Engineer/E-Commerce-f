@@ -190,7 +190,6 @@ class Payment extends React.PureComponent<Props, {}> {
       paymentClientSecret,
       createPaymentIntent,
       setPayRef,
-      isFixedStore,
       isFixedTeamstore,
       setAddressEdit,
       updateAddress
@@ -269,7 +268,7 @@ class Payment extends React.PureComponent<Props, {}> {
               <PaypalIcon src={paypalIcon} />
             </MethodButton>
           }
-          {invoiceEnabled && invoiceTerms && (!isFixedTeamstore || (isFixedTeamstore && isFixedStore)) &&
+          {invoiceEnabled && invoiceTerms &&
             <MethodButton
               selected={paymentMethod === INVOICE}
               onClick={this.handleInvoiceClick}
