@@ -108,6 +108,7 @@ import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import ReactDOM from 'react-dom'
 import filter from 'lodash/filter'
 import { GRAY } from '../../theme/colors'
+import TrackingInfo from '../TrackingInfo'
 
 const { warning } = Modal
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
@@ -127,6 +128,7 @@ interface Props {
   history: any
   onBehalf?: boolean
   adminUser?: string
+  user?: any
   formatMessage: (messageDescriptor: any, variables?: {}) => string
   onReturn: (id: string) => void
   deleteOrder: (variables: {}) => Promise<any>
@@ -264,6 +266,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       orderId,
       from,
       onBehalf,
+      user,
       formatMessage,
       currentCurrency
     } = this.props
@@ -644,6 +647,17 @@ export class OrderDetails extends React.Component<Props, {}> {
                   }
                 </DeliveryData>
               </DeliveryInfo>
+              {user && (
+                  user.id === 'H1R0yFr0V' ||
+                  user.id === 'rydjiGhdm' ||
+                  user.id === 'BJ7qVvSq7' ||
+                  user.id === 'HkAbiKp_X'
+                ) &&
+                <TrackingInfo
+                  {...{ formatMessage }}
+                  code="123456789012"
+                />
+              }
             </OrderDelivery>
             <OrderSummaryContainer {...{ savingPdf }}>
               {status === PREORDER && !savingPdf && !fixedPriceStore &&
