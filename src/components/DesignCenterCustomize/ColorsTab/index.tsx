@@ -321,8 +321,11 @@ class ColorsTab extends React.PureComponent<Props, State> {
     const excludedThemes = product ? EXCLUDED_AREAS[product.id] : {}
     const styleName = currentStyle && currentStyle.name ? currentStyle.name.toLowerCase() : ''
     const excludedAreas = styleName && excludedThemes ? excludedThemes[styleName] : {}
+    console.log('🔴excludedAreas:', excludedAreas)
     const indexes = excludedAreas ? Object.keys(excludedAreas) : []
-    const colorsToShuffle = colors.filter((e, index) => !excludedAreas[index])
+    console.log('🔴indexes:', indexes)
+    const colorsToShuffle = colors.filter((e, index) => !excludedAreas || !excludedAreas[index])
+    console.log('🔴colorsToShuffle:', colorsToShuffle)
     const shuffledColors = shuffle(colorsToShuffle)
     indexes.forEach((area: any) => {
       shuffledColors.splice(area, 0, colors[area])
