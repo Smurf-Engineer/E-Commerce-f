@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'components.TrackingInfo.title',
     defaultMessage: 'Tracking Details'
   },
+  showMore: {
+    id: 'components.TrackingInfo.showMore',
+    defaultMessage: 'Show more'
+  },
 })
