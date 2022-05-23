@@ -7,9 +7,14 @@ import { QueryProps } from '../../types/common'
 import { getTrackingInfoQuery } from './data'
 import {
   Container,
+  DateIcon,
   DateLabel,
+  Description,
   EventLabel,
+  LoadingStep,
+  LocationIcon,
   LocationLabel,
+  ShowMoreButton,
   StatusIcon,
   StepsStyled,
   StepStyled,
@@ -19,10 +24,10 @@ import {
   Title,
 } from './styledComponents'
 import get from 'lodash/get'
-import { TIME_FORMAT } from '../../constants'
 import moment from 'moment'
 import messages from './messages'
 import { statusColors, statusIcons, statusSteps } from './constants'
+import Spin from 'antd/lib/spin'
 
 interface Data extends QueryProps {
   trackingInfo: string
@@ -35,12 +40,19 @@ interface Props {
 }
 
 export class TrackingInfo extends React.Component<Props, {}> {
+  state = {
+    showMore: false,
+  }
+  showMoreAction = () => {
+    this.setState({ showMore: true })
+  }
   render() {
     const {
       data,
       code,
       formatMessage,
     } = this.props
+    const { showMore } = this.state
     const info = get(data, 'trackingInfo', '')
     let infoJson = {}
     try {
@@ -54,6 +66,7 @@ export class TrackingInfo extends React.Component<Props, {}> {
     const actualStatus = get(infoJson, 'output.completeTrackResults[0].trackResults[0].latestStatusDetail.derivedCode', '')
     return (
       <Container>
+        {code && data && data.loading && <LoadingStep><Spin size="small" /></LoadingStep>}
         <StepsStyled current={(code && actualStatus) ? statusSteps[actualStatus] || 2 : 0}>
           <StepStyled icon={<StatusIcon type="file-done" />} title="Order Placed"/>
           <StepStyled icon={<StatusIcon type="inbox" />} title="Shipped"/>
@@ -64,7 +77,7 @@ export class TrackingInfo extends React.Component<Props, {}> {
           <Title>
             {formatMessage(messages.title)}
           </Title>
-          <TimeLine>
+          <TimeLine secondary={!showMore && events.length > 4}>
           {events.map(({ date, eventDescription, derivedStatusCode, scanLocation }: any, key: number) => 
             <TimeLineItem
               {...{ key }}
@@ -75,18 +88,25 @@ export class TrackingInfo extends React.Component<Props, {}> {
                 />
               }
             >
-              <DateLabel>
-                {date ? moment(date).format(TIME_FORMAT) : ''}
-              </DateLabel>
               <EventLabel>
                 {eventDescription}
               </EventLabel>
-              <LocationLabel>
-                ({scanLocation && scanLocation.city ? `${scanLocation.city}, ${scanLocation.countryCode}` : ''})
-              </LocationLabel>
+              <Description>
+                <DateLabel>
+                  {date ? <DateIcon type="clock-circle" /> : null}
+                  {date ? moment(date).format('LT, MMM D') : null}
+                </DateLabel>
+                <LocationLabel>
+                  {scanLocation && scanLocation.city  ? <LocationIcon type="environment" /> : null}
+                  {scanLocation && scanLocation.city ? `(${scanLocation.city}, ${scanLocation.countryCode})` : null}
+                </LocationLabel>
+              </Description>
             </TimeLineItem>
           )}
         </TimeLine></> : null
+        }
+        {events && events.length > 4 && !showMore &&
+          <ShowMoreButton onClick={this.showMoreAction}>{formatMessage(messages.showMore)}</ShowMoreButton>
         }
       </Container>
     )
