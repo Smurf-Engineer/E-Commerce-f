@@ -281,6 +281,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const { formatMessage } = intl
     const { hideControls, invalidData } = this.state
     const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 480px)').matches
+    const isTabletOrMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
     const queryParams = queryString.parse(search)
     const { comission = 0, margin = 0, status: resellerStatus } = get(profileData, 'profileData.reseller', {})
     const ownedDesign = get(design, 'canEdit', false)
@@ -779,6 +780,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   <Render3D
                     customProduct={true}
                     textColor="white"
+                    lowResolution={isTabletOrMobile}
                     disableControls={isMobile ? hideControls : false}
                     hidePredyed={predyedName === PREDYED_TRANSPARENT}
                     {...{ designId, modelSize }}

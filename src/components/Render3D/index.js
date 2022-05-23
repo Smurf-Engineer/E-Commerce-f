@@ -78,21 +78,24 @@ class Render3D extends PureComponent {
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     if (this.container) {
-      const { modelSize, disableControls, maxHeight, zoomedIn } = this.props
+      const { modelSize, disableControls, maxHeight, zoomedIn, lowResolution } = this.props
       /* Renderer config */
       const { clientWidth = 0, clientHeight = 0 } = this.container
-      const precision = 'highp'
+      const precision = lowResolution ? 'mediump' : 'highp'
       const renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true,
+        alpha: !lowResolution,
+        antialias: !lowResolution,
         precision,
-        preserveDrawingBuffer: true
+        preserveDrawingBuffer: !lowResolution,
+        powerPreference: lowResolution ? 'high-performance' : 'default'
       })
-      renderer.setPixelRatio(window.devicePixelRatio)
+      renderer.setPixelRatio(lowResolution ? (window.devicePixelRatio * 0.75) : window.devicePixelRatio)
       renderer.setClearColor(0x000000, 0)
       renderer.setSize(clientWidth, clientHeight)
-      renderer.shadowMap.enabled = true
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap
+      if (!lowResolution) {
+        renderer.shadowMap.enabled = true
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap
+      }
       /* Camera */
       const camera = new THREE.PerspectiveCamera(
         25,
@@ -151,35 +154,40 @@ class Render3D extends PureComponent {
       scene.add(leftDirectionLight)
       scene.add(backDirectionLight)
 
-      directionalLight.castShadow = true;
-      directionalLight.shadowDarkness = 1;
-      directionalLight.shadow.darkness = 1;
-      directionalLight.shadowCameraVisible = true;
-      directionalLight.shadow.camera.visible = true;
-      directionalLight.shadow.camera.near = 60;
-      directionalLight.shadow.camera.far = 135;
-      directionalLight.shadow.camera.right = 25;
-      directionalLight.shadow.camera.left = - 25;
-      directionalLight.shadow.camera.top = 25;
-      directionalLight.shadow.camera.bottom = - 25;
-      directionalLight.shadow.mapSize.width = 28;
-      directionalLight.shadow.mapSize.height = 28;
+      if (lowResolution) {
+        scene.background = new THREE.Color('#FFFFFF')
+      }
+      if (!lowResolution) {
+        directionalLight.castShadow = true;
+        directionalLight.shadowDarkness = 1;
+        directionalLight.shadow.darkness = 1;
+        directionalLight.shadowCameraVisible = true;
+        directionalLight.shadow.camera.visible = true;
+        directionalLight.shadow.camera.near = 60;
+        directionalLight.shadow.camera.far = 135;
+        directionalLight.shadow.camera.right = 25;
+        directionalLight.shadow.camera.left = - 25;
+        directionalLight.shadow.camera.top = 25;
+        directionalLight.shadow.camera.bottom = - 25;
+        directionalLight.shadow.mapSize.width = 28;
+        directionalLight.shadow.mapSize.height = 28;
 
-      const geometry = new THREE.PlaneGeometry(10, 10);
-      const material = new THREE.ShadowMaterial({
-        side: THREE.BackSide,
-        opacity: 0.2,
-        color: new THREE.Color('rgb(0, 0, 0)')
-      });
+        const geometry = new THREE.PlaneGeometry(10, 10);
+        const material = new THREE.ShadowMaterial({
+          side: THREE.BackSide,
+          opacity: 0.2,
+          color: new THREE.Color('rgb(0, 0, 0)')
+        });
 
-      const ground = new THREE.Mesh(geometry, material);
-      ground.scale.multiplyScalar(5);
-      ground.rotateX(Math.PI / 2);
-      ground.position.y = -30;
-      ground.castShadow = false;
-      ground.receiveShadow = true;
+        const ground = new THREE.Mesh(geometry, material);
+        ground.scale.multiplyScalar(5);
+        ground.rotateX(Math.PI / 2);
+        ground.position.y = -30;
+        ground.castShadow = false;
+        ground.receiveShadow = true;
 
-      scene.add(ground);
+        scene.add(ground);
+      }
       scene.add(directionalLight)
 
       this.scene = scene
