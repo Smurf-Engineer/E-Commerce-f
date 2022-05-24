@@ -302,6 +302,7 @@ import { COLOR, APPROVAL, COLLAB, COMMENTS, memberColors, memberTypeOptions } fr
 import {
   ALERT_APPROVED,
   ALERT_REQUEST,
+  AM_REVIEW,
   APPROVER_ROLE,
   COMMENTER_ROLE,
   CUSTOMER_APPROVED,
@@ -2396,7 +2397,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </DesignLabel>
                 </NameLabel>
               }
-              {lastTask && lastTask.date && itemStatus === IN_DESIGN && (
+              {lastTask && lastTask.date && (itemStatus === IN_DESIGN || itemStatus === AM_REVIEW) && (
                 <StyledPopOver
                   placement="bottom"
                   overlayClassName="innerClassTooltip"

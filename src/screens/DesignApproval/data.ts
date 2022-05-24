@@ -163,7 +163,7 @@ export const getProdesignItemQuery = gql`
               thumbnail
             }
           }
-          lastTask {
+          lastTask: lastTaskCustomer {
             date
             type
           }
