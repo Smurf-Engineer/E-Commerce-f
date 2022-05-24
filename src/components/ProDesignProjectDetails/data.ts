@@ -138,7 +138,7 @@ export const getProDesignProject = gql`
             image
           }
         }
-        lastTask {
+        lastTask: lastTaskCustomer {
           date
           type
         }

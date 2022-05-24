@@ -41,7 +41,14 @@ import WarningQualityFlag from '../../../assets/warning_flag.png'
 import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { ImageType, Message } from '../../../types/common'
 import { BLUE_STATUS, GREEN_STATUS, ORANGE_STATUS, WHITE } from '../../../theme/colors'
-import { CUSTOMER_PREVIEW, CUSTOMER_APPROVED, PREFLIGHT_STATUS, IN_DESIGN, itemLabels } from '../../../constants'
+import {
+  CUSTOMER_PREVIEW,
+  CUSTOMER_APPROVED,
+  PREFLIGHT_STATUS,
+  IN_DESIGN,
+  itemLabels,
+  AM_REVIEW
+} from '../../../constants'
 import messages from './messages'
 import moment from 'moment'
 
@@ -342,7 +349,7 @@ const ProductSlide = ({
         </ProLabel>
         : null
       }
-      {lastTask && lastTask.date && proStatus === IN_DESIGN && (
+      {lastTask && lastTask.date && (proStatus === IN_DESIGN || proStatus === AM_REVIEW) && (
         <StyledPopOver
           placement="bottom"
           overlayClassName="innerClassTooltip"
