@@ -53,6 +53,7 @@ interface Props {
   paymentClientSecret: string
   isFixedTeamstore: boolean
   invoiceEnabled: boolean
+  onBehalf: boolean
   invoiceTerms: string
   setPayRef: (payRef: any) => void
   showBillingAddressFormAction: (show: boolean, modal?: boolean) => void
@@ -160,6 +161,7 @@ class Payment extends React.PureComponent<Props, {}> {
       formatMessage,
       billingAddress,
       hasError,
+      onBehalf,
       cardHolderName,
       sameBillingAndShipping,
       stripeError,
@@ -259,7 +261,7 @@ class Payment extends React.PureComponent<Props, {}> {
             <PaymentIcon type="credit-card" />
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
-          {!isFixedTeamstore &&
+          {!isFixedTeamstore && !onBehalf &&
             <MethodButton
               selected={paymentMethod === PAYPAL}
               onClick={this.handlePaypalClick}
