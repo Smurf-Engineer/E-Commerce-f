@@ -12,7 +12,7 @@ import { initSlaask } from '../../slaask'
 import config from '../../config'
 import { setItemDetails } from '../../screens/ShoppingCartPage/thunkActions'
 import findIndex from 'lodash/findIndex'
-import { setItemsAction } from '../../screens/ShoppingCartPage/actions'
+import { SET_ITEMS_ACTION } from '../../screens/ShoppingCartPage/constants'
 
 export const restoreUserSession = () => {
   return async (dispatch: any) => {
@@ -96,7 +96,7 @@ export const saveUserSession = (userObject: object, client: any, cart?: string) 
         } else {
           localStorage.removeItem('cart')
         }
-        dispatch(setItemsAction(cartList))
+        dispatch({ type: SET_ITEMS_ACTION, items: cartList })
       }
       const permissions = await getPermissions(client)
       const user = { ...userObject, permissions }
