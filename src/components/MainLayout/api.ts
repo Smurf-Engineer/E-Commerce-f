@@ -9,7 +9,7 @@ import shortId from 'shortid'
 import { message } from 'antd'
 import { CartItems, RolePermission, UserPermissions, UserType } from '../../types/common'
 import { initSlaask } from '../../slaask'
-import config from '../../config/index'
+// import config from '../../config/index'
 import { setItemDetails } from '../../screens/ShoppingCartPage/thunkActions'
 import findIndex from 'lodash/findIndex'
 import { setItemsAction } from '../../screens/ShoppingCartPage/actions'
@@ -157,7 +157,7 @@ export const saveCartCloud = async (cart: string) => {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
     if (user) {
       await fetch(
-        `${config.graphqlUriBase}save-cart`,
+        `lsave-cart`,
         {
           method: 'POST',
           headers: {
