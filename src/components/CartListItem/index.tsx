@@ -462,6 +462,7 @@ export class CartListItem extends React.Component<Props, {}> {
                   src={image}
                   onClick={this.gotToProductPage}
                   crossOrigin="anonymous"
+                  crossorigin="anonymous"
                 />
                 <ItemDetails>
                   {itemDetailsHeader}
@@ -480,6 +481,7 @@ export class CartListItem extends React.Component<Props, {}> {
                     src={image}
                     onClick={this.gotToProductPage}
                     crossOrigin="anonymous"
+                    crossorigin="anonymous"
                   />
                   <ItemDetails>{itemDetailsHeader}</ItemDetails>
                 </ItemDetails>
