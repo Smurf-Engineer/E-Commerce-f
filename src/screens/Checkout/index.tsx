@@ -613,6 +613,7 @@ class Checkout extends React.Component<Props, {}> {
                     showBillingAddressFormAction,
                     paymentClientSecret
                   }}
+                  onBehalf={user && user.onBehalf}
                   setPayRef={(payRef: any) => this.payReference = payRef}
                   setStripeCardDataAction={this.setStripeCardDataAction}
                   showContent={currentStep === PaymentTab}

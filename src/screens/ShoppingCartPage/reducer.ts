@@ -94,7 +94,10 @@ const shoppingCartPageReducer: Reducer<any> = (
       return state.updateIn(
         ['cart', action.index, 'itemDetails', action.detailIndex],
         (detailItem: any) => {
-          const updateItem = detailItem.set('quantity', action.quantity)
+          const updateItem = detailItem.set(
+            'quantity', 
+            parseInt(((action.quantity || '0').toString().replace(/[^0-9]+/g, '') || '0'), 10)
+          )
           return updateItem
         }
       )
