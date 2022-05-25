@@ -13,6 +13,7 @@ export const mailLogin = graphql(
           email
           socialMethod: social_method
         }
+        cart
         token
       }
     }

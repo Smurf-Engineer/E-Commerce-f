@@ -118,6 +118,7 @@ import some from 'lodash/some'
 import { updateAddressMutation } from '../../components/MyAddresses/data'
 import moment from 'moment'
 import OrderSMSAlertsModal from '../../components/OrderSMSAlertsModal'
+import { saveCartCloud } from '../../components/MainLayout/api'
 
 const { info } = Modal
 
@@ -1263,7 +1264,9 @@ class Checkout extends React.Component<Props, {}> {
             const cartList = JSON.parse(parsedLocal)
             if (cartList) {
               const filteredList = cartList.filter(({ designId }: any) => designId !== idDesign)
-              localStorage.setItem('cart', JSON.stringify(filteredList))
+              const cart = JSON.stringify(filteredList)
+              localStorage.setItem('cart', cart)
+              saveCartCloud(cart)
               setTimeout(() => history.replace('/shopping-cart'), 1000)
             }
           }

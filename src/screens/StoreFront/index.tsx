@@ -42,6 +42,7 @@ import { getSessionCode } from './thunkActions'
 import Helmet from 'react-helmet'
 import messages from './messages'
 import findIndex from 'lodash/findIndex'
+import { saveCartCloud } from '../../components/MainLayout/api'
 
 interface Params extends QueryProps {
   teamStoreId: String
@@ -196,7 +197,9 @@ export class StoreFront extends React.Component<Props, {}> {
 
     const newArray = cartListFromLS && cartListFromLS.length > 0 ? 
       cartListFromLS.filter(({ designId }: CartItems) => designId !== id) : []
-    localStorage.setItem('cart', JSON.stringify(newArray))
+    const cart = JSON.stringify(newArray)
+    localStorage.setItem('cart', cart)
+    saveCartCloud(cart)
     this.forceUpdate()
     setInitialData(query)
   }

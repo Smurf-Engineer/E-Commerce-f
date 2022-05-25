@@ -30,7 +30,7 @@ interface Props {
   loginWithGoogle: (variables: {}) => void
   requestClose?: () => void
   handleJoinNow?: () => void
-  handleLogin: (user: object) => void
+  handleLogin: (user: object, cart?: string) => void
   initialCountryCode: string
   signUpView: boolean
   isLoginIn?: boolean
@@ -139,7 +139,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
 
       if (data) {
         const user = this.createUserObject(data)
-        handleLogin(user)
+        const cart = get(data, 'cart', '')
+        handleLogin(user, cart)
         this.welcomeMessage(get(user, 'name'))
         if (data.newUser) {
           window.dataLayer.push({ event: NEW_USER, label: 'Facebook' })
@@ -192,7 +193,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
 
       if (data) {
         const user = this.createUserObject(data)
-        handleLogin(user)
+        const cart = get(data, 'cart', '')
+        handleLogin(user, cart)
         this.welcomeMessage(get(user, 'name'))
         if (data.newUser) {
           window.dataLayer.push({ event: NEW_USER, label: 'Google' })

@@ -122,7 +122,7 @@ interface Props extends RouteComponentProps<any> {
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   restoreUserSession: (client?: any) => void
   deleteUserSession: () => void
-  saveUserSession: (user: UserType, client: any) => void
+  saveUserSession: (user: UserType, client: any, cart?: string) => void
   openLogoutModalAction: (open: boolean) => void
   saveAndBuyAction: (buy: boolean) => void
   getFontsData: () => Promise<Font>
@@ -538,9 +538,9 @@ class MainLayout extends React.Component<Props, {}> {
     )
   }
 
-  handleOnLogin = (user: UserType) => {
+  handleOnLogin = (user: UserType, cart?: string) => {
     const { saveUserSession, client } = this.props
-    saveUserSession(user, client)
+    saveUserSession(user, client, cart)
   }
 
   closeResults = () => {

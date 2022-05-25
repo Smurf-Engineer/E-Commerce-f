@@ -29,6 +29,7 @@ export const facebooklLogin = graphql(
         }
         token
         newUser
+        cart
       }
     }
   `,
@@ -67,6 +68,7 @@ export const googleLogin = graphql(
         }
         token
         newUser
+        cart
       }
     }
   `,
