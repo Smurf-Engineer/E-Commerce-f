@@ -170,9 +170,13 @@ class MenuBar extends React.Component<Props, StateProps> {
   drawNotification = (notification: PushNotification) => {
     const { data } = notification
     const payload = get(data, 'firebase-messaging-msg-data.data', data)
-    const snd = new Audio(messageSent)
-    snd.play()
-    snd.remove()
+    const { user } = this.props
+    const userId = user ? user.id : ''
+    if (userId !== 'HkAbiKp_X' && userId !== 'rydjiGhdm') {
+      const snd = new Audio(messageSent)
+      snd.play()
+      snd.remove()
+    }
     const goToUrl = () => this.handleOnPressNotification(payload.id, payload.url)
     if (!this.notificationAlreadyExist(payload.id) && payload.toAdmin === 'false') {
       this.displayNotification(payload, goToUrl)
