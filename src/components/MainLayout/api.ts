@@ -9,10 +9,10 @@ import shortId from 'shortid'
 import { message } from 'antd'
 import { CartItems, RolePermission, UserPermissions, UserType } from '../../types/common'
 import { initSlaask } from '../../slaask'
-import config from '../../config'
+import config from '../../config/index'
 import { setItemDetails } from '../../screens/ShoppingCartPage/thunkActions'
 import findIndex from 'lodash/findIndex'
-import { SET_ITEMS_ACTION } from '../../screens/ShoppingCartPage/constants'
+import { setItemsAction } from '../../screens/ShoppingCartPage/actions'
 
 export const restoreUserSession = () => {
   return async (dispatch: any) => {
@@ -96,7 +96,7 @@ export const saveUserSession = (userObject: object, client: any, cart?: string) 
         } else {
           localStorage.removeItem('cart')
         }
-        dispatch({ type: SET_ITEMS_ACTION, items: cartList })
+        dispatch(setItemsAction(cartList))
       }
       const permissions = await getPermissions(client)
       const user = { ...userObject, permissions }
