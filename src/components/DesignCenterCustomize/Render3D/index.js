@@ -1628,7 +1628,7 @@ class Render3D extends PureComponent {
             }
             onOpenSaveDesign(true, saveDesign, automaticSave)
           },
-          selectedVariant !== -1 || showGuidelines ? 5000 : 200
+          selectedVariant !== -1 || showGuidelines ? 5000 : 500
         )
       )
     }
