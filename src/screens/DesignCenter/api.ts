@@ -7,6 +7,7 @@ import get from 'lodash/get'
 import { uploadFileSuccessAction, setUploadingAction } from './actions'
 import { DesignSaved, CartItemDetail } from '../../types/common'
 import { mesaureImageQuality } from '../../utils/utilsImage/utilsImage'
+import { saveCartCloud } from '../../components/MainLayout/api'
 
 export const uploadFileAction = (file: any) => {
   return async (dispatch: any) => {
@@ -73,11 +74,15 @@ export const saveToCartAction = (item: DesignSaved) => {
       const cartList = JSON.parse(localStorage.getItem('cart') as any)
       if (cartList) {
         cartList.push(itemToAdd)
-        localStorage.setItem('cart', JSON.stringify(cartList))
+        const cart = JSON.stringify(cartList)
+        localStorage.setItem('cart', cart)
+        saveCartCloud(cart)
       } else {
         const myItems = []
         myItems.push(itemToAdd)
-        localStorage.setItem('cart', JSON.stringify(myItems))
+        const cart = JSON.stringify(myItems)
+        localStorage.setItem('cart', cart)
+        saveCartCloud(cart)
       }
       message.success(`${productName} added to cart`)
     }

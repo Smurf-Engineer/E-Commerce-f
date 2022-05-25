@@ -25,6 +25,7 @@ import { Product, CartItemDetail, PriceRange, User } from '../../types/common'
 import find from 'lodash/find'
 import { getDesignVariables, getProductQuery } from '../../screens/ShoppingCartPage/data'
 import set from 'lodash/set'
+import { saveCartCloud } from '../MainLayout/api'
 
 const { confirm } = Modal
 
@@ -453,12 +454,16 @@ export class AddToCartButton extends PureComponent<Props, {}> {
           return
         } else {
           cartList.push(item)
-          localStorage.setItem('cart', JSON.stringify(cartList))
+          const cart = JSON.stringify(cartList)
+          localStorage.setItem('cart', cart)
+          saveCartCloud(cart)
         }
       } else {
         const myItems = []
         myItems.push(item)
-        localStorage.setItem('cart', JSON.stringify(myItems))
+        const cart = JSON.stringify(myItems)
+        localStorage.setItem('cart', cart)
+        saveCartCloud(cart)
       }
       countCartItems()
       Message.success(

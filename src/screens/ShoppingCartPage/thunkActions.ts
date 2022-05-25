@@ -5,6 +5,7 @@ import has from 'lodash/has'
 import first from 'lodash/first'
 import { getTeamDesignTotal } from './data'
 import get from 'lodash/get'
+import { saveCartCloud } from '../../components/MainLayout/api'
 
 interface CartItems {
   product: Product
@@ -61,7 +62,9 @@ export const setInitialData = (query: any) => {
 export const saveToStorage = (cart: CartItems[], reset: boolean = false) => {
   return async (dispatch: any) => {
     try {
-      localStorage.setItem('cart', JSON.stringify(cart))
+      const cartString = JSON.stringify(cart)
+      localStorage.setItem('cart', cartString)
+      saveCartCloud(cartString)
       if (reset) {
         dispatch(resetReducerData())
       }

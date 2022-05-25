@@ -44,7 +44,7 @@ interface Props {
   loginWithFacebook: (variables: {}) => void
   loginWithGoogle: (variables: {}) => void
   formatMessage: (messageDescriptor: any, values?: object) => string
-  login: (user: object) => void
+  login: (user: object, cart?: string) => void
   handleForgotPassword?: () => void
 }
 
@@ -286,6 +286,7 @@ export class Login extends React.Component<Props, StateProps> {
       const data = get(loginData, 'data.login', false)
       if (data) {
         const token = get(data, 'token', '')
+        const cart = get(data, 'cart', '')
         if (!token) {
           const social = get(data, 'user.socialMethod', 'email')
           this.setState({ loginFailed: true, loginFailedReason: social })
@@ -306,7 +307,7 @@ export class Login extends React.Component<Props, StateProps> {
           }),
           5
         )
-        login(userData)
+        login(userData, cart)
         requestClose()
       }
     } catch (error) {

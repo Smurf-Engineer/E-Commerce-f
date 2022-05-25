@@ -2,6 +2,7 @@
  * Thunk Actions
  */
 import { CartItems } from '../../types/common'
+import { saveCartCloud } from '../MainLayout/api'
 
 export const saveInLocalStorage = async (item: CartItems, history: any) => {
   if (typeof window !== 'undefined') {
@@ -9,11 +10,15 @@ export const saveInLocalStorage = async (item: CartItems, history: any) => {
 
     if (cartList) {
       cartList.push(item)
-      localStorage.setItem('cart', JSON.stringify(cartList))
+      const cart = JSON.stringify(cartList)
+      localStorage.setItem('cart', cart)
+      saveCartCloud(cart)
     } else {
       const myItems = []
       myItems.push(item)
-      localStorage.setItem('cart', JSON.stringify(myItems))
+      const cart = JSON.stringify(myItems)
+      localStorage.setItem('cart', cart)
+      saveCartCloud(cart)
     }
     history.push('/shopping-cart')
   }

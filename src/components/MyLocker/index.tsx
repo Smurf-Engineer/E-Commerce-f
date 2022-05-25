@@ -93,6 +93,7 @@ import {
 import { designExistsOnCart } from '../../utils/utilsShoppingCart'
 import InfoModal from './MyLockerInfoModal'
 import findIndex from 'lodash/findIndex'
+import { saveCartCloud } from '../MainLayout/api'
 
 interface Props {
   history: any
@@ -483,7 +484,9 @@ export class MyLocker extends React.PureComponent<Props, {}> {
 
     const newArray = cartListFromLS && cartListFromLS.length > 0 ? 
       cartListFromLS.filter(({ designId }: CartItems) => designId !== id) : []
-    localStorage.setItem('cart', JSON.stringify(newArray))
+    const cart = JSON.stringify(newArray)
+    localStorage.setItem('cart', cart)
+    saveCartCloud(cart)
     this.forceUpdate()
     setInitialData(query)
   }

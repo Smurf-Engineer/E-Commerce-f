@@ -95,7 +95,7 @@ interface Props {
   setAccountScreen: (screen: string, openCreations?: boolean) => void
   openLoginAction: (open: boolean) => void
   onChangeLocation: (payload: RegionConfig) => void
-  saveUserToLocal: (user: object) => void
+  saveUserToLocal: (user: object, cart?: string) => void
   logoutAction: () => void
   currentRegion?: string
   currentLanguage?: string
