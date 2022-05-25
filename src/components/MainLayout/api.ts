@@ -15,7 +15,7 @@ import findIndex from 'lodash/findIndex'
 import { setItemsAction } from '../../screens/ShoppingCartPage/actions'
 
 export const restoreUserSession = () => {
-  return async (dispatch: any) => {
+  return (dispatch: any) => {
     try {
       const jsonUser = localStorage.getItem('user')
       const currentRegion = localStorage.getItem('currentRegion')
