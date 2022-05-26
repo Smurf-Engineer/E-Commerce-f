@@ -83,17 +83,21 @@ export const StepsStyled = styled(Steps)`
   top: 110px;
   width: 70%;
   left: -30px;
-  @media (max-width: 530px) {
-    position: unset;
+  @media (max-width: 930px) {
     width: 100%;
-    transform: unset;
-    top: unset;
-    margin-bottom: 14px;
+    top: 123px;
   }
-  @media (max-width: 480px) {
-    margin-top: -16px;
-    margin-left: -35px;
-    margin-bottom: 0px;
+  @media (max-width: 530px) {
+    flex-wrap: wrap;
+    display: flex !important;
+    top: 110px;
+    width: 120%;
+    .ant-steps-item {
+      flex: unset;
+    }
+    .ant-steps-item-tail {
+      display: none !important;
+    }
   }
   animation: fadeForSteps 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   @keyframes fadeForSteps {
@@ -142,16 +146,16 @@ export const LoadingStep = styled.div`
   left: -30px;
   background: ${WHITE_TRANSPARENT};
   z-index: 9;
-  @media (max-width: 768px) {
-    position: unset;
+  @media (max-width: 930px) {
+    left: 0px;
+    height: 50px;
+    top: 120px;
     width: 100%;
-    transform: unset;
-    top: unset;
   }
 `
 
 export const ShowMoreButton = styled.div`
-  margin-top: 12px;
+  margin-top: ${({ secondary }: StyledProps) => secondary ? '-4px' : '12px'};
   border: 1px solid ${RED};
   width: fit-content;
   padding: 4px 11px;

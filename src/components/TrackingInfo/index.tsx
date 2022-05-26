@@ -44,7 +44,7 @@ export class TrackingInfo extends React.Component<Props, {}> {
     showMore: false,
   }
   showMoreAction = () => {
-    this.setState({ showMore: true })
+    this.setState(({ showMore }) => ({ showMore: !showMore }))
   }
   render() {
     const {
@@ -64,11 +64,18 @@ export class TrackingInfo extends React.Component<Props, {}> {
     const events = get(infoJson, 'output.completeTrackResults[0].trackResults[0].scanEvents', [])
     // tslint:disable-next-line: max-line-length
     const actualStatus = get(infoJson, 'output.completeTrackResults[0].trackResults[0].latestStatusDetail.derivedCode', '')
+    let currentStatus = code ? 1 : 0
+    if (code && actualStatus) {
+      const alreadyPicked = actualStatus !== 'IN' || events.some((item) => item.derivedStatusCode === 'PU')
+      const defaultCode = alreadyPicked ? 2 : 1
+      currentStatus = statusSteps[actualStatus] || defaultCode
+    }
     return (
       <Container>
         {code && data && data.loading && <LoadingStep><Spin size="small" /></LoadingStep>}
-        <StepsStyled current={(code && actualStatus) ? statusSteps[actualStatus] || 2 : 0}>
+        <StepsStyled current={currentStatus}>
           <StepStyled icon={<StatusIcon type="file-done" />} title="Order Placed"/>
+          <StepStyled icon={<StatusIcon type="shopping" />} title="Pre-Ship"/>
           <StepStyled icon={<StatusIcon type="inbox" />} title="Shipped"/>
           <StepStyled icon={<StatusIcon type="info-circle" />} title="In Transit"/>
           <StepStyled icon={<StatusIcon type="smile" />} title="Delivered"/>
@@ -105,8 +112,10 @@ export class TrackingInfo extends React.Component<Props, {}> {
           )}
         </TimeLine></> : null
         }
-        {events && events.length > 4 && !showMore &&
-          <ShowMoreButton onClick={this.showMoreAction}>{formatMessage(messages.showMore)}</ShowMoreButton>
+        {events && events.length > 4 &&
+          <ShowMoreButton secondary={showMore} onClick={this.showMoreAction}>
+            {formatMessage(messages[showMore ? 'showLess' : 'showMore'])}
+          </ShowMoreButton>
         }
       </Container>
     )

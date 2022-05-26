@@ -595,20 +595,22 @@ export class OrderDetails extends React.Component<Props, {}> {
                     </DeliveryLabel>
                   }
                   <DeliveryLabel>
-                    {formatMessage(messages.trackingNumber)}
-                  </DeliveryLabel>
-                  <DeliveryLabel>
                     {formatMessage(messages.deliveryDate)}
                   </DeliveryLabel>
                   <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
-                  <DeliveryLabel>
-                    {formatMessage(messages.lastUpdated)}
-                  </DeliveryLabel>
+                  {teamStoreId &&
+                    <DeliveryLabel>
+                      {formatMessage(messages.lastUpdated)}
+                    </DeliveryLabel>
+                  }
                   {placedAuthor && placedAuthor.firstName &&
                     <DeliveryLabel>
                       {formatMessage(messages.placedBy)}
                     </DeliveryLabel>
                   }
+                  <DeliveryLabel>
+                    {formatMessage(messages.trackingNumber)}
+                  </DeliveryLabel>
                 </DeliveryLabels>
                 <DeliveryData>
                   <Info {...{ savingPdf }}>
@@ -620,6 +622,24 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {paymentMethod === PaymentOptions.INVOICE && invoiceTerms && 
                     <Info {...{ savingPdf }}>{invoiceTerms}</Info>
                   }
+                  <Info {...{ savingPdf }}>{estimatedDate}</Info>
+                  <StatusLabel {...{ savingPdf, statusColor }}>
+                    {orderStatus === SHIPPED ?
+                      <StatusImage src={shippedIcon} /> :
+                      <IconStatus type={statusIcon} />
+                    }
+                    {orderStatus}
+                  </StatusLabel>
+                  {teamStoreId &&
+                    <Info {...{ savingPdf }}>
+                      {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
+                    </Info>
+                  }
+                  {placedAuthor && placedAuthor.firstName &&
+                    <Info {...{ savingPdf }}>
+                      {placedAuthor.firstName} {placedAuthor.lastName}  (Jakroo)
+                    </Info>
+                  }
                   <Info {...{ savingPdf }}>
                     {trackingNumber ? 
                       <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
@@ -629,22 +649,6 @@ export class OrderDetails extends React.Component<Props, {}> {
                       </FedexLabel> : '-'
                     }
                   </Info>
-                  <Info {...{ savingPdf }}>{estimatedDate}</Info>
-                  <StatusLabel {...{ savingPdf, statusColor }}>
-                    {orderStatus === SHIPPED ?
-                      <StatusImage src={shippedIcon} /> :
-                      <IconStatus type={statusIcon} />
-                    }
-                    {orderStatus}
-                  </StatusLabel>
-                  <Info {...{ savingPdf }}>
-                    {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
-                  </Info>
-                  {placedAuthor && placedAuthor.firstName &&
-                    <Info {...{ savingPdf }}>
-                      {placedAuthor.firstName} {placedAuthor.lastName}  (Jakroo)
-                    </Info>
-                  }
                 </DeliveryData>
               </DeliveryInfo>
               {user && (

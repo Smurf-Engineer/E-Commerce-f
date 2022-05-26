@@ -191,6 +191,9 @@ export const DeliveryInfo = styled.div`
     justify-content: space-between;
     margin-top: 30px;
   }
+  @media (max-width: 658px) {
+    margin-top: 104px;
+  }
 `
 export const DeliveryLabels = styled.div`
   color: ${GRAY_DARK};
@@ -205,6 +208,7 @@ export const DeliveryLabel = styled.div`
   margin-bottom: 12px;
   @media (max-width: 768px) {
     margin-bottom: 16px;
+    white-space: nowrap;
   }
 `
 export const DeliveryData = styled.div`
@@ -215,7 +219,9 @@ export const DeliveryData = styled.div`
   line-height: 23px;
   margin-left: 60px;
   width: 220px;
-
+  @media (max-width: 1039px) {
+    margin-left: 0px;
+  }
   @media (max-width: 963px) and (min-width: 320px) {
     margin-left: 9%;
     width: 160px;
@@ -283,6 +289,10 @@ export const OrderSummaryContainer = styled.div`
 
   @media (max-width: 1375px) and (min-width: 659px) {
     width: 258px;
+  }
+
+  @media (max-width: 930px) {
+    margin-top: 30px;
   }
 
   @media (max-width: 658px) and (min-width: 320px) {

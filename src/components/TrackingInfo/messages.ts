@@ -11,6 +11,10 @@ export default defineMessages({
   },
   showMore: {
     id: 'components.TrackingInfo.showMore',
-    defaultMessage: 'Show more'
+    defaultMessage: 'Show more  +'
+  },
+  showLess: {
+    id: 'components.TrackingInfo.showLess',
+    defaultMessage: 'Show less  -'
   },
 })
