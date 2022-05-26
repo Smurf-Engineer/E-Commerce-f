@@ -304,6 +304,7 @@ export class Account extends React.Component<Props, {}> {
       data,
       intl: { formatMessage },
       history,
+      user,
       openQuickViewAction: openQuickView,
       currentCurrency,
       setCurrentShare,
@@ -334,11 +335,11 @@ export class Account extends React.Component<Props, {}> {
       case ADDRESSES:
         return <MyAddresses listForMyAccount={true} {...{ formatMessage }} />
       case CREDIT_CARDS:
-        return <MyCards listForMyAccount={true} {...{ formatMessage }} />
+        return <MyCards listForMyAccount={true} {...{ formatMessage, user }} />
       case PROFILE_SETTINGS:
-        return <ProfileSettings {...{ isMobile, history, formatMessage }} onLogout={this.onLogout} />
+        return <ProfileSettings {...{ isMobile, history, formatMessage, user }} onLogout={this.onLogout} />
       case NOTIFICATIONS:
-        return <Notifications {...{ history, formatMessage, isMobile }} updateScreen={this.handleUpdateScreen} />
+        return <Notifications {...{ history, formatMessage, isMobile, user }} updateScreen={this.handleUpdateScreen} />
       case TEAMSTORES:
       case MY_STORES:
         return !pendingReseller && <MyTeamStores {...{ history, formatMessage, isReseller }} />

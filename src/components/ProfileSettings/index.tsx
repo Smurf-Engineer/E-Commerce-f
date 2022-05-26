@@ -64,6 +64,7 @@ import {
   UploadFile,
   Affiliate,
   Message,
+  User,
 } from '../../types/common'
 import ChangePasswordModal from '../ChangePasswordModal'
 import get from 'lodash/get'
@@ -124,6 +125,7 @@ interface Props {
   loading: boolean
   openModal: boolean
   file: string
+  user: User
   // api actions
   onLogout: () => void
   uploadFileAction: (file: UploadFile) => void
@@ -202,6 +204,7 @@ class ProfileSettings extends React.Component<Props, {}> {
       loading: loadingFile,
       email,
       phone,
+      user,
       loadingProfile,
       currentPassword,
       newPassword,
@@ -212,6 +215,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     } = this.props
 
     const userProfile = get(profileData, 'profileData.userProfile', {})
+    const onBehalf = user ? user.onBehalf : false
     const reseller = get(profileData, 'profileData.reseller', {})
     // const regionsOptions: Region[] = regions || []
 
@@ -243,6 +247,7 @@ class ProfileSettings extends React.Component<Props, {}> {
               formatMessage,
               firstName,
               lastName,
+              onBehalf,
               email,
               phone,
               userProfile,

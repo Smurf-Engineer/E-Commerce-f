@@ -23,6 +23,7 @@ interface Props {
   lastName: string
   email: string
   phone: string
+  onBehalf: boolean
   formatMessage: (messageDescriptor: any) => string
   handleInputChange: (evt: any) => void
   onSaveProfileSettings: () => void
@@ -34,6 +35,7 @@ const ProfileForm = ({
   firstName,
   lastName,
   email,
+  onBehalf,
   phone,
   formatMessage,
   handleInputChange,
@@ -136,7 +138,7 @@ const ProfileForm = ({
           </StyledButton>
         </Column>
         <Column inputhWidth={!isMobile ? '40%' : '60%'}>
-          <StyledButton type="primary" onClick={onToggleModalPassword}>
+          <StyledButton disabled={onBehalf} type="primary" onClick={onToggleModalPassword}>
             {formatMessage(messages.changePassword)}
           </StyledButton>
         </Column>

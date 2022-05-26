@@ -15,6 +15,7 @@ interface Props {
   headerTitles: Header[]
   targetGroup: string
   canDelete?: boolean
+  onBehalf?: boolean
   notifications?: boolean
   markAsRead: (notificationId: number) => void
   onPressDelete: (index: number) => void
@@ -29,6 +30,7 @@ class SimpleTable extends React.PureComponent<Props, {}> {
       headerTitles,
       markAsRead,
       data,
+      onBehalf,
       targetGroup,
       canDelete = true,
       notifications = false,
@@ -43,6 +45,7 @@ class SimpleTable extends React.PureComponent<Props, {}> {
           headerTitles,
           formatMessage,
           markAsRead,
+          onBehalf,
           onPressDelete,
           targetGroup,
           canDelete,

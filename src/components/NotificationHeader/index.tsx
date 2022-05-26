@@ -17,6 +17,7 @@ interface Props {
   notifications?: Notification[]
   isMobile?: boolean
   updating?: boolean
+  onBehalf?: boolean
   formatMessage: (messageDescriptor: Message) => string
   onPressNotification?: (id: number, url: string) => void
   onDeleteNotification?: (id: number) => void
@@ -36,6 +37,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
       isMobile,
       notifications = [],
       formatMessage,
+      onBehalf,
       onPressNotification,
       onDeleteNotification,
       onPressMarkAllAsRead,
@@ -49,7 +51,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
         {notifications.length ? <><NotificationList>
           {notifications.map(({ title, message, date, metaMessage, read, id, url }) => (
             <NotificationRow
-              {...{ title, message, date, read, metaMessage, id, url }}
+              {...{ title, message, date, read, metaMessage, id, url, onBehalf }}
               onPress={onPressNotification}
               onDelete={onDeleteNotification}
             />
@@ -67,7 +69,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
         trigger="click"
         placement="bottom"
         onVisibleChange={this.handleOnVisibleChange}
-        title={<ListHeader {...{ formatMessage, updating }} onMarkAll={onPressMarkAllAsRead} />}
+        title={<ListHeader {...{ formatMessage, onBehalf, updating }} onMarkAll={onPressMarkAllAsRead} />}
         content={content}
       >
         <Container>

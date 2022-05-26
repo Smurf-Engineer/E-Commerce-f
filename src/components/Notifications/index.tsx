@@ -33,6 +33,7 @@ interface Props {
   history: any
   isMobile?: boolean
   currentPage: number
+  user: User
   formatMessage: (messageDescriptor: Message) => string
   readNotification: (variables: {}) => Promise<NotificationsRead>
   deleteNotification: (variables: {}) => Promise<MessagePayload>
@@ -102,13 +103,16 @@ class Notifications extends React.Component<Props, {}> {
   }
 
   handleOnPressNotification = async (notificationId: number, url: string) => {
-    const { history, readNotification, updateScreen, fromAdmin } = this.props
-    await readNotification({
-      variables: {
-        shortId: notificationId,
-        isAdmin: fromAdmin
-      }
-    })
+    const { history, user, readNotification, updateScreen, fromAdmin } = this.props
+    const onBehalf = user ? user.onBehalf : false
+    if (!onBehalf) {
+      await readNotification({
+        variables: {
+          shortId: notificationId,
+          isAdmin: fromAdmin
+        }
+      })
+    }
     history.push(`/${url}`)
     if (updateScreen) {
       updateScreen()
@@ -149,10 +153,12 @@ class Notifications extends React.Component<Props, {}> {
     const { updating } = this.state
     const {
       formatMessage,
+      user,
       notificationsData: { notifications, loading },
       fromAdmin = false,
       currentPage,
     } = this.props
+    const onBehalf = user ? user.onBehalf : false
     const notificationsList = get(notifications, 'list', [])
     const fullCount = get(notifications, 'fullCount', 0)
 
@@ -168,19 +174,21 @@ class Notifications extends React.Component<Props, {}> {
             />
             <NotificationsHeader>
               <Latest>{formatMessage(messages.latest)}</Latest>
-              <BorderlessButton type="ghost" loading={updating} onClick={this.markAllAsRead}>
+              <BorderlessButton disabled={onBehalf} type="ghost" loading={updating} onClick={this.markAllAsRead}>
                 {formatMessage(messages.markAll)}
               </BorderlessButton>
             </NotificationsHeader>
             <SimpleTable
               {...{
-                formatMessage
+                formatMessage,
+                onBehalf
               }}
               markAsRead={this.markAsRead}
               data={notificationsList || []}
               headerTitles={fromAdmin ? [...notificationsHeader, ...optionalHeaders] : notificationsHeader}
               targetGroup={NOTIFICATIONS}
               notifications={true}
+              canDelete={!onBehalf}
               onPressDelete={this.handleDelete}
               onPressRow={this.handleOnPressNotification}
             />

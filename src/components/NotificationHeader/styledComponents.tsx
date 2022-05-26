@@ -43,5 +43,6 @@ export const overlayStyle = {
 }
 
 export const overlayMobileStyle = {
-  width: '100%'
+  width: '100%',
+  zIndex: 1000
 }
