@@ -48,6 +48,7 @@ interface Props {
   link: boolean
   onlyDetails: boolean
   openModal: boolean
+  onBehalf: boolean
   file: string
   // redux actions
   successRequestAction: () => void
@@ -96,6 +97,7 @@ class ResellerOptions extends React.Component<Props, {}> {
       onChangePage,
       openAffiliate,
       link,
+      onBehalf,
       onlyDetails,
       history,
       openModal,
@@ -129,6 +131,7 @@ class ResellerOptions extends React.Component<Props, {}> {
               comission,
               activatedAt,
               onlyDetails,
+              onBehalf,
               inline,
               margin,
               currentPage,
