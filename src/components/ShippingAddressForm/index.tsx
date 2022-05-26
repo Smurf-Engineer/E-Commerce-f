@@ -87,21 +87,21 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
   constructor(props: Props) {
     super(props)
     this.getAddressPredictionsDebounced = debounce(this.fetchAddressPredictions, 500)
-    const { stateProvince, stateProvinceCode } = props
+    const { stateProvince, stateProvinceCode, isCard } = props
     this.state = {
       selectedCountry: '',
       selectedCountryId: '',
-      selectedRegion: stateProvince,
+      selectedRegion: isCard ? '' : stateProvince,
       selectedCity: '',
-      selectedRegionCode: stateProvinceCode,
+      selectedRegionCode: isCard ? '' : stateProvinceCode,
       addressDataSource: []
     }
   }
 
   componentDidUpdate() {
-    const { data, country } = this.props
+    const { data, country, isCard } = this.props
     const { selectedCountry } = this.state
-    if (!selectedCountry && country) {
+    if (!selectedCountry && country && !isCard) {
       const countriesData = get(data, 'countries', [])
       const defaultCountry = countriesData.find((item) => item.code === country)
       if (defaultCountry) {
@@ -314,18 +314,36 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
                 <InfoIconLink type="question-circle" theme="filled" />
               </StyledPopOver>
             </InputTitleContainer>
-            <PhoneInput
-              country={'us'}
-              value={phone}
-              autoComplete="jv2"
-              countryCodeEditable={false}
-              onChange={value => {
-                this.handleInputChange({ currentTarget: { id: 'phone', value } })
-              }}
-              inputProps={{ autoComplete: 'jv2' }}
-              inputStyle={{ borderRadius: 0 }}
-              copyNumbersOnly={false}
-            />
+            {phone ?
+              <PhoneInput
+                key="1"
+                country={'us'}
+                value={phone}
+                autoComplete="jv2"
+                preferredCountries={['ca', 'us']}
+                countryCodeEditable={false}
+                onChange={value => {
+                  this.handleInputChange({ currentTarget: { id: 'phone', value } })
+                }}
+                inputProps={{ autoComplete: 'jv2' }}
+                inputStyle={{ borderRadius: 0 }}
+                copyNumbersOnly={false}
+              /> :
+              <PhoneInput
+                key="2"
+                country={'us'}
+                value=""
+                autoComplete="jv2"
+                preferredCountries={['ca', 'us']}
+                countryCodeEditable={false}
+                onChange={value => {
+                  this.handleInputChange({ currentTarget: { id: 'phone', value } })
+                }}
+                inputProps={{ autoComplete: 'jv2' }}
+                inputStyle={{ borderRadius: 0 }}
+                copyNumbersOnly={false}
+              />
+            }
             {!phone && hasError && (
               <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
             )}
