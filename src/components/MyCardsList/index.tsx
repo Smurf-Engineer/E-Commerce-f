@@ -13,6 +13,7 @@ interface Props {
   idDefaultCard: string
   paymentsRender: boolean
   listForMyAccount: boolean
+  onBehalf?: boolean
   selectedCard: CreditCardData
   formatMessage: (messageDescriptor: any) => string
   showCardFormAction?: (show: boolean) => void
@@ -31,6 +32,7 @@ class MyCardsList extends React.Component<Props, {}> {
       showConfirmDelete,
       selectCardAsDefault,
       idDefaultCard,
+      onBehalf,
       paymentsRender = false,
       listForMyAccount,
       setStripeCardDataAction,
@@ -64,6 +66,7 @@ class MyCardsList extends React.Component<Props, {}> {
               brand,
               expMonth,
               expYear,
+              onBehalf,
               defaultPayment,
               formatMessage,
               showConfirmDelete,

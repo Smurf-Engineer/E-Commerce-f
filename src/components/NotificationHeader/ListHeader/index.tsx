@@ -8,21 +8,24 @@ import { Container, Label, BorderlessButton, TimeIcon } from './styledComponents
 
 interface Props {
   updating: boolean
+  onBehalf?: boolean
   onMarkAll: () => void
   formatMessage: (messageDescriptor: Message) => string
 }
 
-const NotificationHeader = ({ onMarkAll, formatMessage, updating }: Props) => {
+const NotificationHeader = ({ onBehalf, onMarkAll, formatMessage, updating }: Props) => {
   return (
     <Container>
       <Label><TimeIcon type="clock-circle" />{formatMessage(messages.latest)}</Label>
-      <BorderlessButton
-        type="ghost"
-        loading={updating}
-        onClick={onMarkAll}
-      >
-        {formatMessage(messages.markAll)}
-      </BorderlessButton>
+      {!onBehalf &&
+        <BorderlessButton
+          type="ghost"
+          loading={updating}
+          onClick={onMarkAll}
+        >
+          {formatMessage(messages.markAll)}
+        </BorderlessButton>
+      }
     </Container>
   )
 }

@@ -270,28 +270,43 @@ class MenuBar extends React.Component<Props, StateProps> {
 
   handleOnPressNotification = async (notificationId: string, url: string) => {
     const { readNotification } = this.props
-    await readNotification({
-      variables: {
-        shortId: notificationId
-      }
-    })
-    window.location.href = `${config.baseUrl}${url}`
-  }
-  handleOnDeleteNotification = async (notificationId: number) => {
-    const { deleteNotification, notificationsData, intl: { formatMessage } } = this.props
-    try {
-      this.setState({ updating: true })
-      await deleteNotification({
+    let user: any = {}
+    if (typeof window !== 'undefined') {
+      user = JSON.parse(localStorage.getItem('user') || '{}' as string)
+    }
+    const onBehalf = user ? user.onBehalf : false
+    if (!onBehalf) {
+      await readNotification({
         variables: {
           shortId: notificationId
         }
       })
-      await notificationsData.refetch()
-    } catch (e) {
-      console.error(e)
-      AntdMessage.error(formatMessage(messages.errorUpdating))
-    } finally {
-      this.setState({ updating: false })
+    }
+    window.location.href = `${config.baseUrl}${url}`
+  }
+  handleOnDeleteNotification = async (notificationId: number) => {
+    const { deleteNotification, notificationsData, intl: { formatMessage } } = this.props
+    let user: any = {}
+    if (typeof window !== 'undefined') {
+      user = JSON.parse(localStorage.getItem('user') || '{}' as string)
+    }
+    const onBehalf = user ? user.onBehalf : false
+    if (!onBehalf) {
+      try {
+        this.setState({ updating: true })
+        
+        await deleteNotification({
+          variables: {
+            shortId: notificationId
+          }
+        })
+        await notificationsData.refetch()
+      } catch (e) {
+        console.error(e)
+        AntdMessage.error(formatMessage(messages.errorUpdating))
+      } finally {
+        this.setState({ updating: false })
+      }
     }
   }
   markAllNotificationsAsRead = async () => {
@@ -350,6 +365,7 @@ class MenuBar extends React.Component<Props, StateProps> {
     const { status } = get(profileData, 'profileData.reseller', {})
     const resellerPending = status === PENDING
     const approvedReseller = status === APPROVED
+    const onBehalf = user ? user.onBehalf : false
     const userName = !!user ? String(user.name).toUpperCase() : ''
     const affiliateEnabled = get(profileData, 'profileData.userProfile.affiliateEnabled', false)
     const resellerEnabled = get(profileData, 'profileData.userProfile.resellerEnabled', false)
@@ -445,6 +461,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                             notifications,
                             history,
                             isMobile,
+                            onBehalf,
                             formatMessage,
                             updating
                           }}
@@ -467,6 +484,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                       designHasChanges,
                       openWithoutSaveModalAction,
                       formatMessage,
+                      onBehalf,
                       buyNowHeader,
                       openMenu,
                       approvedReseller,

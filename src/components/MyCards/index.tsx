@@ -23,7 +23,7 @@ import {
   deleteCardMutation,
   setupIntentQuery
 } from './data'
-import { CreditCardData, QueryProps, StripeCardData } from '../../types/common'
+import { CreditCardData, QueryProps, StripeCardData, User } from '../../types/common'
 import {
   Container,
   ButtonWrapper,
@@ -60,6 +60,7 @@ interface Props {
   deleteLoading: boolean
   defaultPayment: boolean
   hasError: boolean
+  user: User
   paymentsRender: boolean
   showCardForm: boolean
   listForMyAccount: boolean
@@ -152,6 +153,7 @@ class MyCards extends React.Component<Props, {}> {
       modalLoading,
       deleteLoading,
       hasError,
+      user,
       inputChangeAction,
       setStripeErrorAction,
       setModalLoadingAction,
@@ -178,6 +180,7 @@ class MyCards extends React.Component<Props, {}> {
         </Container>
       )
     }
+    const onBehalf = user ? user.onBehalf : false
     const userCards = get(data, 'userCards', {})
     const cards = get(userCards, 'cards', [] as CreditCardData[]) || []
     const idDefaultCard = get(userCards, 'default', '')
@@ -186,7 +189,7 @@ class MyCards extends React.Component<Props, {}> {
       : ''
     return (
       <Container>
-        {(listForMyAccount || !!cards.length) && (
+        {(listForMyAccount || !!cards.length) && !onBehalf && (
           <ButtonWrapper {...{ listForMyAccount }}>
             <StyledEmptyButton type="danger" onClick={this.handleOnAddNewCard}>
               {formatMessage(messages.addCard)}
@@ -221,6 +224,7 @@ class MyCards extends React.Component<Props, {}> {
           <MyCardsList
             items={cards}
             {...{
+              onBehalf,
               formatMessage,
               idDefaultCard,
               paymentsRender,

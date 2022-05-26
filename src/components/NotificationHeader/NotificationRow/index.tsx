@@ -12,12 +12,13 @@ interface Props {
   date: string
   read: boolean
   id: string
+  onBehalf?: boolean
   metaMessage?: string
   url?: string
   onPress: (id: string) => void
 }
 
-const NotificationRow = ({ id, title, message, metaMessage, date, read, url, onPress, onDelete }: Props) => {
+const NotificationRow = ({ id, title, message, metaMessage, date, read, url, onPress, onDelete, onBehalf }: Props) => {
   const handleOnPress = () => {
     onPress(id, url)
   }
@@ -28,7 +29,7 @@ const NotificationRow = ({ id, title, message, metaMessage, date, read, url, onP
     <SwipeItem
       actionButtonOffset={90}
       onClick={handleOnPress}
-      actionButton={<DeleteButton onClick={handleDelete}>Delete</DeleteButton>}
+      actionButton={!onBehalf && <DeleteButton onClick={handleDelete}>Delete</DeleteButton>}
     >
       <Container className={!read ? 'new' : ''}>
         <Title>{title}</Title>

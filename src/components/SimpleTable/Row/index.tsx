@@ -16,6 +16,7 @@ interface Props {
   canDelete: boolean
   unread?: boolean
   clickable?: boolean
+  onBehalf?: boolean
   markAsRead?: (notificationId: number) => void
   onPressDelete: (index: number, section: string) => void
   formatMessage: (messageDescriptor: Message) => string
@@ -28,6 +29,7 @@ class Row extends React.PureComponent<Props, {}> {
       onPressDelete,
       formatMessage,
       item,
+      onBehalf = false,
       headerTitles,
       markAsRead,
       targetGroup,
@@ -95,11 +97,13 @@ class Row extends React.PureComponent<Props, {}> {
                 />
             }
           )}
-          <Cell width={15}>
-            <MarkLabel onClick={handleClickRead}>
-              {formatMessage(unread ? messages.markRead : messages.markUnRead)}
-            </MarkLabel>
-          </Cell>
+          {!onBehalf &&
+            <Cell width={15}>
+              <MarkLabel onClick={handleClickRead}>
+                {formatMessage(unread ? messages.markRead : messages.markUnRead)}
+              </MarkLabel>
+            </Cell>
+          }
           {canDelete && <Cell>
             <DeleteButton type="delete" onClick={handleOnClick}>
               {formatMessage(messages.delete)}

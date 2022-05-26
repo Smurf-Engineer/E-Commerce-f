@@ -27,6 +27,7 @@ interface Props {
   resellerEnabled?: boolean
   showProDesign?: boolean
   approvedReseller?: boolean
+  onBehalf?: boolean
   notifications?: Notification[]
   updatingNotifications?: boolean
   saveAndBuy: (buy: boolean) => void
@@ -50,6 +51,7 @@ export const MenuBarMobile = ({
   openMenu,
   designHasChanges,
   hide,
+  onBehalf,
   approvedReseller,
   openWithoutSaveModalAction,
   formatMessage,
@@ -96,6 +98,7 @@ export const MenuBarMobile = ({
             {...{
               notifications,
               history,
+              onBehalf,
               onPressNotification,
               onDeleteNotification,
               onPressMarkAllAsRead,
