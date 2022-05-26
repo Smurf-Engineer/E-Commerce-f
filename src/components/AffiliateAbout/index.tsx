@@ -61,6 +61,7 @@ import {
   UploadFile,
   Affiliate,
   Message,
+  User,
 } from '../../types/common'
 import get from 'lodash/get'
 import { US_CURRENCY, US_COUNTRY, CA_CURRENCY, CA_COUNTRY } from './constants'
@@ -118,6 +119,7 @@ interface Props {
   paypalCheck: boolean
   loading: boolean
   openModal: boolean
+  user: User
   file: string
   history: History
   initialCountryCode: string
@@ -168,6 +170,7 @@ class AffiliateAbout extends React.Component<Props, StateProps> {
       openAffiliate,
       uploadFileAction,
       file,
+      user,
       history,
       loading: loadingFile,
       paypalCheck,
@@ -243,7 +246,11 @@ class AffiliateAbout extends React.Component<Props, StateProps> {
         }
         {(status === APPROVED || status === PAUSED) &&
           <AffiliateDetailsSection>
-            <AffiliateOptions {...{ history, formatMessage }} onlyDetails={true} />
+            <AffiliateOptions
+              {...{ history, formatMessage }}
+              onlyDetails={true}
+              onBehalf={user ? user.onBehalf : false}
+            />
           </AffiliateDetailsSection>
         }
         <AboutBody>
