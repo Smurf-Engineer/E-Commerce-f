@@ -83,6 +83,9 @@ export const profileSettingsQuery = gql`
         invoiceEnabled: invoice_enabled
         invoiceTerms: invoice_terms
       }
+      reseller {
+        status
+      }
     }
     notificationData: getProfileNotificationSettings {
       notifyOrderPayment: notify_order_payment

@@ -18,7 +18,11 @@ import {
   InvoiceIcon,
   PaymentIcon,
   PaypalIcon,
-  CheckIcon
+  ReferenceIcon,
+  CheckIcon,
+  ReferenceDiv,
+  LabelReference,
+  ReferenceInput
 } from './styledComponents'
 import paypalIcon from '../../assets/paypal_logo.png'
 import CreditCardForm from '../CreditCardFormBilling'
@@ -41,6 +45,7 @@ interface Props {
   loadingBilling: boolean
   showContent: boolean
   showCardForm: boolean
+  referenceNumber: string
   selectedCard: CreditCardData
   paymentMethod: string
   skip: number
@@ -53,9 +58,11 @@ interface Props {
   paymentClientSecret: string
   isFixedTeamstore: boolean
   invoiceEnabled: boolean
+  isReseller: boolean
   onBehalf: boolean
   invoiceTerms: string
   setPayRef: (payRef: any) => void
+  updateReference: (evt: React.FormEvent<HTMLInputElement>) => void
   showBillingAddressFormAction: (show: boolean, modal?: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -165,6 +172,9 @@ class Payment extends React.PureComponent<Props, {}> {
       cardHolderName,
       sameBillingAndShipping,
       stripeError,
+      isReseller,
+      referenceNumber,
+      updateReference,
       setStripeErrorAction,
       loadingBilling,
       setLoadingBillingAction,
@@ -252,8 +262,9 @@ class Payment extends React.PureComponent<Props, {}> {
     return (
       <Container>
         <Title>{formatMessage(messages.paymentMethod)}</Title>
-        <ContainerMethods>
+        <ContainerMethods secondary={isReseller}>
           <MethodButton
+            secondary={isReseller}
             selected={paymentMethod === CREDITCARD}
             onClick={this.handleCreditCardClick}
           >
@@ -263,6 +274,7 @@ class Payment extends React.PureComponent<Props, {}> {
           </MethodButton>
           {!isFixedTeamstore && !onBehalf &&
             <MethodButton
+              secondary={isReseller}
               selected={paymentMethod === PAYPAL}
               onClick={this.handlePaypalClick}
             >
@@ -273,12 +285,23 @@ class Payment extends React.PureComponent<Props, {}> {
           {invoiceEnabled && invoiceTerms &&
             <MethodButton
               selected={paymentMethod === INVOICE}
+              secondary={isReseller}
               onClick={this.handleInvoiceClick}
             >
               {paymentMethod === INVOICE && <CheckIcon type="check-circle" theme="filled" />}
               <PaymentIcon type="audit" />
               {formatMessage(messages.invoice)}
             </MethodButton>
+          }
+          {isReseller &&
+            <ReferenceDiv>
+              <LabelReference><ReferenceIcon type="number" />{formatMessage(messages.reference)}</LabelReference>
+              <ReferenceInput
+                onChange={updateReference}
+                value={referenceNumber}
+                placeholder={formatMessage(messages.referencesPlaceholder)}
+              />
+            </ReferenceDiv>
           }
         </ContainerMethods>
         {paymentMethod === INVOICE &&

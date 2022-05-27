@@ -316,6 +316,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       resellerInline = 0,
       resellerMargin = 0,
       invoiceLink,
+      referenceNumber,
       shippingApartment,
       shippingPhone,
       shippingCountry,
@@ -609,6 +610,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                       {formatMessage(messages.placedBy)}
                     </DeliveryLabel>
                   }
+                  {referenceNumber &&
+                    <DeliveryLabel>
+                      {formatMessage(messages.referenceNumber)}
+                    </DeliveryLabel>
+                  }
                 </DeliveryLabels>
                 <DeliveryData>
                   <Info {...{ savingPdf }}>
@@ -643,6 +649,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {placedAuthor && placedAuthor.firstName &&
                     <Info {...{ savingPdf }}>
                       {placedAuthor.firstName} {placedAuthor.lastName}  (Jakroo)
+                    </Info>
+                  }
+                  {referenceNumber &&
+                    <Info {...{ savingPdf }}>
+                      {referenceNumber}
                     </Info>
                   }
                 </DeliveryData>

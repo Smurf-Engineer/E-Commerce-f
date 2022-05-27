@@ -7,6 +7,7 @@ export const getOrderQuery = gql`
       status
       userId: user_id
       orderDate: created_at
+      referenceNumber: reference_number
       estimatedDate: estimated_date
       paymentMethod: payment_method
       invoiceTerms: invoice_terms
