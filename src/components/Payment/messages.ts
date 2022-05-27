@@ -21,6 +21,14 @@ export default defineMessages({
     id: 'components.Payment.invoice',
     defaultMessage: 'Invoice'
   },
+  reference: {
+    id: 'components.Payment.reference',
+    defaultMessage: 'Reference number'
+  },
+  referencesPlaceholder: {
+    id: 'components.Payment.referencesPlaceholder',
+    defaultMessage: '1234567'
+  },
   paymentTerms: {
     id: 'components.Payment.paymentTerms',
     defaultMessage: 'Payment Terms:'

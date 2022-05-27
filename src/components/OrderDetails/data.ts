@@ -12,6 +12,7 @@ export const getOrderQuery = gql`
       charge_id
       netsuit_order_id
       userId: user_id
+      referenceNumber: reference_number
       resellerComission:reseller_comission
       resellerInline: reseller_inline
       resellerMargin: reseller_margin

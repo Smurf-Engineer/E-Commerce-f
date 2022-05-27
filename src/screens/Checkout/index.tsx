@@ -112,7 +112,7 @@ import { getShoppingCartData, getPriceRangeToApply } from '../../utils/utilsShop
 import Modal from 'antd/lib/modal'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
-import { DEFAULT_ROUTE, PHONE_MINIMUM } from '../../constants'
+import { APPROVED, DEFAULT_ROUTE, PHONE_MINIMUM } from '../../constants'
 import { message } from 'antd'
 import some from 'lodash/some'
 import { updateAddressMutation } from '../../components/MyAddresses/data'
@@ -278,7 +278,8 @@ class Checkout extends React.Component<Props, {}> {
   state = {
     stripe: null,
     checked: false,
-    smsAlertsModal: true
+    smsAlertsModal: true,
+    referenceNumber: ''
   }
   payReference: any
   componentDidMount() {
@@ -367,7 +368,7 @@ class Checkout extends React.Component<Props, {}> {
       updateNotification,
       updatePhone
     } = this.props
-    const { smsAlertsModal } = this.state
+    const { smsAlertsModal, referenceNumber } = this.state
     const userPhone = get(profileData, 'profileData.userProfile.phone', '')
     const notificationData = get(profileData, 'notificationData', {})
 
@@ -448,6 +449,7 @@ class Checkout extends React.Component<Props, {}> {
 
     const invoiceEnabled = get(profileData, 'profileData.userProfile.invoiceEnabled', false)
     const invoiceTerms = get(profileData, 'profileData.userProfile.invoiceTerms', false)
+    const resellerStatus = get(profileData, 'profileData.reseller.status', '')
 
     const shoppingCartData = getShoppingCartData(
       shoppingCart,
@@ -584,6 +586,7 @@ class Checkout extends React.Component<Props, {}> {
                     stripeError,
                     setStripeErrorAction,
                     inputChangeAction,
+                    referenceNumber,
                     selectDropdownAction,
                     sameBillingAndShipping,
                     sameBillingAndAddressCheckedAction,
@@ -614,6 +617,8 @@ class Checkout extends React.Component<Props, {}> {
                     paymentClientSecret
                   }}
                   onBehalf={user && user.onBehalf}
+                  isReseller={resellerStatus === APPROVED}
+                  updateReference={this.handleReferenceChange}
                   setPayRef={(payRef: any) => this.payReference = payRef}
                   setStripeCardDataAction={this.setStripeCardDataAction}
                   showContent={currentStep === PaymentTab}
@@ -976,6 +981,15 @@ class Checkout extends React.Component<Props, {}> {
   goToHome = () => {
     window.location.replace('/')
   }
+  handleReferenceChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    const referenceNumber = value ? value.replace(/[^0-9]+/g, '') : ''
+    if (!referenceNumber || (referenceNumber && referenceNumber.length < 16)) {
+      this.setState({ referenceNumber })
+    }
+  }
   confirmOrder = (isPaypal?: boolean, sca?: boolean) => {
     const {
       location,
@@ -1216,8 +1230,10 @@ class Checkout extends React.Component<Props, {}> {
         message.error('Invalid card/not available, please try another.')
         return
       }
+      const { referenceNumber } = this.state
       const usedBy = get(user, 'usedBy', '')
       orderObj.placedBy = usedBy || ''
+      orderObj.referenceNumber = referenceNumber || ''
       const response = await placeOrder({
         variables: { orderObj }
       })
