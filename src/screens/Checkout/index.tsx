@@ -985,9 +985,8 @@ class Checkout extends React.Component<Props, {}> {
     const {
       currentTarget: { value }
     } = evt
-    const referenceNumber = value ? value.replace(/[^0-9]+/g, '') : ''
-    if (!referenceNumber || (referenceNumber && referenceNumber.length < 16)) {
-      this.setState({ referenceNumber })
+    if (!value || (value && value.length < 16)) {
+      this.setState({ referenceNumber: value })
     }
   }
   confirmOrder = (isPaypal?: boolean, sca?: boolean) => {
