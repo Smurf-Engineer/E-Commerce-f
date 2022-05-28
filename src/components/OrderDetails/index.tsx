@@ -266,7 +266,6 @@ export class OrderDetails extends React.Component<Props, {}> {
       orderId,
       from,
       onBehalf,
-      user,
       formatMessage,
       currentCurrency
     } = this.props
@@ -651,17 +650,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                   </Info>
                 </DeliveryData>
               </DeliveryInfo>
-              {user && (
-                  user.id === 'H1R0yFr0V' ||
-                  user.id === 'rydjiGhdm' ||
-                  user.id === 'BJ7qVvSq7' ||
-                  user.id === 'HkAbiKp_X'
-                ) &&
-                <TrackingInfo
-                  {...{ formatMessage }}
-                  code="123456789012"
-                />
-              }
+              <TrackingInfo
+                {...{ formatMessage }}
+                inProduction={orderStatus === IN_PRODUCTION}
+                code={trackingNumber}
+              />
             </OrderDelivery>
             <OrderSummaryContainer {...{ savingPdf }}>
               {status === PREORDER && !savingPdf && !fixedPriceStore &&
@@ -721,7 +714,9 @@ export class OrderDetails extends React.Component<Props, {}> {
           </OrderInfo>
           <StyledText>
             <FormattedHTMLMessage
-              {...messages[teamStoreId ? 'messageTeamstore' : 'messageRetail']}
+              {...messages[teamStoreId ? 
+                'messageTeamstore' : (orderStatus === SHIPPED ? 'messageRetailShipped' : 'messageRetail')]
+              }
             />
           </StyledText>
           <Items>

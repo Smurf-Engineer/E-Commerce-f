@@ -23,7 +23,7 @@ export const LoadingContainer = styled.div`
 `
 
 export const Container = styled.div`
-  margin-top: 16px;
+  margin-top: 12px;
   margin-bottom: 18px;
 `
 
@@ -115,6 +115,24 @@ export const StepsStyled = styled(Steps)`
 export const StepStyled = styled(Step)``
 
 export const StatusIcon = styled(Icon)``
+
+export const StatusImage = styled.img`
+  max-width: 32px;
+  height: 23px;
+  margin-bottom: 6px;
+`
+
+export const StatusImagePackage = styled.img`
+  max-width: 32px;
+  height: 26px;
+  margin-bottom: 6px;
+`
+
+export const StatusImageDelivery = styled.img`
+  max-width: 35px;
+  height: 24px;
+  margin-bottom: 6px;
+`
 
 export const Description = styled.div`
   color: ${GRAY_SOFT};

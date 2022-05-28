@@ -40,7 +40,9 @@ import {
   StatusDescription,
   BottomSectionStatus,
   CloseButtonStatus,
-  StatusLabel
+  StatusLabel,
+  TopSection,
+  BottomSection
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -98,46 +100,55 @@ class OrderData extends React.Component<Props, {}> {
     savingPdf: false,
     showArrive: false,
     showReturn: false,
-    openStatusInfo: true
+    openStatusInfo: true,
+    savedStatus: false
   }
   private copyInput: any
   private html2pdf: any
-  componentDidMount() {
-    const {
-      orderId,
-      data: {
-        orderData: { cart, taxFee, shippingAmount }
-      }
-    } = this.props
+  componentDidUpdate() {
+    const { data } = this.props
+    const { savedStatus } = this.state
+    if (data && !data.loading && !savedStatus) {
+      this.setState({ savedStatus: true })
+      const {
+        orderId,
+        data: {
+          orderData: { cart, taxFee, shippingAmount, currency: { shortName } }
+        }
+      } = this.props
 
-    if (cart) {
-      let subtotal = 0
-      const items: any = []
-      cart.map((cartItem, index) => {
-        const {
-          product: { name },
-          product,
-          productTotal,
-          unitPrice,
-          itemDetails
-        } = cartItem
+      if (cart) {
+        let subtotal = 0
+        const items: any = []
+        cart.map((cartItem, index) => {
+          const {
+            product: { name },
+            product,
+            productTotal,
+            unitPrice,
+            itemDetails
+          } = cartItem
 
-        subtotal += productTotal || 0
-        items.push({
-          sku: get(product, 'mpn', ''),
-          name,
-          price: unitPrice,
-          quantity: get(head(itemDetails), 'quantity', 1)
+          subtotal += productTotal || 0
+          items.push({
+            sku: get(product, 'mpn', ''),
+            name,
+            price: unitPrice,
+            quantity: get(head(itemDetails), 'quantity', 1)
+          })
         })
-      })
-      window.dataLayer.push({
-        event: PURCHASE,
-        transactionId: orderId,
-        transactionTotal: subtotal,
-        transactionTax: taxFee,
-        transactionShipping: shippingAmount,
-        transactionProducts: items
-      })
+        window.dataLayer.push({
+          event: PURCHASE,
+          transactionId: orderId,
+          transactionTotal: subtotal,
+          transactionTax: taxFee,
+          transactionShipping: shippingAmount,
+          transactionProducts: items
+        })
+        console.log('🔴Triggered')
+        window.uetq = window.uetq || []
+        window.uetq.push('event', 'purchase', {'revenue_value': subtotal, 'currency': shortName })
+      }
     }
   }
   downloadInvoice = async () => {
@@ -395,53 +406,89 @@ class OrderData extends React.Component<Props, {}> {
           invoice={paymentMethod === PaymentOptions.INVOICE}
           ref={content => (this.copyInput = content)}
         >
-          <InfoContainer {...{ savingPdf }}>
-            <OrderNumberContainer {...{ savingPdf }}>
-              <TitleStyled>{formatMessage(messages.orderPoint)}</TitleStyled>
-              <StyledText>
-                {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
-              </StyledText>
-            </OrderNumberContainer>
-            <OrderNumberContainer {...{ savingPdf }}>
-              <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
-              <StyledText>{orderId}</StyledText>
-            </OrderNumberContainer>
-            <OrderNumberContainer {...{ savingPdf }}>
-              <TitleStyled>{formatMessage(messages.orderDate)}</TitleStyled>
-              <StyledText>{orderDate}</StyledText>
-            </OrderNumberContainer>
-            {paymentMethod === PaymentOptions.INVOICE && invoiceTerms &&
+          <TopSection>
+            <InfoContainer {...{ savingPdf }}>
               <OrderNumberContainer {...{ savingPdf }}>
-                <TitleStyled>{formatMessage(messages.paymentTerms)}</TitleStyled>
-                <StyledText>{invoiceTerms}</StyledText>
+                <TitleStyled>{formatMessage(messages.orderPoint)}</TitleStyled>
+                <StyledText>
+                  {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
+                </StyledText>
               </OrderNumberContainer>
-            }
-            <OrderNumberContainer {...{ savingPdf }}>
-              <TitleStyled>{formatMessage(messages.trackingNumber)}</TitleStyled>
-              {trackingNumber ?
-                <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
-                  {trackingNumber}
-                  <OpenIcon type="select" />
-                  <FedexIcon src={iconFedex} />
-                </FedexLabel> : '-'
+              <OrderNumberContainer {...{ savingPdf }}>
+                <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
+                <StyledText>{orderId}</StyledText>
+              </OrderNumberContainer>
+              <OrderNumberContainer {...{ savingPdf }}>
+                <TitleStyled>{formatMessage(messages.orderDate)}</TitleStyled>
+                <StyledText>{orderDate}</StyledText>
+              </OrderNumberContainer>
+              {paymentMethod === PaymentOptions.INVOICE && invoiceTerms &&
+                <OrderNumberContainer {...{ savingPdf }}>
+                  <TitleStyled>{formatMessage(messages.paymentTerms)}</TitleStyled>
+                  <StyledText>{invoiceTerms}</StyledText>
+                </OrderNumberContainer>
               }
-            </OrderNumberContainer>
-            <OrderNumberContainer {...{ savingPdf }}>
-              <TitleStyled>{formatMessage(messages.estimatedDate)}</TitleStyled>
-              <StyledText>{estimatedDate}</StyledText>
-            </OrderNumberContainer>
-            <OrderNumberContainer {...{ savingPdf }}>
-              <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
-              <StyledText redColor={status === PAYMENT_ISSUE}>
-                {netsuiteStatus || status}
-              </StyledText>
-            </OrderNumberContainer>
-            {placedAuthor && placedAuthor.firstName &&
               <OrderNumberContainer {...{ savingPdf }}>
-                <TitleStyled>{formatMessage(messages.placedBy)}</TitleStyled>
-                <StyledText>{placedAuthor.firstName} {placedAuthor.lastName}  (Jakroo)</StyledText>
+                <TitleStyled>{formatMessage(messages.trackingNumber)}</TitleStyled>
+                {trackingNumber ?
+                  <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
+                    {trackingNumber}
+                    <OpenIcon type="select" />
+                    <FedexIcon src={iconFedex} />
+                  </FedexLabel> : '-'
+                }
               </OrderNumberContainer>
-            }
+              <OrderNumberContainer {...{ savingPdf }}>
+                <TitleStyled>{formatMessage(messages.estimatedDate)}</TitleStyled>
+                <StyledText>{estimatedDate}</StyledText>
+              </OrderNumberContainer>
+              <OrderNumberContainer {...{ savingPdf }}>
+                <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
+                <StyledText redColor={status === PAYMENT_ISSUE}>
+                  {netsuiteStatus || status}
+                </StyledText>
+              </OrderNumberContainer>
+              {placedAuthor && placedAuthor.firstName &&
+                <OrderNumberContainer {...{ savingPdf }}>
+                  <TitleStyled>{formatMessage(messages.placedBy)}</TitleStyled>
+                  <StyledText>{placedAuthor.firstName} {placedAuthor.lastName}  (Jakroo)</StyledText>
+                </OrderNumberContainer>
+              }
+            </InfoContainer>
+            <SummaryContainer {...{ savingPdf }}>
+              {status === PREORDER && !savingPdf && !fixedPriceStore &&
+                <AboutCollab onClick={this.openStatusModal}>
+                  <CollabIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
+                  {formatMessage(messages.aboutDynamicPricing)}
+                </AboutCollab>
+              }
+              <OrderSummary
+                totalSum={total}
+                shippingTotal={shippingAmount}
+                onlyRead={true}
+                currencySymbol={currency.shortName}
+                totalWithoutDiscount={totalWithoutDiscount}
+                youSaved={totalWithoutDiscount - subtotal}
+                proDesignReview={proDesign && PRO_DESIGN_FEE}
+                couponName={coupon}
+                isFixedStore={fixedPriceStore}
+                couponCode={{ type: couponType, freeShipping }}
+                {...{
+                  formatMessage,
+                  taxGst,
+                  taxPst,
+                  upgrades,
+                  taxVat,
+                  variables,
+                  taxFee,
+                  showDiscount,
+                  discount,
+                  subtotal
+                }}
+              />
+            </SummaryContainer>
+          </TopSection>
+          <BottomSection>
             <StyledInfoText>
               <FormattedHTMLMessage
                 {...messages[
@@ -510,39 +557,7 @@ class OrderData extends React.Component<Props, {}> {
                 </ContainerCheckBox>
               </div>
               ) : null */}
-          </InfoContainer>
-          <SummaryContainer {...{ savingPdf }}>
-            {status === PREORDER && !savingPdf && !fixedPriceStore &&
-              <AboutCollab onClick={this.openStatusModal}>
-                <CollabIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
-                {formatMessage(messages.aboutDynamicPricing)}
-              </AboutCollab>
-            }
-            <OrderSummary
-              totalSum={total}
-              shippingTotal={shippingAmount}
-              onlyRead={true}
-              currencySymbol={currency.shortName}
-              totalWithoutDiscount={totalWithoutDiscount}
-              youSaved={totalWithoutDiscount - subtotal}
-              proDesignReview={proDesign && PRO_DESIGN_FEE}
-              couponName={coupon}
-              isFixedStore={fixedPriceStore}
-              couponCode={{ type: couponType, freeShipping }}
-              {...{
-                formatMessage,
-                taxGst,
-                taxPst,
-                upgrades,
-                taxVat,
-                variables,
-                taxFee,
-                showDiscount,
-                discount,
-                subtotal
-              }}
-            />
-          </SummaryContainer>
+          </BottomSection>
         </Content>
         {!!teamStoreId &&
           <FAQSection>
