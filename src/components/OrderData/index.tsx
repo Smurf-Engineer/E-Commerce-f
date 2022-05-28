@@ -235,6 +235,7 @@ class OrderData extends React.Component<Props, {}> {
           invoiceTerms,
           stateProvince,
           zipCode,
+          referenceNumber,
           country,
           apartment,
           billingFirstName,
@@ -452,6 +453,12 @@ class OrderData extends React.Component<Props, {}> {
                 <OrderNumberContainer {...{ savingPdf }}>
                   <TitleStyled>{formatMessage(messages.placedBy)}</TitleStyled>
                   <StyledText>{placedAuthor.firstName} {placedAuthor.lastName}  (Jakroo)</StyledText>
+                </OrderNumberContainer>
+              }
+              {referenceNumber &&
+                <OrderNumberContainer>
+                  <TitleStyled>{formatMessage(messages.referenceNumber)}</TitleStyled>
+                  <StyledText>{referenceNumber}</StyledText>
                 </OrderNumberContainer>
               }
             </InfoContainer>

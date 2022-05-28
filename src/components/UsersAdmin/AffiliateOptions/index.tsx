@@ -51,6 +51,7 @@ interface Props {
   currency: string
   region: string
   onlyDetails: boolean
+  onBehalf: boolean
   openAffiliate: (open: boolean) => void
   changeComission: (value: number) => void
   onChangePage: (page: number) => void
@@ -99,6 +100,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
       isAdmin,
       onlyDetails,
       activatedAt,
+      onBehalf,
       formatMessage,
       status,
       region,
@@ -219,7 +221,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
               {!isAdmin && <PaypalLogo src={paypalLogo} />}
               <Title>
                 {formatMessage(messages.paypalAccount)}
-                {!isAdmin &&
+                {!isAdmin && !onBehalf &&
                   <RedLabel onClick={this.openEdit}>
                     {formatMessage(messages.edit)}
                   </RedLabel>

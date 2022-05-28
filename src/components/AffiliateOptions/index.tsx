@@ -47,6 +47,7 @@ interface Props {
   link: boolean
   onlyDetails: boolean
   openModal: boolean
+  onBehalf: boolean
   file: string
   // redux actions
   successRequestAction: () => void
@@ -95,6 +96,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
       onChangePage,
       openAffiliate,
       link,
+      onBehalf,
       onlyDetails,
       history,
       openModal,
@@ -118,6 +120,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
               onlyDetails,
               currentPage,
               onChangePage,
+              onBehalf,
               paypalAccount,
               file,
               currency,

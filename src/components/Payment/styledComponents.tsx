@@ -3,8 +3,13 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Input from 'antd/lib/input/Input'
 import { GRAY_DARK, WHITE, BLUE, GRAY_STRONG, GRAY_SNOW } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
+
+interface DivProps {
+  secondary?: boolean
+}
 
 export const Container = styled.div`
   width: 100%;
@@ -21,6 +26,11 @@ export const Title = styled.div`
 export const ContainerMethods = styled.div`
   display: flex;
   /* justify-content: space-between; TODO: uncomment when left payment methods*/
+  ${({ secondary }: DivProps) => secondary ? `
+    @media (max-width: 768px) {
+      flex-wrap: wrap;
+    }
+  ` : ''}
 `
 
 interface ButtonProps {
@@ -85,6 +95,12 @@ export const MethodButton = styled(Button)`
   }
 
   border: ${({ selected }: ButtonProps) => (selected ? `1.5px solid ${BLUE}` : `0.5px solid ${GRAY_STRONG}`)};
+
+  ${({ secondary }: DivProps) => secondary ? `
+    @media (max-width: 768px) {
+      margin-bottom: 20px;
+    }
+  ` : ''}
 `
 
 export const InvoiceDiv = styled.div`
@@ -112,4 +128,28 @@ export const InvoiceInformation = styled.div`
 export const InvoiceIcon = styled(Icon)`
   margin-right: 8px;
   color: ${BLUE};
+`
+
+export const ReferenceDiv = styled.div`
+  margin-left: 20px;
+`
+
+export const LabelReference = styled.div`
+  font-size: 12px;
+  color: ${GRAY_STRONG};
+  font-family: Avenir;
+  margin-bottom: 7px;
+`
+
+export const ReferenceInput = styled(Input)`
+  width: 100%;
+  max-width: 128px;
+  height: 33px;
+  margin-right: 28px;
+  border-radius: 3px;
+`
+
+export const ReferenceIcon = styled(Icon)`
+  margin-right: 4px;
+  color: #7c9fc8;
 `

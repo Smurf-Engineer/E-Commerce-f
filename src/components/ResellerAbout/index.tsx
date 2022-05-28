@@ -62,6 +62,7 @@ import {
   UploadFile,
   Message,
   Reseller,
+  User,
 } from '../../types/common'
 import get from 'lodash/get'
 import { US_CURRENCY, US_COUNTRY, CA_CURRENCY, CA_COUNTRY } from './constants'
@@ -122,6 +123,7 @@ interface Props {
   loading: boolean
   openModal: boolean
   file: string
+  user: User
   history: History
   initialCountryCode: string
   formatMessage: (messageDescriptor: Message, values?: {}) => string
@@ -173,6 +175,7 @@ class ResellerAbout extends React.Component<Props, StateProps> {
       openAffiliate,
       uploadFileAction,
       file,
+      user,
       history,
       loading: loadingFile,
       paypalCheck,
@@ -251,7 +254,11 @@ class ResellerAbout extends React.Component<Props, StateProps> {
         }
         {status === APPROVED &&
           <AffiliateDetailsSection>
-            <ResellerOptions {...{ history, formatMessage }} onlyDetails={true} />
+            <ResellerOptions
+              {...{ history, formatMessage }}
+              onBehalf={user ? user.onBehalf : false}
+              onlyDetails={true}
+            />
           </AffiliateDetailsSection>
         }
         <AboutBody>

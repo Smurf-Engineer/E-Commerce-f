@@ -76,6 +76,7 @@ interface Props {
   file: string
   gst: string
   currentPage: number
+  onBehalf: boolean
   isAdmin: boolean
   currency: string
   region: string
@@ -174,6 +175,7 @@ class ResellerDetails extends React.Component<Props, {}> {
       currentPage,
       onChangePage,
       userId,
+      onBehalf,
       isAdmin,
       onlyDetails,
       margin,
@@ -369,7 +371,7 @@ class ResellerDetails extends React.Component<Props, {}> {
               {!isAdmin && <PaypalLogo src={paypalLogo} />}
               <Title>
                 {formatMessage(messages.paypalAccount)}
-                {!isAdmin &&
+                {!isAdmin && !onBehalf &&
                   <RedLabel onClick={this.openEdit}>
                     {formatMessage(messages.edit)}
                   </RedLabel>

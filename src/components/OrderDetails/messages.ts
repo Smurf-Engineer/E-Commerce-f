@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.OrderDetails.receipt',
     defaultMessage: 'Receipt'
   },
+  referenceNumber: {
+    id: 'components.OrderDetails.referenceNumber',
+    defaultMessage: 'Reference Number'
+  },
   gotIt: {
     id: 'components.OrderDetails.gotIt',
     defaultMessage: 'Got it!'
