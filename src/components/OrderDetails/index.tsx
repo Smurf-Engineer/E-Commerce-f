@@ -266,7 +266,6 @@ export class OrderDetails extends React.Component<Props, {}> {
       orderId,
       from,
       onBehalf,
-      user,
       formatMessage,
       currentCurrency
     } = this.props
@@ -596,15 +595,14 @@ export class OrderDetails extends React.Component<Props, {}> {
                     </DeliveryLabel>
                   }
                   <DeliveryLabel>
-                    {formatMessage(messages.trackingNumber)}
-                  </DeliveryLabel>
-                  <DeliveryLabel>
                     {formatMessage(messages.deliveryDate)}
                   </DeliveryLabel>
                   <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
-                  <DeliveryLabel>
-                    {formatMessage(messages.lastUpdated)}
-                  </DeliveryLabel>
+                  {teamStoreId &&
+                    <DeliveryLabel>
+                      {formatMessage(messages.lastUpdated)}
+                    </DeliveryLabel>
+                  }
                   {placedAuthor && placedAuthor.firstName &&
                     <DeliveryLabel>
                       {formatMessage(messages.placedBy)}
@@ -615,6 +613,9 @@ export class OrderDetails extends React.Component<Props, {}> {
                       {formatMessage(messages.referenceNumber)}
                     </DeliveryLabel>
                   }
+                  <DeliveryLabel>
+                    {formatMessage(messages.trackingNumber)}
+                  </DeliveryLabel>
                 </DeliveryLabels>
                 <DeliveryData>
                   <Info {...{ savingPdf }}>
@@ -626,15 +627,6 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {paymentMethod === PaymentOptions.INVOICE && invoiceTerms && 
                     <Info {...{ savingPdf }}>{invoiceTerms}</Info>
                   }
-                  <Info {...{ savingPdf }}>
-                    {trackingNumber ? 
-                      <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
-                        {trackingNumber}
-                        <OpenIcon type="select" />
-                        <FedexIcon src={iconFedex} />
-                      </FedexLabel> : '-'
-                    }
-                  </Info>
                   <Info {...{ savingPdf }}>{estimatedDate}</Info>
                   <StatusLabel {...{ savingPdf, statusColor }}>
                     {orderStatus === SHIPPED ?
@@ -643,9 +635,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                     }
                     {orderStatus}
                   </StatusLabel>
-                  <Info {...{ savingPdf }}>
-                    {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
-                  </Info>
+                  {teamStoreId &&
+                    <Info {...{ savingPdf }}>
+                      {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
+                    </Info>
+                  }
                   {placedAuthor && placedAuthor.firstName &&
                     <Info {...{ savingPdf }}>
                       {placedAuthor.firstName} {placedAuthor.lastName}  (Jakroo)
@@ -656,19 +650,22 @@ export class OrderDetails extends React.Component<Props, {}> {
                       {referenceNumber}
                     </Info>
                   }
+                  <Info {...{ savingPdf }}>
+                    {trackingNumber ? 
+                      <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
+                        {trackingNumber}
+                        <OpenIcon type="select" />
+                        <FedexIcon src={iconFedex} />
+                      </FedexLabel> : '-'
+                    }
+                  </Info>
                 </DeliveryData>
               </DeliveryInfo>
-              {user && (
-                  user.id === 'H1R0yFr0V' ||
-                  user.id === 'rydjiGhdm' ||
-                  user.id === 'BJ7qVvSq7' ||
-                  user.id === 'HkAbiKp_X'
-                ) &&
-                <TrackingInfo
-                  {...{ formatMessage }}
-                  code="123456789012"
-                />
-              }
+              <TrackingInfo
+                {...{ formatMessage }}
+                inProduction={orderStatus === IN_PRODUCTION}
+                code={trackingNumber}
+              />
             </OrderDelivery>
             <OrderSummaryContainer {...{ savingPdf }}>
               {status === PREORDER && !savingPdf && !fixedPriceStore &&
@@ -728,7 +725,9 @@ export class OrderDetails extends React.Component<Props, {}> {
           </OrderInfo>
           <StyledText>
             <FormattedHTMLMessage
-              {...messages[teamStoreId ? 'messageTeamstore' : 'messageRetail']}
+              {...messages[teamStoreId ? 
+                'messageTeamstore' : (orderStatus === SHIPPED ? 'messageRetailShipped' : 'messageRetail')]
+              }
             />
           </StyledText>
           <Items>

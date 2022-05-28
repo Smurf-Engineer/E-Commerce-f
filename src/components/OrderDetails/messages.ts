@@ -271,6 +271,12 @@ export default defineMessages({
       // tslint:disable-next-line:max-line-length
       '<p>We have received your order details and are working on it now. Please note that all custom items are made-to-order and cannot be changed once the order enters production, so please double check all details of your order (items, sizes, shipping address)  and <strong>let us know immediately</strong> if there are any problems or concerns. If you opted for the Design Check during checkout, your order will be put into production after your item(s) have been reviewed by one of our designers and any issues they have discovered have been resolved.</p><p>All orders will be shipped via FedEx International Priority. A <strong>signature is required</strong> by default for the security of your order. You will receive a shipping notice, including tracking information, about 3-4 days prior to your estimated delivery date.</p>'
   },
+  messageRetailShipped: {
+    id: 'components.OrderDetails.messageRetailShipped',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>All orders will be shipped via FedEx International Priority. A <strong>signature is required</strong> by default for the security of your order. You will receive a shipping notice, including tracking information, about 3-4 days prior to your estimated delivery date.</p>'
+  },
   messageTeamstore: {
     id: 'components.OrderDetails.messageTeamstore',
     defaultMessage:

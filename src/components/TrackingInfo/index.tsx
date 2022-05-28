@@ -16,15 +16,23 @@ import {
   LocationLabel,
   ShowMoreButton,
   StatusIcon,
+  StatusImage,
+  StatusImageDelivery,
+  StatusImagePackage,
   StepsStyled,
   StepStyled,
   StyledDot,
   TimeLine,
-  TimeLineItem,
-  Title,
+  TimeLineItem
 } from './styledComponents'
 import get from 'lodash/get'
 import moment from 'moment'
+import packageEnabled from '../../assets/package_enabled.svg'
+import packageDisabled from '../../assets/package_disabled.svg'
+import deliveryEnabled from '../../assets/delivery_enabled.svg'
+import deliveryDisabled from '../../assets/delivery_disabled.svg'
+import sewingEnabled from '../../assets/sewing_enabled.svg'
+import sewingDisabled from '../../assets/sewing_disabled.svg'
 import messages from './messages'
 import { statusColors, statusIcons, statusSteps } from './constants'
 import Spin from 'antd/lib/spin'
@@ -36,6 +44,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   code: string
+  inProduction: boolean
   formatMessage: (messageDescriptor: any, variables?: {}) => string
 }
 
@@ -44,12 +53,13 @@ export class TrackingInfo extends React.Component<Props, {}> {
     showMore: false,
   }
   showMoreAction = () => {
-    this.setState({ showMore: true })
+    this.setState(({ showMore }) => ({ showMore: !showMore }))
   }
   render() {
     const {
       data,
       code,
+      inProduction,
       formatMessage,
     } = this.props
     const { showMore } = this.state
@@ -64,19 +74,39 @@ export class TrackingInfo extends React.Component<Props, {}> {
     const events = get(infoJson, 'output.completeTrackResults[0].trackResults[0].scanEvents', [])
     // tslint:disable-next-line: max-line-length
     const actualStatus = get(infoJson, 'output.completeTrackResults[0].trackResults[0].latestStatusDetail.derivedCode', '')
+    let currentStatus = 0
+    if (code) {
+      currentStatus = 1
+      if (actualStatus) {
+        const alreadyPicked = actualStatus !== 'IN' || events.some((item) => item.derivedStatusCode === 'PU')
+        const defaultCode = alreadyPicked ? 2 : 1
+        currentStatus = statusSteps[actualStatus] || defaultCode
+      }
+    } else if (!code && inProduction) {
+      currentStatus = 1
+    }
     return (
       <Container>
         {code && data && data.loading && <LoadingStep><Spin size="small" /></LoadingStep>}
-        <StepsStyled current={(code && actualStatus) ? statusSteps[actualStatus] || 2 : 0}>
-          <StepStyled icon={<StatusIcon type="file-done" />} title="Order Placed"/>
-          <StepStyled icon={<StatusIcon type="inbox" />} title="Shipped"/>
-          <StepStyled icon={<StatusIcon type="info-circle" />} title="In Transit"/>
-          <StepStyled icon={<StatusIcon type="smile" />} title="Delivered"/>
+        <StepsStyled current={currentStatus}>
+          <StepStyled
+            icon={<StatusIcon type="file-done" />}
+            title="Order Placed"
+          />
+          <StepStyled
+            icon={<StatusImage src={currentStatus > 0 ? sewingEnabled : sewingDisabled} />}
+            title="In Production"
+          />
+          <StepStyled
+            icon={<StatusImagePackage src={currentStatus > 1 ? packageEnabled : packageDisabled} />}
+            title="Shipped"
+          />
+          <StepStyled
+            icon={<StatusImageDelivery src={currentStatus > 2 ? deliveryEnabled : deliveryDisabled} />}
+            title="Delivered"
+          />
         </StepsStyled>
-        {events && events.length > 0 ? <>
-          <Title>
-            {formatMessage(messages.title)}
-          </Title>
+        {events && events.length > 0 ?
           <TimeLine secondary={!showMore && events.length > 4}>
           {events.map(({ date, eventDescription, derivedStatusCode, scanLocation }: any, key: number) => 
             <TimeLineItem
@@ -103,10 +133,12 @@ export class TrackingInfo extends React.Component<Props, {}> {
               </Description>
             </TimeLineItem>
           )}
-        </TimeLine></> : null
+        </TimeLine> : null
         }
-        {events && events.length > 4 && !showMore &&
-          <ShowMoreButton onClick={this.showMoreAction}>{formatMessage(messages.showMore)}</ShowMoreButton>
+        {events && events.length > 4 &&
+          <ShowMoreButton secondary={showMore} onClick={this.showMoreAction}>
+            {formatMessage(messages[showMore ? 'showLess' : 'showMore'])}
+          </ShowMoreButton>
         }
       </Container>
     )

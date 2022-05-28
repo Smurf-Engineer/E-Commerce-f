@@ -18,6 +18,7 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
+  flex-flow: column;
   justify-content: space-between;
   @media (min-width: 320px) and (max-width: 768px) {
     flex-wrap: wrap;
@@ -42,7 +43,9 @@ export const Title = styled.div`
 
 export const InfoContainer = styled.div`
   width: 70%;
-
+  @media (max-width: 1090px) {
+    width: unset;
+  }
   @media (min-width: 320px) and (max-width: 768px) {
     width: ${({ savingPdf }: DivProps) => savingPdf ? '70%' : '100%'};
   }
@@ -90,7 +93,7 @@ export const FAQBody = styled.div`
 export const SummaryContainer = styled.div`
   width: 25%;
   padding-left: 20px;
-
+  margin-top: -6px;
   @media (max-width: 1375px) and (min-width: 769px) {
     width: 308px;
   }
@@ -166,7 +169,7 @@ export const TitleStyled = styled.div`
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 
   @media (min-width: 320px) and (max-width: 768px) {
     margin-bottom: 18px;
@@ -394,4 +397,18 @@ export const CloseButtonStatus = styled.div`
     background: ${BLACK};
     margin-top: 0px;
   }
+`
+
+export const TopSection = styled.div`
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  @media (max-width: 1090px) {
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+`
+
+export const BottomSection = styled.div`
+  width: 95%;
 `
