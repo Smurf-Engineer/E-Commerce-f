@@ -3,13 +3,15 @@
  */
 import styled from 'styled-components'
 import Checkbox from 'antd/lib/checkbox'
-import { GRAY_DARK, RED, WHITE } from '../../theme/colors'
+import { BLUE, GRAY_DARK, RED, WHITE } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 interface DivProps {
   small?: boolean
   shipping?: boolean
   simple?: boolean
+  isSelected?: boolean
+  highlightCards?: boolean
 }
 
 export const Container = styled.div`
@@ -52,33 +54,59 @@ export const StyledCheckbox = styled(Checkbox)`
   letter-spacing: 0.2px;
   line-height: 22px;
   margin: 5px 0;
-
+  position: absolute;
+  top: -8px;
+  right: -4px;
+  margin-top: 0;
+  .ant-checkbox-inner {
+    height: 20px;
+    width: 20px;
+    border-color: 1px solid #7bb6d9;
+  }
   .ant-checkbox-wrapper:hover,
   .ant-checkbox:hover .ant-checkbox-inner,
   .ant-checkbox-input:focus + .ant-checkbox-inner {
-    border-color: #4a90e2;
+    border-color: ${BLUE};
   }
   .ant-checkbox-checked .ant-checkbox-inner,
   .ant-checkbox-indeterminate .ant-checkbox-inner {
     background-color: #4a90e2;
+    border-color: ${BLUE};
+  }
+  .ant-checkbox-inner:after {
+    left: 6.571429px;
+    top: 3.142857px;
   }
 `
 
 export const StyledCheckboxMulti = styled(Checkbox)`
   color: #5f6062;
   letter-spacing: 0.2px;
-  margin-top: 16px;
   font-size: 14px;
   text-align: right;
-
+  position: absolute;
+  top: -8px;
+  right: -4px;
+  margin-top: 0;
+  .ant-checkbox-inner {
+    height: 20px;
+    width: 20px;
+    border-color: 1px solid #7bb6d9;
+  }
   .ant-checkbox-wrapper:hover,
   .ant-checkbox:hover .ant-checkbox-inner,
   .ant-checkbox-input:focus + .ant-checkbox-inner {
-    border-color: #4a90e2;
+    border-color: ${BLUE};
   }
   .ant-checkbox-checked .ant-checkbox-inner,
   .ant-checkbox-indeterminate .ant-checkbox-inner {
     background-color: #4a90e2;
+    border-color: ${BLUE};
+  }
+  
+  .ant-checkbox-inner:after {
+    left: 6.571429px;
+    top: 3.142857px;
   }
 `
 
@@ -130,8 +158,12 @@ export const EditButtonMulti = styled.div`
 `
 
 export const EditButtonWrapper = styled.div`
+  width: 100%;
+  justify-content: flex-end;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  margin-top: 8px;
+  flex: 1;
 `
 
 export const SecondaryButtons = styled.div`
@@ -150,9 +182,9 @@ export const MultiButtonsDiv = styled.div`
 
 export const SecondaryButtonsMulti = styled.div`
   display: flex;
-  flex-flow: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
 `
 
 export const ButtonIcon = styled(Icon)`
@@ -169,17 +201,6 @@ export const CardContainer = styled.div`
   margin-bottom: 48px;
   display: flex;
   flex-flow: column;
-  animation: fade-in-fwd 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-  @keyframes fade-in-fwd {
-    0% {
-      transform: translateZ(-80px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateZ(0);
-      opacity: 1;
-    }
-  }
   @media (max-width: 1024px) {
     margin-right: unset;
   }
@@ -189,6 +210,32 @@ export const CardContainer = styled.div`
       margin-right: 20px;
     }
   ` : ''}
+  ${({ isSelected }: DivProps) => isSelected ? `
+    border: 1.5px solid #00b1ff;
+  ` : ''}
+  ${({ highlightCards }: DivProps) => highlightCards ? `
+    animation: blink-1 1.5s 2 ease-in-out;
+    @keyframes blink-1 {
+      0% {
+        box-shadow: 0 0 0 0 #ff6a6a;
+      }
+      100% {
+        box-shadow: 0 0 0 16px #ffebebb8;
+      }
+    }
+  ` : `
+    animation: fade-in-fwd 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    @keyframes fade-in-fwd {
+      0% {
+        transform: translateZ(-80px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateZ(0);
+        opacity: 1;
+      }
+    }
+  `}
 `
 
 export const CardText = styled.div`
@@ -199,15 +246,14 @@ export const CardText = styled.div`
   margin: 2px 0;
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
 `
 
 export const MapsDiv = styled.div``
 
 export const DataDiv = styled.div`
   margin-top: -16px;
+  margin-top: ${({ shipping }: DivProps) => shipping ? '-16px' : '20px'};
   background: ${WHITE};
-  position: relative;
   width: 100%;
   padding: 0px 18px;
   padding-bottom: 16px;

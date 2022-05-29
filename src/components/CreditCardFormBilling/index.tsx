@@ -27,7 +27,13 @@ import {
   Label,
   ErrorMsg,
   StripeCardElement,
-  modalStyle
+  modalStyle,
+  CardContainer,
+  DataDiv,
+  CardText,
+  TitleDiv,
+  ValueDiv,
+  NewAddressDiv
 } from './styledComponents'
 import ShippingAddressForm from '../ShippingAddressForm'
 import MyAddresses from '../MyAddressesList'
@@ -85,10 +91,11 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
     showAddressModal: false,
     cardElement: null,
     modalLoading: false,
-    hasError: false
+    hasError: false,
+    highlightCards: false
   }
   private addressListRef: any
-  private formDiv: any
+  private addressList: any
 
   render() {
     const {
@@ -125,12 +132,15 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
       isEuSubsidiary
     } = this.props
     const { 
+      highlightCards,
       modalLoading, 
       hasError: hasErrorState,
       showAddressModal,
       addressIdToMutate
     } = this.state
-
+    if (highlightCards) {
+      setTimeout(() => { this.setState({ highlightCards: false }) }, 3000)
+    }
     const renderAddresses = (
       adressesToShow?: number | null,
       renderInModal?: boolean,
@@ -147,13 +157,15 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
           changePage={this.handleChangePage}
           listForMyAccount={false}
           billingAddress={true}
-          simple={true}
+          selectedBilling={!!firstName}
+          hideMap={true}
           showForm={showBillingForm}
           showAddressFormAction={(show: boolean, modal = true) => this.handleShowForm(show, modal)}
           setAddressToUpdateAction={this.setAddressToUpdateAction}
           {...{
             withPagination,
             showAddressModal,
+            highlightCards,
             addressIdToMutate,
             indexAddressSelected,
             currentPage,
@@ -224,6 +236,78 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
           >
             {formatMessage(messages.sameShippingAddress)}
           </StyledCheckbox>
+          {indexAddressSelected === -1 && firstName && lastName &&
+            <CardContainer>
+              <NewAddressDiv>{formatMessage(messages.newAddress)}</NewAddressDiv>
+              <DataDiv>
+                <CardText>
+                  <TitleDiv>
+                    {formatMessage(messages.name)}
+                  </TitleDiv>
+                  <ValueDiv>
+                    {firstName} {lastName}
+                  </ValueDiv>
+                </CardText>
+                <CardText>
+                  <TitleDiv>
+                    {formatMessage(messages.street)}
+                  </TitleDiv>
+                  <ValueDiv>
+                    {street}
+                  </ValueDiv>
+                </CardText>
+                {apartment && 
+                  <CardText>
+                    <TitleDiv>
+                      {formatMessage(messages.apartment)}
+                    </TitleDiv>
+                    <ValueDiv>
+                      {apartment}
+                    </ValueDiv>
+                  </CardText>
+                }
+                <CardText>
+                  <TitleDiv>
+                    {formatMessage(messages.city)}
+                  </TitleDiv>
+                  <ValueDiv>
+                    {city}
+                  </ValueDiv>
+                </CardText>
+                <CardText>
+                  <TitleDiv>
+                    {formatMessage(messages.zipCode)}
+                  </TitleDiv>
+                  <ValueDiv>
+                    {zipCode}
+                  </ValueDiv>
+                </CardText>
+                <CardText>
+                  <TitleDiv>
+                    {formatMessage(messages.country)}
+                  </TitleDiv>
+                  <ValueDiv>
+                    {country}
+                  </ValueDiv>
+                </CardText>
+                  {!!phone &&
+                    <CardText>
+                      <TitleDiv>
+                        {formatMessage(messages.phone)}
+                      </TitleDiv>
+                      <ValueDiv>
+                        {phone}
+                      </ValueDiv>
+                    </CardText>
+                  }
+              </DataDiv>
+            </CardContainer>
+          }
+          <div
+            ref={(input) => {
+              this.addressList = input
+            }}
+          >
           {(sameBillingAndShipping && (
             <MyAddress
               {...{ street, zipCode, country, formatMessage }}
@@ -235,33 +319,34 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
             />
           )) ||
             renderAddresses(4, false, false)}
-          <div
-            ref={(input) => {
-              this.formDiv = input
-            }}
-          >
-            <AnimateHeight duration={500} height={showBillingForm ? 'auto' : 0}>
-              <ShippingAddressForm
-                {...{
-                  firstName,
-                  lastName,
-                  street,
-                  apartment,
-                  country,
-                  stateProvince,
-                  stateProvinceCode,
-                  city,
-                  zipCode,
-                  phone,
-                  hasError,
-                  selectDropdownAction,
-                  inputChangeAction,
-                  formatMessage
-                }}
-                isCard={true}
-              />
-            </AnimateHeight>
           </div>
+          <Modal
+            visible={showBillingForm}
+            width={'830px'}
+            onOk={() => this.handleShowForm(false, false)}
+            okText="Continue"
+            onCancel={this.closeForm}
+          >
+            <ShippingAddressForm
+              {...{
+                firstName,
+                lastName,
+                street,
+                apartment,
+                country,
+                stateProvince,
+                stateProvinceCode,
+                city,
+                zipCode,
+                phone,
+                hasError,
+                selectDropdownAction,
+                inputChangeAction,
+                formatMessage
+              }}
+              isCard={true}
+            />
+          </Modal>
         </ContainerBilling>
         <ContinueButton
           onClick={this.handleOnContinue}
@@ -308,9 +393,6 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
   handleShowForm = (show: boolean, modal: boolean) => {
     const { showBillingAddressFormAction } = this.props
     showBillingAddressFormAction(show, modal)
-    if (show && this.formDiv) {
-      zenscroll.to(this.formDiv, 700)
-    }
   }
 
   handleReady = (cardElement: stripe.elements.Element) =>
@@ -339,6 +421,7 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
       nextStep,
       selectedCard,
       stripe,
+      formatMessage,
       createPaymentIntent,
       isEuSubsidiary,
       isFixedTeamstore
@@ -355,6 +438,15 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
         !city ||
         !zipCode ||
         !phone)
+    if (emptyForm && cardHolderName) {
+      this.setState({ highlightCards: true })
+      if (this.addressList) {
+        zenscroll.to(this.addressList, 700)
+      }
+      message.error(formatMessage(messages.selectCard))
+      invalidBillingFormAction(true)
+      return
+    }
     if (isInvoice && !emptyForm) {
       nextStep()
       return
@@ -442,6 +534,12 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
     checked
       ? sameBillingAndAddressCheckedAction()
       : sameBillingAndAddressUncheckedAction()
+  }
+
+  closeForm = () => {
+    const { sameBillingAndAddressUncheckedAction, showBillingAddressFormAction } = this.props
+    showBillingAddressFormAction(false, false)
+    sameBillingAndAddressUncheckedAction()
   }
 
   handleChangePage = (pageNumber: number) => {

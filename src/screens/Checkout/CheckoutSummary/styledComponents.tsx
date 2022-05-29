@@ -2,9 +2,22 @@
  * Styled Components - Created by miguelcanobbio on 03/09/18.
  */
 import styled from 'styled-components'
-import { BLUE, BLUE_BRIGHT, GRAY_DARK, GRAY_LIGHT, GRAY_SOFT, RED_TRANSPARENT, WHITE } from '../../../theme/colors'
+import {
+  BLUE,
+  BLUE_BRIGHT,
+  GRAY_DARK,
+  GRAY_LIGHT,
+  GRAY_LIGHTEST,
+  GRAY_SOFT,
+  RED_TRANSPARENT,
+  WHITE
+} from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
 import { AVENIR_NEXT } from '../../../theme/fonts'
+
+interface DivProps {
+  disabled?: boolean
+}
 
 export const Container = styled.div``
 
@@ -30,10 +43,10 @@ export const ContinueButton = styled.div`
   margin-top: 28px;
   justify-content: center;
   align-items: center;
-  background: #69a1e3;
+  background: ${({ disabled }: DivProps) => disabled ? GRAY_LIGHTEST : '#69a1e3'};
   border-radius: 25px;
   padding: 12px;
-  color: ${WHITE};
+  color: ${({ disabled }: DivProps) => disabled ? GRAY_LIGHT : WHITE};
   box-shadow: 0px 2px 4px 0px lightgrey;
   transition: all .25s;
   &:hover {

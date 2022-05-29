@@ -73,6 +73,7 @@ interface Props {
   showDiscount?: boolean
   placingOrder?: boolean
   isFixedStore?: boolean
+  disabledContinue?: boolean
   history: any
   formatMessage: (messageDescriptor: any) => string
   couponCode?: CouponCode
@@ -100,6 +101,7 @@ const CheckoutSummary = ({
   upgrades = 0,
   variables = 0,
   couponCode,
+  disabledContinue = false,
   history,
   isFixedStore,
   totalWithoutDiscount = 0,
@@ -226,7 +228,7 @@ const CheckoutSummary = ({
       )
 
   const continueButton = 
-    <ContinueButton onClick={handleNextStep}>
+    <ContinueButton disabled={disabledContinue} onClick={handleNextStep}>
       {formatMessage(messages.continue)}
       <ContinueIcon type="right" />
     </ContinueButton>

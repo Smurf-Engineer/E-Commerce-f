@@ -52,6 +52,9 @@ interface Props {
   billingAddress?: boolean
   small?: boolean
   shipping?: boolean
+  hideMap?: boolean
+  highlightCards?: boolean
+  selectedBilling?: boolean
   simple?: boolean
   multiButtons?: boolean
   changePage: (pageNumber: number) => void
@@ -93,6 +96,9 @@ export class MyAddressesList extends React.Component<Props, {}> {
       showForm,
       showAddressModal,
       shipping,
+      highlightCards,
+      selectedBilling,
+      hideMap,
       multiButtons,
       formatMessage,
       listForMyAccount = false,
@@ -133,18 +139,30 @@ export class MyAddressesList extends React.Component<Props, {}> {
         defaultBilling,
         defaultShipping
       } = address
-      const isSelected =
+      let isSelected = false
+      if (billingAddress) {
+        isSelected =
+        (!showForm && !showAddressModal) &&
+        ((defaultBilling && indexAddressSelected === -1) ||
+          (indexAddressSelected === key && selectedBilling))
+        if (defaultBilling && indexAddressSelected === -1 && !showForm && !showAddressModal) {
+          this.handleOnSelectAddress(key)
+          atLeastOneIsSelected = true
+        }
+      } else {
+        isSelected =
         (!showForm && !showAddressModal) &&
         ((defaultShipping && indexAddressSelected === -1) ||
           indexAddressSelected === key)
-      if ((!showForm && !showAddressModal) && isSelected) {
-        this.handleOnSelectAddress(key)
-        atLeastOneIsSelected = true
+        if ((!showForm && !showAddressModal) && isSelected) {
+          this.handleOnSelectAddress(key)
+          atLeastOneIsSelected = true
+        }
       }
       if (
         key === addresses.length - 1 &&
         !atLeastOneIsSelected &&
-        addresses &&
+        addresses && shipping &&
         (!showForm && !showAddressModal)
       ) {
         this.handleOnSelectAddress(0)
@@ -159,6 +177,8 @@ export class MyAddressesList extends React.Component<Props, {}> {
             isSelected,
             phone,
             small,
+            highlightCards,
+            hideMap,
             shipping,
             simple,
             multiButtons,
