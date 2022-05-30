@@ -38,6 +38,8 @@ interface Props {
   phone?: string
   shipping?: boolean
   simple?: boolean
+  highlightCards?: boolean
+  hideMap?: boolean
   defaultBilling?: boolean
   defaultShipping?: boolean
   addressIndex?: number
@@ -65,11 +67,13 @@ const MyAddress = ({
   simple,
   addressIndex,
   phone,
+  highlightCards,
   multiButtons,
   formatMessage,
   showSecondaryButtons,
   hideBottomButtons,
   small,
+  hideMap,
   isSelected = false,
   selectAddressAction = () => { },
   showAddressFormAction = () => { },
@@ -86,9 +90,7 @@ const MyAddress = ({
   }
   let buttons = !showSecondaryButtons ? (
     <EditButtonWrapper>
-      <StyledCheckbox {...{ small }} checked={isSelected} onChange={handleOnSelectAddress}>
-        {formatMessage(messages.useThisAddress)}
-      </StyledCheckbox>
+      <StyledCheckbox {...{ small }} checked={isSelected} onChange={handleOnSelectAddress} />
       <EditButton onClick={handleOnEdit}>
         <ButtonIcon type="edit" />
       </EditButton>
@@ -113,9 +115,7 @@ const MyAddress = ({
           <ButtonIcon type="edit" />{formatMessage(messages.edit)}
         </EditButtonMulti>
       </SecondaryButtonsMulti>
-      <StyledCheckboxMulti {...{ small }} checked={isSelected} onChange={handleOnSelectAddress}>
-        {formatMessage(messages.useThisAddress)}
-      </StyledCheckboxMulti>
+      <StyledCheckboxMulti {...{ small }} checked={isSelected} onChange={handleOnSelectAddress} />
       </MultiButtonsDiv>
   }
   let footerMessageText
@@ -149,22 +149,24 @@ const MyAddress = ({
       {!hideBottomButtons ? buttons : null}
     </Container>
   : 
-  <CardContainer {...{ showSecondaryButtons, isSelected, small, shipping }}>
-    <MapsDiv>
-      <iframe
-        width="100%"
-        height={shipping && !isSelected ? '0' : '200'}
-        frameborder="0"
-        scrolling="no"
-        marginheight="0"
-        marginwidth="0"
-        style={{ transition: 'all .25s' }}
-        allowfullscreen={true}
-        src={shippingAddressMap}
-      />
-    </MapsDiv>
-    <DataDiv>
-      <CircleIcon theme="filled"  type="environment"/>
+  <CardContainer {...{ showSecondaryButtons, highlightCards, isSelected, small, shipping }}>
+    {!hideMap &&
+      <MapsDiv>
+        <iframe
+          width="100%"
+          height={shipping && !isSelected ? '0' : '200'}
+          frameborder="0"
+          scrolling="no"
+          marginheight="0"
+          marginwidth="0"
+          style={{ transition: 'all .25s' }}
+          allowfullscreen={true}
+          src={shippingAddressMap}
+        />
+      </MapsDiv>
+    }
+    <DataDiv {...{ shipping }}>
+      {shipping && <CircleIcon theme="filled"  type="environment"/>}
       <CardText>
         <TitleDiv>
           {formatMessage(messages.name)}

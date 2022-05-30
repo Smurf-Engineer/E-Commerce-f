@@ -124,3 +124,75 @@ export const StripeCardElement = {
 }
 
 export const modalStyle = { top: 20, paddingBottom: '96px' }
+
+export const CardContainer = styled.div`
+  width: 100%;
+  border-radius: 3px;
+  box-shadow: 0px 2px 6px -1px ${GRAY_DARK};
+  max-width: 288px;
+  height: auto;
+  margin-right: 3.75%;
+  margin-bottom: 48px;
+  display: flex;
+  flex-flow: column;
+  @media (max-width: 1024px) {
+    margin-right: unset;
+  }
+  animation: fade-in-fwd 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-fwd {
+    0% {
+      transform: translateZ(-80px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateZ(0);
+      opacity: 1;
+    }
+  }
+`
+
+export const DataDiv = styled.div`
+  margin-top: -16px;
+  margin-top: 20px;
+  background: ${WHITE};
+  width: 100%;
+  padding: 0px 18px;
+  padding-bottom: 16px;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+`
+
+export const CardText = styled.div`
+  color: #5f6062;
+  font-size: 14px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  margin: 2px 0;
+  display: flex;
+  justify-content: space-between;
+`
+
+export const TitleDiv = styled.div`
+  color: #b5b5b5;
+  font-size: 12px;
+`
+
+export const ValueDiv = styled.div`
+  font-size: 12px;
+  margin-left: 10px;
+  max-width: 123px;
+  text-align: right;
+`
+
+export const NewAddressDiv = styled.div`
+  position: absolute;
+  border: 1px solid ${BLUE};
+  border-radius: 25px;
+  padding: 4px 8px;
+  top: -10px;
+  right: -9px;
+  background: white;
+  color: blue;
+  font-size: 12px;
+`

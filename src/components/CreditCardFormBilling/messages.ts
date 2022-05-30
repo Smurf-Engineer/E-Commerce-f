@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.CreditCardFormBilling.expiryDate',
     defaultMessage: 'Expiry date'
   },
+  selectCard: {
+    id: 'components.CreditCardFormBilling.selectCard',
+    defaultMessage: 'You must select a billing address'
+  },
   continue: {
     id: 'components.CreditCardFormBilling.continue',
     defaultMessage: 'Continue'
@@ -56,5 +60,37 @@ export default defineMessages({
   invalidPhone: {
     id: 'components.CreditCardFormBilling.invalidPhone',
     defaultMessage: 'Phone number must be at least 11 characters including the country code'
-  }
+  },
+  newAddress: {
+    id: 'components.CreditCardFormBilling.newAddress',
+    defaultMessage: 'Address Selected'
+  },
+  name: {
+    id: 'components.CreditCardFormBilling.name',
+    defaultMessage: 'Name'
+  },
+  street: {
+    id: 'components.CreditCardFormBilling.street',
+    defaultMessage: 'Street & Number'
+  },
+  apartment: {
+    id: 'components.CreditCardFormBilling.apartment',
+    defaultMessage: 'Apartment'
+  },
+  zipCode: {
+    id: 'components.CreditCardFormBilling.zipCode',
+    defaultMessage: 'ZIP Code'
+  },
+  city: {
+    id: 'components.CreditCardFormBilling.city',
+    defaultMessage: 'City & State/Province'
+  },
+  country: {
+    id: 'components.CreditCardFormBilling.country',
+    defaultMessage: 'Country'
+  },
+  phone: {
+    id: 'components.CreditCardFormBilling.phone',
+    defaultMessage: 'Phone #'
+  },
 })

@@ -685,6 +685,7 @@ class Checkout extends React.Component<Props, {}> {
                 onPaypalCancel={this.onPaypalCancel}
                 onPaypalError={this.onPaypalError}
                 upgrades={upgradesTotal}
+                disabledContinue={currentStep === PaymentTab && !billingCountry}
                 variables={variablesTotal}
                 handleNextStep={this.nextStepSummary}
                 placingOrder={loadingPlaceOrder || paymentIntentLoading}
