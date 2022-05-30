@@ -12,6 +12,7 @@ interface DivProps {
   simple?: boolean
   isSelected?: boolean
   highlightCards?: boolean
+  list?: boolean
 }
 
 export const Container = styled.div`
@@ -61,7 +62,7 @@ export const StyledCheckbox = styled(Checkbox)`
   .ant-checkbox-inner {
     height: 20px;
     width: 20px;
-    border-color: 1px solid #7bb6d9;
+    border-color: 1.5px solid ${BLUE};
   }
   .ant-checkbox-wrapper:hover,
   .ant-checkbox:hover .ant-checkbox-inner,
@@ -91,7 +92,7 @@ export const StyledCheckboxMulti = styled(Checkbox)`
   .ant-checkbox-inner {
     height: 20px;
     width: 20px;
-    border-color: 1px solid #7bb6d9;
+    border-color: 1.5px solid ${BLUE};
   }
   .ant-checkbox-wrapper:hover,
   .ant-checkbox:hover .ant-checkbox-inner,
@@ -236,6 +237,13 @@ export const CardContainer = styled.div`
       }
     }
   `}
+  ${({ list }: DivProps) => list ? `
+    &:hover {
+      cursor: pointer;
+      filter: opacity(0.85);
+      box-shadow: 0px 2px 6px -1px #7c7e81;
+    }
+  ` : ''}
 `
 
 export const CardText = styled.div`

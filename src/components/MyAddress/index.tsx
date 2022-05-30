@@ -79,10 +79,18 @@ const MyAddress = ({
   showAddressFormAction = () => { },
   showConfirmDeleteAction = () => { }
 }: Props) => {
-  const handleOnEdit = () => {
+  const handleOnEdit = (evt: React.MouseEvent<HTMLDivElement>) => {
+    if (evt) {
+      evt.stopPropagation()
+      evt.preventDefault()
+    }
     showAddressFormAction(true, addressIndex)
   }
-  const handleOnDelete = () => {
+  const handleOnDelete = (evt: React.MouseEvent<HTMLDivElement>) => {
+    if (evt) {
+      evt.stopPropagation()
+      evt.preventDefault()
+    }
     showConfirmDeleteAction(addressIndex as number)
   }
   const handleOnSelectAddress = () => {
@@ -149,7 +157,11 @@ const MyAddress = ({
       {!hideBottomButtons ? buttons : null}
     </Container>
   : 
-  <CardContainer {...{ showSecondaryButtons, highlightCards, isSelected, small, shipping }}>
+  <CardContainer
+    onClick={handleOnSelectAddress}
+    list={multiButtons || !showSecondaryButtons}
+    {...{ showSecondaryButtons, highlightCards, isSelected, small, shipping }}
+  >
     {!hideMap &&
       <MapsDiv>
         <iframe
