@@ -78,6 +78,9 @@ export const AddressesList = styled.div`
     justify-content: flex-start;
     max-height: 668px;
   ` : ''}
+  ${({ shipping }: StyledProps) => !shipping ? `
+    margin-left: 8px;
+  ` : ''}
 `
 
 export const ViewAllAddresses = styled.div`
