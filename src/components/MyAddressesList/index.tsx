@@ -246,7 +246,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
     }
 
     return (
-      <Container {...{ listForMyAccount }}>
+      <Container {...{ listForMyAccount, billingAddress }}>
         <Content>
           {!listForMyAccount &&
             !billingAddress && (
