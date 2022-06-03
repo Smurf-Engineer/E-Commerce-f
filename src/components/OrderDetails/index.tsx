@@ -49,7 +49,6 @@ import {
   FAQBody,
   FedexLabel,
   FedexIcon,
-  OpenIcon,
   InvoiceDiv,
   InvoiceTitle,
   InvoiceIcon,
@@ -75,7 +74,12 @@ import {
   EditIcon,
   EditContent,
   StatusTop,
-  TitleEdit
+  TitleEdit,
+  StyledPopOver,
+  PopoverText,
+  InfoIcon,
+  InfoSecondary,
+  DeliveryLabelSecondary
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -148,7 +152,9 @@ export class OrderDetails extends React.Component<Props, {}> {
     showArrive: false,
     showReturn: false,
     openStatusInfo: false,
-    shownAction: false
+    shownAction: false,
+    actualDeliver: '',
+    isDeliver: false
   }
   private copyInput: any
   private html2pdf: any
@@ -260,6 +266,9 @@ export class OrderDetails extends React.Component<Props, {}> {
     }
     this.setState({ openStatusInfo: false })
   }
+  setDeliverDate = (date: string, isDeliver: boolean) => {
+    this.setState({ actualDeliver: date, isDeliver })
+  }
   render() {
     const {
       data,
@@ -286,7 +295,9 @@ export class OrderDetails extends React.Component<Props, {}> {
       showPaymentIssue,
       showArrive,
       showReturn,
-      openStatusInfo
+      openStatusInfo,
+      actualDeliver,
+      isDeliver
     } = this.state
 
     const getBackMessage =
@@ -596,6 +607,18 @@ export class OrderDetails extends React.Component<Props, {}> {
                   }
                   <DeliveryLabel>
                     {formatMessage(messages.deliveryDate)}
+                    <StyledPopOver
+                      overlayClassName="innerClassTooltip"
+                      title={
+                        <PopoverText
+                          dangerouslySetInnerHTML={{
+                            __html: formatMessage(messages.deliveryInfo)
+                          }}
+                        />
+                      }
+                    >
+                      <InfoIcon type="question-circle" />
+                    </StyledPopOver>
                   </DeliveryLabel>
                   <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
                   {teamStoreId &&
@@ -612,6 +635,12 @@ export class OrderDetails extends React.Component<Props, {}> {
                     <DeliveryLabel>
                       {formatMessage(messages.referenceNumber)}
                     </DeliveryLabel>
+                  }
+                  {actualDeliver &&
+                    <DeliveryLabelSecondary>
+                      <FedexIcon src={iconFedex} />
+                      {formatMessage(messages[isDeliver ? 'actualDelivery' : 'scheduledDelivery'])}
+                    </DeliveryLabelSecondary>
                   }
                   <DeliveryLabel>
                     {formatMessage(messages.trackingNumber)}
@@ -650,19 +679,23 @@ export class OrderDetails extends React.Component<Props, {}> {
                       {referenceNumber}
                     </Info>
                   }
+                  {actualDeliver &&
+                    <InfoSecondary {...{ savingPdf }}>
+                      {actualDeliver}
+                    </InfoSecondary>
+                  }
                   <Info {...{ savingPdf }}>
                     {trackingNumber ? 
                       <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
                         {trackingNumber}
-                        <OpenIcon type="select" />
-                        <FedexIcon src={iconFedex} />
                       </FedexLabel> : '-'
                     }
                   </Info>
                 </DeliveryData>
               </DeliveryInfo>
               <TrackingInfo
-                {...{ formatMessage }}
+                {...{ formatMessage, actualDeliver }}
+                setDeliverDate={this.setDeliverDate}
                 inProduction={orderStatus === IN_PRODUCTION}
                 code={trackingNumber}
               />

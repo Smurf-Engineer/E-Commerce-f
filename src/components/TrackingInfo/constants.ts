@@ -11,7 +11,7 @@ export const statusIcons = {
 }
 
 export const statusSteps = {
-    'PU': 2,
-    'IT': 2,
-    'DL': 3
+    'PU': 3,
+    'IT': 3,
+    'DL': 4
 }

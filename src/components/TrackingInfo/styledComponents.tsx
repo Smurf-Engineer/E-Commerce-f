@@ -13,6 +13,7 @@ const { Step } = Steps
 interface StyledProps {
   color?: string
   secondary?: boolean
+  active?: boolean
 }
 
 export const LoadingContainer = styled.div`
@@ -80,17 +81,18 @@ export const LocationLabel = styled.div`
 
 export const StepsStyled = styled(Steps)`
   position: absolute;
-  top: 110px;
-  width: 70%;
-  left: -30px;
+  top: 34px;
+  width: 95%;
+  left: -9%;
   @media (max-width: 930px) {
-    width: 100%;
-    top: 123px;
+    width: 112%;
+    top: 34px;
+    left: -8%;
   }
   @media (max-width: 530px) {
     flex-wrap: wrap;
     display: flex !important;
-    top: 110px;
+    top: 34px;
     width: 120%;
     .ant-steps-item {
       flex: unset;
@@ -112,26 +114,55 @@ export const StepsStyled = styled(Steps)`
   }
 `
 
-export const StepStyled = styled(Step)``
+export const StepStyled = styled(Step)`
+  .ant-steps-item-title {
+    margin-top: 4px;
+    margin-left: 4px;
+  }
+`
 
-export const StatusIcon = styled(Icon)``
+export const StatusIcon = styled(Icon)`
+  color: ${WHITE};
+  padding: 8px;
+  border-radius: 35px;
+  background: ${({ active }: StyledProps) => active ? '#47596a' : '#d8d6d6'};
+`
 
 export const StatusImage = styled.img`
-  max-width: 32px;
-  height: 23px;
+  max-width: 43px;
+  height: 43px
   margin-bottom: 6px;
+  padding: 8px;
+  border-radius: 35px;
+  background: ${({ active }: StyledProps) => active ? '#47596a' : '#d8d6d6'};
+`
+
+export const StatusImageCheck = styled.img`
+  width: 43px;
+  height: 43px;
+  margin-bottom: 6px;
+  padding: 8px;
+  border-radius: 35px;
+  background: ${({ active }: StyledProps) => active ? '#47596a' : '#d8d6d6'};
 `
 
 export const StatusImagePackage = styled.img`
-  max-width: 32px;
-  height: 26px;
+  width: 43px;
+  height: 43px;
   margin-bottom: 6px;
+  padding: 8px;
+  border-radius: 35px;
+  background: ${({ active }: StyledProps) => active ? '#47596a' : '#d8d6d6'};
 `
 
 export const StatusImageDelivery = styled.img`
-  max-width: 35px;
-  height: 24px;
+  width: 43px;
+  height: 43px;
   margin-bottom: 6px;
+  padding: 8px;
+  border-radius: 35px;
+  filter: ${({ active }: StyledProps) => active ? 'brightness(1.2)' : 'unset'};
+  background: ${({ active }: StyledProps) => active ? '#47596a' : '#d8d6d6'};
 `
 
 export const Description = styled.div`

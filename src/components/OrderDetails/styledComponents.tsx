@@ -16,6 +16,7 @@ import {
 } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 import { AVENIR_NEXT } from '../../theme/fonts'
+import Tooltip from 'antd/lib/tooltip'
 
 interface DivProps {
   savingPdf?: boolean
@@ -68,7 +69,7 @@ export const ViewContainer = styled.div`
   display: flex;
   align-items: center;
   color: #5f6062;
-  font-size: 16px;
+  font-size: 14px;
   letter-spacing: 0.11px;
   line-height: 22px;
   text-align: right;
@@ -80,17 +81,21 @@ export const ViewContainer = styled.div`
 export const Div = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 64px;
-  margin-top: 48px;
+  margin-bottom: 34px;
+  margin-top: 68px;
   padding-right: 34px;
   position: relative;
   @media (max-width: 1023px) {
-    margin-top: ${({ secondary }: DivProps) => secondary ? '58px' : '48px'};
+    margin-top: ${({ secondary }: DivProps) => secondary ? '58px' : '75px'};
   }
   @media (max-width: 768px) and (min-width: 320px) {
     align-items: center;
     margin-bottom: 24px;
     padding-right: 0px;
+    margin-top: 118px;
+  }
+  @media (max-width: 408px) {
+    margin-top: 162px;
   }
 `
 
@@ -104,7 +109,7 @@ export const DownloadInvoice = styled.div`
   text-align: center;
   height: 33px;
   border-radius: 3px;
-  min-width: 165.38px;
+  min-width: 90px;
   transition: all .25s;
   &:hover {
     opacity: 0.5;
@@ -156,7 +161,6 @@ export const DataDiv = styled.div`
 export const OrderInfo = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 42px;
   padding-right: 34px;
   flex-direction: row;
 
@@ -192,7 +196,7 @@ export const DeliveryInfo = styled.div`
     margin-top: 30px;
   }
   @media (max-width: 658px) {
-    margin-top: 104px;
+    margin-top: 42px;
   }
 `
 export const DeliveryLabels = styled.div`
@@ -211,6 +215,15 @@ export const DeliveryLabel = styled.div`
     white-space: nowrap;
   }
 `
+
+export const DeliveryLabelSecondary = styled.div`
+  margin-bottom: 12px;
+  white-space: nowrap;
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+  }
+`
+
 export const DeliveryData = styled.div`
   color: #5f6062;
   display: inline-block;
@@ -238,6 +251,21 @@ export const Info = styled.div`
   color: ${({ redColor }: InfoProps) => redColor ? RED : GRAY_DARK};
   height: 22px;
   margin-bottom: 12px;
+  @media (max-width: 768px) {
+    text-align: ${({ savingPdf }: InfoProps) => savingPdf ? 'left' : 'right'};
+    margin-bottom: 16px;
+  }
+  white-space: nowrap;
+`
+
+export const InfoSecondary = styled.div`
+  color: ${({ redColor }: InfoProps) => redColor ? RED : GRAY_DARK};
+  height: 22px;
+  margin-bottom: 12px;
+  white-space: nowrap;
+  @media (max-width: 940px) {
+    white-space: normal;
+  }
   @media (max-width: 768px) {
     text-align: ${({ savingPdf }: InfoProps) => savingPdf ? 'left' : 'right'};
     margin-bottom: 16px;
@@ -326,9 +354,9 @@ export const OpenIcon = styled(Icon)`
 `
 
 export const FedexIcon = styled.img`
-  max-width: 32px;
+  max-width: 40px;
   object-fit: contain;
-  margin-left: 8px;
+  margin-right: 5px;
   margin-bottom: 2px;
 `
 
@@ -668,4 +696,22 @@ export const CloseButtonStatus = styled.div`
     background: ${BLACK};
     margin-top: 0px;
   }
+`
+
+export const StyledPopOver = styled(Tooltip)`
+  cursor: pointer;
+`
+
+export const InfoIcon = styled(Icon)`
+  display: inline-flex;
+  margin-left: 10px;
+  font-size: 14px;
+  margin-right: -10px;
+`
+
+export const PopoverText = styled.div`
+  font-size: 12px;
+  color: ${BLACK};
+  font-family: Avenir;
+  font-weight: normal;
 `
