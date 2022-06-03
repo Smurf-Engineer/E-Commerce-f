@@ -158,11 +158,15 @@ export class Home extends React.Component<Props, {}> {
       client: { query },
     } = this.props
     const { getHomepage } = thunkActions
-    dispatch(getHomepage(query, params.sportRoute))
+    dispatch(getHomepage(query, params.sportRoute || params.region))
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { shortenURLData, featuredImagesData } = this.props
+    const { shortenURLData, featuredImagesData, location, match: { params } } = this.props
+    const { location: oldLocation } = prevProps || {}
+    const pathName = location ? location.pathname : ''
+    const oldPathName = oldLocation ? oldLocation.pathname : ''
+    
     const oldLoading = get(prevProps, 'featuredImagesData.loading', true)
     const loading = get(featuredImagesData, 'loading', true)
     const url = get(shortenURLData, 'shortenURL.url', '')
@@ -171,6 +175,15 @@ export class Home extends React.Component<Props, {}> {
     }
     if (typeof window !== 'undefined' && zenscroll && oldLoading !== loading && !loading) {
       window.scrollTo(0, 0)
+    }
+    if (typeof window !== 'undefined' && pathName !== oldPathName && (params.sportRoute || params.region)) {
+      const {
+        dispatch,
+        client: { query },
+      } = this.props
+      const { getHomepage } = thunkActions
+      window.scrollTo(0, 0)
+      dispatch(getHomepage(query, params.sportRoute || params.region))
     }
   }
 
