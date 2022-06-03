@@ -89,6 +89,7 @@ import AddToCartButton from '../AddToCartButton'
 import iconPaypal from '../../assets/Paypal.svg'
 import iconFedex from '../../assets/fedexicon.svg'
 import shippedIcon from '../../assets/shippedicon.png'
+import inProductionIcon from '../../assets/in_production.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
@@ -658,8 +659,8 @@ export class OrderDetails extends React.Component<Props, {}> {
                   }
                   <Info {...{ savingPdf }}>{estimatedDate}</Info>
                   <StatusLabel {...{ savingPdf, statusColor }}>
-                    {orderStatus === SHIPPED ?
-                      <StatusImage src={shippedIcon} /> :
+                    {orderStatus === SHIPPED || orderStatus === IN_PRODUCTION ?
+                      <StatusImage src={orderStatus === SHIPPED ? shippedIcon : inProductionIcon} /> :
                       <IconStatus type={statusIcon} />
                     }
                     {orderStatus}
