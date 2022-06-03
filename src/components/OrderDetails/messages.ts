@@ -25,9 +25,22 @@ export default defineMessages({
     id: 'components.OrderDetails.referenceNumber',
     defaultMessage: 'Reference Number'
   },
+  deliveryInfo: {
+    id: 'components.OrderDetails.deliveryInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'This is the <strong>estimated delivery date</strong> at the time of order placement. You acknowledge that any delivery dates provided by Company are <strong>estimates only</strong> and that the Company is not liable for failure to deliver on such dates. JAKROO shall use reasonable efforts to initiate shipment and schedule delivery as close as possible to this date.'
+  },
   gotIt: {
     id: 'components.OrderDetails.gotIt',
     defaultMessage: 'Got it!'
+  },
+  actualDelivery: {
+    id: 'components.OrderDetails.actualDelivery',
+    defaultMessage: 'Actual Delivery Date'
+  },
+  scheduledDelivery: {
+    id: 'components.OrderDetails.scheduledDelivery',
+    defaultMessage: 'Scheduled Delivery Date'
   },
   cancel: {
     id: 'components.OrderDetails.cancel',
@@ -125,7 +138,7 @@ export default defineMessages({
   },
   downloadInvoice: {
     id: 'components.OrderDetails.downloadInvoice',
-    defaultMessage: 'Download Invoice'
+    defaultMessage: 'Invoice'
   },
   orderQuestion: {
     id: 'components.OrderDetails.orderQuestion',
