@@ -92,16 +92,16 @@ export const Div = styled.div`
     align-items: center;
     margin-bottom: 24px;
     padding-right: 0px;
-    margin-top: 118px;
+    margin-top: 86px;
   }
   @media (max-width: 408px) {
-    margin-top: 162px;
+    margin-top: 106px;
   }
 `
 
 export const DownloadInvoice = styled.div`
   position: absolute;
-  right: 34px;
+  right: 55px;
   top: 0;
   border: 1px solid ${RED};
   color: ${RED};
@@ -298,6 +298,7 @@ export const StatusImage = styled.img`
   margin-left: -17px;
   padding-right: 9px;
   margin-top: -5px;
+  height: 25px;
   background: ${WHITE};
 `
 

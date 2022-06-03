@@ -94,12 +94,18 @@ export const StepsStyled = styled(Steps)`
     display: flex !important;
     top: 34px;
     width: 120%;
+    justify-content: space-around;
+    left: -56px;
     .ant-steps-item {
       flex: unset;
     }
     .ant-steps-item-tail {
       display: none !important;
     }
+  }
+  @media (max-width: 480px) {
+    left: -34px;
+    flex-wrap: nowrap;
   }
   animation: fadeForSteps 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   @keyframes fadeForSteps {
@@ -119,6 +125,30 @@ export const StepStyled = styled(Step)`
     margin-top: 4px;
     margin-left: 4px;
   }
+  @media (max-width: 698px) {
+    &.ant-steps-item {
+      display: inline-flex !important;
+      flex-flow: column !important;
+    }
+    .ant-steps-item-content {
+      text-align: center;
+    }
+    .ant-steps-item-title {
+      padding-right: 0px;
+      margin-left: 0px;
+    }
+    .ant-steps-item-title:after {
+      top: -24px;
+    }
+  }
+  @media (max-width: 480px) {
+    &.ant-steps-item {
+      margin-right: 5px !important;
+    }
+    .ant-steps-item-title {
+      font-size: 14px;
+    }
+  }
 `
 
 export const StatusIcon = styled(Icon)`
@@ -135,6 +165,12 @@ export const StatusImage = styled.img`
   padding: 8px;
   border-radius: 35px;
   background: ${({ active }: StyledProps) => active ? '#47596a' : '#d8d6d6'};
+  @media (max-width: 698px) {
+    margin-bottom: -3px;
+  }
+  @media (max-width: 480px) {
+    margin-left: 10px;
+  }
 `
 
 export const StatusImageCheck = styled.img`
@@ -144,6 +180,12 @@ export const StatusImageCheck = styled.img`
   padding: 8px;
   border-radius: 35px;
   background: ${({ active }: StyledProps) => active ? '#47596a' : '#d8d6d6'};
+  @media (max-width: 698px) {
+    margin-bottom: -3px;
+  }
+  @media (max-width: 480px) {
+    margin-left: 10px;
+  }
 `
 
 export const StatusImagePackage = styled.img`
@@ -153,6 +195,12 @@ export const StatusImagePackage = styled.img`
   padding: 8px;
   border-radius: 35px;
   background: ${({ active }: StyledProps) => active ? '#47596a' : '#d8d6d6'};
+  @media (max-width: 698px) {
+    margin-bottom: -3px;
+  }
+  @media (max-width: 480px) {
+    margin-left: 10px;
+  }
 `
 
 export const StatusImageDelivery = styled.img`
@@ -163,6 +211,12 @@ export const StatusImageDelivery = styled.img`
   border-radius: 35px;
   filter: ${({ active }: StyledProps) => active ? 'brightness(1.2)' : 'unset'};
   background: ${({ active }: StyledProps) => active ? '#47596a' : '#d8d6d6'};
+  @media (max-width: 698px) {
+    margin-bottom: -3px;
+  }
+  @media (max-width: 480px) {
+    margin-left: 10px;
+  }
 `
 
 export const Description = styled.div`
