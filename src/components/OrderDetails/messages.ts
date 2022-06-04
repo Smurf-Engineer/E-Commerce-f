@@ -30,6 +30,11 @@ export default defineMessages({
     // tslint:disable-next-line: max-line-length
     defaultMessage: 'This is the <strong>estimated delivery date</strong> at the time of order placement. You acknowledge that any delivery dates provided by Company are <strong>estimates only</strong> and that the Company is not liable for failure to deliver on such dates. JAKROO shall use reasonable efforts to initiate shipment and schedule delivery as close as possible to this date.'
   },
+  deliveryInfoFedex: {
+    id: 'components.OrderDetails.deliveryInfoFedex',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `The <strong>estimated date provided by FedEx</strong> once they've received the package. This date is based on the selected service, destination and current location of the package. This <strong>date may change</strong> if conditions with routing and weather at the time change.`
+  },
   gotIt: {
     id: 'components.OrderDetails.gotIt',
     defaultMessage: 'Got it!'

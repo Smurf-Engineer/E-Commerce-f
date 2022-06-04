@@ -213,6 +213,7 @@ export const DeliveryLabel = styled.div`
   @media (max-width: 768px) {
     margin-bottom: 16px;
     white-space: nowrap;
+    margin-top: ${({ secondary }: InfoProps) => secondary ? '62px' : 'unset'};
   }
 `
 
@@ -245,6 +246,7 @@ interface InfoProps {
   redColor?: boolean
   savingPdf?: boolean
   statusColor?: string
+  secondary?: boolean
 }
 
 export const Info = styled.div`
@@ -269,6 +271,7 @@ export const InfoSecondary = styled.div`
   @media (max-width: 768px) {
     text-align: ${({ savingPdf }: InfoProps) => savingPdf ? 'left' : 'right'};
     margin-bottom: 16px;
+    height: auto;
   }
 `
 

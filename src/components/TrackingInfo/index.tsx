@@ -45,7 +45,7 @@ interface Props {
   code: string
   actualDeliver: string
   inProduction: boolean
-  setDeliverDate: (date: string, isDeliver: boolean) => void
+  setDeliverDate: (date: string, isDeliver: boolean, dateRaw: string) => void
   formatMessage: (messageDescriptor: any, variables?: {}) => string
 }
 
@@ -83,7 +83,11 @@ export class TrackingInfo extends React.Component<Props, {}> {
     const deliveredDate = deliveryObject && deliveryObject.dateTime ? 
       moment(deliveryObject.dateTime).local().format('dddd, M/D/YYYY h:mm a') : ''
     if (!actualDeliver && (deliveredDate || scheduleDate)) {
-      setDeliverDate(deliveredDate || scheduleDate, !!deliveredDate)
+      const scheduleDateRaw = scheduledObject && scheduledObject.dateTime ? 
+        scheduledObject.dateTime : ''
+      const deliveredDateRaw = deliveryObject && deliveryObject.dateTime ? 
+        deliveryObject.dateTime : ''
+      setDeliverDate(deliveredDate || scheduleDate, !!deliveredDate, deliveredDateRaw || scheduleDateRaw)
     }
     // tslint:disable-next-line: max-line-length
     const actualStatus = get(infoJson, 'output.completeTrackResults[0].trackResults[0].latestStatusDetail.derivedCode', '')

@@ -12,6 +12,7 @@ export const getOrderQuery = gql`
       charge_id
       netsuit_order_id
       userId: user_id
+      deliveredDate: delivered_date
       referenceNumber: reference_number
       resellerComission:reseller_comission
       resellerInline: reseller_inline
@@ -272,5 +273,18 @@ export const deleteOrderMutation = graphql(
   `,
   {
     name: 'deleteOrder'
+  }
+)
+
+export const saveDeliveryMutation = graphql(
+  gql`
+    mutation saveDeliveryOrder($orderId: String!, $isDeliver: Boolean, $date: String) {
+      saveDeliveryOrder(orderId: $orderId, isDeliver: $isDeliver, date: $date) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'saveDeliverDate'
   }
 )
