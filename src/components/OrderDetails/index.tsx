@@ -730,7 +730,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 {...{ formatMessage, actualDeliver }}
                 setDeliverDate={this.setDeliverDate}
                 inProduction={orderStatus === IN_PRODUCTION}
-                code="776875050112"
+                code={trackingNumber}
               />
             </OrderDelivery>
             <OrderSummaryContainer {...{ savingPdf }}>
