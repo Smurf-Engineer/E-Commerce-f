@@ -11,9 +11,9 @@ import moment from 'moment'
 import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import messages from './messages'
-import { OrderDetailsInfo, QueryProps, FulfillmentNetsuite, CartItems } from '../../types/common'
+import { OrderDetailsInfo, QueryProps, FulfillmentNetsuite, CartItems, MessagePayload } from '../../types/common'
 import Modal from 'antd/lib/modal'
-import { getOrderQuery, deleteOrderMutation } from './data'
+import { getOrderQuery, deleteOrderMutation, saveDeliveryMutation } from './data'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
 import {
@@ -114,6 +114,7 @@ import ReactDOM from 'react-dom'
 import filter from 'lodash/filter'
 import { GRAY } from '../../theme/colors'
 import TrackingInfo from '../TrackingInfo'
+import set from 'lodash/set'
 
 const { warning } = Modal
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
@@ -134,6 +135,7 @@ interface Props {
   onBehalf?: boolean
   adminUser?: string
   user?: any
+  saveDeliverDate: (variables: {}) => Promise<MessagePayload>
   formatMessage: (messageDescriptor: any, variables?: {}) => string
   onReturn: (id: string) => void
   deleteOrder: (variables: {}) => Promise<any>
@@ -267,8 +269,26 @@ export class OrderDetails extends React.Component<Props, {}> {
     }
     this.setState({ openStatusInfo: false })
   }
-  setDeliverDate = (date: string, isDeliver: boolean) => {
+  saveDeliver = async (date: string, isDeliver: boolean) => {
+    const { orderId, saveDeliverDate, data } = this.props
+    await saveDeliverDate({
+      variables: {
+        date,
+        isDeliver,
+        orderId
+      }
+    })
+    if (data) {
+      set(data, 'orderQuery.deliveredDate', date)
+    }
+  }
+  setDeliverDate = (date: string, isDeliver: boolean, dateRaw: string) => {
+    const { data, orderId } = this.props
     this.setState({ actualDeliver: date, isDeliver })
+    const deliveredDate = get(data, 'orderQuery.deliveredDate', '')
+    if (dateRaw && !deliveredDate && orderId) {
+      this.saveDeliver(dateRaw, isDeliver)
+    }
   }
   render() {
     const {
@@ -641,9 +661,21 @@ export class OrderDetails extends React.Component<Props, {}> {
                     <DeliveryLabelSecondary>
                       <FedexIcon src={iconFedex} />
                       {formatMessage(messages[isDeliver ? 'actualDelivery' : 'scheduledDelivery'])}
+                      <StyledPopOver
+                        overlayClassName="innerClassTooltip"
+                        title={
+                          <PopoverText
+                            dangerouslySetInnerHTML={{
+                              __html: formatMessage(messages.deliveryInfoFedex)
+                            }}
+                          />
+                        }
+                      >
+                        <InfoIcon type="question-circle" />
+                      </StyledPopOver>
                     </DeliveryLabelSecondary>
                   }
-                  <DeliveryLabel>
+                  <DeliveryLabel secondary={!!actualDeliver}>
                     {formatMessage(messages.trackingNumber)}
                   </DeliveryLabel>
                 </DeliveryLabels>
@@ -698,7 +730,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 {...{ formatMessage, actualDeliver }}
                 setDeliverDate={this.setDeliverDate}
                 inProduction={orderStatus === IN_PRODUCTION}
-                code={trackingNumber}
+                code="776875050112"
               />
             </OrderDelivery>
             <OrderSummaryContainer {...{ savingPdf }}>
@@ -1069,6 +1101,7 @@ interface OwnProps {
 
 const OrderDetailsEnhance = compose(
   deleteOrderMutation,
+  saveDeliveryMutation,
   graphql(getOrderQuery, {
     options: ({ orderId }: OwnProps) => ({
       skip: !orderId,
