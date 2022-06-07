@@ -93,6 +93,7 @@ export const getDesignQuery = gql`
       zipperColor: zipper_color
       canEdit: can_edit
       proDesign: pro_design
+      proCertified: pro_certified
       outputSvg: output_svg
       shared
       image
