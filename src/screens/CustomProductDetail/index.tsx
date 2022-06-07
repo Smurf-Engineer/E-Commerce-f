@@ -833,7 +833,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   </TitleSubtitleContainer>
                   {!teamStoreItem &&
                     ownedDesign &&
-                    (!proDesign ? (
+                    (!proDesign && !proCertified ? (
                       <EditDesignButton
                         onClick={this.gotToEditDesign(designId)}
                       >

@@ -38,7 +38,11 @@ export default defineMessages({
   correctCurrency: {
     id: 'screens.Checkout.correctCurrency',
     defaultMessage:
-      'Your selected Currency is {currentCurrency}. Is this the currency you wish to proceed?'
+      'Your selected currency is {currentCurrency}. Do you want to proceed or return to cart to make changes?'
+  },
+  cancelModal: {
+    id: 'screens.Checkout.cancelModal',
+    defaultMessage: 'Return to Cart'
   },
   errorSavingCart: {
     id: 'screens.Checkout.errorSavingCart',

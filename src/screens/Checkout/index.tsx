@@ -946,6 +946,7 @@ class Checkout extends React.Component<Props, {}> {
     const {
       client: { query },
       billingCountry,
+      history,
       currentCurrency,
       loadingPlaceOrder,
       setLoadingPlaceOrderAction,
@@ -964,11 +965,13 @@ class Checkout extends React.Component<Props, {}> {
         if (data.currency.toLowerCase() !== selectedCurrency) {
           confirm({
             icon: ' ',
+            cancelText: formatMessage(messages.cancelModal),
             okText: formatMessage(messages.confirm),
             title: formatMessage(messages.correctCurrency, {
               currentCurrency: selectedCurrency.toUpperCase()
             }),
             okButtonProps: { style: okButtonStyles },
+            onCancel: () => { history.push('/shopping-cart') },
             onOk: () => {
               this.confirmOrder(false, sca)
             }

@@ -1617,7 +1617,7 @@
   "screens.Checkout.invalidZip": "Enter a valid ZIP Code",
   "screens.Checkout.phoneError": "Phone number must be at least 11 characters including the country code",
   "screens.Checkout.warningQuantity": "This may take time due the quantity of orders already placed, Please be patient (Verify your order history for more info)",
-  "screens.Checkout.correctCurrency": "Your selected Currency is {currentCurrency}. Is this the currency you wish to proceed?",
+  "screens.Checkout.correctCurrency": "Your selected currency is {currentCurrency}. Do you want to proceed or return to cart to make changes?",
   "screens.Checkout.couponApplied": "Coupon applied",
   "screens.Checkout.couponError": "Invalid promo code",
   "screens.Checkout.couponCode": "Coupon Code",

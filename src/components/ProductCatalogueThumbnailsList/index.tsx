@@ -230,7 +230,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   <ButtonsContainer>
                     {!previewOnly ? (
                       <div>
-                        {!proDesign &&
+                        {!proDesign && !proCertified &&
                           <ButtonContainer>
                             <CopyButton onClick={this.handleMakeCopy(shortId)}>
                               {formatMessage(messages.makeCopy)}
@@ -249,7 +249,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                             }
                           >
                             {formatMessage(
-                              !proDesign ? messages.edit : messages.preview
+                              !proDesign && !proCertified ? messages.edit : messages.preview
                             )}
                           </ActionButton>
                         </ButtonContainer>

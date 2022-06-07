@@ -937,7 +937,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       currentStyle.accessoriesColor = designConfig
       currentStyle.designId = designId
       const proDesign = get(designData, 'proDesign', false)
-      if (proDesign) {
+      if (proDesign || proCertified) {
         proDesignModel = {
           createdAt,
           designCode: code,
