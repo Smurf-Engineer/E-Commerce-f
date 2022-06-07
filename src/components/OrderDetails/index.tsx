@@ -280,13 +280,15 @@ export class OrderDetails extends React.Component<Props, {}> {
     })
     if (data) {
       set(data, 'orderQuery.deliveredDate', date)
+      set(data, 'orderQuery.isDelivered', isDeliver)
     }
   }
   setDeliverDate = (date: string, isDeliver: boolean, dateRaw: string) => {
     const { data, orderId } = this.props
     this.setState({ actualDeliver: date, isDeliver })
     const deliveredDate = get(data, 'orderQuery.deliveredDate', '')
-    if (dateRaw && !deliveredDate && orderId) {
+    const deliveredYet = get(data, 'orderQuery.isDelivered', false)
+    if (dateRaw && (!deliveredDate || (isDeliver && !deliveredYet)) && orderId) {
       this.saveDeliver(dateRaw, isDeliver)
     }
   }
