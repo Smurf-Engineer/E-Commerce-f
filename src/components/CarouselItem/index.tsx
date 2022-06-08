@@ -11,7 +11,11 @@ interface Props {
 const CarouselItem = ({ item, onClick }: Props) => {
   const element = document.getElementById(`video_${item.id}`)
   if (item && item.assetType === 'video' && element && item.volume) {
-    setInterval(() => { element.muted = false }, 1000)
+    setInterval(() => {
+      element.muted = false
+      element.play()
+    // tslint:disable-next-line: align
+    }, 1000)
   }
   return (
     <Container onClick={onClick}>
