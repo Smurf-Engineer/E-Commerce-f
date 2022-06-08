@@ -29,7 +29,7 @@ import {
   CurrencyQuery,
   CreatePaymentIntentMutation,
   AddCardMutation,
-  isScaPaymentQuery,
+  // isScaPaymentQuery,
   profileSettingsQuery,
   getDesignLabInfo,
   UpdateNotificationSettingMutation,
@@ -42,7 +42,6 @@ import {
   EUROPE,
   STRIPE,
   EU_STRIPE,
-  EU_SUBSIDIARY_COUNTRIES,
   STEP_ADDRESS,
   STEP_PAYMENT
 } from './constants'
@@ -456,9 +455,10 @@ class Checkout extends React.Component<Props, {}> {
       currentCurrency || config.defaultCurrency,
       shippingAddress ? shippingAddress.country : ''
     )
-    const europeStripeAccount = EU_SUBSIDIARY_COUNTRIES.includes(
-      billingCountry.toLowerCase()
-    )
+    const europeStripeAccount = false
+    // const europeStripeAccount = EU_SUBSIDIARY_COUNTRIES.includes(
+    //   billingCountry.toLowerCase()
+    // )
     const paymentIntentLoading =
       paymentMethod === PaymentOptions.CREDITCARD &&
       currentStep === 2 &&
@@ -1075,29 +1075,29 @@ class Checkout extends React.Component<Props, {}> {
   ) => {
     const {
       setStripeCardDataAction,
-      billingCountry,
+      // billingCountry,
       addNewCard,
       selectCardToPayAction,
       intl: { formatMessage },
-      client: { query },
+      // client: { query },
       location: {
         state: { cart }
       }
     } = this.props
-    const { data } = await query({
-      query: isScaPaymentQuery,
-      variables: { code: billingCountry },
-      fetchPolicy: 'network-only'
-    })
+    // const { data } = await query({
+    //   query: isScaPaymentQuery,
+    //   variables: { code: billingCountry },
+    //   fetchPolicy: 'network-only'
+    // })
     const reorder = some(cart, 'fixedCart')
     const isFixedTeamstore = some(cart, 'isFixed')
 
     const preorder = isFixedTeamstore && !reorder
 
-    const subsidiarySCA = get(data, 'subsidiarySCA.sca', false)
-    if (subsidiarySCA && !preorder) {
-      await this.createPaymentIntent()
-    }
+    // const subsidiarySCA = get(data, 'subsidiarySCA.sca', false)
+    // if (subsidiarySCA && !preorder) {
+    //   await this.createPaymentIntent()
+    // }
     if (card && stripeToken) {
       try {
         if (preorder) {

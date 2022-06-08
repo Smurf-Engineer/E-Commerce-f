@@ -205,7 +205,8 @@ const CheckoutSummary = ({
     ? currentCurrency.toUpperCase()
     : config.defaultCurrency.toUpperCase()
 
-  const handleOnPlaceOrder = (event) => onPlaceOrder(event, subsidiarySCA.sca)
+  const handleOnPlaceOrder = (event) => onPlaceOrder(event)
+  // const handleOnPlaceOrder = (event) => onPlaceOrder(event, subsidiarySCA.sca)
   const orderButtonComponent =
     paymentMethod === PaymentOptions.PAYPAL ? (
       <PaypalExpressBtn

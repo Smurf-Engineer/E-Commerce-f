@@ -29,8 +29,7 @@ import CreditCardForm from '../CreditCardFormBilling'
 import { AddressType, StripeCardData, CreditCardData } from '../../types/common'
 import Modal from '../../components/ConfirmCountryDialog'
 import {
-  PaymentOptions,
-  EU_SUBSIDIARY_COUNTRIES
+  PaymentOptions
 } from '../../screens/Checkout/constants'
 
 const { CREDITCARD, PAYPAL, INVOICE } = PaymentOptions
@@ -211,9 +210,10 @@ class Payment extends React.PureComponent<Props, {}> {
     if (!showContent) {
       return <div />
     }
-    const europeStripeAccount = EU_SUBSIDIARY_COUNTRIES.includes(
-      billingAddress.country.toLowerCase()
-    )
+    const europeStripeAccount = false
+    // const europeStripeAccount = EU_SUBSIDIARY_COUNTRIES.includes(
+    //   billingAddress.country.toLowerCase()
+    // )
     const paymentForm = (
       <CreditCardForm
         {...{
