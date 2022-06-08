@@ -10,8 +10,8 @@ interface Props {
 
 const CarouselItem = ({ item, onClick }: Props) => {
   const element = document.getElementById(`video_${item.id}`)
-  if (item && item.assetType === 'video' && element && element.paused && item.volume) {
-    element.play()
+  if (item && item.assetType === 'video' && element && item.volume) {
+    setInterval(() => { element.play() }, 1000)
   }
   return (
     <Container onClick={onClick}>
