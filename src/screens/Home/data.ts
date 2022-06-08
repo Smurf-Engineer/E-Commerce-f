@@ -35,6 +35,7 @@ export const getHomepageInfo = gql`
         mobileImage: image_mobile
         assetType: type
         url: link
+        volume
       }
       productTiles {
         id
@@ -101,6 +102,7 @@ export const getFeaturedImages = gql`
         mobileImage: image_mobile
         assetType: type
         url: link
+        volume
       }
     }
   }
