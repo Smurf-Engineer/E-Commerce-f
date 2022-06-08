@@ -1767,6 +1767,7 @@ export interface HeaderImagePlaceHolder {
   url?: string
   sport_id?: string | null
   assetType?: string
+  volume?: boolean
 }
 
 export interface HeaderImageResponse {

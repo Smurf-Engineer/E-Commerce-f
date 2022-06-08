@@ -26,10 +26,11 @@ const CarouselItem = ({ item, onClick }: Props) => {
             <VideoPreview
               autoPlay={true}
               loop={true}
-              muted={true}
+              muted={!item.volume}
               playsInline={true}
+              controls={item.volume}
               disablePictureInPicture={true}
-              controlsList="nofullscreen nodownload noremoteplayback"
+              controlsList={item.volume ? 'volume' : 'nofullscreen nodownload noremoteplayback'}
             >
               <source src={matches && item.mobileImage ? item.mobileImage : item.desktopImage} type="video/mp4" />
             </VideoPreview>
