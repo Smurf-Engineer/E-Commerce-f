@@ -34,7 +34,8 @@ import {
   OPEN_CURRENCY_WARNING,
   SET_PAYMENT_ID,
   REMOVE_CLIENT_SECRET,
-  SET_ADDRESS_EDIT
+  SET_ADDRESS_EDIT,
+  SET_TOTAL_REDUCER
 } from './constants'
 import {
   AnyAction,
@@ -89,6 +90,11 @@ export const emailCheckAction = (checked: boolean): AnyAction => ({
 export const showAddressFormAction = (show: boolean): AnyAction => ({
   type: SHOW_ADDRESS_FORM,
   show
+})
+
+export const setTotalReducerAction = (value: number): AnyAction => ({
+  type: SET_TOTAL_REDUCER,
+  value
 })
 
 export const showBillingAddressFormAction = (show: boolean, modal?: boolean): AnyAction => ({

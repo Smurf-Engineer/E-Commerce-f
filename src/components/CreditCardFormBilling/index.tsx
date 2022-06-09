@@ -33,7 +33,12 @@ import {
   CardText,
   TitleDiv,
   ValueDiv,
-  NewAddressDiv
+  NewAddressDiv,
+  CheckCircle,
+  NoPaymentRequired,
+  TitleBilling,
+  DisabledText,
+  WarningIcon
 } from './styledComponents'
 import ShippingAddressForm from '../ShippingAddressForm'
 import MyAddresses from '../MyAddressesList'
@@ -60,6 +65,7 @@ interface Props {
   isEuSubsidiary: boolean
   isFixedTeamstore: boolean
   isInvoice: boolean
+  disabledMethods: boolean
   showBillingAddressFormAction: (show: boolean, modal?: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
@@ -100,6 +106,7 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
+      disabledMethods,
       isInvoice,
       cardHolderName,
       billingAddress: {
@@ -178,7 +185,7 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
 
     return (
       <Container>
-        {!isInvoice && <div>
+        {!isInvoice && !disabledMethods && <div>
           <Title>{formatMessage(messages.methodCreditCard)}</Title>
           <MyCardsRow>
             <MyCards
@@ -193,7 +200,7 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
               }}
             />
           </MyCardsRow>
-          <AnimateHeight height={!showCardForm ? 0 : 'auto'} duration={500}>
+          <AnimateHeight height={(!showCardForm || disabledMethods) ? 0 : 'auto'} duration={500}>
             <Row>
               <Column>
                 <InputTitleContainer>
@@ -228,8 +235,22 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
             </Row>
           </AnimateHeight>
         </div>}
+        {disabledMethods &&
+          <NoPaymentRequired>
+            <CheckCircle type="check-circle" />
+            {formatMessage(messages.noPaymentRequired)}
+          </NoPaymentRequired>
+        }
         <ContainerBilling>
-          <Title>{formatMessage(messages.billingAddress)}</Title>
+          <TitleBilling>
+            {formatMessage(messages.billingAddress)}
+            {disabledMethods &&
+              <DisabledText>
+                <WarningIcon type="warning" />
+                {formatMessage(messages.billingAddressRequired)}
+              </DisabledText>
+            }
+          </TitleBilling>
           <StyledCheckbox
             checked={sameBillingAndShipping}
             onChange={this.handleOnChangeDefaultShipping}
@@ -400,6 +421,7 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
 
   handleOnContinue = async (ev: any) => {
     const {
+      disabledMethods,
       cardHolderName,
       isInvoice,
       billingAddress: {
@@ -438,7 +460,7 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
         !city ||
         !zipCode ||
         !phone)
-    if (emptyForm && cardHolderName) {
+    if ((emptyForm && cardHolderName) || (emptyForm && disabledMethods)) {
       this.setState({ highlightCards: true })
       if (this.addressList) {
         zenscroll.to(this.addressList, 700)
@@ -447,7 +469,7 @@ export class CreditCardFormBilling extends React.Component<Props, {}> {
       invalidBillingFormAction(true)
       return
     }
-    if (isInvoice && !emptyForm) {
+    if ((isInvoice || disabledMethods) && !emptyForm) {
       nextStep()
       return
     }

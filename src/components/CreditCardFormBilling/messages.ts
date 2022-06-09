@@ -33,9 +33,17 @@ export default defineMessages({
     id: 'components.CreditCardFormBilling.requiredField',
     defaultMessage: 'This field is required'
   },
+  noPaymentRequired: {
+    id: 'components.CreditCardFormBilling.noPaymentRequired',
+    defaultMessage: 'No Payment Required'
+  },
   billingAddress: {
     id: 'components.CreditCardFormBilling.billingAddress',
     defaultMessage: 'Billing Address'
+  },
+  billingAddressRequired: {
+    id: 'components.CreditCardFormBilling.billingAddressRequired',
+    defaultMessage: 'Billing address required even if no payment is required'
   },
   sameShippingAddress: {
     id: 'components.CreditCardFormBilling.sameShippingAddress',

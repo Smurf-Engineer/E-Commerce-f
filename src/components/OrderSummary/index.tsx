@@ -59,6 +59,8 @@ interface Props {
   variables?: number
   simpleDesign?: boolean
   isFixedStore?: boolean
+  totalReducer?: number
+  setTotalReducer: (value: number) => void
   formatMessage: (messageDescriptor: Message, params?: PercentParams) => string
   setCouponCodeAction?: (code: CouponCode) => void
   deleteCouponCodeAction?: () => void
@@ -74,6 +76,29 @@ interface PercentParams {
 const InputSearch = Input.Search
 const Panel = Collapse.Panel
 export class OrderSummary extends React.Component<Props, {}> {
+  componentDidUpdate(prevProps: Props) {
+    const { totalReducer: oldTotal } = prevProps 
+    const {
+      setTotalReducer,
+      discount = 0,
+      subtotal = 0,
+      totalSum = 0,
+      proDesignReview = 0,
+      taxFee = 0,
+      taxPst = 0,
+      taxGst = 0,
+      variables = 0,
+      shippingTotal = 0,
+      upgrades = 0
+    } = this.props
+    const extraFee = proDesignReview + taxFee + taxPst + taxGst + shippingTotal + upgrades + variables
+    const totalWithDiscount = discount > subtotal ? extraFee : totalSum
+    const netTotal =
+      totalWithDiscount || discount ? totalWithDiscount : subtotal + extraFee
+    if (oldTotal !== netTotal && setTotalReducer) {
+      setTotalReducer(netTotal)
+    }
+  }
   render() {
     const {
       subtotal,

@@ -44,6 +44,7 @@ interface Props {
   selectedCard: CreditCardData
   currency: string
   invoiceTerms: string
+  disabledMethods: boolean
   formatMessage: (messageDescriptor: any) => string
   goToStep: (step: number) => void
 }
@@ -51,6 +52,7 @@ interface Props {
 class Review extends React.PureComponent<Props, {}> {
   render() {
     const {
+      disabledMethods = false,
       showContent,
       invoiceTerms,
       formatMessage,
@@ -180,32 +182,34 @@ class Review extends React.PureComponent<Props, {}> {
                 </div>
               )}
           </InfoContainer>
-          <InfoContainer>
-            <Title>{formatMessage(messages.payment)}</Title>
-            {paymentMethod === PaymentOptions.INVOICE ?
-              <InvoiceDiv>
-                <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoice)}</InvoiceTitle>
-                <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
-              </InvoiceDiv>
-              : isCCPayment ? (
-                <div>
-                  <PaymentData card={selectedCard} />
-                  <EditInfoButton onClick={this.handleOnGoToStepTwo}>
-                    {formatMessage(messages.edit)}
-                  </EditInfoButton>
-                </div>
-              ) : isIbanPayment ? (
-                <div>
-                  <PaymentData iban={ibanData} />
-                  <EditInfoButton onClick={this.handleOnGoToStepTwo}>
-                    {formatMessage(messages.edit)}
-                  </EditInfoButton>
-                </div>
-              ) : (
-                    <img src={iconPaypal} />
-                  )
-            }
-          </InfoContainer>
+          {!disabledMethods &&
+            <InfoContainer>
+              <Title>{formatMessage(messages.payment)}</Title>
+              {paymentMethod === PaymentOptions.INVOICE ?
+                <InvoiceDiv>
+                  <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoice)}</InvoiceTitle>
+                  <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
+                </InvoiceDiv>
+                : isCCPayment ? (
+                  <div>
+                    <PaymentData card={selectedCard} />
+                    <EditInfoButton onClick={this.handleOnGoToStepTwo}>
+                      {formatMessage(messages.edit)}
+                    </EditInfoButton>
+                  </div>
+                ) : isIbanPayment ? (
+                  <div>
+                    <PaymentData iban={ibanData} />
+                    <EditInfoButton onClick={this.handleOnGoToStepTwo}>
+                      {formatMessage(messages.edit)}
+                    </EditInfoButton>
+                  </div>
+                ) : (
+                      <img src={iconPaypal} />
+                    )
+              }
+            </InfoContainer>
+          }
         </BottomContainer>
       </Container>
     )

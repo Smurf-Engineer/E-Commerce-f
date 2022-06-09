@@ -60,6 +60,7 @@ interface Props {
   isReseller: boolean
   onBehalf: boolean
   invoiceTerms: string
+  totalReducer: number
   setPayRef: (payRef: any) => void
   updateReference: (evt: React.FormEvent<HTMLInputElement>) => void
   showBillingAddressFormAction: (show: boolean, modal?: boolean) => void
@@ -145,21 +146,27 @@ class Payment extends React.PureComponent<Props, {}> {
   }
 
   handlePaypalClick = () => {
-    const { setPaymentMethodAction } = this.props
-    setPaymentMethodAction(PAYPAL)
-    this.setState({
-      openConfirm: true
-    })
+    const { setPaymentMethodAction, totalReducer } = this.props
+    if (totalReducer > 0) {
+      setPaymentMethodAction(PAYPAL)
+      this.setState({
+        openConfirm: true
+      })
+    }
   }
 
   handleCreditCardClick = () => {
-    const { setPaymentMethodAction } = this.props
-    setPaymentMethodAction(CREDITCARD)
+    const { setPaymentMethodAction, totalReducer } = this.props
+    if (totalReducer > 0) {
+      setPaymentMethodAction(CREDITCARD)
+    }
   }
 
   handleInvoiceClick = () => {
-    const { setPaymentMethodAction } = this.props
-    setPaymentMethodAction(INVOICE)
+    const { setPaymentMethodAction, totalReducer } = this.props
+    if (totalReducer > 0) {
+      setPaymentMethodAction(INVOICE)
+    }
   }
 
   render() {
@@ -168,6 +175,7 @@ class Payment extends React.PureComponent<Props, {}> {
       billingAddress,
       hasError,
       onBehalf,
+      totalReducer,
       cardHolderName,
       sameBillingAndShipping,
       stripeError,
@@ -210,6 +218,7 @@ class Payment extends React.PureComponent<Props, {}> {
     if (!showContent) {
       return <div />
     }
+    const disabledMethods = totalReducer <= 0
     const europeStripeAccount = false
     // const europeStripeAccount = EU_SUBSIDIARY_COUNTRIES.includes(
     //   billingAddress.country.toLowerCase()
@@ -241,6 +250,7 @@ class Payment extends React.PureComponent<Props, {}> {
           limit,
           setSkipValueAction,
           showBillingForm,
+          disabledMethods,
           showBillingModal,
           showBillingAddressFormAction,
           paymentClientSecret,
@@ -258,37 +268,39 @@ class Payment extends React.PureComponent<Props, {}> {
         isEuSubsidiary={europeStripeAccount}
         />
     )
-
     return (
       <Container>
         <Title>{formatMessage(messages.paymentMethod)}</Title>
         <ContainerMethods secondary={isReseller}>
           <MethodButton
             secondary={isReseller}
-            selected={paymentMethod === CREDITCARD}
+            disabledProp={disabledMethods}
+            selected={!disabledMethods && paymentMethod === CREDITCARD}
             onClick={this.handleCreditCardClick}
           >
-              {paymentMethod === CREDITCARD && <CheckIcon type="check-circle" theme="filled" />}
+              {!disabledMethods && paymentMethod === CREDITCARD && <CheckIcon type="check-circle" theme="filled" />}
             <PaymentIcon type="credit-card" />
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
           {!isFixedTeamstore && !onBehalf &&
             <MethodButton
               secondary={isReseller}
-              selected={paymentMethod === PAYPAL}
+              disabledProp={disabledMethods}
+              selected={!disabledMethods && paymentMethod === PAYPAL}
               onClick={this.handlePaypalClick}
             >
-              {paymentMethod === PAYPAL && <CheckIcon type="check-circle" theme="filled" />}
+              {!disabledMethods && paymentMethod === PAYPAL && <CheckIcon type="check-circle" theme="filled" />}
               <PaypalIcon src={paypalIcon} />
             </MethodButton>
           }
           {invoiceEnabled && invoiceTerms &&
             <MethodButton
-              selected={paymentMethod === INVOICE}
+              selected={!disabledMethods && paymentMethod === INVOICE}
               secondary={isReseller}
+              disabledProp={disabledMethods}
               onClick={this.handleInvoiceClick}
             >
-              {paymentMethod === INVOICE && <CheckIcon type="check-circle" theme="filled" />}
+              {!disabledMethods && paymentMethod === INVOICE && <CheckIcon type="check-circle" theme="filled" />}
               <PaymentIcon type="audit" />
               {formatMessage(messages.invoice)}
             </MethodButton>
@@ -304,7 +316,7 @@ class Payment extends React.PureComponent<Props, {}> {
             </ReferenceDiv>
           }
         </ContainerMethods>
-        {paymentMethod === INVOICE &&
+        {paymentMethod === INVOICE && !disabledMethods &&
           <InvoiceDiv>
             <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoice)}</InvoiceTitle>
             <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>

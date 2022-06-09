@@ -75,6 +75,8 @@ interface Props {
   isFixedStore?: boolean
   disabledContinue?: boolean
   history: any
+  totalReducer?: number
+  setTotalReducer: (value: number) => void
   formatMessage: (messageDescriptor: any) => string
   couponCode?: CouponCode
   productsPrices: ProductPrice[]
@@ -119,7 +121,9 @@ const CheckoutSummary = ({
   shipping,
   subsidiaryQuery,
   taxShipQuery,
-  productsPrices
+  productsPrices,
+  totalReducer,
+  setTotalReducer
 }: Props) => {
   let paypalClientId
   const subsidiarySCA = get(subsidiaryQuery, 'subsidiarySCA', { subsidiary: 1, sca: false })
@@ -276,6 +280,8 @@ const CheckoutSummary = ({
           couponCode,
           upgrades,
           variables,
+          totalReducer,
+          setTotalReducer,
           totalWithoutDiscount,
           setCouponCodeAction,
           deleteCouponCodeAction,
