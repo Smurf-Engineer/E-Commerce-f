@@ -5,7 +5,8 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Checkbox from 'antd/lib/checkbox'
 import Button from 'antd/lib/button'
-import { GRAY, RED, GRAY_DARK, BLUE, WHITE } from '../../theme/colors'
+import { GRAY, RED, GRAY_DARK, BLUE, WHITE, ORANGE } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
   width: 100%;
@@ -195,4 +196,45 @@ export const NewAddressDiv = styled.div`
   background: white;
   color: blue;
   font-size: 12px;
+`
+
+export const NoPaymentRequired = styled.div`
+  margin: 60px;
+  font-family: Avenir;
+  margin-left: 30px;
+`
+
+export const CheckCircle = styled(Icon)`
+  margin-right: 12px;
+  color: ${BLUE};
+  font-size: 16px;
+  vertical-align: sub;
+`
+
+export const TitleBilling = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  margin: 24px 0;
+`
+
+export const DisabledText = styled.div`
+  display: inline-block;
+  font-weight: normal;
+  margin-left: 136px;
+  font-size: 14px;
+  @media (max-width: 800px) {
+    display: block;
+    font-weight: normal;
+    margin-top: 32px;
+    font-size: 14px;
+    float: right;
+    margin-bottom: 20px;
+  }
+`
+
+export const WarningIcon = styled(Icon)`
+  margin-right: 14px;
+  color: ${ORANGE};
 `

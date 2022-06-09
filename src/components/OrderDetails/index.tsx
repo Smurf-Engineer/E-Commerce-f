@@ -187,7 +187,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     const canUpdatePayment = get(data, 'orderQuery.canUpdatePayment', false)
     const productionHours = momentTz().tz('America/Los_Angeles')
       .diff(momentTz(inProductionTimestamp).tz('America/Los_Angeles'), 'hours')
-    const productionValid = productionHours <= 48
+    const productionValid = productionHours <= 24
     if (orderStatus === INVOICE_SENT && !!invoiceLink && showPaymentIssue) {
       this.setState({ showPaymentIssue: false })
       warning({
@@ -406,7 +406,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     } = data.orderQuery
     const productionHours = momentTz().tz('America/Los_Angeles')
       .diff(momentTz(inProductionTimestamp).tz('America/Los_Angeles'), 'hours')
-    const productionValid = productionHours <= 48
+    const productionValid = productionHours <= 24
     const netsuiteObject = get(netsuite, 'orderStatus')
     const isMobileModal = typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches
 

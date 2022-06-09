@@ -37,9 +37,12 @@ import {
   SET_PAYMENT_ID,
   REMOVE_CLIENT_SECRET,
   PaymentOptions,
-  SET_ADDRESS_EDIT
+  SET_ADDRESS_EDIT,
+  SET_TOTAL_REDUCER,
+  CheckoutTabs
 } from './constants'
 import { Reducer } from '../../types/common'
+import message from 'antd/lib/message'
 
 const ADDRESSES_TO_SHOW = 10
 
@@ -86,6 +89,7 @@ export const initialState = fromJS({
   cardExpDate: '',
   cardBrand: '',
   stripeError: '',
+  totalReducer: 1,
   ibanError: false,
   loadingBilling: false,
   stripeToken: '',
@@ -339,6 +343,8 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         cardHolderName: ''
       })
     }
+    case SET_TOTAL_REDUCER:
+      return state.set('totalReducer', action.value)
     case SET_SELECTED_CARD_TO_PAY:
       return state.merge({
         ...action.card,
@@ -404,8 +410,18 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('openAddressesModal', action.open)
     case SET_COUPON_CODE:
       return state.merge({ couponCode: { ...action.couponCode } })
-    case DELETE_COUPON_CODE:
+    case DELETE_COUPON_CODE: {
+      const totalReducer = state.get('totalReducer')
+      const currentStep = state.get('currentStep')
+      if (totalReducer <= 0 && currentStep === CheckoutTabs.ReviewTab) {
+        message.error('Please select a payment method to proceed.')
+        return state.merge({
+          couponCode: null,
+          currentStep: CheckoutTabs.PaymentTab
+        })
+      }
       return state.set('couponCode', null)
+    }
     case OPEN_CURRENCY_WARNING:
       return state.set('openCurrencyWarning', action.open)
     case SET_PAYMENT_ID:

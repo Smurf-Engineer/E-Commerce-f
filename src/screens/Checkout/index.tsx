@@ -218,6 +218,7 @@ interface Props extends RouteComponentProps<any> {
   intentId: string
   subsidiaryQuery?: number
   // Redux actions
+  setTotalReducerAction: (value: number) => void
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
   setStripeIbanDataAction: (iban: IbanData) => void
   setLoadingBillingAction: (loading: boolean) => void
@@ -365,7 +366,8 @@ class Checkout extends React.Component<Props, {}> {
       paymentClientSecret,
       user,
       updateNotification,
-      updatePhone
+      updatePhone,
+      totalReducer
     } = this.props
     const { smsAlertsModal, referenceNumber } = this.state
     const userPhone = get(profileData, 'profileData.userProfile.phone', '')
@@ -583,6 +585,7 @@ class Checkout extends React.Component<Props, {}> {
                     email,
                     billingAddress,
                     cardHolderName,
+                    totalReducer,
                     stripeError,
                     setStripeErrorAction,
                     inputChangeAction,
@@ -644,6 +647,7 @@ class Checkout extends React.Component<Props, {}> {
                   }}
                   currency={currentCurrency || config.defaultCurrency}
                   cart={shoppingCart}
+                  disabledMethods={totalReducer <= 0}
                   showContent={currentStep === ReviewTab}
                   formatMessage={intl.formatMessage}
                   goToStep={this.handleOnGoToStep}
@@ -680,6 +684,7 @@ class Checkout extends React.Component<Props, {}> {
                 shipAddressCountry={shippingAddress.country}
                 formatMessage={intl.formatMessage}
                 currencySymbol={symbol}
+                setTotalReducer={this.setTotalReducer}
                 totalWithoutDiscount={totalWithoutDiscount}
                 onPaypalSuccess={this.onPaypalSuccess}
                 onPaypalCancel={this.onPaypalCancel}
@@ -693,6 +698,7 @@ class Checkout extends React.Component<Props, {}> {
                 {...{
                   youthTotal,
                   showOrderButton,
+                  totalReducer,
                   couponCode,
                   isFixedStore,
                   history,
@@ -940,6 +946,11 @@ class Checkout extends React.Component<Props, {}> {
   setAddressEdit = (address: AddressType | {}, billing?: boolean) => {
     const { setAddressEditAction } = this.props
     setAddressEditAction(address, billing)
+  }
+
+  setTotalReducer = (value: number) => {
+    const { setTotalReducerAction } = this.props
+    setTotalReducerAction(value)
   }
 
   handleOnPlaceOrder = async (event: any, sca?: boolean) => {

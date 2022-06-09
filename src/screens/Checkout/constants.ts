@@ -34,6 +34,7 @@ export const SET_PAYMENT_METHOD = `${namespace}/SET_PAYMENT_METHOD`
 // Country
 export const SAVE_COUNTRY = `${namespace}/SAVE_COUNTRY`
 
+export const SET_TOTAL_REDUCER = `${namespace}/SET_TOTAL_REDUCER`
 export const OPEN_ADDRESSES_MODAL = `${namespace}/OPEN_ADDRESSES_MODAL`
 export const SET_SKIP_VALUE = `${namespace}/SET_SKIP_VALUE`
 export const SET_COUPON_CODE = `${namespace}/SET_COUPON_CODE`

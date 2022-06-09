@@ -35,6 +35,7 @@ export const ContainerMethods = styled.div`
 
 interface ButtonProps {
   selected?: boolean
+  disabledProp?: boolean
 }
 
 export const PaymentIcon = styled(Icon)`
@@ -99,6 +100,15 @@ export const MethodButton = styled(Button)`
   ${({ secondary }: DivProps) => secondary ? `
     @media (max-width: 768px) {
       margin-bottom: 20px;
+    }
+  ` : ''}
+  ${({ disabledProp }: ButtonProps) => disabledProp ? `
+    filter: saturate(0) brightness(1.25);
+    border: 0.5px solid ${GRAY_STRONG};
+    background-color: ${GRAY_SNOW};
+    color: ${GRAY_STRONG}; 
+    &:hover {
+      cursor: not-allowed;
     }
   ` : ''}
 `
