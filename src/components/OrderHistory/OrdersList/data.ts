@@ -22,6 +22,7 @@ export const getOrdersQuery = gql`
         estimatedDate: estimated_date
         status
         canUpdatePayment
+        inProductionTimestamp: in_production_timestamp
         teamStoreId: teamstore_id
         currency {
           shortName: short_name

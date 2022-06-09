@@ -8,6 +8,7 @@ import { FormattedHTMLMessage } from 'react-intl'
 import message from 'antd/lib/message'
 import domtoimage from 'dom-to-image'
 import moment from 'moment'
+import momentTz from 'moment-timezone'
 import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import messages from './messages'
@@ -178,8 +179,16 @@ export class OrderDetails extends React.Component<Props, {}> {
     const { showPaymentIssue, shownAction } = this.state
     const invoiceLink = get(data, 'orderQuery.invoiceLink', '')
     const status = get(data, 'orderQuery.status', '')
+    const inProductionTimestamp = get(data, 'orderQuery.inProductionTimestamp', '')
+    const netsuite = get(data, 'orderQuery.netsuite', {})
+    const netsuiteObject = get(netsuite, 'orderStatus')
+    const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
+    const orderStatus = netsuiteStatus || (status === INVOICE_SENT ? PAYMENT_ISSUE : status)
     const canUpdatePayment = get(data, 'orderQuery.canUpdatePayment', false)
-    if (status === INVOICE_SENT && !!invoiceLink && showPaymentIssue) {
+    const productionHours = momentTz().tz('America/Los_Angeles')
+      .diff(momentTz(inProductionTimestamp).tz('America/Los_Angeles'), 'hours')
+    const productionValid = productionHours <= 48
+    if (orderStatus === INVOICE_SENT && !!invoiceLink && showPaymentIssue) {
       this.setState({ showPaymentIssue: false })
       warning({
         title: <ModalTitle>{formatMessage(messages.paymentIssueTitle)}</ModalTitle>,
@@ -197,8 +206,13 @@ export class OrderDetails extends React.Component<Props, {}> {
     }
     if (!shownAction && data && !data.loading && (showEdit || showDelete) && 
         (
-          (canUpdatePayment || status === PREORDER) || 
-          (onBehalf && (status === PAID_STATUS || status === INVOICED))
+          (canUpdatePayment || orderStatus === PREORDER) || 
+          (onBehalf && (
+            orderStatus === PAID_STATUS || 
+            orderStatus === INVOICED || 
+            (orderStatus === IN_PRODUCTION && productionValid) || 
+            orderStatus === PENDING_APPROVAL    
+          ))
         ) 
         && !invoiceLink
       ) {
@@ -345,6 +359,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       shippingStreet,
       owner,
       userId,
+      inProductionTimestamp,
       resellerComission = 0,
       resellerInline = 0,
       resellerMargin = 0,
@@ -389,7 +404,9 @@ export class OrderDetails extends React.Component<Props, {}> {
       fixedPriceStore,
       freeShipping
     } = data.orderQuery
-
+    const productionHours = momentTz().tz('America/Los_Angeles')
+      .diff(momentTz(inProductionTimestamp).tz('America/Los_Angeles'), 'hours')
+    const productionValid = productionHours <= 48
     const netsuiteObject = get(netsuite, 'orderStatus')
     const isMobileModal = typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches
 
@@ -566,7 +583,7 @@ export class OrderDetails extends React.Component<Props, {}> {
         <PaymentData {...{ card }} />
       ) : paymentMethod === PaymentOptions.INVOICE ?
           <InvoiceDiv>
-            <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoice)}</InvoiceTitle>
+            <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoiceLabel)}</InvoiceTitle>
             <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
           </InvoiceDiv> : (
           <StyledImage crossOrigin="anonymous" src={iconPaypal} />
@@ -575,7 +592,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     return (
       <Container>
         {savingPdf && <SavingContainer><Spin size="large" /></SavingContainer>}
-        {status === PAYMENT_ISSUE && (
+        {orderStatus === PAYMENT_ISSUE && (
           <ErrorMessage>
             <Paragraph
               dangerouslySetInnerHTML={{
@@ -588,11 +605,11 @@ export class OrderDetails extends React.Component<Props, {}> {
           <Icon type="left" />
           <span>{formatMessage(getBackMessage)}</span>
         </ViewContainer>
-        <Div secondary={status === PREORDER}>
+        <Div secondary={orderStatus === PREORDER}>
           <ScreenTitle>
             <FormattedMessage {...messages.title} />
           </ScreenTitle>
-          {status !== PREORDER && !onBehalf &&
+          {orderStatus !== PREORDER && !onBehalf &&
             <DownloadInvoice onClick={this.downloadInvoice}>
               {savingPdf ? 
                 <Spin size="small" /> :
@@ -736,7 +753,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               />
             </OrderDelivery>
             <OrderSummaryContainer {...{ savingPdf }}>
-              {status === PREORDER && !savingPdf && !fixedPriceStore &&
+              {orderStatus === PREORDER && !savingPdf && !fixedPriceStore &&
                 <AboutCollab onClick={this.openStatusModal}>
                   <CollabIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
                   {formatMessage(messages.aboutDynamicPricing)}
@@ -745,13 +762,19 @@ export class OrderDetails extends React.Component<Props, {}> {
               {(
                 (
                   (teamStoreId && owner) && !savingPdf &&
-                  (status === PREORDER || canUpdatePayment) && status !== CANCELLED
+                  (orderStatus === PREORDER || canUpdatePayment) && orderStatus !== CANCELLED
                 ) ||
-                (onBehalf && (status === PAID_STATUS || status === INVOICED) && owner)
+                (onBehalf && 
+                  (orderStatus === PAID_STATUS || 
+                    orderStatus === INVOICED || 
+                    (orderStatus === IN_PRODUCTION && productionValid) || 
+                    orderStatus === PENDING_APPROVAL
+                  ) 
+                && owner)
               ) 
                 && !invoiceLink &&
                   <OrderActions>
-                    {status === PAYMENT_ISSUE ?
+                    {orderStatus === PAYMENT_ISSUE ?
                       <ButtonEdit onClick={this.handleOnEditOrder}>
                         {formatMessage(messages.updatePayment)}
                       </ButtonEdit> :
@@ -874,7 +897,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             onClick={() => true}
             hide={true}
             fixedPrice={fixedPriceStore}
-            fixedCart={status === PAYMENT_ISSUE}
+            fixedCart={orderStatus === PAYMENT_ISSUE}
             replaceOrder={shortId}
           />
         }
@@ -998,7 +1021,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             </FAQBody>
           </FAQSection>
         }
-        {status === PREORDER && !savingPdf && !fixedPriceStore &&
+        {orderStatus === PREORDER && !savingPdf && !fixedPriceStore &&
           <Modal
             visible={openStatusInfo}
             footer={null}
@@ -1028,7 +1051,8 @@ export class OrderDetails extends React.Component<Props, {}> {
   }
 
   handleOnEditOrder = () => {
-    const { formatMessage, history } = this.props
+    const { formatMessage, history, data, onBehalf } = this.props
+    const paymentMethod = get(data, 'orderQuery.paymentMethod', '')
     confirm({
       icon: ' ',
       centered: true,
@@ -1036,7 +1060,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       title: <TitleEdit>{formatMessage(messages.editOrderTitle)}</TitleEdit>,
       content: <EditContent
         dangerouslySetInnerHTML={{
-          __html: formatMessage(messages.editOrderMessage)
+          __html: formatMessage(messages[onBehalf ? paymentMethod : 'editOrderMessage'])
         }}
       />,
       width: '512px',
@@ -1056,10 +1080,15 @@ export class OrderDetails extends React.Component<Props, {}> {
   }
 
   handleOnDeleteOrder = () => {
-    const { formatMessage, onReturn } = this.props
+    const { formatMessage, onReturn, data, onBehalf } = this.props
+    const paymentMethod = get(data, 'orderQuery.paymentMethod', '')
     confirm({
       title: formatMessage(messages.deleteTeamstoreTitle),
-      content: formatMessage(messages.deleteTeamstoreMessage),
+      content: <EditContent
+        dangerouslySetInnerHTML={{
+          __html: formatMessage(messages[onBehalf ? `${paymentMethod}Delete` : 'deleteTeamstoreMessage'])
+        }}
+      />,
       okText: formatMessage(messages.delete),
       onOk: async () => {
         try {

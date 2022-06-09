@@ -133,8 +133,8 @@ export default defineMessages({
     // tslint:disable-next-line: max-line-length
     defaultMessage: '<p>Payment issues indicate there was a problem during the payment process. There are several reasons why this could occur including fraud protection by your card issuer, card updates, or discrepancies in transaction amounts in the case of PayPal. In this case, you will receive a notification from us together with link to a secure payment page to resubmit your payment.</p><p>Orders with payment issues are put ON HOLD until payment is received. If payment is received within 24 hours of the original store cut-off date, we will honor the stated estimated delivery date. <u>Delivery dates for payments made after 24 hours are subject to change as we would need to produce your order separately from the bulk order.</u></p><p>If payment is not received within 5 days of the payment issue notice, your order is automatically cancelled and you will need to speak with customer service to reinstate your order with a new delivery date.</p>'
   },
-  invoice: {
-    id: 'components.OrderDetails.invoice',
+  invoiceLabel: {
+    id: 'components.OrderDetails.invoiceLabel',
     defaultMessage: 'Invoice'
   },
   paymentTerms: {
@@ -244,6 +244,42 @@ export default defineMessages({
     defaultMessage:
       // tslint:disable-next-line:max-line-length
       '<p>Editing your order will place ALL the original items back to the shopping cart and the <u>original order will be cancelled.</u></p> <p>You can then make changes to the items in the cart, including deleting or adding more items from the Team Store.</p> <p><strong>You will need to confirm your payment information and complete the checkout in order to resubmit the order.</strong></p>'
+  },
+  creditcard: {
+    id: 'components.OrderDetails.creditcard',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>Editing your order will place ALL the original items back to the shopping cart and the <u>original order will be cancelled.</u></p> <p>You can then make changes to the items in the cart, including deleting or adding more items from the Team Store.</p> <p><strong>You will need to confirm your payment information and complete the checkout in order to resubmit the order.</strong></p><p>This order was paid by <strong>credit card</strong> and all charges will be <strong>auto refunded</strong>.</p>'
+  },
+  invoice: {
+    id: 'components.OrderDetails.invoice',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>Editing your order will place ALL the original items back to the shopping cart and the <u>original order will be cancelled.</u></p> <p>You can then make changes to the items in the cart, including deleting or adding more items from the Team Store.</p> <p><strong>You will need to confirm your payment information and complete the checkout in order to resubmit the order.</strong></p><p>This order was paid by <strong>Invoice</strong> and all charges will need to be <strong>manually refunded</strong>.</p>'
+  },
+  paypal: {
+    id: 'components.OrderDetails.paypal',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>Editing your order will place ALL the original items back to the shopping cart and the <u>original order will be cancelled.</u></p> <p>You can then make changes to the items in the cart, including deleting or adding more items from the Team Store.</p> <p><strong>You will need to confirm your payment information and complete the checkout in order to resubmit the order.</strong></p><p>This order was paid by <strong>PayPal</strong> and all charges will be <strong>auto refunded</strong>.</p>'
+  },
+  creditcardDelete: {
+    id: 'components.OrderDetails.creditcard',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>Cancelled orders will no longer count towards team quantities but you can always place a new order during the open ordering period to count towards the team totals.</p><p>This order was paid by <strong>credit card</strong> and all charges will be <strong>auto refunded</strong>.</p>'
+  },
+  invoiceDelete: {
+    id: 'components.OrderDetails.invoice',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>Cancelled orders will no longer count towards team quantities but you can always place a new order during the open ordering period to count towards the team totals.</p><p>This order was paid by <strong>Invoice</strong> and all charges will need to be <strong>manually refunded</strong>.</p>'
+  },
+  paypalDelete: {
+    id: 'components.OrderDetails.paypal',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>Cancelled orders will no longer count towards team quantities but you can always place a new order during the open ordering period to count towards the team totals.</p><p>This order was paid by <strong>PayPal</strong> and all charges will be <strong>auto refunded</strong>.</p>'
   },
   proceed: {
     id: 'components.OrderDetails.proceed',
