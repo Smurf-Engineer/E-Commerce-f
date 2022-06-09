@@ -411,8 +411,8 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
     case SET_COUPON_CODE:
       return state.merge({ couponCode: { ...action.couponCode } })
     case DELETE_COUPON_CODE: {
-      const totalReducer = state.get('totalReducer')
       const currentStep = state.get('currentStep')
+      const totalReducer = state.get('totalReducer')
       if (totalReducer <= 0 && currentStep === CheckoutTabs.ReviewTab) {
         message.error('Please select a payment method to proceed.')
         return state.merge({
