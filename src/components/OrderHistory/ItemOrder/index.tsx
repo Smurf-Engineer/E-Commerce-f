@@ -73,7 +73,7 @@ const ItemOrder = ({
   const productionHours = momentTz().tz('America/Los_Angeles')
       .diff(momentTz(inProductionTimestamp).tz('America/Los_Angeles'), 'hours')
   const productionValid = productionHours <= 48
-  console.log('🔴productionHours:', productionHours)
+
   return (
     <Container onClick={handleOnClick}>
       <Cell>{shortId}</Cell>
