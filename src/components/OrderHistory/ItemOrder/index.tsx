@@ -2,9 +2,19 @@
  * ItemOrder Component - Created by miguelcanobbio on 13/07/18.
  */
 import * as React from 'react'
+import momentTz from 'moment-timezone'
 import { Container, Cell, DeleteButton, EditIcon } from './styledComponents'
 import upperFirst from 'lodash/upperFirst'
-import { CANCELLED, INVOICE_SENT, PAID_STATUS, PAYMENT_ISSUE, PREORDER } from '../../../constants'
+import {
+  CANCELLED,
+  INVOICED,
+  INVOICE_SENT,
+  IN_PRODUCTION,
+  PAID_STATUS,
+  PAYMENT_ISSUE,
+  PENDING_APPROVAL,
+  PREORDER
+} from '../../../constants'
 
 interface Props {
   date: string
@@ -15,6 +25,7 @@ interface Props {
   currency: string
   service: string
   shortId: string
+  inProductionTimestamp: string
   onBehalf: boolean
   canUpdatePayment: boolean
   owner: boolean
@@ -34,6 +45,7 @@ const ItemOrder = ({
   currency,
   shortId,
   owner,
+  inProductionTimestamp,
   canUpdatePayment,
   teamStoreId,
   onBehalf,
@@ -58,6 +70,10 @@ const ItemOrder = ({
     }
     deleteOrder(shortId)
   }
+  const productionHours = momentTz().tz('America/Los_Angeles')
+      .diff(momentTz(inProductionTimestamp).tz('America/Los_Angeles'), 'hours')
+  const productionValid = productionHours <= 48
+  console.log('🔴productionHours:', productionHours)
   return (
     <Container onClick={handleOnClick}>
       <Cell>{shortId}</Cell>
@@ -71,7 +87,12 @@ const ItemOrder = ({
       <Cell>
         {(
           (teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED) ||
-          (onBehalf && status === PAID_STATUS && owner)
+          (onBehalf && (
+            status === PAID_STATUS || 
+            status === INVOICED || 
+            (status === IN_PRODUCTION && productionValid) || 
+            status === PENDING_APPROVAL    
+          ) && owner)
         ) &&
           <EditIcon type="edit" onClick={editOrderAction}>Edit</EditIcon>
         }
@@ -79,7 +100,12 @@ const ItemOrder = ({
       <Cell>
         {(
           (teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED) || 
-          (onBehalf && status === PAID_STATUS && owner)
+          (onBehalf && (
+            status === PAID_STATUS || 
+            status === INVOICED || 
+            (status === IN_PRODUCTION && productionValid) || 
+            status === PENDING_APPROVAL    
+          ) && owner)
         ) &&
           <DeleteButton onClick={deleteOrderAction}>
             Cancel

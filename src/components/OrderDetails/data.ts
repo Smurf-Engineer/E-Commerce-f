@@ -12,6 +12,7 @@ export const getOrderQuery = gql`
       charge_id
       netsuit_order_id
       userId: user_id
+      inProductionTimestamp: in_production_timestamp
       deliveredDate: delivered_date
       isDelivered: is_delivered
       referenceNumber: reference_number

@@ -9,14 +9,6 @@ interface Props {
 }
 
 const CarouselItem = ({ item, onClick }: Props) => {
-  const element = document.getElementById(`video_${item.id}`)
-  if (item && item.assetType === 'video' && element && item.volume) {
-    setInterval(() => {
-      element.muted = false
-      element.play()
-    // tslint:disable-next-line: align
-    }, 1000)
-  }
   return (
     <Container onClick={onClick}>
       {item.assetType !== 'video' ? (
@@ -30,27 +22,18 @@ const CarouselItem = ({ item, onClick }: Props) => {
         </MediaQuery>
       ) : (
         <MediaQuery maxWidth={640}>
-          {matches => <>
-            {item.volume &&
-              <iframe
-                src="https://olafwempe.com/mp3/silence/silence.mp3"
-                type="audio/mp3"
-                allow="autoplay"
-                id="audio"
-                style={{ display: 'none'}}
-              />
-            }
+          {matches =>
             <VideoPreview
-              id={`video_${item.id}`}
               autoPlay={true}
               loop={true}
               muted={true}
               playsInline={true}
+              controls={item.volume}
               disablePictureInPicture={true}
               controlsList="nofullscreen nodownload noremoteplayback"
             >
               <source src={matches && item.mobileImage ? item.mobileImage : item.desktopImage} type="video/mp4" />
-            </VideoPreview></>
+            </VideoPreview>
           }
         </MediaQuery>
       )}

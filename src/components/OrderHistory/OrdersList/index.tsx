@@ -153,6 +153,7 @@ const OrdersList = ({
         teamStoreId,
         canUpdatePayment,
         estimatedDate,
+        inProductionTimestamp,
         status,
         netsuite,
         service,
@@ -179,6 +180,7 @@ const OrdersList = ({
           {...{
             editOrder,
             onBehalf,
+            inProductionTimestamp,
             deleteOrder,
             formatMessage,
             shortId,
