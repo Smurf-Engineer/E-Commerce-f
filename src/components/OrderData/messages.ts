@@ -49,6 +49,19 @@ export default defineMessages({
     id: 'components.OrderData.faqTitle',
     defaultMessage: 'FREQUENTLY ASKED QUESTIONS'
   },
+  gotIt: {
+    id: 'components.OrderData.gotIt',
+    defaultMessage: 'Got It'
+  },
+  copiedLink: {
+    id: 'components.OrderData.copiedLink',
+    defaultMessage: 'Copied to clipboard!'
+  },
+  paymentLinkInfo: {
+    id: 'components.OrderData.paymentLinkInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'The order has been placed! This is the generated payment link that you can share with the customer:'
+  },
   invoice: {
     id: 'components.OrderData.invoice',
     defaultMessage: 'Invoice'

@@ -258,6 +258,19 @@ export const Info = styled.div`
     margin-bottom: 16px;
   }
   white-space: nowrap;
+  a {
+    color: ${BLUE};
+  }
+`
+
+export const LinkCopyIcon = styled(Icon)`
+  margin-left: 10px;
+  color: white;
+  font-size: 12px;
+  background: ${BLUE};
+  border-radius: 25px;
+  padding: 4px;
+  vertical-align: baseline;
 `
 
 export const InfoSecondary = styled.div`

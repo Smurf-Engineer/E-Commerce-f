@@ -82,7 +82,8 @@ import {
   InfoSecondary,
   DeliveryLabelSecondary,
   PaymentLink,
-  StripeIcon
+  StripeIcon,
+  LinkCopyIcon
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -688,6 +689,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                       {formatMessage(messages.referenceNumber)}
                     </DeliveryLabel>
                   }
+                  {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
+                    <DeliveryLabel>
+                      {formatMessage(messages.paymentLink)}
+                    </DeliveryLabel>
+                  }
                   {actualDeliver &&
                     <DeliveryLabelSecondary>
                       <FedexIcon src={iconFedex} />
@@ -741,6 +747,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {referenceNumber &&
                     <Info {...{ savingPdf }}>
                       {referenceNumber}
+                    </Info>
+                  }
+                  {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
+                    <Info {...{ savingPdf }}>
+                      <a href={invoiceLink}>{invoiceLink}<LinkCopyIcon type="link"/></a>
                     </Info>
                   }
                   {actualDeliver &&

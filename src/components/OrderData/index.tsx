@@ -43,8 +43,14 @@ import {
   StatusLabel,
   TopSection,
   BottomSection,
+  ModalTitle,
+  InfoBody,
   PaymentLink,
-  StripeIcon
+  StripeIcon,
+  buttonStyle,
+  ApprovalLink,
+  LinkCopyIcon,
+  StripeLogo
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -74,7 +80,8 @@ import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
 import Modal from 'antd/lib/modal'
 import filter from 'lodash/filter'
-
+import message from 'antd/lib/message'
+const { info } = Modal
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
 const PRO_DESIGN_FEE = 15
 
@@ -109,14 +116,14 @@ class OrderData extends React.Component<Props, {}> {
   private copyInput: any
   private html2pdf: any
   componentDidUpdate() {
-    const { data } = this.props
+    const { data, formatMessage } = this.props
     const { savedStatus } = this.state
     if (data && !data.loading && !savedStatus) {
       this.setState({ savedStatus: true })
       const {
         orderId,
         data: {
-          orderData: { cart, taxFee, shippingAmount, currency: { shortName } }
+          orderData: { cart, taxFee, shippingAmount, currency: { shortName }, paymentMethod, invoiceLink }
         }
       } = this.props
 
@@ -148,11 +155,45 @@ class OrderData extends React.Component<Props, {}> {
           transactionShipping: shippingAmount,
           transactionProducts: items
         })
-        console.log('🔴Triggered')
         window.uetq = window.uetq || []
         window.uetq.push('event', 'purchase', {'revenue_value': subtotal, 'currency': shortName })
       }
+      if (paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink) {
+        info({
+          title: (
+            <ModalTitle>
+              {formatMessage(messages.paymentLink)}
+              <StripeLogo src={stripeLogo} />
+            </ModalTitle>
+          ),
+          icon: ' ',
+          okText: formatMessage(messages.gotIt),
+          okButtonProps: {
+            style: buttonStyle,
+          },
+          content: (
+            <InfoBody>
+              {formatMessage(messages.paymentLinkInfo)}
+              <ApprovalLink onClick={this.copyLink}>
+                {invoiceLink}
+                <LinkCopyIcon type="link"/>
+              </ApprovalLink>
+            </InfoBody>
+          ),
+        })
+      }
     }
+  }
+  copyLink = () => {
+    const { formatMessage, data } = this.props
+    const tempInput = document.createElement('input')
+    const invoiceLink = get(data, 'orderData.invoiceLink', '')
+    tempInput.value = invoiceLink
+    document.body.appendChild(tempInput)
+    tempInput.select()
+    document.execCommand('copy')
+    document.body.removeChild(tempInput)
+    message.success(formatMessage(messages.copiedLink))
   }
   downloadInvoice = async () => {
     const { orderId } = this.props
@@ -235,6 +276,7 @@ class OrderData extends React.Component<Props, {}> {
           placedAuthor,
           freeShipping,
           couponType,
+          invoiceLink,
           invoiceTerms,
           stateProvince,
           zipCode,
@@ -467,6 +509,12 @@ class OrderData extends React.Component<Props, {}> {
                 <OrderNumberContainer>
                   <TitleStyled>{formatMessage(messages.referenceNumber)}</TitleStyled>
                   <StyledText>{referenceNumber}</StyledText>
+                </OrderNumberContainer>
+              }
+              {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
+                <OrderNumberContainer {...{ savingPdf }}>
+                  <TitleStyled>{formatMessage(messages.paymentLink)}</TitleStyled>
+                  <StyledText><a href={invoiceLink}>{invoiceLink}<LinkCopyIcon type="link"/></a></StyledText>
                 </OrderNumberContainer>
               }
             </InfoContainer>
