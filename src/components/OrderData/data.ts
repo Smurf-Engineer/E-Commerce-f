@@ -11,6 +11,7 @@ export const getOrderQuery = gql`
       estimatedDate: estimated_date
       paymentMethod: payment_method
       invoiceTerms: invoice_terms
+      invoiceLink: invoice_link
       fixedPriceStore: fixed_price_store
       resellerComission:reseller_comission
       resellerInline: reseller_inline

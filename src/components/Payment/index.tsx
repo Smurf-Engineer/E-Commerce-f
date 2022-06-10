@@ -22,9 +22,11 @@ import {
   CheckIcon,
   ReferenceDiv,
   LabelReference,
-  ReferenceInput
+  ReferenceInput,
+  StripeIcon
 } from './styledComponents'
 import paypalIcon from '../../assets/paypal_logo.png'
+import stripeLogo from '../../assets/stripelogo.png'
 import CreditCardForm from '../CreditCardFormBilling'
 import { AddressType, StripeCardData, CreditCardData } from '../../types/common'
 import Modal from '../../components/ConfirmCountryDialog'
@@ -32,7 +34,7 @@ import {
   PaymentOptions
 } from '../../screens/Checkout/constants'
 
-const { CREDITCARD, PAYPAL, INVOICE } = PaymentOptions
+const { CREDITCARD, PAYPAL, INVOICE, PAYMENT_LINK } = PaymentOptions
 
 interface Props {
   billingAddress: AddressType
@@ -169,6 +171,13 @@ class Payment extends React.PureComponent<Props, {}> {
     }
   }
 
+  handlePaymentLinkClick = () => {
+    const { setPaymentMethodAction, totalReducer } = this.props
+    if (totalReducer > 0) {
+      setPaymentMethodAction(PAYMENT_LINK)
+    }
+  }
+
   render() {
     const {
       formatMessage,
@@ -261,7 +270,7 @@ class Payment extends React.PureComponent<Props, {}> {
           updateAddress
         }}
         ref={(payRef: any) => { setPayRef(payRef) }}
-        isInvoice={paymentMethod === INVOICE}
+        isInvoice={paymentMethod === INVOICE || paymentMethod === PAYMENT_LINK}
         setStripeCardDataAction={this.setStripeCardData}
         selectDropdownAction={this.handleOnDropdownAction}
         inputChangeAction={this.handleOnChangeInput}
@@ -305,6 +314,18 @@ class Payment extends React.PureComponent<Props, {}> {
               {formatMessage(messages.invoice)}
             </MethodButton>
           }
+          {onBehalf &&
+            <MethodButton
+              selected={!disabledMethods && paymentMethod === PAYMENT_LINK}
+              secondary={isReseller}
+              disabledProp={disabledMethods}
+              onClick={this.handlePaymentLinkClick}
+            >
+              {!disabledMethods && paymentMethod === PAYMENT_LINK && <CheckIcon type="check-circle" theme="filled" />}
+              <StripeIcon src={stripeLogo} />
+              {formatMessage(messages.paymentLink)}
+            </MethodButton>
+          }
           {isReseller &&
             <ReferenceDiv>
               <LabelReference><ReferenceIcon type="number" />{formatMessage(messages.reference)}</LabelReference>
@@ -323,7 +344,7 @@ class Payment extends React.PureComponent<Props, {}> {
             <InvoiceInformation>{formatMessage(messages.paymentInfo)}</InvoiceInformation>
           </InvoiceDiv>
         }
-        {(paymentMethod === CREDITCARD || paymentMethod === INVOICE) && (
+        {(paymentMethod === CREDITCARD || paymentMethod === INVOICE || paymentMethod === PAYMENT_LINK) && (
           <StripeProvider stripe={stripe}>
             <Elements>{paymentForm}</Elements>
           </StripeProvider>

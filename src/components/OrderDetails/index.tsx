@@ -80,7 +80,10 @@ import {
   PopoverText,
   InfoIcon,
   InfoSecondary,
-  DeliveryLabelSecondary
+  DeliveryLabelSecondary,
+  PaymentLink,
+  StripeIcon,
+  LinkCopyIcon
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -89,6 +92,7 @@ import AddToCartButton from '../AddToCartButton'
 
 import iconPaypal from '../../assets/Paypal.svg'
 import iconFedex from '../../assets/fedexicon.svg'
+import stripeLogo from '../../assets/stripelogo.png'
 import shippedIcon from '../../assets/shippedicon.png'
 import inProductionIcon from '../../assets/in_production.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
@@ -179,6 +183,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     const { showPaymentIssue, shownAction } = this.state
     const invoiceLink = get(data, 'orderQuery.invoiceLink', '')
     const status = get(data, 'orderQuery.status', '')
+    const paymentMethod = get(data, 'orderQuery.paymentMethod', '')
     const inProductionTimestamp = get(data, 'orderQuery.inProductionTimestamp', '')
     const netsuite = get(data, 'orderQuery.netsuite', {})
     const netsuiteObject = get(netsuite, 'orderStatus')
@@ -188,7 +193,8 @@ export class OrderDetails extends React.Component<Props, {}> {
     const productionHours = momentTz().tz('America/Los_Angeles')
       .diff(momentTz(inProductionTimestamp).tz('America/Los_Angeles'), 'hours')
     const productionValid = productionHours <= 24
-    if (orderStatus === INVOICE_SENT && !!invoiceLink && showPaymentIssue) {
+    if (orderStatus === INVOICE_SENT && paymentMethod !== PaymentOptions.PAYMENT_LINK && 
+      !!invoiceLink && showPaymentIssue) {
       this.setState({ showPaymentIssue: false })
       warning({
         title: <ModalTitle>{formatMessage(messages.paymentIssueTitle)}</ModalTitle>,
@@ -426,7 +432,9 @@ export class OrderDetails extends React.Component<Props, {}> {
     let variables = 0
     let totalWithoutDiscount = 0
     let cart = cartOriginal
-    const orderStatus = netsuiteStatus || (status === INVOICE_SENT ? PAYMENT_ISSUE : status)
+    const orderStatus = netsuiteStatus || 
+      (status === INVOICE_SENT && paymentMethod !== PaymentOptions.PAYMENT_LINK ?
+       PAYMENT_ISSUE : status)
     switch (orderStatus) {
       case PREORDER:
         statusColor = '#cde4ff'
@@ -585,7 +593,12 @@ export class OrderDetails extends React.Component<Props, {}> {
           <InvoiceDiv>
             <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoiceLabel)}</InvoiceTitle>
             <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
-          </InvoiceDiv> : (
+          </InvoiceDiv> : 
+          paymentMethod === PaymentOptions.PAYMENT_LINK ?
+          <PaymentLink>
+            <StripeIcon crossOrigin="anonymous" src={stripeLogo} />
+            {formatMessage(messages.paymentLink)}
+          </PaymentLink> : (
           <StyledImage crossOrigin="anonymous" src={iconPaypal} />
         )
 
@@ -676,6 +689,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                       {formatMessage(messages.referenceNumber)}
                     </DeliveryLabel>
                   }
+                  {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
+                    <DeliveryLabel>
+                      {formatMessage(messages.paymentLink)}
+                    </DeliveryLabel>
+                  }
                   {actualDeliver &&
                     <DeliveryLabelSecondary>
                       <FedexIcon src={iconFedex} />
@@ -729,6 +747,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {referenceNumber &&
                     <Info {...{ savingPdf }}>
                       {referenceNumber}
+                    </Info>
+                  }
+                  {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
+                    <Info {...{ savingPdf }}>
+                      <a href={invoiceLink}>{invoiceLink}<LinkCopyIcon type="link"/></a>
                     </Info>
                   }
                   {actualDeliver &&

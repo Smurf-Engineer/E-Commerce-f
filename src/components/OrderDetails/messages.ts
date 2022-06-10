@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.OrderDetails.receipt',
     defaultMessage: 'Receipt'
   },
+  paymentLink: {
+    id: 'components.OrderDetails.paymentLink',
+    defaultMessage: 'Payment Link'
+  },
   referenceNumber: {
     id: 'components.OrderDetails.referenceNumber',
     defaultMessage: 'Reference Number'

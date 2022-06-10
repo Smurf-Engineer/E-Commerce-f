@@ -47,6 +47,11 @@ export const PaypalIcon = styled.img`
   max-width: 90%;
 `
 
+export const StripeIcon = styled.img`
+  transition: all .25s;
+  max-width: 55%;
+`
+
 export const CheckIcon = styled(Icon)`
   color: ${BLUE};
   position: absolute;

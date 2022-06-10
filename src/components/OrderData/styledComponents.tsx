@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Checkbox from 'antd/lib/checkbox'
-import { BLACK, BLUE, GRAY, GRAY_DARK, RED, WHITE } from '../../theme/colors'
+import { BLACK, BLUE, FACEBOOKBLUE, GRAY, GRAY_DARK, RED, WHITE } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 interface DivProps {
@@ -188,6 +188,9 @@ export const StyledText = styled.div`
   @media (min-width: 320px) and (max-width: 768px) {
     text-align: right;
     margin-bottom: 10px;
+  }
+  a {
+    color: ${BLUE};
   }
 `
 
@@ -411,4 +414,71 @@ export const TopSection = styled.div`
 
 export const BottomSection = styled.div`
   width: 95%;
+`
+
+export const PaymentLink = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #8782ff;
+  border-radius: 5px;
+  padding: 9px 0;
+  padding-top: 6px;
+`
+
+export const StripeIcon = styled.img`
+  max-width: 58px;
+`
+
+export const buttonStyle = {
+  background: BLUE,
+  border: 'none'
+}
+
+export const ModalTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-family: Avenir;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+`
+
+export const InfoBody = styled.div`
+  color: ${GRAY_DARK};
+  font-family: Avenir;
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin-top: 20px;
+  margin-bottom: 12px;
+  margin-left: -38px;
+`
+
+export const ApprovalLink = styled.div`
+  font-size: 13px;
+  font-weight: bold;
+  transition: all .25s;
+  margin-top: 22px;
+  color: ${BLUE};
+  &:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+`
+
+export const LinkCopyIcon = styled(Icon)`
+  margin-left: 10px;
+  color: ${FACEBOOKBLUE};
+  font-size: 16px;
+  margin-top: -4px;
+`
+
+export const StripeLogo = styled.img`
+  max-width: 68px;
+  margin-top: -3px;
 `

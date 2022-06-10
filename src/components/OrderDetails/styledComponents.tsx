@@ -258,6 +258,19 @@ export const Info = styled.div`
     margin-bottom: 16px;
   }
   white-space: nowrap;
+  a {
+    color: ${BLUE};
+  }
+`
+
+export const LinkCopyIcon = styled(Icon)`
+  margin-left: 10px;
+  color: white;
+  font-size: 12px;
+  background: ${BLUE};
+  border-radius: 25px;
+  padding: 4px;
+  vertical-align: baseline;
 `
 
 export const InfoSecondary = styled.div`
@@ -718,4 +731,19 @@ export const PopoverText = styled.div`
   color: ${BLACK};
   font-family: Avenir;
   font-weight: normal;
+`
+
+export const PaymentLink = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #8782ff;
+  border-radius: 5px;
+  padding: 9px 0;
+  padding-top: 6px;
+`
+
+export const StripeIcon = styled.img`
+  max-width: 58px;
 `

@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.Payment.reference',
     defaultMessage: 'Reference number'
   },
+  paymentLink: {
+    id: 'components.Payment.paymentLink',
+    defaultMessage: 'Payment Link'
+  },
   referencesPlaceholder: {
     id: 'components.Payment.referencesPlaceholder',
     defaultMessage: '1234567'
