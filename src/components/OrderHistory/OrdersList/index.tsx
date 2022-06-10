@@ -157,6 +157,7 @@ const OrdersList = ({
         status,
         netsuite,
         service,
+        paymentMethod,
         totalAmount,
         currency
       }: OrderHistory,
@@ -180,6 +181,7 @@ const OrdersList = ({
           {...{
             editOrder,
             onBehalf,
+            paymentMethod,
             inProductionTimestamp,
             deleteOrder,
             formatMessage,

@@ -801,7 +801,11 @@ class Checkout extends React.Component<Props, {}> {
       return
     }
     if (
-      (paymentMethod === PaymentOptions.CREDITCARD || paymentMethod === PaymentOptions.INVOICE) &&
+      (
+        paymentMethod === PaymentOptions.CREDITCARD ||
+        paymentMethod === PaymentOptions.INVOICE || 
+        paymentMethod === PaymentOptions.PAYMENT_LINK
+      ) &&
       !sameBillingAndShipping &&
       billingSave
     ) {

@@ -16,7 +16,9 @@ import {
   InvoiceDiv,
   InvoiceTitle,
   InvoiceSubtitle,
-  InvoiceIcon
+  InvoiceIcon,
+  PaymentLink,
+  StripeIcon
 } from './styledComponents'
 import {
   AddressType,
@@ -29,6 +31,7 @@ import MyAddress from '../MyAddress'
 import PaymentData from '../PaymentData'
 import CartListItem from '../../components/CartListItem'
 import iconPaypal from '../../assets/Paypal.svg'
+import stripeLogo from '../../assets/stripelogo.png'
 import { getShoppingCartData, getPriceRangeByItem, getItemQuantity } from '../../utils/utilsShoppingCart'
 import { PaymentOptions } from '../../screens/Checkout/constants'
 
@@ -204,6 +207,11 @@ class Review extends React.PureComponent<Props, {}> {
                       {formatMessage(messages.edit)}
                     </EditInfoButton>
                   </div>
+                ) : paymentMethod === PaymentOptions.PAYMENT_LINK ? (
+                    <PaymentLink>
+                      <StripeIcon crossOrigin="anonymous" src={stripeLogo} />
+                      {formatMessage(messages.paymentLink)}
+                    </PaymentLink>
                 ) : (
                       <img src={iconPaypal} />
                     )

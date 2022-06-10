@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.OrderData.referenceNumber',
     defaultMessage: 'Reference Number'
   },
+  paymentLink: {
+    id: 'components.OrderData.paymentLink',
+    defaultMessage: 'Payment Link'
+  },
   placedBy: {
     id: 'components.OrderData.placedBy',
     defaultMessage: 'Placed By'

@@ -11,6 +11,7 @@ import {
   INVOICE_SENT,
   IN_PRODUCTION,
   PAID_STATUS,
+  PaymentOptions,
   PAYMENT_ISSUE,
   PENDING_APPROVAL,
   PREORDER
@@ -30,6 +31,7 @@ interface Props {
   canUpdatePayment: boolean
   owner: boolean
   teamStoreId: string
+  paymentMethod: string
   editOrder: (orderId: string) => void
   deleteOrder: (orderId: string) => void
   onOrderClick: (shortId: string, isService?: boolean) => void
@@ -45,6 +47,7 @@ const ItemOrder = ({
   currency,
   shortId,
   owner,
+  paymentMethod,
   inProductionTimestamp,
   canUpdatePayment,
   teamStoreId,
@@ -82,7 +85,8 @@ const ItemOrder = ({
       <Cell color={!service ? '#e61737' : ''}>{service || trackingNumber}</Cell>
       <Cell>{currency} {totalAmount}</Cell>
       <Cell textAlign={'right'}>
-        {upperFirst(status === INVOICE_SENT ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
+        {upperFirst(status === INVOICE_SENT && paymentMethod !== PaymentOptions.PAYMENT_LINK
+           ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
       </Cell>
       <Cell>
         {(

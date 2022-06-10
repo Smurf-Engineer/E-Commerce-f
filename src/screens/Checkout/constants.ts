@@ -56,7 +56,8 @@ export enum PaymentOptions {
   PAYPAL = 'paypal',
   CREDITCARD = 'creditcard',
   IBAN = 'iban',
-  INVOICE = 'invoice'
+  INVOICE = 'invoice',
+  PAYMENT_LINK = 'paymentlink'
 }
 
 export enum PaymentTerms {

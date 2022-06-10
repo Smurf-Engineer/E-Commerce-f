@@ -42,7 +42,9 @@ import {
   CloseButtonStatus,
   StatusLabel,
   TopSection,
-  BottomSection
+  BottomSection,
+  PaymentLink,
+  StripeIcon
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -60,6 +62,7 @@ import withError from '..//WithError'
 import withLoading from '../WithLoading'
 import iconFedex from '../../assets/fedexicon.svg'
 import iconPaypal from '../../assets/Paypal.svg'
+import stripeLogo from '../../assets/stripelogo.png'
 import iconSepa from '../../assets/Sepa.svg'
 import { QueryProps, OrderDataInfo, FulfillmentNetsuite } from '../../types/common'
 import CartListItem from '../CartListItem'
@@ -296,7 +299,12 @@ class OrderData extends React.Component<Props, {}> {
           <InvoiceDiv>
             <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoice)}</InvoiceTitle>
             <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
-          </InvoiceDiv> : (
+          </InvoiceDiv> : 
+          paymentMethod === PaymentOptions.PAYMENT_LINK ?
+          <PaymentLink>
+            <StripeIcon crossOrigin="anonymous" src={stripeLogo} />
+            {formatMessage(messages.paymentLink)}
+          </PaymentLink> : (
           <StyledImage
             src={paymentMethod === PaymentOptions.PAYPAL ? iconPaypal : iconSepa}
           />

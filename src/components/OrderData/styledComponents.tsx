@@ -412,3 +412,18 @@ export const TopSection = styled.div`
 export const BottomSection = styled.div`
   width: 95%;
 `
+
+export const PaymentLink = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #8782ff;
+  border-radius: 5px;
+  padding: 9px 0;
+  padding-top: 6px;
+`
+
+export const StripeIcon = styled.img`
+  max-width: 58px;
+`
