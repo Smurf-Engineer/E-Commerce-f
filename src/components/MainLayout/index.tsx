@@ -232,7 +232,7 @@ class MainLayout extends React.Component<Props, {}> {
     if (typeof window !== 'undefined' && !disableAssist) {
       const initialized = get(window, '_slaask._ready', false)
       const loading = get(userQuery, 'loading', true)
-      if (!initialized && !loading) {
+      if (!initialized && (!loading || !user)) {
         const userProfile = get(userQuery, 'profileData.userProfile', {})
         openSupport({...user, userCode: userProfile.userId, managerName: userProfile.managerName })
       }
