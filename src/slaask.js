@@ -13,7 +13,7 @@ export function initSlaask(info, isSupport) {
   } = info
   const settings = isSupport
     ? {
-      identify: () => ({
+      identify: () => userId ? ({
         id,
         userId,
         'User #': userCode ? `JV2-${userCode}` : '',
@@ -23,6 +23,11 @@ export function initSlaask(info, isSupport) {
         'First Name': name,
         'Last Name': lastName,
         'User Locker': userId ? `${config.baseUrl}admin/users/${userId}` : ''
+      }) : ({
+        id,
+        userId,
+        'User #': 'Anonymous',
+        name: `JV2-Support`
       }),
       options: {
         team_id: config.slaaskSupportTeam,
