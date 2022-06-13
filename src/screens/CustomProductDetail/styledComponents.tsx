@@ -13,9 +13,12 @@ import {
   BLACK_BG,
   BLUE,
   GRAY_HEADER,
-  GRAY
+  GRAY,
+  RED,
+  GRAY_ANTDESIGN
 } from '../../theme/colors'
 import Input from 'antd/lib/input'
+import Select from 'antd/lib/select'
 import BackTop from 'antd/lib/back-top'
 import Icon from 'antd/lib/icon'
 
@@ -23,6 +26,11 @@ interface DivProps {
   isTeamStore?: boolean
   selected?: boolean
   disabled?: boolean
+}
+
+type SelectType = {
+  selectWidth?: string
+  highlightFields?: boolean
 }
 
 export const Container = styled.div`
@@ -607,4 +615,119 @@ export const FingerIcon = styled.img`
   z-index: 2;
   background: #272727;
   margin-right: 8px;
+`
+
+export const UpgradesDiv = styled.div``
+
+export const UpgradeInput = styled.div``
+
+export const UpgradeTitle = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+export const StyledSelect = styled(Select)`
+  width: 20%;
+  & .ant-select-selection {
+    border-color: ${({ highlightFields }: SelectType) =>
+    highlightFields ? RED : GRAY_ANTDESIGN};
+    transition: all .25s;
+  }
+  transition: all .25s;
+  ${({ highlightFields }: SelectType) => highlightFields ? `
+    .ant-select-selection {
+      background: #fff3f3;
+    }
+    animation: pulse 1s 0.5s 2;
+    @keyframes pulse {
+      0% {
+        filter: drop-shadow(0 0 0 rgba(255, 0, 0, 1));
+        transform: scale(1);
+        .ant-select-selection {
+          background: #fff3f3 !important;
+        }
+      }
+    
+      70% {
+        filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0));
+        transform: scale(1.05);
+        .ant-select-selection {
+          background: #white !important;
+        }
+      }
+    
+      100% {
+        filter: drop-shadow(0 0 0 rgba(255, 0, 0, 0));
+        transform: scale(1);
+        .ant-select-selection {
+          background: #fff3f3 !important;
+        }
+      }
+    }
+  ` : ''}
+`
+
+export const QuestionSpanUpgrade = styled.span`
+  color: #5f6062;
+  font-size: 16px;
+  margin-left: 5px;
+  border: 0.5px solid #dcdcdc;
+  padding: 10px;
+  line-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+
+  &::after {
+    content: '?';
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export const maskBlurred = {
+  backdropFilter: 'blur(3px)'
+}
+
+export const buttonStyleModern = {
+  background: '#3c3c3c',
+  color: WHITE,
+  borderColor: WHITE,
+  boxShadow: 'none'
+}
+
+export const InfoBodyModern = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+`
+
+export const InfoImage = styled.img`
+  max-width: 75vw;
+  border-radius: 5px;
+  display: block;
+  width: 100%;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
+export const InfoImageMobile = styled.img`
+  max-width: 886px;
+  border-radius: 5px;
+  width: 100%;
+  display: none;
+  margin-top: 0px;
+  @media (max-width: 768px) {
+    display: block;
+  }
+`
+
+export const InfoURL = styled.a`
+  color: ${BLUE};
 `

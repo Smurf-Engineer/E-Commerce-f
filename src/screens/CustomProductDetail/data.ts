@@ -51,6 +51,66 @@ export const GetDesignByIdQuery = gql`
         materials: materials_info
         temperatures: temperature_range
         twoPieces: two_pieces
+        upgradeOne: upgrade_one {
+          id
+          shortId: short_id
+          enabled
+          name
+          url
+          defaultOption: default_option
+          modalImage: modal_image
+          mobileImage: mobile_image
+          options {
+            aud
+            id
+            cad
+            shortId: short_id
+            gbp
+            name
+            usd
+            eur
+          }
+        }
+        upgradeTwo: upgrade_two {
+          id
+          shortId: short_id
+          enabled
+          name
+          url
+          defaultOption: default_option
+          modalImage: modal_image
+          mobileImage: mobile_image
+          options {
+            aud
+            id
+            cad
+            shortId: short_id
+            gbp
+            name
+            usd
+            eur
+          }
+        }
+        upgradeThree: upgrade_three {
+          id
+          shortId: short_id
+          enabled
+          name
+          url
+          defaultOption: default_option
+          modalImage: modal_image
+          mobileImage: mobile_image
+          options {
+            aud
+            id
+            cad
+            shortId: short_id
+            gbp
+            name
+            usd
+            eur
+          }
+        }
         bannerMaterials: banner_materials {
           id
           url

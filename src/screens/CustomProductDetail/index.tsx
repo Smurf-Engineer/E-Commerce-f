@@ -65,6 +65,17 @@ import {
   CartIcon,
   AssistanceDiv,
   SectionLink,
+  UpgradesDiv,
+  UpgradeInput,
+  StyledSelect,
+  UpgradeTitle,
+  QuestionSpanUpgrade,
+  InfoBodyModern,
+  InfoImage,
+  InfoImageMobile,
+  InfoURL,
+  maskBlurred,
+  buttonStyleModern,
   // ColorButtons,
   // ToneButton
 } from './styledComponents'
@@ -78,7 +89,7 @@ import {
   ProductFile,
   PriceRange,
   UserType,
-  BreadRoute, IProfileSettings
+  BreadRoute, IProfileSettings, UpgradeItem
 } from '../../types/common'
 import lockSound from '../../assets/lock.wav'
 import enabledSound from '../../assets/enabled.wav'
@@ -105,13 +116,15 @@ import BreadCrumbs from '../../components/BreadCrumbs'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Spin from 'antd/lib/spin'
+import Select from 'antd/lib/select'
 import { APPROVED, DATE_FORMAT, PREDYED_TRANSPARENT } from '../../constants'
 import { getRangeLabel } from '../../utils/utilsShoppingCart'
 import message from 'antd/lib/message'
 import moment from 'moment'
 import { FIT_FORM } from './constants'
 
-const { warning } = AntdModal
+const { Option } = Select
+const { warning, info } = AntdModal
 
 const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
@@ -143,6 +156,9 @@ interface Props extends RouteComponentProps<any> {
   profileData: ProfileData
   selectedTopSize: SelectedType
   selectedBottomSize: SelectedType
+  firstUpgrade: any
+  secondUpgrade: any
+  thirdUpgrade: any
   setLoadingAction: (loading: boolean) => void
   setFitsModal: (showFits: boolean) => void
   setLoadingModel: (loading: boolean) => void
@@ -256,6 +272,28 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     }
   }
 
+  handleOpenUpgrade = (upgrade: UpgradeItem) => () => {
+    const { modalImage, mobileImage, url } = upgrade || {}
+    const { intl: { formatMessage } } = this.props
+    info({
+      icon: ' ',
+      width: 'auto',
+      centered: true,
+      maskStyle: maskBlurred,
+      className: 'centeredButtonsModern',
+      okText: formatMessage(messages.close),
+      okButtonProps: {
+        style: buttonStyleModern
+      },
+      content:
+        <InfoBodyModern>
+          <InfoImage src={modalImage} />
+          <InfoImageMobile src={mobileImage} />
+          <InfoURL target="_blank" href={url}>{url}</InfoURL>
+        </InfoBodyModern>
+    })
+  }
+
   render() {
     const {
       intl,
@@ -275,6 +313,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       loading,
       phone,
       user,
+      firstUpgrade,
+      secondUpgrade,
+      thirdUpgrade,
       selectedTopSize,
       selectedBottomSize
     } = this.props
@@ -363,7 +404,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       relatedItemTag,
       twoPieces,
       infoFlag,
-      infoMessage
+      infoMessage,
+      upgradeOne,
+      upgradeTwo,
+      upgradeThree
     } = product
     const { tone } = this.state
     const totalReviews = get(yotpoAverageScore, 'total', 0)
@@ -677,6 +721,56 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         </SectionLink>
       </AssistanceDiv> : null
 
+    const oneOptions = get(upgradeOne, 'options', [])
+    const upgradeOneOptions = oneOptions.map(({ name: upgradeName, id }) => {
+      return (
+        <Option key={id} value={upgradeName}>
+          {upgradeName}
+        </Option>
+      )
+    })
+
+    const twoOptions = get(upgradeTwo, 'options', [])
+    const upgradeTwoOptions = twoOptions.map(({ name: upgradeName, id }) => {
+      return (
+        <Option key={id} value={upgradeName}>
+          {upgradeName}
+        </Option>
+      )
+    })
+
+    const threeOptions = get(upgradeThree, 'options', [])
+    const upgradeThreeOptions = threeOptions.map(({ name: upgradeName, id }) => {
+      return (
+        <Option key={id} value={upgradeName}>
+          {upgradeName}
+        </Option>
+      )
+    })
+
+    const upgrades = 
+      <UpgradesDiv>
+        {upgradeOne && upgradeOne.enabled &&
+          <UpgradeInput>
+            <UpgradeTitle>
+              {upgradeOne.name}
+              <QuestionSpanUpgrade onClick={this.handleOpenUpgrade(upgradeOne)} />
+            </UpgradeTitle>
+            <StyledSelect
+              onChange={(e) => this.handleUpgradeChange(e, false, true)}
+              showSearch={false}
+              placeholder={formatMessage(messages.upgradeOne)}
+              optionFilterProp="children"
+              disabled={youthCombined && youthSelected}
+              value={firstUpgrade ? firstUpgrade.name : undefined}
+              allowClear={upgradeOne.defaultOption === -1}
+            >
+              {upgradeOneOptions}
+            </StyledSelect>
+          </UpgradeInput>
+        }
+      </UpgradesDiv>
+
     const collectionSelection = (
       <BuyNowOptions
         innerRef={buyOption => {
@@ -689,6 +783,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         {twoPieces && bottomSizeSection}
         {sizeChartButton}
         {fitSection}
+        {upgrades}
         {addToCartRow}
         {assistanceDiv}
       </BuyNowOptions>
@@ -777,7 +872,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   {(user && (user.id === 'HkuTqBauQ' || user.id === 'H1R0yFr0V')) &&
                     <StyledInput onChange={this.changeTone} value={tone} />
                   }
-                  <Render3D
+                  {false && <Render3D
                     customProduct={true}
                     textColor="white"
                     lowResolution={isTabletOrMobile}
@@ -788,7 +883,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     maxHeight={true}
                     light={tone}
                     asImage={phone}
-                  />
+                  />}
                   {isMobile &&
                     <ThreeDButton 
                       onTouchEnd={this.onTouchEndAction}

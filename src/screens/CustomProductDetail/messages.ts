@@ -41,6 +41,22 @@ export default defineMessages({
     id: 'screens.CustomProductDetail.listPrice',
     defaultMessage: 'List Price'
   },
+  close: {
+    id: 'screens.CustomProductDetail.close',
+    defaultMessage: 'Close'
+  },
+  upgradeOne: {
+    id: 'screens.CustomProductDetail.upgradeOne',
+    defaultMessage: 'Upgrade #1'
+  },
+  upgradeTwo: {
+    id: 'screens.CustomProductDetail.upgradeTwo',
+    defaultMessage: 'Upgrade #2'
+  },
+  upgradeThree: {
+    id: 'screens.CustomProductDetail.upgradeThree',
+    defaultMessage: 'Upgrade #3'
+  },
   maleGenderLabel: {
     id: 'screens.CustomProductDetail.maleGenderLabel',
     defaultMessage: 'Available for Men'
