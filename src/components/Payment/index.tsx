@@ -314,7 +314,7 @@ class Payment extends React.PureComponent<Props, {}> {
               {formatMessage(messages.invoice)}
             </MethodButton>
           }
-          {onBehalf &&
+          {onBehalf && !isFixedTeamstore &&
             <MethodButton
               selected={!disabledMethods && paymentMethod === PAYMENT_LINK}
               secondary={isReseller}
