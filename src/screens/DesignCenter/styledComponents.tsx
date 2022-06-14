@@ -75,29 +75,35 @@ export const BottomSheetWrapper = styled.div`
   .shimmer {
     text-align: center;
     color: rgba(255, 255, 255, 0.1);
-    background: -webkit-gradient(
-      linear,
-      left top,
-      right top,
-      from(#222),
-      to(#222),
-      color-stop(0.5, #fff)
+    background: -webkit-linear-gradient(
+      to left,
+      #ff0000,
+      #ff00ff,
+      #0000ff,
+      #00ffff,
+      #00ff00,
+      #ffff00,
+      #ff0000
     );
-    background: -moz-gradient(
-      linear,
-      left top,
-      right top,
-      from(#222),
-      to(#222),
-      color-stop(0.5, #fff)
+    background: -moz-linear-gradient(
+      to left,
+      #ff0000,
+      #ff00ff,
+      #0000ff,
+      #00ffff,
+      #00ff00,
+      #ffff00,
+      #ff0000
     );
-    background: gradient(
-      linear,
-      left top,
-      right top,
-      from(#222),
-      to(#222),
-      color-stop(0.5, #fff)
+    background: linear-gradient(
+      to left,
+      #ff0000,
+      #ff00ff,
+      #0000ff,
+      #00ffff,
+      #00ff00,
+      #ffff00,
+      #ff0000
     );
     -webkit-background-size: 125px 100%;
     -moz-background-size: 125px 100%;
@@ -108,9 +114,10 @@ export const BottomSheetWrapper = styled.div`
     -webkit-animation-name: shimmer;
     -moz-animation-name: shimmer;
     animation-name: shimmer;
-    -webkit-animation-duration: 10s;
-    -moz-animation-duration: 10s;
-    animation-duration: 10s;
+    -webkit-animation-duration: 35s;
+    -moz-animation-duration: 35s;
+    animation-duration: 35s;
+    animation-delay: -20s;
     -webkit-animation-iteration-count: infinite;
     -moz-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
@@ -123,6 +130,9 @@ export const BottomSheetWrapper = styled.div`
     0% {
       background-position: top left;
     }
+    23% {
+      background-position: top right;
+    }
     100% {
       background-position: top right;
     }
@@ -131,6 +141,9 @@ export const BottomSheetWrapper = styled.div`
   @-webkit-keyframes shimmer {
     0% {
       background-position: top left;
+    }
+    23% {
+      background-position: top right;
     }
     100% {
       background-position: top right;
@@ -141,6 +154,9 @@ export const BottomSheetWrapper = styled.div`
     0% {
       background-position: top left;
     }
+    23% {
+      background-position: top right;
+    }
     100% {
       background-position: top right;
     }
@@ -149,6 +165,9 @@ export const BottomSheetWrapper = styled.div`
   @keyframes shimmer {
     0% {
       background-position: top left;
+    }
+    23% {
+      background-position: top right;
     }
     100% {
       background-position: top right;
