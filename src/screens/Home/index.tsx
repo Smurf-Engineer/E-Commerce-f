@@ -385,7 +385,7 @@ export class Home extends React.Component<Props, {}> {
 
   handleGoToUrl = (link?: string) => () => {
     const { history } = this.props
-    if (link) {
+    if (link && link !== 'undefined') {
       history.push(`/${link}`)
     }
   }
