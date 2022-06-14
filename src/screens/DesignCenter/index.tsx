@@ -119,7 +119,7 @@ import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import clone from 'lodash/clone'
 
-const { warning } = Modal
+const { warning } = Modal
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -350,7 +350,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     openPreviewModal: false,
     previewImage: '',
     previewProgress: 0,
-    openedWarning: false
+    openedWarning: false,
   }
   private saveClass: any
   componentWillUnmount() {
@@ -405,10 +405,13 @@ export class DesignCenter extends React.Component<Props, {}> {
   openPreview = async (savedDesign: SaveDesignType) => {
     const { openPreviewModal } = this.state
     if (this.saveClass && !openPreviewModal) {
-      const { dataProduct, dataDesign } = this.props
+      const { dataProduct, dataDesign } = this.props
       const designCode = get(dataDesign, 'designData.code', '')
       const productName = get(dataProduct, 'product.name', '')
-      window.dataLayer.push({ event: DIY_2D_PREVIEW, label: designCode || productName })
+      window.dataLayer.push({
+        event: DIY_2D_PREVIEW,
+        label: designCode || productName,
+      })
       const instance = get(
         this.saveClass.getWrappedInstance(),
         'wrappedInstance.wrappedInstance.wrappedInstance',
@@ -430,7 +433,11 @@ export class DesignCenter extends React.Component<Props, {}> {
         }
       }
     } else {
-      this.setState({ openPreviewModal: false, previewImage: '', previewProgress: 0 })
+      this.setState({
+        openPreviewModal: false,
+        previewImage: '',
+        previewProgress: 0,
+      })
     }
   }
 
@@ -857,19 +864,26 @@ export class DesignCenter extends React.Component<Props, {}> {
 
     const productId = get(dataDesign, 'designData.product.id', queryParams.id)
     const createdAtDesign = get(dataDesign, 'designData.createdAt', '')
-    const triggerWarning = !!createdAtDesign && (
-      ((productId === 262 || productId === '262') && moment(createdAtDesign, DATE_FORMAT).isBefore('02/23/2022')) ||
-      ((productId === 265 || productId === '265') && moment(createdAtDesign, DATE_FORMAT).isBefore('02/22/2022'))
-    )
+    const triggerWarning =
+      !!createdAtDesign &&
+      (((productId === 262 || productId === '262') &&
+        moment(createdAtDesign, DATE_FORMAT).isBefore('02/23/2022')) ||
+        ((productId === 265 || productId === '265') &&
+          moment(createdAtDesign, DATE_FORMAT).isBefore('02/22/2022')))
 
     if (triggerWarning && !openedWarning) {
       this.setState({ openedWarning: true })
       warning({
         title: <strong>EDITING NOT AVAILABLE</strong>,
         width: 494,
-        onOk: () => { history.goBack() },
+        onOk: () => {
+          history.goBack()
+        },
         // tslint:disable-next-line: max-line-length
-        content: 'This product has been updated and editing capabilities have been removed. Not to worry! Your design can still be added to your cart and ordered, but if you require changes to your design please contact our designers for assistance through the ProAssist chat M-F 6am-6pm PST.',
+        content: `This product has been updated and editing capabilities have been removed. 
+        Not to worry! Your design can still be added to your cart and ordered, 
+        but if you require changes to your design please contact our designers 
+        for assistance through the ProAssist chat M-F 6am-6pm PST.`,
       })
       return null
     }
@@ -1297,7 +1311,10 @@ export class DesignCenter extends React.Component<Props, {}> {
                 overlayClicked={this.toggleBottomSheet}
                 style={{ zIndex: 3 }}
               >
-                <StyledTitle onClick={this.toggleBottomSheet}>
+                <StyledTitle
+                  onClick={this.toggleBottomSheet}
+                  className="shimmer"
+                >
                   <FormattedMessage {...messages.inspirationTtitle} />
                 </StyledTitle>
                 <DesignCenterInspiration
@@ -1514,7 +1531,7 @@ const DesignCenterEnhance = compose(
   }),
   graphql<DataDesign>(getUserInfoQuery, {
     options: ({ user }: OwnProps) => ({
-      skip: !user || (user && !user.id),
+      skip: !user || (user && !user.id),
     }),
     name: 'dataUserInfo',
   }),
