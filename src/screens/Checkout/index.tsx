@@ -1233,6 +1233,7 @@ class Checkout extends React.Component<Props, {}> {
       stripeToken,
       paymentClientSecret,
       history,
+      totalReducer,
       user
     } = this.props
 
@@ -1243,7 +1244,8 @@ class Checkout extends React.Component<Props, {}> {
         orderObj && 
         !orderObj.cardId && 
         orderObj.isFixedTeamstore && 
-        orderObj.paymentMethod === PaymentOptions.CREDITCARD
+        orderObj.paymentMethod === PaymentOptions.CREDITCARD &&
+        totalReducer > 0
       ) {
         message.error('Invalid card/not available, please try another.')
         return
