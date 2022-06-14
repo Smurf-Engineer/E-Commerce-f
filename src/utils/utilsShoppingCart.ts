@@ -13,7 +13,7 @@ export const getShoppingCartData = (
   let weightSum = 0
   let totalWithoutDiscount = 0
   let priceRangeToApply = 0
-  let priceRangeRetails = 0
+  // let priceRangeRetails = 0
   let show25PercentMessage = false
   let justOneOfEveryItem = true
   let maxquantity = 0
@@ -128,8 +128,10 @@ export const getShoppingCartData = (
       let priceRange
       if (!cartItem.designId) {
         // cartItem is a retail product
-        priceRangeRetails = numberOfProducts > 1 ? 1 : 0
-        priceRange = currencyPrices[priceRangeRetails]
+        // priceRangeRetails = numberOfProducts > 1 ? 1 : 0
+        // priceRange = currencyPrices[priceRangeRetails]
+        const itemRange = quantitySum === 1 && moreThanOneItem ? 2 : quantitySum
+        priceRange = getPriceRange(currencyPrices, itemRange)
       } else {
         const itemRange = quantitySum === 1 && moreThanOneItem ? 2 : quantitySum
         const onDemandRuleItem = cartItem.teamStoreId && quantitySum === 1 ? 2 : itemRange
