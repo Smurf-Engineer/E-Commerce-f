@@ -89,14 +89,17 @@ export const saveUserSession = (userObject: object, client: any, cart?: string) 
     try {
       if (typeof window !== 'undefined') {
         localStorage.setItem('user', JSON.stringify(userObject))
-        let cartList: CartItems[] = []
-        if (cart && cart.length > 0 && cart !== '[]') {
-          localStorage.setItem('cart', cart)
-          cartList = await setItemsCart(client, cart || '')
-        } else {
-          localStorage.removeItem('cart')
+        const cartLocal = JSON.parse(localStorage.getItem('cart') || '{}')
+        if (!cartLocal || (cartLocal && !cartLocal.length)) {
+          let cartList: CartItems[] = []
+          if (cart && cart.length > 0 && cart !== '[]') {
+            localStorage.setItem('cart', cart)
+            cartList = await setItemsCart(client, cart || '')
+          } else {
+            localStorage.removeItem('cart')
+          }
+          dispatch(setItemsAction(cartList))
         }
-        dispatch(setItemsAction(cartList))
       }
       const permissions = await getPermissions(client)
       const user = { ...userObject, permissions }
