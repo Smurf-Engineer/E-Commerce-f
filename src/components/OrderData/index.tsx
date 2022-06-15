@@ -43,14 +43,9 @@ import {
   StatusLabel,
   TopSection,
   BottomSection,
-  ModalTitle,
-  InfoBody,
   PaymentLink,
   StripeIcon,
-  buttonStyle,
-  ApprovalLink,
   LinkCopyIcon,
-  StripeLogo
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -81,7 +76,6 @@ import Spin from 'antd/lib/spin'
 import Modal from 'antd/lib/modal'
 import filter from 'lodash/filter'
 import message from 'antd/lib/message'
-const { info } = Modal
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
 const PRO_DESIGN_FEE = 15
 
@@ -116,14 +110,14 @@ class OrderData extends React.Component<Props, {}> {
   private copyInput: any
   private html2pdf: any
   componentDidUpdate() {
-    const { data, formatMessage } = this.props
+    const { data } = this.props
     const { savedStatus } = this.state
     if (data && !data.loading && !savedStatus) {
       this.setState({ savedStatus: true })
       const {
         orderId,
         data: {
-          orderData: { cart, taxFee, shippingAmount, currency: { shortName }, paymentMethod, invoiceLink }
+          orderData: { cart, taxFee, shippingAmount, currency: { shortName } }
         }
       } = this.props
 
@@ -158,30 +152,30 @@ class OrderData extends React.Component<Props, {}> {
         window.uetq = window.uetq || []
         window.uetq.push('event', 'purchase', {'revenue_value': subtotal, 'currency': shortName })
       }
-      if (paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink) {
-        info({
-          title: (
-            <ModalTitle>
-              {formatMessage(messages.paymentLink)}
-              <StripeLogo src={stripeLogo} />
-            </ModalTitle>
-          ),
-          icon: ' ',
-          okText: formatMessage(messages.gotIt),
-          okButtonProps: {
-            style: buttonStyle,
-          },
-          content: (
-            <InfoBody>
-              {formatMessage(messages.paymentLinkInfo)}
-              <ApprovalLink onClick={this.copyLink}>
-                {invoiceLink}
-                <LinkCopyIcon type="link"/>
-              </ApprovalLink>
-            </InfoBody>
-          ),
-        })
-      }
+      // if (paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink) {
+      //   info({
+      //     title: (
+      //       <ModalTitle>
+      //         {formatMessage(messages.paymentLink)}
+      //         <StripeLogo src={stripeLogo} />
+      //       </ModalTitle>
+      //     ),
+      //     icon: ' ',
+      //     okText: formatMessage(messages.gotIt),
+      //     okButtonProps: {
+      //       style: buttonStyle,
+      //     },
+      //     content: (
+      //       <InfoBody>
+      //         {formatMessage(messages.paymentLinkInfo)}
+      //         <ApprovalLink onClick={this.copyLink}>
+      //           {invoiceLink}
+      //           <LinkCopyIcon type="link"/>
+      //         </ApprovalLink>
+      //       </InfoBody>
+      //     ),
+      //   })
+      // }
     }
   }
   copyLink = () => {
@@ -555,7 +549,11 @@ class OrderData extends React.Component<Props, {}> {
             <StyledInfoText>
               <FormattedHTMLMessage
                 {...messages[
-                teamStoreId ? 'messageTeamstore' : 'messageRetail'
+                  teamStoreId ? 'messageTeamstore' : 
+                  ((paymentMethod === PaymentOptions.INVOICE ||
+                    paymentMethod === PaymentOptions.PAYMENT_LINK) ? 
+                    'messageRetailPreparing'
+                    : 'messageRetail')
                 ]}
               />
             </StyledInfoText>

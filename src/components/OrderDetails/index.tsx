@@ -83,7 +83,7 @@ import {
   DeliveryLabelSecondary,
   PaymentLink,
   StripeIcon,
-  LinkCopyIcon
+  PayNow
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -674,6 +674,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                     </StyledPopOver>
                   </DeliveryLabel>
                   <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
+                  {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
+                    <DeliveryLabel>
+                      {formatMessage(messages.paymentLink)}
+                    </DeliveryLabel>
+                  }
                   {teamStoreId &&
                     <DeliveryLabel>
                       {formatMessage(messages.lastUpdated)}
@@ -687,11 +692,6 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {referenceNumber &&
                     <DeliveryLabel>
                       {formatMessage(messages.referenceNumber)}
-                    </DeliveryLabel>
-                  }
-                  {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
-                    <DeliveryLabel>
-                      {formatMessage(messages.paymentLink)}
                     </DeliveryLabel>
                   }
                   {actualDeliver &&
@@ -734,6 +734,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                     }
                     {orderStatus}
                   </StatusLabel>
+                  {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
+                    <Info {...{ savingPdf }}>
+                      <PayNow href={invoiceLink}>{formatMessage(messages.payNow)}</PayNow>
+                    </Info>
+                  }
                   {teamStoreId &&
                     <Info {...{ savingPdf }}>
                       {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
@@ -747,11 +752,6 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {referenceNumber &&
                     <Info {...{ savingPdf }}>
                       {referenceNumber}
-                    </Info>
-                  }
-                  {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
-                    <Info {...{ savingPdf }}>
-                      <a href={invoiceLink}>{invoiceLink}<LinkCopyIcon type="link"/></a>
                     </Info>
                   }
                   {actualDeliver &&
@@ -840,7 +840,14 @@ export class OrderDetails extends React.Component<Props, {}> {
           <StyledText>
             <FormattedHTMLMessage
               {...messages[teamStoreId ? 
-                'messageTeamstore' : (orderStatus === SHIPPED ? 'messageRetailShipped' : 'messageRetail')]
+                'messageTeamstore' : 
+                (orderStatus === SHIPPED ? 
+                  'messageRetailShipped' : 
+                  (orderStatus === INVOICE_SENT ?
+                    'messageRetailPreparing'
+                  : 'messageRetail'
+                  )
+                )]
               }
             />
           </StyledText>

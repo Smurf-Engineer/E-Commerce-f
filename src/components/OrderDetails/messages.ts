@@ -23,7 +23,11 @@ export default defineMessages({
   },
   paymentLink: {
     id: 'components.OrderDetails.paymentLink',
-    defaultMessage: 'Payment Link'
+    defaultMessage: 'Invoice Status'
+  },
+  payNow: {
+    id: 'components.OrderDetails.payNow',
+    defaultMessage: 'Pay Now'
   },
   referenceNumber: {
     id: 'components.OrderDetails.referenceNumber',
@@ -327,7 +331,13 @@ export default defineMessages({
     id: 'components.OrderDetails.messageRetail',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      '<p>We have received your order details and are working on it now. Please note that all custom items are made-to-order and cannot be changed once the order enters production, so please double check all details of your order (items, sizes, shipping address)  and <strong>let us know immediately</strong> if there are any problems or concerns. If you opted for the Design Check during checkout, your order will be put into production after your item(s) have been reviewed by one of our designers and any issues they have discovered have been resolved.</p><p>All orders will be shipped via FedEx International Priority. A <strong>signature is required</strong> by default for the security of your order. You will receive a shipping notice, including tracking information, about 3-4 days prior to your estimated delivery date.</p>'
+      '<p>We have received your order and are working on it now.</p><p>Please note that all custom items are made-to-order and cannot be changed once the order enters production, so please double check all details of your order (items, sizes, shipping address)  and <strong>let us know immediately</strong> if there are any problems or concerns. If you opted for the Design Check during checkout, your order will be put into production after your item(s) have been reviewed by one of our designers and any issues they have discovered have been resolved.</p><p>All orders will be shipped via FedEx International Priority. A <strong>signature is required</strong> by default for the security of your order. You will receive a shipping notice, including tracking information, about 3-4 days prior to your estimated delivery date.</p>'
+  },
+  messageRetailPreparing: {
+    id: 'components.OrderDetails.messageRetailPreparing',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>We received your order and are awaiting payment. Once payment is made, your order will enter the production process.</p><p>Once payment is made, your order will enter the production process. Please note that all custom items are made-to-order and cannot be changed once the order enters production, so please double check all details of your order (items, sizes, shipping address)  and <strong>let us know immediately</strong> if there are any problems or concerns. If you opted for the Design Check during checkout, your order will be put into production after your item(s) have been reviewed by one of our designers and any issues they have discovered have been resolved.</p><p>All orders will be shipped via FedEx International Priority. A <strong>signature is required</strong> by default for the security of your order. You will receive a shipping notice, including tracking information, about 3-4 days prior to your estimated delivery date.</p>'
   },
   messageRetailShipped: {
     id: 'components.OrderDetails.messageRetailShipped',
