@@ -39,6 +39,31 @@ export const Cell = styled.td`
   }
 `
 
+export const CellTight = styled.td`
+  border-bottom: 1px solid #d7d7d7;
+  text-align: left;
+  padding: 8px 0;
+  color: ${({ color }: CellProps) => (color ? color : '#5f6062')};
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 35px;
+  text-align: ${({ textAlign }: CellProps) =>
+    textAlign ? textAlign : 'start'};
+
+  @media (min-width: 331px) and (max-width: 768px) {
+    letter-spacing: 0.09px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 330px) and (max-width: 768px) {
+    letter-spacing: 0.09px;
+    font-size: 11px;
+  }
+  @media (max-width: 640px) {
+    line-height: 1.5;
+  }
+`
+
 export const EditButton = styled.div`
   border: 1px solid ${GRAY_SOFT};
   color: ${GRAY_STRONG};
@@ -81,5 +106,63 @@ export const DeleteButton = styled.div`
   &:hover {
     cursor: pointer;
     opacity: 0.7;
+  }
+`
+
+export const CellSecondary = styled.td`
+  border-bottom: 1px solid #d7d7d7;
+  text-align: left;
+  padding: 8px 0;
+  color: ${({ color }: CellProps) => (color ? color : '#5f6062')};
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 35px;
+  text-align: ${({ textAlign }: CellProps) =>
+    textAlign ? textAlign : 'start'};
+
+  @media (min-width: 331px) and (max-width: 768px) {
+    letter-spacing: 0.09px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 330px) and (max-width: 768px) {
+    letter-spacing: 0.09px;
+    font-size: 11px;
+  }
+  @media (max-width: 640px) {
+    position: relative;
+  }
+`
+
+export const DuePayment = styled.div`
+  text-align: center;
+  font-size: 10px;
+  background: #6fc17b;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 0 8px;
+  border-radius: 3px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  color: white;
+  @media (max-width: 640px) {
+    text-align: center;
+    font-size: 10px;
+    background: #6fc17b;
+    width: max-content;
+    margin: 0 auto;
+    padding: 0 8px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    color: white;
+    position: absolute;
+    right: 0;
+    bottom: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 0px;
   }
 `

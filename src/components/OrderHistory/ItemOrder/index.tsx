@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import momentTz from 'moment-timezone'
-import { Container, Cell, DeleteButton, EditIcon } from './styledComponents'
+import { Container, Cell, DeleteButton, EditIcon, DuePayment, CellSecondary, CellTight } from './styledComponents'
 import upperFirst from 'lodash/upperFirst'
 import {
   CANCELLED,
@@ -26,6 +26,7 @@ interface Props {
   currency: string
   service: string
   shortId: string
+  paymentLink: string
   inProductionTimestamp: string
   onBehalf: boolean
   canUpdatePayment: boolean
@@ -48,6 +49,7 @@ const ItemOrder = ({
   shortId,
   owner,
   paymentMethod,
+  paymentLink,
   inProductionTimestamp,
   canUpdatePayment,
   teamStoreId,
@@ -83,11 +85,18 @@ const ItemOrder = ({
       <Cell>{date}</Cell>
       <Cell>{estimatedDate}</Cell>
       <Cell color={!service ? '#e61737' : ''}>{service || trackingNumber}</Cell>
-      <Cell>{currency} {totalAmount}</Cell>
-      <Cell textAlign={'right'}>
+      <CellTight>{currency} {totalAmount}</CellTight>
+      <CellTight textAlign={'right'}>
         {upperFirst(status === INVOICE_SENT && paymentMethod !== PaymentOptions.PAYMENT_LINK
            ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
-      </Cell>
+      </CellTight>
+      {paymentMethod === PaymentOptions.PAYMENT_LINK && paymentLink &&
+        <CellSecondary>
+          <DuePayment>
+            Payment Due
+          </DuePayment>
+        </CellSecondary>
+      }
       <Cell>
         {(
           (teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED) ||
