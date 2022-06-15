@@ -23,6 +23,7 @@ export const getOrdersQuery = gql`
         status
         canUpdatePayment
         paymentMethod: payment_method
+        paymentLink: invoice_link
         inProductionTimestamp: in_production_timestamp
         teamStoreId: teamstore_id
         currency {
