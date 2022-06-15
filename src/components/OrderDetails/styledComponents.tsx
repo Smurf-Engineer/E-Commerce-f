@@ -263,6 +263,21 @@ export const Info = styled.div`
   }
 `
 
+export const PayNow = styled.a`
+  color: ${WHITE} !important;
+  background: #8dd251;
+  padding: 4px 18px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: Avenir;
+  box-shadow: -1px 2px 3px -1px #858585;
+  transition: all .25s;
+  &:hover {
+    opacity: 0.8;
+  }
+`
+
 export const LinkCopyIcon = styled(Icon)`
   margin-left: 10px;
   color: white;
