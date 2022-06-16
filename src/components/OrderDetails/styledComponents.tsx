@@ -762,3 +762,29 @@ export const PaymentLink = styled.div`
 export const StripeIcon = styled.img`
   max-width: 58px;
 `
+
+export const PastDueLabel = styled.div`
+  display: inline-block;
+  margin-left: 18px;
+  background: ${RED};
+  color: white;
+  padding: 0px 8px;
+  font-size: 12px;
+  line-height: 18px;
+  border-radius: 25px;
+  vertical-align: text-bottom;
+  margin-bottom: 1px;
+`
+
+export const ResellerTagImg = styled.img`
+  max-width: 70px;
+  margin-top: -44px;
+  position: absolute;
+  border-radius: 3px;
+  transition: all .25s;
+  ${({ secondary }: DivProps) => secondary ? `
+    max-width: 70px;
+    margin-top: -28px;
+    border-radius: 3px;
+  ` : ''};
+`

@@ -46,6 +46,7 @@ import {
   PaymentLink,
   StripeIcon,
   LinkCopyIcon,
+  ResellerTagImg,
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -65,6 +66,7 @@ import iconFedex from '../../assets/fedexicon.svg'
 import iconPaypal from '../../assets/Paypal.svg'
 import stripeLogo from '../../assets/stripelogo.png'
 import iconSepa from '../../assets/Sepa.svg'
+import resellerTag from '../../assets/resellertag.svg'
 import { QueryProps, OrderDataInfo, FulfillmentNetsuite } from '../../types/common'
 import CartListItem from '../CartListItem'
 import { PaymentOptions } from '../../screens/Checkout/constants'
@@ -350,7 +352,8 @@ class OrderData extends React.Component<Props, {}> {
     let variables = 0
     let totalWithoutDiscount = 0
     const cartItems = cart || []
-    const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
+    const isReseller = resellerComission > 0 || resellerInline > 0
+    const showDiscount = cartItems.some(({ isReseller: isResellerItem }) => !isResellerItem)
     const renderList = cart
       ? cart.map((cartItem, index) => {
         const {
@@ -366,7 +369,6 @@ class OrderData extends React.Component<Props, {}> {
           itemDetails,
         } = cartItem
         let priceRange = productRange
-        const isReseller = resellerComission > 0 || resellerInline > 0
         if ((userId === designOwner && isReseller) || (isReseller && !designId)) {
           let comissionToApply = cartItem.designId ? resellerComission :  resellerInline
           if (cartItem.teamStoreId && cartItem.designId) {
@@ -463,6 +465,12 @@ class OrderData extends React.Component<Props, {}> {
                 <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
                 <StyledText>{orderId}</StyledText>
               </OrderNumberContainer>
+              {referenceNumber &&
+                <OrderNumberContainer>
+                  <TitleStyled>{formatMessage(messages.referenceNumber)}</TitleStyled>
+                  <StyledText>{referenceNumber}</StyledText>
+                </OrderNumberContainer>
+              }
               <OrderNumberContainer {...{ savingPdf }}>
                 <TitleStyled>{formatMessage(messages.orderDate)}</TitleStyled>
                 <StyledText>{orderDate}</StyledText>
@@ -499,12 +507,6 @@ class OrderData extends React.Component<Props, {}> {
                   <StyledText>{placedAuthor.firstName} {placedAuthor.lastName}  (Jakroo)</StyledText>
                 </OrderNumberContainer>
               }
-              {referenceNumber &&
-                <OrderNumberContainer>
-                  <TitleStyled>{formatMessage(messages.referenceNumber)}</TitleStyled>
-                  <StyledText>{referenceNumber}</StyledText>
-                </OrderNumberContainer>
-              }
               {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
                 <OrderNumberContainer {...{ savingPdf }}>
                   <TitleStyled>{formatMessage(messages.paymentLink)}</TitleStyled>
@@ -518,6 +520,12 @@ class OrderData extends React.Component<Props, {}> {
                   <CollabIcon twoToneColor="#2673CA" type="info-circle" theme="twoTone" />
                   {formatMessage(messages.aboutDynamicPricing)}
                 </AboutCollab>
+              }
+              {isReseller &&
+                <ResellerTagImg
+                  secondary={status === PREORDER && !savingPdf && !fixedPriceStore}
+                  src={resellerTag}
+                />
               }
               <OrderSummary
                 totalSum={total}

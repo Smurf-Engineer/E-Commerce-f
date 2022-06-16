@@ -66,7 +66,7 @@ export const DownloadInvoice = styled.div`
   text-align: center;
   height: 33px;
   border-radius: 3px;
-  min-width: 165.38px;
+  min-width: 105.38px;
   transition: all .25s;
   &:hover {
     opacity: 0.5;
@@ -481,4 +481,17 @@ export const LinkCopyIcon = styled(Icon)`
 export const StripeLogo = styled.img`
   max-width: 68px;
   margin-top: -3px;
+`
+
+export const ResellerTagImg = styled.img`
+  max-width: 70px;
+  margin-top: -44px;
+  position: absolute;
+  border-radius: 3px;
+  transition: all .25s;
+  ${({ secondary }: DivProps) => secondary ? `
+    max-width: 70px;
+    margin-top: -28px;
+    border-radius: 3px;
+  ` : ''};
 `

@@ -39,6 +39,22 @@ export const Cell = styled.td`
   }
 `
 
+export const CellMobile = styled.td`
+  border-bottom: 1px solid #d7d7d7;
+  text-align: left;
+  padding: 8px 0;
+  color: ${({ color }: CellProps) => (color ? color : '#5f6062')};
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 35px;
+  text-align: ${({ textAlign }: CellProps) =>
+    textAlign ? textAlign : 'start'};
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
 export const CellTight = styled.td`
   border-bottom: 1px solid #d7d7d7;
   text-align: left;
@@ -146,11 +162,13 @@ export const DuePayment = styled.div`
   display: flex;
   align-items: center;
   color: white;
+  @media (max-width: 1252px) {
+    width: max-content;
+  }
   @media (max-width: 640px) {
     text-align: center;
     font-size: 10px;
     background: #6fc17b;
-    width: max-content;
     margin: 0 auto;
     padding: 0 8px;
     height: 24px;
@@ -164,5 +182,13 @@ export const DuePayment = styled.div`
     border-bottom-right-radius: 0px;
     border-top-left-radius: 14px;
     border-top-right-radius: 0px;
+  }
+`
+
+export const TruckIcon = styled.img`
+  max-width: 34px;
+  margin-right: 34px;
+  @media (max-width: 640px) {
+    margin-right: 20px;
   }
 `

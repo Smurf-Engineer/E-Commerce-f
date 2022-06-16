@@ -23,7 +23,7 @@ export default defineMessages({
   },
   referenceNumber: {
     id: 'components.OrderData.referenceNumber',
-    defaultMessage: 'Reference Number'
+    defaultMessage: 'PO/Ref. No.'
   },
   paymentLink: {
     id: 'components.OrderData.paymentLink',
@@ -126,7 +126,7 @@ export default defineMessages({
   },
   downloadInvoice: {
     id: 'components.OrderData.downloadInvoice',
-    defaultMessage: 'Download Invoice'
+    defaultMessage: 'Invoice'
   },
   priceQuestion: {
     id: 'components.OrderData.priceQuestion',
