@@ -56,7 +56,9 @@ import {
   VARIABLE_PRICE,
   JAKROO_LOGO_BASE64,
   excludeVariables,
-  PREORDER
+  PREORDER,
+  INVOICED,
+  INVOICE_SENT
 } from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
@@ -475,6 +477,13 @@ class OrderData extends React.Component<Props, {}> {
                 <TitleStyled>{formatMessage(messages.orderDate)}</TitleStyled>
                 <StyledText>{orderDate}</StyledText>
               </OrderNumberContainer>
+              <OrderNumberContainer {...{ savingPdf }}>
+                <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
+                <StyledText redColor={status === PAYMENT_ISSUE}>
+                  {netsuiteStatus || (status === INVOICED ? 'Invoice-Order' 
+                  : (status === INVOICE_SENT ? 'Invoiced' : status))}
+                </StyledText>
+              </OrderNumberContainer>
               {paymentMethod === PaymentOptions.INVOICE && invoiceTerms &&
                 <OrderNumberContainer {...{ savingPdf }}>
                   <TitleStyled>{formatMessage(messages.paymentTerms)}</TitleStyled>
@@ -494,12 +503,6 @@ class OrderData extends React.Component<Props, {}> {
               <OrderNumberContainer {...{ savingPdf }}>
                 <TitleStyled>{formatMessage(messages.estimatedDate)}</TitleStyled>
                 <StyledText>{estimatedDate}</StyledText>
-              </OrderNumberContainer>
-              <OrderNumberContainer {...{ savingPdf }}>
-                <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
-                <StyledText redColor={status === PAYMENT_ISSUE}>
-                  {netsuiteStatus || status}
-                </StyledText>
               </OrderNumberContainer>
               {placedAuthor && placedAuthor.firstName &&
                 <OrderNumberContainer {...{ savingPdf }}>

@@ -31,7 +31,7 @@ export default defineMessages({
   },
   paymentLink: {
     id: 'components.OrderDetails.paymentLink',
-    defaultMessage: 'Invoice Status'
+    defaultMessage: 'Payment Link'
   },
   payNow: {
     id: 'components.OrderDetails.payNow',

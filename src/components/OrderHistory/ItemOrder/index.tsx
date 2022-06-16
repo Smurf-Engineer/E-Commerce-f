@@ -115,7 +115,14 @@ const ItemOrder = ({
       <CellTight>{currency} {totalAmount}</CellTight>
       <CellTight textAlign={'right'}>
         {upperFirst(status === INVOICE_SENT && paymentMethod !== PaymentOptions.PAYMENT_LINK
-           ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
+           ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : 
+           (
+             status === INVOICE_SENT ? 'Invoiced' :
+              (status === INVOICED ? 'Invoice-Order' :
+               status)
+           )
+          )
+        }
       </CellTight>
       {paymentMethod === PaymentOptions.PAYMENT_LINK && paymentLink && status !== CANCELLED &&
         <CellSecondary>

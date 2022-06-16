@@ -658,6 +658,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                   <DeliveryLabel>
                     {formatMessage(messages.orderDate)}
                   </DeliveryLabel>
+                  <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
                   {teamStoreId && cutoffDate &&
                     <DeliveryLabel>
                       {formatMessage(messages.cutoffDate)}
@@ -687,10 +688,9 @@ export class OrderDetails extends React.Component<Props, {}> {
                       <InfoIcon type="question-circle" />
                     </StyledPopOver>
                   </DeliveryLabel>
-                  <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
                   {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
                     <DeliveryLabel>
-                      {formatMessage(messages.paymentLink)}
+                      {formatMessage(messages.paymentStatus)}
                     </DeliveryLabel>
                   }
                   {placedAuthor && placedAuthor.firstName &&
@@ -731,6 +731,15 @@ export class OrderDetails extends React.Component<Props, {}> {
                     </Info>
                   }
                   <Info {...{ savingPdf }}>{orderDate}</Info>
+                  <StatusLabel {...{ savingPdf, statusColor }}>
+                    {orderStatus === SHIPPED || orderStatus === IN_PRODUCTION ?
+                      <StatusImage src={orderStatus === SHIPPED ? shippedIcon : inProductionIcon} /> :
+                      <IconStatus type={statusIcon} />
+                    }
+                    {orderStatus === INVOICED ? 'Invoice-Order' : 
+                    (orderStatus === INVOICE_SENT ? 'Invoiced' : orderStatus)
+                    }
+                  </StatusLabel>
                   {teamStoreId && cutoffDate && <Info {...{ savingPdf }}>{cutoffDate}</Info>}
                   {paymentMethod === PaymentOptions.INVOICE && invoiceTerms && <>
                     <Info {...{ savingPdf }}>{invoiceTerms}</Info>
@@ -745,13 +754,6 @@ export class OrderDetails extends React.Component<Props, {}> {
                     </>
                   }
                   <Info {...{ savingPdf }}>{estimatedDate}</Info>
-                  <StatusLabel {...{ savingPdf, statusColor }}>
-                    {orderStatus === SHIPPED || orderStatus === IN_PRODUCTION ?
-                      <StatusImage src={orderStatus === SHIPPED ? shippedIcon : inProductionIcon} /> :
-                      <IconStatus type={statusIcon} />
-                    }
-                    {orderStatus}
-                  </StatusLabel>
                   {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink && orderStatus !== CANCELLED &&
                     orderStatus !== ERROR_STATUS && orderStatus !== PURGED &&
                     <Info {...{ savingPdf }}>
