@@ -7,7 +7,6 @@ import { graphql, compose } from 'react-apollo'
 import { FormattedHTMLMessage } from 'react-intl'
 import message from 'antd/lib/message'
 import domtoimage from 'dom-to-image'
-import moment from 'moment'
 import momentTz from 'moment-timezone'
 import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
@@ -408,7 +407,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       teamStoreId,
       invoicePaymentStatus,
       pastDue,
-      lastDrop,
+      // lastDrop,
       canUpdatePayment,
       onDemand,
       coupon,
@@ -694,11 +693,6 @@ export class OrderDetails extends React.Component<Props, {}> {
                       {formatMessage(messages.paymentLink)}
                     </DeliveryLabel>
                   }
-                  {teamStoreId &&
-                    <DeliveryLabel>
-                      {formatMessage(messages.lastUpdated)}
-                    </DeliveryLabel>
-                  }
                   {placedAuthor && placedAuthor.firstName &&
                     <DeliveryLabel>
                       {formatMessage(messages.placedBy)}
@@ -762,11 +756,6 @@ export class OrderDetails extends React.Component<Props, {}> {
                     orderStatus !== ERROR_STATUS && orderStatus !== PURGED &&
                     <Info {...{ savingPdf }}>
                       <PayNow href={invoiceLink}>{formatMessage(messages.payNow)}</PayNow>
-                    </Info>
-                  }
-                  {teamStoreId &&
-                    <Info {...{ savingPdf }}>
-                      {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
                     </Info>
                   }
                   {placedAuthor && placedAuthor.firstName &&
