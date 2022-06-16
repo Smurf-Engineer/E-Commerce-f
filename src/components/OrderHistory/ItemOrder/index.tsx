@@ -117,7 +117,7 @@ const ItemOrder = ({
         {upperFirst(status === INVOICE_SENT && paymentMethod !== PaymentOptions.PAYMENT_LINK
            ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
       </CellTight>
-      {paymentMethod === PaymentOptions.PAYMENT_LINK && paymentLink &&
+      {paymentMethod === PaymentOptions.PAYMENT_LINK && paymentLink && status !== CANCELLED &&
         <CellSecondary>
           <DuePayment>
             Payment Due
