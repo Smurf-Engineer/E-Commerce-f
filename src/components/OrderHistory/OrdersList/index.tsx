@@ -108,9 +108,15 @@ const OrdersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={''}
-              label={formatMessage(messages.trackingNumber)}
-              sort={'none'}
+              id={'is_delivered'}
+              label={formatMessage(messages.deliveryStatus)}
+              sort={orderBy === 'is_delivered' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
+              id={'delivered_date'}
+              label={formatMessage(messages.actualScheduled)}
+              sort={orderBy === 'delivered_date' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
@@ -156,6 +162,9 @@ const OrdersList = ({
         inProductionTimestamp,
         status,
         netsuite,
+        trackingNumber: trackingNumberOrder,
+        deliveredDate,
+        isDelivered,
         paymentLink,
         service,
         paymentMethod,
@@ -172,7 +181,7 @@ const OrdersList = ({
         [] as FulfillmentNetsuite[]
       )
       const packages = get(fulfillments, '[0].packages')
-      const trackingNumber = (packages && packages.replace('<BR>', ', ')) || '-'
+      const trackingNumber = (packages && packages.replace('<BR>', ', ')) || trackingNumberOrder
       return (
         <ItemOrder
           key={index}
@@ -183,6 +192,8 @@ const OrdersList = ({
             editOrder,
             onBehalf,
             paymentMethod,
+            isDelivered,
+            deliveredDate,
             paymentLink,
             inProductionTimestamp,
             deleteOrder,

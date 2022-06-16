@@ -29,6 +29,14 @@ export default defineMessages({
     id: 'components.OrdersList.trackingNumber',
     defaultMessage: 'Tracking Number/Service'
   },
+  deliveryStatus: {
+    id: 'components.OrdersList.deliveryStatus',
+    defaultMessage: 'Delivery Status'
+  },
+  actualScheduled: {
+    id: 'components.OrdersList.actualScheduled',
+    defaultMessage: 'Actual/Scheduled Date'
+  },
   tracking: {
     id: 'components.OrdersList.tracking',
     defaultMessage: 'Tracking'

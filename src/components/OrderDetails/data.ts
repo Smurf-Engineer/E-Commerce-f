@@ -22,6 +22,8 @@ export const getOrderQuery = gql`
       cutoffDate: cutoff_date
       paymentMethod: payment_method
       invoiceTerms: invoice_terms
+      invoicePaymentStatus: invoice_payment_status
+      pastDue: past_due
       fixedPriceStore: fixed_price_store
       shippingFirstName: shipping_address_first_name
       shippingPhone: shipping_address_phone

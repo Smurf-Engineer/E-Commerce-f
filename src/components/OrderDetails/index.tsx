@@ -83,13 +83,15 @@ import {
   DeliveryLabelSecondary,
   PaymentLink,
   StripeIcon,
-  PayNow
+  PayNow,
+  PastDueLabel,
+  ResellerTagImg
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
 import MyAddress from '../MyAddress'
 import AddToCartButton from '../AddToCartButton'
-
+import resellerTag from '../../assets/resellertag.svg'
 import iconPaypal from '../../assets/Paypal.svg'
 import iconFedex from '../../assets/fedexicon.svg'
 import stripeLogo from '../../assets/stripelogo.png'
@@ -111,7 +113,9 @@ import {
   IN_PRODUCTION,
   SHIPPED,
   PAID_STATUS,
-  INVOICED
+  INVOICED,
+  ERROR_STATUS,
+  PURGED
 } from '../../constants'
 import ProductInfo from '../ProductInfo'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
@@ -402,6 +406,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       discount,
       placedAuthor,
       teamStoreId,
+      invoicePaymentStatus,
+      pastDue,
       lastDrop,
       canUpdatePayment,
       onDemand,
@@ -645,6 +651,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                   <DeliveryLabel>
                     {formatMessage(messages.orderNumber)}
                   </DeliveryLabel>
+                  {referenceNumber &&
+                    <DeliveryLabel>
+                      {formatMessage(messages.referenceNumber)}
+                    </DeliveryLabel>
+                  }
                   <DeliveryLabel>
                     {formatMessage(messages.orderDate)}
                   </DeliveryLabel>
@@ -653,10 +664,14 @@ export class OrderDetails extends React.Component<Props, {}> {
                       {formatMessage(messages.cutoffDate)}
                     </DeliveryLabel>
                   }
-                  {paymentMethod === PaymentOptions.INVOICE && invoiceTerms &&
+                  {paymentMethod === PaymentOptions.INVOICE && invoiceTerms && <>
                     <DeliveryLabel>
                       {formatMessage(messages.paymentTerms)}
                     </DeliveryLabel>
+                    <DeliveryLabel>
+                      {formatMessage(messages.paymentStatus)}
+                    </DeliveryLabel>
+                    </>
                   }
                   <DeliveryLabel>
                     {formatMessage(messages.deliveryDate)}
@@ -689,11 +704,6 @@ export class OrderDetails extends React.Component<Props, {}> {
                       {formatMessage(messages.placedBy)}
                     </DeliveryLabel>
                   }
-                  {referenceNumber &&
-                    <DeliveryLabel>
-                      {formatMessage(messages.referenceNumber)}
-                    </DeliveryLabel>
-                  }
                   {actualDeliver &&
                     <DeliveryLabelSecondary>
                       <FedexIcon src={iconFedex} />
@@ -721,10 +731,24 @@ export class OrderDetails extends React.Component<Props, {}> {
                     {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
                   </Info>
                   <Info {...{ savingPdf }}>{shortId}</Info>
+                  {referenceNumber &&
+                    <Info {...{ savingPdf }}>
+                      {referenceNumber}
+                    </Info>
+                  }
                   <Info {...{ savingPdf }}>{orderDate}</Info>
                   {teamStoreId && cutoffDate && <Info {...{ savingPdf }}>{cutoffDate}</Info>}
-                  {paymentMethod === PaymentOptions.INVOICE && invoiceTerms && 
+                  {paymentMethod === PaymentOptions.INVOICE && invoiceTerms && <>
                     <Info {...{ savingPdf }}>{invoiceTerms}</Info>
+                    <Info {...{ savingPdf }}>
+                      {invoicePaymentStatus}
+                      {pastDue && 
+                        <PastDueLabel>
+                          {formatMessage(messages.pastDue)}
+                        </PastDueLabel>
+                      }
+                    </Info>
+                    </>
                   }
                   <Info {...{ savingPdf }}>{estimatedDate}</Info>
                   <StatusLabel {...{ savingPdf, statusColor }}>
@@ -734,7 +758,8 @@ export class OrderDetails extends React.Component<Props, {}> {
                     }
                     {orderStatus}
                   </StatusLabel>
-                  {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink &&
+                  {paymentMethod === PaymentOptions.PAYMENT_LINK && invoiceLink && orderStatus !== CANCELLED &&
+                    orderStatus !== ERROR_STATUS && orderStatus !== PURGED &&
                     <Info {...{ savingPdf }}>
                       <PayNow href={invoiceLink}>{formatMessage(messages.payNow)}</PayNow>
                     </Info>
@@ -747,11 +772,6 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {placedAuthor && placedAuthor.firstName &&
                     <Info {...{ savingPdf }}>
                       {placedAuthor.firstName} {placedAuthor.lastName}  (Jakroo)
-                    </Info>
-                  }
-                  {referenceNumber &&
-                    <Info {...{ savingPdf }}>
-                      {referenceNumber}
                     </Info>
                   }
                   {actualDeliver &&
@@ -809,6 +829,28 @@ export class OrderDetails extends React.Component<Props, {}> {
                       {formatMessage(messages.cancel)}
                     </DeleteButton>
                   </OrderActions>
+              }
+              {isResellerUser &&
+                <ResellerTagImg
+                  secondary={
+                    ((
+                      (
+                        (teamStoreId && owner) && !savingPdf &&
+                        (orderStatus === PREORDER || canUpdatePayment) && orderStatus !== CANCELLED
+                      ) ||
+                      (onBehalf && 
+                        (orderStatus === PAID_STATUS || 
+                          orderStatus === INVOICED || 
+                          (orderStatus === IN_PRODUCTION && productionValid) || 
+                          orderStatus === PENDING_APPROVAL
+                        ) 
+                      && owner)
+                    ) 
+                    && !invoiceLink) ||
+                    (orderStatus === PREORDER && !savingPdf && !fixedPriceStore)
+                  }
+                  src={resellerTag}
+                />
               }
               <OrderSummary
                 onlyRead={true}

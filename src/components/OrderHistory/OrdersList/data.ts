@@ -21,6 +21,9 @@ export const getOrdersQuery = gql`
         service
         estimatedDate: estimated_date
         status
+        trackingNumber: tracking_number
+        isDelivered: is_delivered
+        deliveredDate: delivered_date
         canUpdatePayment
         paymentMethod: payment_method
         paymentLink: invoice_link

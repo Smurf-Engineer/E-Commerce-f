@@ -3,10 +3,23 @@
  */
 import * as React from 'react'
 import momentTz from 'moment-timezone'
-import { Container, Cell, DeleteButton, EditIcon, DuePayment, CellSecondary, CellTight } from './styledComponents'
+import scheduledOrange from '../../../assets/scheduled_orange.svg'
+import scheduledRed from '../../../assets/scheduled_red.svg'
+import {
+  Container,
+  Cell,
+  DeleteButton,
+  EditIcon,
+  DuePayment,
+  CellSecondary,
+  CellTight,
+  TruckIcon,
+  CellMobile
+} from './styledComponents'
 import upperFirst from 'lodash/upperFirst'
 import {
   CANCELLED,
+  DATE_FORMAT,
   INVOICED,
   INVOICE_SENT,
   IN_PRODUCTION,
@@ -16,6 +29,7 @@ import {
   PENDING_APPROVAL,
   PREORDER
 } from '../../../constants'
+import { GREEN, RED_DARK } from '../../../theme/colors'
 
 interface Props {
   date: string
@@ -27,6 +41,8 @@ interface Props {
   service: string
   shortId: string
   paymentLink: string
+  isDelivered: boolean
+  deliveredDate: string
   inProductionTimestamp: string
   onBehalf: boolean
   canUpdatePayment: boolean
@@ -41,13 +57,15 @@ interface Props {
 const ItemOrder = ({
   date,
   estimatedDate,
-  trackingNumber = '-',
+  trackingNumber = '',
   service,
   status,
   totalAmount,
   currency,
   shortId,
   owner,
+  isDelivered,
+  deliveredDate,
   paymentMethod,
   paymentLink,
   inProductionTimestamp,
@@ -81,10 +99,19 @@ const ItemOrder = ({
 
   return (
     <Container onClick={handleOnClick}>
-      <Cell>{shortId}</Cell>
+      <Cell>{service || shortId}</Cell>
       <Cell>{date}</Cell>
       <Cell>{estimatedDate}</Cell>
-      <Cell color={!service ? '#e61737' : ''}>{service || trackingNumber}</Cell>
+      <Cell textAlign="center">
+        {!!trackingNumber ?
+          <TruckIcon src={isDelivered ? scheduledRed : scheduledOrange} />
+          : ''
+        }
+      </Cell>
+      <CellMobile
+        color={isDelivered ? (momentTz(deliveredDate).isAfter(estimatedDate, 'day') ? RED_DARK : GREEN) : ''}>
+        {deliveredDate ? momentTz(deliveredDate).tz('America/Los_Angeles').format(DATE_FORMAT) : ''}
+      </CellMobile>
       <CellTight>{currency} {totalAmount}</CellTight>
       <CellTight textAlign={'right'}>
         {upperFirst(status === INVOICE_SENT && paymentMethod !== PaymentOptions.PAYMENT_LINK
@@ -97,7 +124,7 @@ const ItemOrder = ({
           </DuePayment>
         </CellSecondary>
       }
-      <Cell>
+      <CellMobile>
         {(
           (teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED) ||
           (onBehalf && (
@@ -109,8 +136,8 @@ const ItemOrder = ({
         ) &&
           <EditIcon type="edit" onClick={editOrderAction}>Edit</EditIcon>
         }
-      </Cell>
-      <Cell>
+      </CellMobile>
+      <CellMobile>
         {(
           (teamStoreId && owner && (status === PREORDER || canUpdatePayment) && status !== CANCELLED) || 
           (onBehalf && (
@@ -124,7 +151,7 @@ const ItemOrder = ({
             Cancel
           </DeleteButton>
         }
-      </Cell>
+      </CellMobile>
     </Container>
   )
 }
