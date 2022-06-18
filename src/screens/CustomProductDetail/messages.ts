@@ -21,6 +21,35 @@ export default defineMessages({
     id: 'screens.CustomProductDetail.teamPrice',
     defaultMessage: 'Team Price'
   },
+  proceedCheckout: {
+    id: 'screens.CustomProductDetail.proceedCheckout',
+    defaultMessage: 'PROCEED TO CHECKOUT'
+  },
+  myCart: {
+    id: 'screens.CustomProductDetail.myCart',
+    defaultMessage: 'My Cart'
+  },
+  availableUpgrades: {
+    id: 'screens.CustomProductDetail.availableUpgrades',
+    defaultMessage: 'Available Upgrades'
+  },
+  quantity: {
+    id: 'screens.CustomProductDetail.quantity',
+    defaultMessage: 'Quantity'
+  },
+  personalization: {
+    id: 'screens.CustomProductDetail.personalization',
+    defaultMessage: 'Personalization'
+  },
+  variablesTitle: {
+    id: 'screens.CustomProductDetail.variablesTitle',
+    defaultMessage: 'Important Guidelines for Personalization'
+  },
+  variablesInfo: {
+    id: 'screens.CustomProductDetail.variablesInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>When personalizing your item with text such as names, countries, or other pre-determined values, please note the following;<p><p><ol><li>We do NOT spell check prior to printing. Please ensure YOU have checked your spelling. </li><li>Text IS case sensitive. Personalization will appear just as you entered it.</li><li>The following characters are not allowed; (* /, emojis)</li><li>Some foreign language characters/symbols may not print due to restrictions in the Font.</li><li>Spaces count towards the character limit.</li></ol></p><p>If you have any question, please contact our customer service via chat, or email. </p><p><br /><strong><center>Is this for a sanctioned ITU Triathlon Event?</center></strong></p><p>The ITU (International Triathlon Union) has strict guidelines for competition apparel worn in sanctioned ITU events. You will need to use the 3-character ISO (Alpha-3) country code when designating your country. Due to size and space restrictions, athlete names that exceed 15 characters will need to be abbreviated.</p><p>If you have any question, please contact our customer service via chat, or email.</p>'
+  },
   needAssistance: {
     id: 'screens.CustomProductDetail.needAssistance',
     defaultMessage: 'Need help determining your size?'

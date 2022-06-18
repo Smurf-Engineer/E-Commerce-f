@@ -18,6 +18,14 @@ export const GetDesignByIdQuery = gql`
       teamOnDemand: team_on_demand_mode
       fixedPrice: team_fixed_price
       isReseller: is_reseller
+      variables {
+        variableOne: variable_one
+        variableOneLength: variable_one_length
+        variableOneCaps: variable_one_caps
+        variableTwo: variable_two
+        variableTwoLength: variable_two_length
+        variableTwoCaps: variable_two_caps
+      }
       resellerPrice: reseller_price {
         abbreviation
         shortName: short_name
@@ -215,6 +223,20 @@ export const profileSettingsQuery = gql`
         comission
         paypalAccount: paypal_account
       }
+    }
+  }
+`
+
+export const getDesignVariables = gql`
+  query GetDesignVariables($id: String!) {
+    designVariables: getDesignVariables(id: $id) {
+      id
+      variableOne: variable_one
+      variableTwo: variable_two
+      oneLength: variable_one_length
+      twoLength: variable_two_length
+      variableOneCaps: variable_one_caps
+      variableTwoCaps: variable_two_caps
     }
   }
 `

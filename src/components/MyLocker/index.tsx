@@ -476,7 +476,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     const {
       currentTarget: { id }
     } = evt
-    const { setInitialData, client: { query } } = this.props
+    const { setInitialData, client: { query } } = this.props
     let cartListFromLS = []
     if (typeof window !== 'undefined') {
       cartListFromLS = JSON.parse(localStorage.getItem('cart') || '{}')

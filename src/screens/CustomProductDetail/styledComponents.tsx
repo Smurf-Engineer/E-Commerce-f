@@ -15,7 +15,8 @@ import {
   GRAY_HEADER,
   GRAY,
   RED,
-  GRAY_ANTDESIGN
+  GRAY_ANTDESIGN,
+  BLACK
 } from '../../theme/colors'
 import Input from 'antd/lib/input'
 import Select from 'antd/lib/select'
@@ -26,6 +27,7 @@ interface DivProps {
   isTeamStore?: boolean
   selected?: boolean
   disabled?: boolean
+  secondary?: boolean
 }
 
 type SelectType = {
@@ -617,17 +619,33 @@ export const FingerIcon = styled.img`
   margin-right: 8px;
 `
 
-export const UpgradesDiv = styled.div``
+export const UpgradesSection = styled.div``
 
-export const UpgradeInput = styled.div``
+export const UpgradesDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`
+
+export const UpgradeInput = styled.div`
+  max-width: 168px;
+  width: 100%;
+  margin-right: 28px;
+  margin-bottom: 20px;
+  @media (max-width: 698px) {
+    max-width: 158px;
+    width: 100%;
+    margin-right: 18px;
+  }
+`
 
 export const UpgradeTitle = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 `
 
 export const StyledSelect = styled(Select)`
-  width: 20%;
+  width: 100%;
   & .ant-select-selection {
     border-color: ${({ highlightFields }: SelectType) =>
     highlightFields ? RED : GRAY_ANTDESIGN};
@@ -669,8 +687,8 @@ export const StyledSelect = styled(Select)`
 
 export const QuestionSpanUpgrade = styled.span`
   color: #5f6062;
-  font-size: 16px;
-  margin-left: 5px;
+  font-size: 14px;
+  margin-left: 8px;
   border: 0.5px solid #dcdcdc;
   padding: 10px;
   line-height: 0;
@@ -678,8 +696,8 @@ export const QuestionSpanUpgrade = styled.span`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  width: 25px;
-  height: 25px;
+  width: 23px;
+  height: 23px;
 
   &::after {
     content: '?';
@@ -730,4 +748,345 @@ export const InfoImageMobile = styled.img`
 
 export const InfoURL = styled.a`
   color: ${BLUE};
+`
+
+export const QuantitySection = styled.div`
+  margin-top: 4px;
+`
+
+export const QuantityDiv = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid ${GRAY_ANTDESIGN};
+  width: fit-content;
+  border-radius: 3px;
+  font-size: 18px;
+  input[type='number']::-webkit-inner-spin-button, 
+  input[type='number']::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`
+
+export const MinusButton = styled.div`
+  width: 26px;
+  text-align: center;
+  transition: all .25s;
+  height: 24px;
+  padding-top: 1px;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+    background: #f7f7f7;
+  }
+`
+
+export const QuantityInput = styled.input`
+  border: none;
+  text-align: center;
+  width: 33px;
+  border-left: 1px solid ${GRAY_ANTDESIGN};
+  border-right: 1px solid ${GRAY_ANTDESIGN};
+  font-size: 15px;
+  padding: 3px 0px;
+  font-weight: bold;
+  font-family: Avenir;
+`
+
+export const PlusButton = styled.div`
+  width: 26px;
+  text-align: center;
+  transition: all .25s;
+  height: 24px;
+  padding-top: 1px;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+    background: #f7f7f7;
+  }
+`
+
+export const VariablesSection = styled.div`
+  margin-top: 4px;
+`
+
+export const VariablesInputs = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`
+
+export const VariableInput = styled.div``
+
+export const VariableTitle = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`
+
+export const InputVariable = styled(Input)`
+  max-width: 168px;
+  width: 100%;
+  margin-right: 28px;
+  margin-bottom: 20px;
+  @media (max-width: 698px) {
+    max-width: 158px;
+    width: 100%;
+    margin-right: 18px;
+  }
+`
+
+export const InfoBody = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: -38px;
+`
+
+export const InfoTitle = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+`
+
+export const InfoDescription = styled.div`
+  margin-top: 28px;
+  center {
+    font-size: 16px;
+  }
+`
+
+export const AnimatedDiv = styled.div`
+  position: fixed;
+  bottom: 24px;
+  left: 30px;
+  z-index: 3;
+`
+
+export const BounceDiv = styled.div`
+  ${({ secondary }: DivProps) => secondary ? `
+  animation: wobble-hor-bottom 0.8s 0s 2 both;
+  @keyframes wobble-hor-bottom {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-15px);
+    }
+    60% {
+      transform: translateY(-7px);
+      filter: grayscale(0.7);
+    }
+  }
+  ` : ''}
+`
+
+export const CartIconBounce = styled.div`
+  background: ${WHITE};
+  border-radius: 50%;
+  width: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 68px;
+  box-shadow: 0px 1px 9px -2px #6e6e6e;
+  transition: all .25s;
+  .ant-badge-count {
+    transform: translateX(30%);
+  }
+  animation: fade-in-leftDesuZ 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 1s both;
+  @keyframes fade-in-leftDesuZ {
+    0% {
+      transform: translateX(-30px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  &:hover {
+    cursor: pointer;
+    filter: opacity(0.7);
+  }
+`
+
+export const ShoppingCartIcon = styled(Icon)`
+  font-size: 32px;
+  color: ${BLACK};
+`
+
+export const CartDiv = styled.div`
+  position: fixed;
+  background: white;
+  height: 100vh;
+  max-width: 428px;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  box-shadow: 1px 0px 14px 4px #b8b8b8;
+  animation: slide-in-left 0.35s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  @keyframes slide-in-left {
+    0% {
+      transform: translateX(-450px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+`
+
+export const CartTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 22px 26px;
+  background: #202020;
+  color: ${WHITE};
+`
+
+export const CartTitleLabel = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+export const CloseIcon = styled(Icon)`
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+`
+
+export const CartIconMini = styled(Icon)`
+  font-size: 18px;
+  margin-right: 12px;
+  margin-top: -3px;
+  color: #fff7da;
+`
+
+export const CartList = styled.div`
+  display: flex;
+  flex-flow: column;
+  margin-top: 30px;
+  overflow-y: scroll;
+  height: calc(100% - 146px);
+`
+
+export const CartItemDiv = styled.div`
+  display: flex;
+  margin-bottom: 18px;
+  margin-left: 8px;
+  margin-right: 8px;
+`
+
+export const CartThumbnail = styled.img`
+  max-width: 128px;
+  width: 100%;
+  object-fit: cover;
+  height: 122px;
+`
+
+export const CartInfo = styled.div`
+  display: flex;
+  flex-flow: column;
+  position: relative;
+  margin-top: 4px;
+  margin-left: 10px;
+  flex: 1;
+  padding-right: 54px;
+`
+
+export const DesignName = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+  font-family: Avenir;
+`
+
+export const DesignCode = styled.div`
+  margin-top: 4px;
+`
+
+export const ProductName = styled.div`
+  font-size: 12px;
+  margin-top: 4px;
+`
+
+export const Quantity = styled.div`
+  position: absolute;
+  right: 13px;
+  top: calc(50% - 5px);
+  background: #202020;
+  height: 22px;
+  border-radius: 50px;
+  color: white;
+  font-size: 10px;
+  width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const DeleteIcon = styled(Icon)`
+  position: absolute;
+  right: 13px;
+  top: 1px;
+  height: 22px;
+  border-radius: 50px;
+  color: #202020;
+  font-size: 10px;
+  width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    border: 1px solid gray;
+  }
+`
+
+export const CartButtonOpen = styled.div`
+  margin: 0 auto;
+  text-align: center;
+  width: 90%;
+  background: #202020;
+  color: white;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 11px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+`
+
+export const GenderName = styled.div`
+  font-size: 12px;
+  margin-top: 6px;
+`
+
+export const SizeName = styled.div`
+  font-size: 12px;
+  margin-top: 2px;
+`
+
+export const UpgradeName = styled.div`
+  font-size: 12px;
+  margin-top: 2px;
+`
+
+export const UpgradeValue = styled.div`
+  font-family: Avenir;
+  font-weight: bold;
+  display: inline-block;
+  margin-left: 4px;
 `

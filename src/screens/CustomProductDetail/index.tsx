@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { injectIntl, FormattedMessage, InjectedIntl } from 'react-intl'
-import { compose, graphql } from 'react-apollo'
+import { compose, graphql, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import queryString from 'query-string'
@@ -13,6 +13,7 @@ import filter from 'lodash/filter'
 import zenscroll from 'zenscroll'
 import isEmpty from 'lodash/isEmpty'
 import AntdModal from 'antd/lib/modal'
+import * as thunkActions from './thunkActions'
 import * as customProductDetailActions from './actions'
 import messages from './messages'
 import { GetDesignByIdQuery, profileSettingsQuery } from './data'
@@ -76,6 +77,43 @@ import {
   InfoURL,
   maskBlurred,
   buttonStyleModern,
+  QuantityDiv,
+  MinusButton,
+  PlusButton,
+  QuantityInput,
+  QuantitySection,
+  UpgradesSection,
+  VariablesSection,
+  VariablesInputs,
+  VariableInput,
+  VariableTitle,
+  InputVariable,
+  InfoBody,
+  InfoTitle,
+  InfoDescription,
+  AnimatedDiv,
+  BounceDiv,
+  CartIconBounce,
+  ShoppingCartIcon,
+  CartDiv,
+  CartTitle,
+  CartTitleLabel,
+  CartIconMini,
+  CloseIcon,
+  CartList,
+  CartButtonOpen,
+  CartItemDiv,
+  CartThumbnail,
+  CartInfo,
+  DesignName,
+  DesignCode,
+  ProductName,
+  Quantity,
+  DeleteIcon,
+  GenderName,
+  SizeName,
+  UpgradeName,
+  UpgradeValue,
   // ColorButtons,
   // ToneButton
 } from './styledComponents'
@@ -89,7 +127,7 @@ import {
   ProductFile,
   PriceRange,
   UserType,
-  BreadRoute, IProfileSettings, UpgradeItem
+  BreadRoute, IProfileSettings, UpgradeItem, CartItems
 } from '../../types/common'
 import lockSound from '../../assets/lock.wav'
 import enabledSound from '../../assets/enabled.wav'
@@ -121,7 +159,11 @@ import { APPROVED, DATE_FORMAT, PREDYED_TRANSPARENT } from '../../constants'
 import { getRangeLabel } from '../../utils/utilsShoppingCart'
 import message from 'antd/lib/message'
 import moment from 'moment'
-import { FIT_FORM } from './constants'
+import { EMOJI_REGEX, FIT_FORM, VARIABLE_ONE_TYPE, VARIABLE_TWO_TYPE } from './constants'
+import find from 'lodash/find'
+import Badge from 'antd/lib/badge'
+import { saveCartCloud } from '../../components/MainLayout/api'
+import isEqual from 'lodash/isEqual'
 
 const { Option } = Select
 const { warning, info } = AntdModal
@@ -159,6 +201,13 @@ interface Props extends RouteComponentProps<any> {
   firstUpgrade: any
   secondUpgrade: any
   thirdUpgrade: any
+  quantity: number
+  shoppingCart: any
+  client: any
+  itemsInCart: number
+  variableOneValue: string
+  variableTwoValue: string
+  setInitialData: (query: any) => void
   setLoadingAction: (loading: boolean) => void
   setFitsModal: (showFits: boolean) => void
   setLoadingModel: (loading: boolean) => void
@@ -170,6 +219,9 @@ interface Props extends RouteComponentProps<any> {
   setShowDetailsAction: (show: boolean) => void
   setShowSpecsAction: (show: boolean) => void
   resetDataAction: () => void
+  setQuantityValue: (value: number) => void
+  setVariableValue: (name: string, newText: string) => void
+  setUpgradeOption: (isFirst: boolean, selectedOption: ItemDetailType, isThird: boolean) => void
   openQuickView: (id: number, yotpoId: string | null) => void
   setSelectedTopSizeAction: (selected: SelectedType) => void
   setSelectedBottomSizeAction: (selected: SelectedType) => void
@@ -179,7 +231,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   state = {
     tone: '',
     hideControls: true,
-    invalidData: false
+    invalidData: false,
+    bounceCart: false,
+    openCartDiv: false
   }
   constructor(props: any) {
     super(props)
@@ -192,13 +246,48 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { location: prevLocation } = prevProps
-    const { location, resetDataAction } = this.props
+    const { location: prevLocation, shoppingCart: prevCart, itemsInCart: prevItems } = prevProps
+    const { location, resetDataAction, shoppingCart, itemsInCart } = this.props
     const { search: oldSearch } = prevLocation || {}
     const { search } = location || {}
     if (search !== oldSearch) {
       resetDataAction()
       this.handleSetLoading(false)
+    }
+    let numberOfProducts = 0
+    if (shoppingCart.cart) {
+      const cart = shoppingCart.cart as CartItems[]
+      cart.map((cartItem) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+        numberOfProducts = numberOfProducts + quantitySum
+      })
+    }
+    const newNumber = shoppingCart.cart
+      ? numberOfProducts : itemsInCart
+
+    let numberOfProductsOld = 0
+
+    if (prevCart.cart) {
+      const cart = prevCart.cart as CartItems[]
+      cart.map((cartItem) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        numberOfProductsOld = numberOfProductsOld + quantitySum
+      })
+    }
+
+    const prevNumber = prevCart.cart
+      ? numberOfProductsOld : prevItems
+    
+    if (newNumber !== prevNumber) {
+      this.setState({ bounceCart: true })
     }
   }
 
@@ -294,6 +383,106 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     })
   }
 
+  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { setVariableValue, data } = this.props
+    const {
+      currentTarget: { value, name }
+    } = evt
+    const variableOneCaps = get(data, 'design.variables.variableOneCaps', false)
+    const variableTwoCaps = get(data, 'design.variables.variableTwoCaps', false)
+    let newText = value ? value.replace(EMOJI_REGEX, '') : ''
+    if ((name === VARIABLE_ONE_TYPE && variableOneCaps) || (name === VARIABLE_TWO_TYPE && variableTwoCaps)) {
+      newText = newText.toUpperCase()
+    }
+    setVariableValue(name, newText)
+  }
+
+  handleUpgradeChange = (value: string, isFirst: boolean, isThird: boolean) => {
+    const { setUpgradeOption, data } = this.props
+
+    // tslint:disable-next-line: max-line-length
+    const upgradeSelected = get(data, ['design', 'product', isFirst ? 'upgradeOne' : (isThird ? 'upgradeThree' : 'upgradeTwo'), 'options'], [])
+    const selectedOption = find(upgradeSelected, { name: value }) as ItemDetailType
+
+    setUpgradeOption(isFirst, selectedOption, isThird)
+  }
+
+  handleOpenVariableModal = () => {
+    const { intl: { formatMessage } } = this.props
+    info({
+      icon: ' ',
+      width: '648px',
+      centered: true,
+      className: 'centeredButtons',
+      okText: formatMessage(messages.close),
+      okButtonProps: {
+        style: buttonStyleModern
+      },
+      content:
+        <InfoBody>
+          <InfoTitle>{formatMessage(messages.variablesTitle)}</InfoTitle>
+          <InfoDescription
+            dangerouslySetInnerHTML={{
+              __html: formatMessage(messages.variablesInfo)
+            }}
+          />
+        </InfoBody>
+    })
+  }
+
+  decreaseQuantity = () => {
+    const { quantity, setQuantityValue } = this.props
+    if (quantity > 1) {
+      setQuantityValue(quantity - 1)
+    }
+  }
+
+  closeCart = () => {
+    this.setState({ openCartDiv: false })
+  }
+
+  goToCartPage = () => {
+    const { history } = this.props
+    history.push('/shopping-cart')
+  }
+
+  increaseQuantity = () => {
+    const { quantity, setQuantityValue } = this.props
+    if (quantity < 250) {
+      setQuantityValue(quantity + 1)
+    }
+  }
+
+  openCart = () => {
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
+    if (isMobile) {
+      this.goToCartPage()
+    } else {
+      this.setState({ openCartDiv: true })
+    }
+  }
+
+  removeItem = (id: string, itemDetail: number) => {
+    if (itemDetail) {
+      const { setInitialData, client: { query } } = this.props
+      let cartListFromLS = []
+      if (typeof window !== 'undefined') {
+        cartListFromLS = JSON.parse(localStorage.getItem('cart') || '{}')
+      }
+      const designIndex = cartListFromLS && cartListFromLS.length > 0 ? 
+        cartListFromLS.findIndex(({ designId, itemDetails }: CartItems) => 
+        designId === id && itemDetails && itemDetails[0] && isEqual(itemDetails[0], itemDetail)) : []
+      if (designIndex !== -1) {
+        cartListFromLS.splice(designIndex, 1)
+        const cart = JSON.stringify(cartListFromLS)
+        localStorage.setItem('cart', cart)
+        saveCartCloud(cart)
+        this.forceUpdate()
+        setInitialData(query)
+      }
+    }
+  }
+
   render() {
     const {
       intl,
@@ -313,14 +502,20 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       loading,
       phone,
       user,
+      shoppingCart,
+      itemsInCart,
+      quantity: quantityItem,
+      variableOneValue,
+      variableTwoValue,
       firstUpgrade,
       secondUpgrade,
       thirdUpgrade,
+      setUpgradeOption,
       selectedTopSize,
       selectedBottomSize
     } = this.props
     const { formatMessage } = intl
-    const { hideControls, invalidData } = this.state
+    const { hideControls, invalidData, bounceCart, openCartDiv } = this.state
     const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 480px)').matches
     const isTabletOrMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
     const queryParams = queryString.parse(search)
@@ -340,7 +535,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const productPriceRange = get(product, 'priceRange', [])
     const shared = get(design, 'shared', false)
     const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
-
+    if (bounceCart) {
+      setTimeout(() => { this.setState({ bounceCart: false }) }, 2000)
+    }
     if (loading || dataLoading) {
       return (
         <LoadingContainer>
@@ -370,6 +567,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designImage = get(design, 'image')
     const proCertified = get(design, 'proCertified')
     const designCode = get(design, 'code', '')
+    const variables = get(design, 'variables', {})
     const totalOrders = get(design, 'totalOrders', 0)
     const fixedPrices = get(design, 'teamPrice', [])
     const resellerPrice = get(design, 'resellerPrice', [])
@@ -415,6 +613,91 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const genderId = selectedGender ? selectedGender.id : 0
     const rangeLabel = totalOrders > 5 && !teamOnDemand ? getRangeLabel(totalOrders) : '2-5'
     const genderIndex = findIndex(imagesArray, { genderId })
+    const {
+      variableOne,
+      variableOneLength,
+      variableTwo,
+      variableTwoLength
+    } = variables || {}
+
+    // SET DEFAULT VALUES OF THE UPGRADES
+    if (
+      upgradeOne && upgradeOne.enabled && upgradeOne.defaultOption !== -1 &&
+      (!firstUpgrade || (firstUpgrade && !firstUpgrade.shortId))
+    ) {
+      const { options: optionsOne = [] } = upgradeOne || {}
+      const defaultUpgradeOne = upgradeOne.defaultOption !== -1 ? optionsOne[upgradeOne.defaultOption] : null
+      if (defaultUpgradeOne) {
+        setUpgradeOption(true, defaultUpgradeOne, false)
+      }
+    }
+    if (
+      upgradeTwo && upgradeTwo.enabled && upgradeTwo.defaultOption !== -1 &&
+      (!secondUpgrade || (secondUpgrade && !secondUpgrade.shortId))
+    ) {
+      const { options: optionsTwo = [] } = upgradeTwo || {}
+      const defaultUpgradeTwo = upgradeTwo.defaultOption !== -1 ? optionsTwo[upgradeTwo.defaultOption] : null
+      if (defaultUpgradeTwo) {
+        setUpgradeOption(false, defaultUpgradeTwo, false)
+      }
+    }
+    if (
+      upgradeThree && upgradeThree.enabled && upgradeThree.defaultOption !== -1 &&
+      (!thirdUpgrade || (thirdUpgrade && !thirdUpgrade.shortId))
+    ) {
+      const { options: optionsThree = [] } = upgradeThree || {}
+      const defaultUpgradeThree = upgradeThree.defaultOption !== -1 ? optionsThree[upgradeThree.defaultOption] : null
+      if (defaultUpgradeThree) {
+        setUpgradeOption(false, defaultUpgradeThree, true)
+      }
+    }
+
+    // SHOPPING CART COUNT LOGIC
+    let numberOfProducts = 0
+
+    if (shoppingCart.cart) {
+      const cart = shoppingCart.cart as CartItems[]
+      cart.map((cartItem) => {
+        const quantities = cartItem.itemDetails.map((itemDetail: any, ind: number) => {
+          return itemDetail.quantity
+        })
+
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        numberOfProducts = numberOfProducts + quantitySum
+      })
+    }
+    const numberOfProductsInCart = shoppingCart.cart
+      ? numberOfProducts : itemsInCart
+
+    let cartListFromLS = []
+    let cartList: CartItems[] = []
+    if (typeof window !== 'undefined') {
+      cartListFromLS = JSON.parse(localStorage.getItem('cart') || '{}')
+    }
+    for (let i = 0; i < cartListFromLS.length; i++) {
+      const item = cartListFromLS[i] || {}
+      if (i === 0) {
+        cartList.push(item)
+        continue
+      }
+      const indexOfSameProduct = findIndex(cartList, (cartItem) => {
+        return (
+          cartItem.product.id === item.product.id &&
+          item.designId === cartItem.designId
+        )
+      })
+      if (indexOfSameProduct !== -1) {
+        const itemToUpdate = cartList[indexOfSameProduct]
+        cartList[indexOfSameProduct].itemDetails = [
+          ...itemToUpdate.itemDetails,
+          ...item.itemDetails
+        ]
+      } else {
+        cartList.push(item)
+      }
+    }
+
     const mediaFiles = mediaFilesOriginal && mediaFilesOriginal.length > 0 ? 
       mediaFilesOriginal.filter((item: any) => item.savedDesignPage) : []
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/, ' ') : ''
@@ -652,7 +935,12 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         gender: selectedGender,
         topSize: selectedTopSize,
         bottomSize: selectedBottomSize,
-        quantity: 1
+        firstUpgrade,
+        secondUpgrade,
+        thirdUpgrade,
+        variableOneValue,
+        variableTwoValue,
+        quantity: quantityItem
       }
       itemDetails.push(detail)
     }
@@ -748,28 +1036,125 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       )
     })
 
-    const upgrades = 
-      <UpgradesDiv>
-        {upgradeOne && upgradeOne.enabled &&
-          <UpgradeInput>
-            <UpgradeTitle>
-              {upgradeOne.name}
-              <QuestionSpanUpgrade onClick={this.handleOpenUpgrade(upgradeOne)} />
-            </UpgradeTitle>
-            <StyledSelect
-              onChange={(e) => this.handleUpgradeChange(e, false, true)}
-              showSearch={false}
-              placeholder={formatMessage(messages.upgradeOne)}
-              optionFilterProp="children"
-              disabled={youthCombined && youthSelected}
-              value={firstUpgrade ? firstUpgrade.name : undefined}
-              allowClear={upgradeOne.defaultOption === -1}
-            >
-              {upgradeOneOptions}
-            </StyledSelect>
-          </UpgradeInput>
-        }
-      </UpgradesDiv>
+    const upgrades = (
+      (upgradeOne && upgradeOne.enabled) ||
+      (upgradeTwo && upgradeTwo.enabled) ||
+      (upgradeThree && upgradeThree.enabled)
+      ) &&
+      <UpgradesSection>
+        <SectionTitle>{formatMessage(messages.availableUpgrades)}</SectionTitle>
+        <UpgradesDiv>
+          {upgradeOne && upgradeOne.enabled &&
+            <UpgradeInput>
+              <UpgradeTitle>
+                {upgradeOne.name}
+                <QuestionSpanUpgrade onClick={this.handleOpenUpgrade(upgradeOne)} />
+              </UpgradeTitle>
+              <StyledSelect
+                onChange={(e) => this.handleUpgradeChange(e, true, false)}
+                showSearch={false}
+                placeholder={formatMessage(messages.upgradeOne)}
+                optionFilterProp="children"
+                disabled={youthCombined && youthSelected}
+                value={firstUpgrade ? firstUpgrade.name : undefined}
+                allowClear={upgradeOne.defaultOption === -1}
+              >
+                {upgradeOneOptions}
+              </StyledSelect>
+            </UpgradeInput>
+          }
+          {upgradeTwo && upgradeTwo.enabled &&
+            <UpgradeInput>
+              <UpgradeTitle>
+                {upgradeTwo.name}
+                <QuestionSpanUpgrade onClick={this.handleOpenUpgrade(upgradeTwo)} />
+              </UpgradeTitle>
+              <StyledSelect
+                onChange={(e) => this.handleUpgradeChange(e, false, false)}
+                showSearch={false}
+                placeholder={formatMessage(messages.upgradeTwo)}
+                optionFilterProp="children"
+                disabled={youthCombined && youthSelected}
+                value={secondUpgrade ? secondUpgrade.name : undefined}
+                allowClear={upgradeTwo.defaultOption === -1}
+              >
+                {upgradeTwoOptions}
+              </StyledSelect>
+            </UpgradeInput>
+          }
+          {upgradeThree && upgradeThree.enabled &&
+            <UpgradeInput>
+              <UpgradeTitle>
+                {upgradeThree.name}
+                <QuestionSpanUpgrade onClick={this.handleOpenUpgrade(upgradeThree)} />
+              </UpgradeTitle>
+              <StyledSelect
+                onChange={(e) => this.handleUpgradeChange(e, false, true)}
+                showSearch={false}
+                placeholder={formatMessage(messages.upgradeThree)}
+                optionFilterProp="children"
+                disabled={youthCombined && youthSelected}
+                value={thirdUpgrade ? thirdUpgrade.name : undefined}
+                allowClear={upgradeThree.defaultOption === -1}
+              >
+                {upgradeThreeOptions}
+              </StyledSelect>
+            </UpgradeInput>
+          }
+        </UpgradesDiv>
+      </UpgradesSection>
+    
+    const variablesInput = (variableOne || variableTwo) &&
+      <VariablesSection>
+        <SectionTitle>{formatMessage(messages.personalization)}</SectionTitle>
+        <VariablesInputs>
+          {variableOne &&
+            <VariableInput>
+              <VariableTitle>
+                {variableOne}
+                <QuestionSpanUpgrade onClick={this.handleOpenVariableModal} />
+              </VariableTitle>
+              <InputVariable
+                name={VARIABLE_ONE_TYPE}
+                onChange={this.handleInputChange}
+                maxLength={variableOneLength}
+                value={variableOneValue}
+              />
+            </VariableInput>
+          }
+          {variableTwo &&
+            <VariableInput>
+              <VariableTitle>
+                {variableTwo}
+                <QuestionSpanUpgrade onClick={this.handleOpenVariableModal} />
+              </VariableTitle>
+              <InputVariable
+                name={VARIABLE_TWO_TYPE}
+                onChange={this.handleInputChange}
+                maxLength={variableTwoLength}
+                value={variableTwoValue}
+              />
+            </VariableInput>
+          }
+        </VariablesInputs>
+      </VariablesSection>
+
+    const quantityInput =
+      <QuantitySection>
+        <SectionTitle>{formatMessage(messages.quantity)}</SectionTitle>
+        <QuantityDiv>
+          <MinusButton onClick={this.decreaseQuantity}>-</MinusButton>
+          <QuantityInput
+            type="number"
+            step="1"
+            min="1"
+            max="249"
+            name="quantity"
+            value={quantityItem}
+          />
+          <PlusButton onClick={this.increaseQuantity}>+</PlusButton>
+        </QuantityDiv>
+      </QuantitySection>
 
     const collectionSelection = (
       <BuyNowOptions
@@ -784,6 +1169,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         {sizeChartButton}
         {fitSection}
         {upgrades}
+        {variablesInput}
+        {quantityInput}
         {addToCartRow}
         {assistanceDiv}
       </BuyNowOptions>
@@ -872,7 +1259,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   {(user && (user.id === 'HkuTqBauQ' || user.id === 'H1R0yFr0V')) &&
                     <StyledInput onChange={this.changeTone} value={tone} />
                   }
-                  {false && <Render3D
+                  <Render3D
                     customProduct={true}
                     textColor="white"
                     lowResolution={isTabletOrMobile}
@@ -883,7 +1270,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     maxHeight={true}
                     light={tone}
                     asImage={phone}
-                  />}
+                  />
                   {isMobile &&
                     <ThreeDButton 
                       onTouchEnd={this.onTouchEndAction}
@@ -998,6 +1385,103 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             showMedia={true}
           />
         </Container>
+        <AnimatedDiv>
+          <BounceDiv secondary={bounceCart}>
+            <CartIconBounce onClick={this.openCart}>
+              <Badge count={numberOfProductsInCart} overflowCount={9}>
+                <ShoppingCartIcon type="shopping-cart" />
+              </Badge>
+            </CartIconBounce>
+          </BounceDiv>
+        </AnimatedDiv>
+        {openCartDiv && formatMessage &&
+          <CartDiv>
+            <CartTitle>
+              <CartTitleLabel>
+                <CartIconMini type="shopping" />
+                {formatMessage(messages.myCart)} ({numberOfProductsInCart})
+              </CartTitleLabel>
+              <CloseIcon type="close" onClick={this.closeCart}/>
+            </CartTitle>
+            <CartList>
+              {cartList.map((cartItem: CartItems) => {
+                const productItem = cartItem.product ? cartItem.product : {}
+                const upgradeOneObj = productItem ? productItem.upgradeOne : {}
+                const upgradeOneName = upgradeOneObj && upgradeOneObj.enabled ? upgradeOneObj.name : ''
+
+                const upgradeTwoObj = productItem ? productItem.upgradeTwo : {}
+                const upgradeTwoName = upgradeTwoObj && upgradeTwoObj.enabled ? upgradeTwoObj.name : ''
+
+                const upgradeThreeObj = productItem ? productItem.upgradeThree : {}
+                const upgradeThreeName = upgradeThreeObj && upgradeThreeObj.enabled ? upgradeThreeObj.name : ''
+                
+                const variableOneName = productItem ? productItem.variableOne : ''
+                const variableTwoName = productItem ? productItem.variableTwo : ''
+
+                return cartItem.itemDetails.map((itemDetail, index: number) => 
+                  <CartItemDiv key={index}>
+                    <CartThumbnail src={cartItem.designImage} />
+                    <CartInfo>
+                      <DesignName>
+                        {cartItem.designName}
+                      </DesignName>
+                      <DesignCode>
+                        {cartItem.designCode}
+                      </DesignCode>
+                      <ProductName>
+                        {cartItem.product.name} {cartItem.product.shortDescription}
+                      </ProductName>
+                      <GenderName>
+                        Gender: {itemDetail.gender ? itemDetail.gender.name : '-'}
+                      </GenderName>
+                      <SizeName>
+                        Size: {itemDetail.size ? itemDetail.size.name : '-'}
+                      </SizeName>
+                      {upgradeOneName &&
+                        <UpgradeName>
+                          {upgradeOneName}:
+                          <UpgradeValue>{itemDetail.firstUpgrade ? itemDetail.firstUpgrade.name : '-'}</UpgradeValue>
+                        </UpgradeName>
+                      }
+                      {upgradeTwoName &&
+                        <UpgradeName>
+                          {upgradeTwoName}:
+                          <UpgradeValue>{itemDetail.secondUpgrade ? itemDetail.secondUpgrade.name : '-'}</UpgradeValue>
+                        </UpgradeName>
+                      }
+                      {upgradeThreeName &&
+                        <UpgradeName>
+                          {upgradeThreeName}:
+                          <UpgradeValue>{itemDetail.thirdUpgrade ? itemDetail.thirdUpgrade.name : '-'}</UpgradeValue>
+                        </UpgradeName>
+                      }
+                      {variableOneName && itemDetail.variableOneValue &&
+                        <UpgradeName>
+                          {variableOneName}:
+                          <UpgradeValue>{itemDetail.variableOneValue || '-'}</UpgradeValue>
+                        </UpgradeName>
+                      }
+                      {variableTwoName && itemDetail.variableOneValue &&
+                        <UpgradeName>
+                          {variableTwoName}:
+                          <UpgradeValue>{itemDetail.variableOneValue || '-'}</UpgradeValue>
+                        </UpgradeName>
+                      }
+                      <Quantity>
+                        {itemDetail.quantity}
+                      </Quantity>
+                    <DeleteIcon
+                      onClick={() => this.removeItem(cartItem.designId, itemDetail)}
+                      type="cross"
+                    />
+                    </CartInfo>
+                  </CartItemDiv>
+                )}
+              )}
+            </CartList>
+            <CartButtonOpen onClick={this.goToCartPage}>{formatMessage(messages.proceedCheckout)}</CartButtonOpen>
+          </CartDiv>
+        }
       </Layout>
     )
   }
@@ -1033,6 +1517,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const {
       setSelectedGenderAction,
       selectedSize,
+      setUpgradeOption,
       setSelectedSizeAction,
       setSelectedFitAction,
       data,
@@ -1057,6 +1542,35 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       const youthBottomSize = selectedBottomSize && selectedBottomSize.isYouth
       if (!genderYouth && youthBottomSize || genderYouth && !youthBottomSize) {
         setSelectedBottomSizeAction({})
+      }
+      if (genderYouth) {
+        setUpgradeOption(true, null, false)
+        setUpgradeOption(false, null, false)
+        setUpgradeOption(false, null, true)
+      }
+    }
+    if (!genderYouth) {
+      const { firstUpgrade, secondUpgrade, thirdUpgrade } = this.props
+
+      const upgradeOne = get(data, 'design.product.upgradeOne', {})
+      const { options = [] } = upgradeOne || {}
+      const defaultUpgradeOne = upgradeOne.defaultOption !== -1 ? options[upgradeOne.defaultOption] : null
+      if ((defaultUpgradeOne) && (!firstUpgrade || !firstUpgrade.shortId)) {
+        setUpgradeOption(true, defaultUpgradeOne, false)
+      }
+
+      const upgradeTwo = get(data, 'design.product.upgradeTwo', {})
+      const { options: optionsTwo = [] } = upgradeTwo || {}
+      const defaultUpgradeTwo = upgradeTwo.defaultOption !== -1 ? optionsTwo[upgradeTwo.defaultOption] : null
+      if ((defaultUpgradeTwo) && (!secondUpgrade || !secondUpgrade.shortId)) {
+        setUpgradeOption(false, defaultUpgradeTwo, false)
+      }
+
+      const upgradeThree = get(data, 'design.product.upgradeThree', {})
+      const { options: optionsThree = [] } = upgradeThree || {}
+      const defaultUpgradeThree = upgradeThree.defaultOption !== -1 ? optionsThree[upgradeThree.defaultOption] : null
+      if ((defaultUpgradeThree) && (!thirdUpgrade || !thirdUpgrade.shortId)) {
+        setUpgradeOption(false, defaultUpgradeThree, true)
       }
     }
     if (genderYouth && hideFitStyles) {
@@ -1158,10 +1672,18 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: any) => {
   const productDetail = state.get('customProductDetail').toJS()
+  const shoppingCart = state.get('shoppingCartPage').toJS()
   const langProps = state.get('languageProvider').toJS()
   const responsive = state.get('responsive').toJS()
+  const layoutProps = state.get('layout').toJS()
   const app = state.get('app').toJS()
-  return { ...productDetail, ...langProps, ...responsive, ...app }
+  return { ...productDetail,
+    ...langProps,
+    ...responsive,
+    ...app,
+    shoppingCart: { ...shoppingCart },
+    itemsInCart: layoutProps.itemsInCart
+  }
 }
 
 type OwnProps = {
@@ -1171,7 +1693,8 @@ type OwnProps = {
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, { ...customProductDetailActions, openQuickView: openQuickViewAction }),
+  withApollo,
+  connect(mapStateToProps, { ...customProductDetailActions, ...thunkActions, openQuickView: openQuickViewAction }),
   graphql(profileSettingsQuery, {
     options: ({ user }: OwnProps) => ({
       fetchPolicy: 'network-only',
