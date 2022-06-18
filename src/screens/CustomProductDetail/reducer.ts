@@ -12,17 +12,26 @@ import {
   SET_SHOW_DETAILS,
   SET_SHOW_SPECS,
   RESET_DATA,
+  SET_UPGRADE_ITEM_DETAIL_ACTION,
   SET_LOADING_ACTION,
   SET_TOP_SELECTED_SIZE,
-  SET_BOTTOM_SELECTED_SIZE
+  SET_BOTTOM_SELECTED_SIZE,
+  SET_VARIABLE_VALUE,
+  SET_QUANTITY
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
+  quantity: 1,
+  variableOneValue: '',
+  variableTwoValue: '',
   selectedGender: {},
   selectedSize: {},
   selectedFit: {},
+  firstUpgrade: {},
+  secondUpgrade: {},
+  thirdUpgrade: {},
   loading: true,
   openFitInfo: false,
   showDetails: false,
@@ -39,6 +48,17 @@ const customProductDetailReducer: Reducer<any> = (
   switch (action.type) {
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
+    case SET_QUANTITY:
+      return state.set('quantity', action.value)
+    case SET_UPGRADE_ITEM_DETAIL_ACTION:
+      return state.set(
+        action.isFirst ? 
+        'firstUpgrade' : 
+        (action.isThird ? 'thirdUpgrade' : 'secondUpgrade'),
+        action.upgrade
+      )
+    case SET_VARIABLE_VALUE:
+      return state.set(action.name, action.newText)
     case SET_SELECTED_GENDER:
       return state.set('selectedGender', action.selected)
     case SET_SELECTED_SIZE:

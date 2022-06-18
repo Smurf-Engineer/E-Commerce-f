@@ -355,7 +355,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     const detail: CartItemDetail = {
       quantity: 1
     }
-    
+
     if (upgradeOne.enabled) {
       const { options = [] } = upgradeOne || {}
       const defaultUpgradeOne = upgradeOne.defaultOption !== -1 ? options[upgradeOne.defaultOption] : {}
@@ -363,7 +363,10 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         item.itemDetails.forEach((detailItem) => {
           const isYouth = youthCombined && detailItem.gender && detailItem.gender.name === 'Youth'
           if (!isYouth) {
-            const upgradeItem = options.find(({ name }) => detailItem.upgradeOne === name)
+            const upgradeItem = options.find(({ name }) => 
+              (detailItem.upgradeOne === name) || 
+              (detailItem.firstUpgrade && detailItem.firstUpgrade.name === name)
+            )
             detailItem.firstUpgrade = upgradeItem || defaultUpgradeOne
           } 
         }) 
@@ -378,7 +381,10 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         item.itemDetails.forEach((detailItem) => {
           const isYouth = youthCombined && detailItem.gender && detailItem.gender.name === 'Youth'
           if (!isYouth) {
-            const upgradeItem = options.find(({ name }) => detailItem.upgradeTwo === name)
+            const upgradeItem = options.find(({ name }) => 
+            (detailItem.upgradeTwo === name) ||
+            (detailItem.secondUpgrade && detailItem.secondUpgrade.name === name)
+            )
             detailItem.secondUpgrade = upgradeItem || defaultUpgradeTwo
           }
         }) 
@@ -394,7 +400,10 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         item.itemDetails.forEach((detailItem) => {
           const isYouth = youthCombined && detailItem.gender && detailItem.gender.name === 'Youth'
           if (!isYouth) {
-            const upgradeItem = options.find(({ name }) => detailItem.upgradeThree === name)
+            const upgradeItem = options.find(({ name }) => 
+            (detailItem.upgradeThree === name) ||
+            (detailItem.thirdUpgrade && detailItem.thirdUpgrade.name === name)
+            )
             detailItem.thirdUpgrade = upgradeItem || defaultUpgradeThree
           }
         }) 

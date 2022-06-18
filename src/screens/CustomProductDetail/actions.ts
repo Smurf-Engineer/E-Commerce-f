@@ -13,9 +13,12 @@ import {
   SET_LOADING_ACTION,
   RESET_DATA,
   SET_TOP_SELECTED_SIZE,
-  SET_BOTTOM_SELECTED_SIZE
+  SET_BOTTOM_SELECTED_SIZE,
+  SET_UPGRADE_ITEM_DETAIL_ACTION,
+  SET_VARIABLE_VALUE,
+  SET_QUANTITY
 } from './constants'
-import { AnyAction, SelectedType } from '../../types/common'
+import { AnyAction, ItemDetailType, SelectedType } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -45,6 +48,31 @@ export const setSelectedTopSizeAction = (selected: SelectedType) => ({
 export const setSelectedBottomSizeAction = (selected: SelectedType) => ({
   type: SET_BOTTOM_SELECTED_SIZE,
   selected
+})
+
+export const setUpgradeOption = (
+  isFirst: boolean,
+  upgrade: ItemDetailType,
+  isThird: boolean
+): AnyAction => ({
+  type: SET_UPGRADE_ITEM_DETAIL_ACTION,
+  isFirst,
+  upgrade,
+  isThird
+})
+
+export const setVariableValue = (
+  name: string,
+  newText: string,
+): AnyAction => ({
+  type: SET_VARIABLE_VALUE,
+  name,
+  newText,
+})
+
+export const setQuantityValue = (value: number): AnyAction => ({
+  type: SET_QUANTITY,
+  value,
 })
 
 export const setSelectedFitAction = (selected: SelectedType) => ({
