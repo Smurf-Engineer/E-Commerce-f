@@ -365,7 +365,7 @@ export const CartList = styled.div`
   flex-flow: column;
   margin-top: 30px;
   overflow-y: scroll;
-  height: calc(100% - 141px);
+  height: calc(100% - 146px);
 `
 
 export const CartItemDiv = styled.div`
@@ -379,7 +379,7 @@ export const CartThumbnail = styled.img`
   max-width: 128px;
   width: 100%;
   object-fit: cover;
-  height: 100px;
+  height: 122px;
 `
 
 export const CartInfo = styled.div`
@@ -450,7 +450,7 @@ export const CartButtonOpen = styled.div`
   color: white;
   margin-top: 8px;
   margin-bottom: 8px;
-  padding: 9px 5px;
+  padding: 11px 5px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -460,4 +460,26 @@ export const CartButtonOpen = styled.div`
     cursor: pointer;
     opacity: 0.8;
   }
+`
+
+export const GenderName = styled.div`
+  font-size: 12px;
+  margin-top: 6px;
+`
+
+export const SizeName = styled.div`
+  font-size: 12px;
+  margin-top: 2px;
+`
+
+export const UpgradeName = styled.div`
+  font-size: 12px;
+  margin-top: 2px;
+`
+
+export const UpgradeValue = styled.div`
+  font-family: Avenir;
+  font-weight: bold;
+  display: inline-block;
+  margin-left: 4px;
 `

@@ -162,6 +162,7 @@ import moment from 'moment'
 import { EMOJI_REGEX, FIT_FORM, VARIABLE_ONE_TYPE, VARIABLE_TWO_TYPE } from './constants'
 import find from 'lodash/find'
 import Badge from 'antd/lib/badge'
+import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import { saveCartCloud } from '../../components/MainLayout/api'
 import isEqual from 'lodash/isEqual'
 
@@ -212,6 +213,7 @@ interface Props extends RouteComponentProps<any> {
   setFitsModal: (showFits: boolean) => void
   setLoadingModel: (loading: boolean) => void
   openFitInfoAction: (open: boolean) => void
+  getTotalItemsIncart: () => void
   setSelectedGenderAction: (selected: SelectedType) => void
   setSelectedSizeAction: (selected: SelectedType) => void
   setSelectedFitAction: (selected: SelectedType) => void
@@ -265,7 +267,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         numberOfProducts = numberOfProducts + quantitySum
       })
     }
-    const newNumber = shoppingCart.cart
+    const newNumber = shoppingCart.cart && shoppingCart.cart.length > 0
       ? numberOfProducts : itemsInCart
 
     let numberOfProductsOld = 0
@@ -283,7 +285,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       })
     }
 
-    const prevNumber = prevCart.cart
+    const prevNumber = prevCart.cart && prevCart.cart.length > 0
       ? numberOfProductsOld : prevItems
     
     if (newNumber !== prevNumber) {
@@ -464,7 +466,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
   removeItem = (id: string, itemDetail: number) => {
     if (itemDetail) {
-      const { setInitialData, client: { query } } = this.props
+      const { setInitialData, getTotalItemsIncart: getItemsAction, client: { query } } = this.props
       let cartListFromLS = []
       if (typeof window !== 'undefined') {
         cartListFromLS = JSON.parse(localStorage.getItem('cart') || '{}')
@@ -479,6 +481,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         saveCartCloud(cart)
         this.forceUpdate()
         setInitialData(query)
+        getItemsAction()
       }
     }
   }
@@ -667,7 +670,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         numberOfProducts = numberOfProducts + quantitySum
       })
     }
-    const numberOfProductsInCart = shoppingCart.cart
+    const numberOfProductsInCart = shoppingCart.cart && shoppingCart.cart.length > 0
       ? numberOfProducts : itemsInCart
 
     let cartListFromLS = []
@@ -1694,7 +1697,14 @@ type OwnProps = {
 const CustomProductDetailEnhance = compose(
   injectIntl,
   withApollo,
-  connect(mapStateToProps, { ...customProductDetailActions, ...thunkActions, openQuickView: openQuickViewAction }),
+  connect(
+    mapStateToProps,
+    { ...customProductDetailActions,
+      ...thunkActions,
+      openQuickView: openQuickViewAction,
+      getTotalItemsIncart
+    }
+  ),
   graphql(profileSettingsQuery, {
     options: ({ user }: OwnProps) => ({
       fetchPolicy: 'network-only',

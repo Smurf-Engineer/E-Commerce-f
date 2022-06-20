@@ -413,7 +413,7 @@ class MainLayout extends React.Component<Props, {}> {
       })
     }
 
-    const numberOfProductsInCart = shoppingCart.cart
+    const numberOfProductsInCart = shoppingCart.cart && shoppingCart.cart.length > 0
       ? numberOfProducts
       : itemsInCart
     const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches
