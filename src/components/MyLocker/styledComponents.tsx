@@ -338,12 +338,14 @@ export const HelpLink = styled.span`
   color: ${WHITE};
   background: ${GREEN_BRIGHT};
   font-weight: bold;
-  border: 1px solid ${BLACK};
-  border-radius: 7px;
+  font-family: Avenir;
+  border-radius: 5px;
   padding: 5px 10px;
-
+  font-size: 14px;
+  transition: all .25s;
   &:hover {
     cursor: pointer;
+    opacity: 0.8;
   }
   @media (min-width: 320px) and (max-width: 768px) {
     margin-top: 4px;
