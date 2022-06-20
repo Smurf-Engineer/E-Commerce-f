@@ -16,7 +16,8 @@ import {
   WHITE_SMOKE,
   WHITE_TRANSPARENT,
   GRAY,
-  BLACK
+  BLACK,
+  GREEN_BRIGHT,
 } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
@@ -87,17 +88,18 @@ export const ConfirmMessage = styled.div`
 `
 
 export const MessageText = styled.div`
-  max-width: ${({ admin }: DivProps) => admin ? '100%' : '500px'};
+  max-width: ${({ admin }: DivProps) => (admin ? '100%' : '500px')};
   color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
   margin-bottom: 20px;
-  margin-top: ${({ admin }: DivProps) => admin ? `20px` : 'none'};
-  padding-bottom: ${({ admin }: DivProps) => admin ? `12px` : 'none'};;
-  font-weight: ${({ admin }: DivProps) => admin ? `bold` : 'none'};;
-  border-bottom: ${({ admin }: DivProps) => admin ? `1px solid ${GRAY}` : 'none'};
-  animation: fade-in-hor 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  margin-top: ${({ admin }: DivProps) => (admin ? `20px` : 'none')};
+  padding-bottom: ${({ admin }: DivProps) => (admin ? `12px` : 'none')};
+  font-weight: ${({ admin }: DivProps) => (admin ? `bold` : 'none')};
+  border-bottom: ${({ admin }: DivProps) =>
+    admin ? `1px solid ${GRAY}` : 'none'};
+  animation: fade-in-hor 0.3s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   @keyframes fade-in-hor {
     0% {
       transform: translateX(-5px);
@@ -114,7 +116,7 @@ export const MessagePrevent = styled.div`
   color: ${BLACK};
   margin-bottom: 18px;
   margin-top: -4px;
-  animation: fade-in-hor 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  animation: fade-in-hor 0.3s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   @keyframes fade-in-hor {
     0% {
       transform: translateX(-5px);
@@ -197,7 +199,7 @@ export const Filters = styled.div`
   margin-right: 36px;
   box-shadow: 2px 2px 7px ${GRAY_SHADOW};
   flex-direction: column;
-  animation: fade-in-top 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.15s both;
+  animation: fade-in-top 0.3s cubic-bezier(0.39, 0.575, 0.565, 1) 0.15s both;
   @keyframes fade-in-top {
     0% {
       transform: translateY(-5px);
@@ -245,7 +247,7 @@ export const Options = styled.div`
 export const SubOptions = styled.div`
   display: flex;
   align-items: center;
-  animation: fade-in-top 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.3s both;
+  animation: fade-in-top 0.3s cubic-bezier(0.39, 0.575, 0.565, 1) 0.3s both;
   @keyframes fade-in-top {
     0% {
       transform: translateY(-5px);
@@ -292,15 +294,15 @@ export const StyledButton = styled(Button)`
 export const ButtonWrapper = styled.div`
   .ant-btn-primary {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? WHITE_SMOKE : BLUE};
+      disabled ? WHITE_SMOKE : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? WHITE_SMOKE : BLUE};
+      disabled ? WHITE_SMOKE : BLUE};
   }
   .ant-btn-primary:hover {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? WHITE_SMOKE : BLUE};
+      disabled ? WHITE_SMOKE : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? WHITE_SMOKE : BLUE};
+      disabled ? WHITE_SMOKE : BLUE};
   }
 
   @media (min-width: 320px) and (max-width: 768px) {
@@ -333,8 +335,13 @@ export const HelpMessage = styled.span`
 `
 
 export const HelpLink = styled.span`
-  color: ${BLUE};
+  color: ${WHITE};
+  background: ${GREEN_BRIGHT};
   font-weight: bold;
+  border: 1px solid ${BLACK};
+  border-radius: 7px;
+  padding: 5px 10px;
+
   &:hover {
     cursor: pointer;
   }
@@ -351,7 +358,9 @@ export const AnimatedDiv = styled.div`
 `
 
 export const BounceDiv = styled.div`
-  ${({ secondary }: DivProps) => secondary ? `
+  ${({ secondary }: DivProps) =>
+    secondary
+      ? `
   animation: wobble-hor-bottom 0.8s 0s 2 both;
   @keyframes wobble-hor-bottom {
     0%, 20%, 50%, 80%, 100% {
@@ -365,7 +374,8 @@ export const BounceDiv = styled.div`
       filter: grayscale(0.7);
     }
   }
-  ` : ''}
+  `
+      : ''}
 `
 
 export const CartIcon = styled.div`
@@ -377,11 +387,11 @@ export const CartIcon = styled.div`
   justify-content: center;
   height: 68px;
   box-shadow: 0px 1px 9px -2px #6e6e6e;
-  transition: all .25s;
+  transition: all 0.25s;
   .ant-badge-count {
     transform: translateX(30%);
   }
-  animation: fade-in-leftDesuZ 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 1s both;
+  animation: fade-in-leftDesuZ 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) 1s both;
   @keyframes fade-in-leftDesuZ {
     0% {
       transform: translateX(-30px);
@@ -413,7 +423,7 @@ export const CartDiv = styled.div`
   left: 0;
   z-index: 999;
   box-shadow: 1px 0px 14px 4px #b8b8b8;
-  animation: slide-in-left 0.35s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  animation: slide-in-left 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   @keyframes slide-in-left {
     0% {
       transform: translateX(-450px);
@@ -422,7 +432,6 @@ export const CartDiv = styled.div`
       transform: translateX(0);
     }
   }
-
 `
 
 export const CartTitle = styled.div`
@@ -440,7 +449,7 @@ export const CartTitleLabel = styled.div`
 `
 
 export const CloseIcon = styled(Icon)`
-  transition: all .25s;
+  transition: all 0.25s;
   &:hover {
     cursor: pointer;
     opacity: 0.8;
@@ -528,7 +537,7 @@ export const DeleteIcon = styled(Icon)`
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all .25s;
+  transition: all 0.25s;
   &:hover {
     cursor: pointer;
     opacity: 0.7;
@@ -549,7 +558,7 @@ export const CartButtonOpen = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 3px;
-  transition: all .25s;
+  transition: all 0.25s;
   &:hover {
     cursor: pointer;
     opacity: 0.8;

@@ -20,7 +20,7 @@ export default defineMessages({
   proAssistInfo: {
     id: 'components.MyLocker.MyLockerInfoModal.proAssistInfo',
     defaultMessage: `
-    <p>Our <strong>ProAssist</strong> service is live design chat available Mon-Fri 6am-6pm PST from within the DesignLab design center <strong>when creating or editing an existing design.</strong></p>
+    <p>Our <strong>ProAssist</strong> service is a <strong>free</strong> live design chat available Mon-Fri 6am-6pm PST from within the DesignLab design center <strong>when creating or editing an existing design.</strong></p>
     ProAssist services include:
     <ul>
       <li>- Minor logo adjustments (add/remove tag line, remove background) </li>
