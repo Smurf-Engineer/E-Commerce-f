@@ -88,7 +88,7 @@ import {
   FILTER_DATE_OPTIONS
 } from './constants'
 import {
-  DATE_FORMAT_STARTING_YEAR
+  DATE_FORMAT_STARTING_YEAR, SERVICE_SUPPORT_MODAL
 } from '../../constants'
 import { designExistsOnCart } from '../../utils/utilsShoppingCart'
 import InfoModal from './MyLockerInfoModal'
@@ -498,6 +498,11 @@ export class MyLocker extends React.PureComponent<Props, {}> {
 
   handleOpenInfoModal = () => {
     this.setState({ showInfoModal: true })
+    if (typeof window !== 'undefined') {
+      const { user } = this.props
+      const { email } = user || {}
+      window.dataLayer.push({ event: SERVICE_SUPPORT_MODAL, label:  email })
+    }
   }
 
   handleCloseInfoModal = () => {
