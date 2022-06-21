@@ -9,16 +9,6 @@ interface Props {
 }
 
 const CarouselItem = ({ item, onClick }: Props) => {
-  const unMute = () => {
-    if (item.assetType === 'video' && item.volume) {
-      const element = document.getElementById(`video${item.id}`)
-      if (element && element.readyState === 4) {
-        element.muted = false
-        element.play()
-      }
-    }
-  }
-  setInterval(unMute, 1000)
   return (
     <Container onClick={onClick}>
       {item.assetType !== 'video' ? (
@@ -34,7 +24,6 @@ const CarouselItem = ({ item, onClick }: Props) => {
         <MediaQuery maxWidth={640}>
           {matches =>
             <VideoPreview
-              id={`video${item.id}`}
               autoPlay={true}
               loop={true}
               muted={true}
