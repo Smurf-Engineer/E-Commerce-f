@@ -56,13 +56,13 @@ const shoppingCartPageReducer: Reducer<any> = (
   switch (action.type) {
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
-    case SET_ITEMS_ACTION:
-      return state.set('cart', action.items && action.items.length > 0 ? fromJS(action.items) : null)
     case CLEAR_CART:
       return state.merge({
         cart: null,
         itemsVerified: true
       })
+    case SET_ITEMS_ACTION:
+      return state.set('cart', action.items && action.items.length > 0 ? fromJS(action.items) : null)
     case ADD_ITEM_DETAIL_ACTION: {
       const { index } = action
       const color = state.getIn(['cart', index, 'itemDetails', 0, 'color'])
