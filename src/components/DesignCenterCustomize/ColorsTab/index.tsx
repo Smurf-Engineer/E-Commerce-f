@@ -196,6 +196,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
             showContent={isFirstTab}
             goToBaseColors={this.goToBaseColors}
             goToStitching={this.goToStitching}
+            onSelectShuffle={this.handleShuffleColors}
             {...{
               colors,
               colorsList,
@@ -315,14 +316,17 @@ class ColorsTab extends React.PureComponent<Props, State> {
     })
   }
 
-  handleShuffleColors = () => {
+  handleShuffleColors = (e: React.MouseEvent) => {
     const { colors, onSelectPalette, product, currentStyle } = this.props
-
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
     const excludedThemes = product ? EXCLUDED_AREAS[product.id] : {}
     const styleName = currentStyle && currentStyle.name ? currentStyle.name.toLowerCase() : ''
     const excludedAreas = styleName && excludedThemes ? excludedThemes[styleName] : {}
     const indexes = excludedAreas ? Object.keys(excludedAreas) : []
-    const colorsToShuffle = colors.filter((e, index) => !excludedAreas || !excludedAreas[index])
+    const colorsToShuffle = colors.filter((_, index) => !excludedAreas || !excludedAreas[index])
     const shuffledColors = shuffle(colorsToShuffle)
     indexes.forEach((area: any) => {
       shuffledColors.splice(area, 0, colors[area])
