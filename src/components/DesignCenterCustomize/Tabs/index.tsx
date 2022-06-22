@@ -36,6 +36,7 @@ import config from '../../../config'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContext } from 'react-dnd'
+import { TUTORIALS_TAB } from '../../../constants'
 
 const { TabPane } = AntdTabs
 
@@ -186,9 +187,15 @@ const Tabs = ({
   tutorialPlaylist,
   layers
 }: Props) => {
+  const triggerEvent = (selectedIndex: number) => {
+    onTabClick(selectedIndex)
+    if (Number(selectedIndex) === 5 && typeof window !== 'undefined') {
+      window.dataLayer.push({ event: TUTORIALS_TAB, label: productName })
+    }
+  }
   return (
     <Container>
-      <AntdTabs activeKey={`${selectedTab}`} onTabClick={onTabClick}>
+      <AntdTabs activeKey={`${selectedTab}`} onTabClick={triggerEvent}>
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="1">
           <ColorsTab
             {...{

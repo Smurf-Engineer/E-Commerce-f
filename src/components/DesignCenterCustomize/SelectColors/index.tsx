@@ -55,6 +55,7 @@ interface Props {
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
   predyedLabel?: string
+  onSelectShuffle: (e: React.MouseEvent) => void
   onSelectPredyed: (predyedColor: string) => void
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock: (index: number) => void
@@ -89,6 +90,7 @@ class SelectColors extends React.PureComponent<Props, State> {
       goToBaseColors,
       goToStitching,
       formatMessage,
+      onSelectShuffle,
       colors,
       colorsList,
       predyedLabel,
@@ -152,6 +154,7 @@ class SelectColors extends React.PureComponent<Props, State> {
             {...{
               names,
               colors,
+              onSelectShuffle,
               onSelectColorBlock,
               colorBlockHovered,
               onHoverColorBlock,

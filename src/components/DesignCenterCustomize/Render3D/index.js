@@ -101,6 +101,7 @@ import {
   PROPEL_PALMS,
   GRIP_TAPE,
   DEFAULT_COLOR,
+  TUTORIALS_BUTTON,
   AMBIENT_LIGHT_INTENSITY,
   DIRECTIONAL_LIGHT_INTENSITY,
   ILLUSTRATOR_PIXELS_PER_CM
@@ -1177,6 +1178,10 @@ class Render3D extends PureComponent {
 
   handleGoToTutorials = () => {
     const { onTabClick } = this.props
+    if (typeof window !== 'undefined') {
+      const { product: { name } } = this.props
+      window.dataLayer.push({ event: TUTORIALS_BUTTON, label: name })
+    }
     onTabClick(CustomizeTabs.TutorialsTab)
   }
 

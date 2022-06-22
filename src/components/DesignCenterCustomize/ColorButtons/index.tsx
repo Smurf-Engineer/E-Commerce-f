@@ -14,7 +14,7 @@ interface Props {
   names: string[]
   excludedAreas: any
   onSelectColorBlock: (index: number) => void
-  onSelectShuffle: () => void
+  onSelectShuffle: (e: React.MouseEvent) => void
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any, params?: any) => string
 }

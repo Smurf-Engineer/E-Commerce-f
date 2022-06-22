@@ -114,10 +114,10 @@ export const BottomSheetWrapper = styled.div`
     -webkit-animation-name: shimmer;
     -moz-animation-name: shimmer;
     animation-name: shimmer;
-    -webkit-animation-duration: 35s;
-    -moz-animation-duration: 35s;
-    animation-duration: 35s;
-    animation-delay: -20s;
+    -webkit-animation-duration: 15s;
+    -moz-animation-duration: 15s;
+    animation-duration: 15s;
+    animation-delay: -15s;
     -webkit-animation-iteration-count: infinite;
     -moz-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
@@ -130,9 +130,6 @@ export const BottomSheetWrapper = styled.div`
     0% {
       background-position: top left;
     }
-    23% {
-      background-position: top right;
-    }
     100% {
       background-position: top right;
     }
@@ -141,9 +138,6 @@ export const BottomSheetWrapper = styled.div`
   @-webkit-keyframes shimmer {
     0% {
       background-position: top left;
-    }
-    23% {
-      background-position: top right;
     }
     100% {
       background-position: top right;
@@ -154,9 +148,6 @@ export const BottomSheetWrapper = styled.div`
     0% {
       background-position: top left;
     }
-    23% {
-      background-position: top right;
-    }
     100% {
       background-position: top right;
     }
@@ -165,9 +156,6 @@ export const BottomSheetWrapper = styled.div`
   @keyframes shimmer {
     0% {
       background-position: top left;
-    }
-    23% {
-      background-position: top right;
     }
     100% {
       background-position: top right;
