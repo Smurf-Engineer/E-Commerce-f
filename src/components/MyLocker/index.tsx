@@ -590,26 +590,28 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     if (typeof window !== 'undefined') {
       cartListFromLS = JSON.parse(localStorage.getItem('cart') || '{}')
     }
-    for (let i = 0; i < cartListFromLS.length; i++) {
-      const item = cartListFromLS[i] || {}
-      if (i === 0) {
-        cartList.push(item)
-        continue
-      }
-      const indexOfSameProduct = findIndex(cartList, (cartItem) => {
-        return (
-          cartItem.product.id === item.product.id &&
-          item.designId === cartItem.designId
-        )
-      })
-      if (indexOfSameProduct !== -1) {
-        const itemToUpdate = cartList[indexOfSameProduct]
-        cartList[indexOfSameProduct].itemDetails = [
-          ...itemToUpdate.itemDetails,
-          ...item.itemDetails
-        ]
-      } else {
-        cartList.push(item)
+    if (cartListFromLS && cartListFromLS.length > 0) {
+      for (let i = 0; i < cartListFromLS.length; i++) {
+        const item = cartListFromLS[i] || {}
+        if (i === 0) {
+          cartList.push(item)
+          continue
+        }
+        const indexOfSameProduct = findIndex(cartList, (cartItem) => {
+          return (
+            cartItem.product.id === item.product.id &&
+            item.designId === cartItem.designId
+          )
+        })
+        if (indexOfSameProduct !== -1) {
+          const itemToUpdate = cartList[indexOfSameProduct]
+          cartList[indexOfSameProduct].itemDetails = [
+            ...itemToUpdate.itemDetails,
+            ...item.itemDetails
+          ]
+        } else {
+          cartList.push(item)
+        }
       }
     }
 
