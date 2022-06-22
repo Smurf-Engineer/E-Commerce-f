@@ -71,11 +71,14 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
         const cart = JSON.parse(localStorage.getItem('cart') as string)
         const cartList = cart || []
         let totalItems = 0
-        for (const cartItem of cartList) {
-          for (const itemDetails of cartItem.itemDetails) {
-            totalItems = totalItems + itemDetails.quantity
+        if (cartList && cartList.length > 0) {
+          for (const cartItem of cartList) {
+            for (const itemDetails of cartItem.itemDetails) {
+              totalItems = totalItems + itemDetails.quantity
+            }
           }
         }
+        
         return state.set('itemsInCart', totalItems)
       }
       return state.set('itemsInCart', 0)
