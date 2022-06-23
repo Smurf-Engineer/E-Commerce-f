@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import Breadcrumb from 'antd/lib/breadcrumb'
 import Icon from 'antd/lib/icon'
-import { BLACK } from '../../theme/colors'
+import { BLACK, BLUE } from '../../theme/colors'
 
 interface ItemProps {
   selected?: boolean
@@ -16,8 +16,10 @@ export const Container = styled(Breadcrumb)`
     justify-content: center;
     align-items: center;
     display: flex;
-    padding: 0;
-    margin: 12px 8px;
+    padding: 12px 8px;
+  }
+  & > span:nth-last-child(2) > a {
+    color: ${BLUE} !important;
   }
 `
 

@@ -178,6 +178,12 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     600
   )
 
+  componentDidMount() {
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0)
+    }
+  }
+
   componentDidUpdate(prevProps: Props) {
     const { shoppingCart: prevCart, itemsInCart: prevItems } = prevProps || {}
     const { shoppingCart, itemsInCart } = this.props
@@ -737,6 +743,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
               setDesignSelected,
               designs
             }}
+            showAddButton={true}
             makeCopy={this.handleMakeCopy}
             onPressPrivate={this.handleOnPressPrivate}
             onPressDelete={this.handleOnPressDelete}

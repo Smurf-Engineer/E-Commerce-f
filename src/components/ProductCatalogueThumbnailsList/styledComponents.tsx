@@ -6,11 +6,13 @@ import {
   WHITE_TRANSPARENT,
   GRAY_DARK,
   RED_TRANSPARENT,
-  WHITE
+  WHITE,
+  BLUE
 } from '../../theme/colors'
 
 interface DivProps {
   index?: number
+  secondary?: boolean
 }
 
 export const Container = styled.div``
@@ -199,4 +201,69 @@ export const CopyButton = styled.div`
   border-radius: 2px;
   padding: 6px 16px;
   width: 100%;
+`
+
+export const AddNewDesign = styled.div`
+  border: 1px dashed ${BLUE};
+  height: 221px;
+  margin-top: 4px;
+  margin-right: 41px;
+  max-width: 204px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  border-radius: 3px;
+  color: ${BLUE};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    background: #f2f8ff;
+  }
+  animation: scale-in-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s both;
+  @keyframes scale-in-center {
+    0% {
+      transform: scale(0.75);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  ${({ secondary }: DivProps) => secondary ? `
+    margin: 0 auto;
+    margin-top: -78px;
+  ` : `
+    @media (max-width: 768px) {
+      margin-right: 30px;
+    }
+    @media (max-width: 720px) {
+      margin-right: 20px;
+    }
+    @media (max-width: 440px) {
+      height: 202px;
+      max-width: 198px;
+    }
+    @media (max-width: 440px) {
+      max-width: 174px;
+    }
+    @media (max-width: 386px) {
+      max-width: 164px;
+    }
+    @media (max-width: 368px) {
+      max-width: 154px;
+    }
+  `}
+`
+
+export const PlusSign = styled.div`
+  font-weight: bold;
+  margin-bottom: 17px;
+  font-size: 18px;
+`
+
+export const NewLabel = styled.div`
+  font-size: 16px;
 `

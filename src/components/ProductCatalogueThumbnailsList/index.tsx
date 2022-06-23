@@ -43,7 +43,10 @@ import {
   ButtonContainer,
   ActionButton,
   ButtonsContainer,
-  CopyButton
+  CopyButton,
+  AddNewDesign,
+  PlusSign,
+  NewLabel
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
 import get from 'lodash/get'
@@ -74,6 +77,7 @@ interface Props {
   limit?: number
   designs?: DesignType[]
   previewOnly?: boolean
+  showAddButton?: boolean
   profileData: ProfileData
   isEdit?: boolean
   designLab?: boolean
@@ -109,6 +113,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       sortByLabel,
       currentPage,
       limit,
+      showAddButton,
       handleChangePage,
       handleOrderBy,
       profileData,
@@ -299,6 +304,12 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       )
       renderThumbnailList = (
         <ThumbnailsList withoutPadding={!!withoutPadding}>
+          {showAddButton && 
+            <AddNewDesign secondary={!designs || (designs && !designs.length)} onClick={this.gotoDesignCenterLanding}>
+              <PlusSign>+</PlusSign>
+              <NewLabel>New Design</NewLabel>
+            </AddNewDesign>
+          }
           {thumbnailsList}
         </ThumbnailsList>
       )
@@ -455,6 +466,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     })
     product = { ...product, priceRange: purchasePrices }
     return product
+  }
+
+  gotoDesignCenterLanding = () => {
+    const { history } = this.props
+    history.push(`/designlab`)
   }
 
   gotoDesignCenter = (id: string) => {
