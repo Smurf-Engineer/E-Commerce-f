@@ -81,9 +81,9 @@ export const ProductData = styled.div`
 
 export const BackTopStyled = styled(BackTop)`
   &.ant-back-top {
-    left: 24px !important;
+    left: 30px !important;
     right: unset !important;
-    bottom: 68px !important;
+    bottom: 124px !important;
   }
 `
 
