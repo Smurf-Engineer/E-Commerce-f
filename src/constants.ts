@@ -162,6 +162,10 @@ export const MODEL_SIZES = {
   xLarge: 200
 }
 
+export const excludeFonts = {
+  'Goudy Bookletter 1911': true
+}
+
 export const blackMeshes = {
   'FINAL JV2_Design_Mesh' : true,
   'FINAL ELEMENT Jakroo_White': true
