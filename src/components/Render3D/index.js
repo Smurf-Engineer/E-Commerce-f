@@ -62,6 +62,7 @@ import { threeDScripts } from '../../utils/scripts'
 import OwnYourStyle from '../../assets/OWNYOURSTYLE.svg'
 import JakrooLogoWhite from '../../assets/jakroo_logo_white.svg'
 import '../../screens/App/theme.ant'
+import { stubTrue } from 'lodash'
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -81,7 +82,7 @@ class Render3D extends PureComponent {
       const { modelSize, disableControls, maxHeight, zoomedIn, lowResolution } = this.props
       /* Renderer config */
       const { clientWidth = 0, clientHeight = 0 } = this.container
-      const precision = lowResolution ? 'mediump' : 'highp'
+      const precision = lowResolution ? 'lowp' : 'highp'
       const renderer = new THREE.WebGLRenderer({
         alpha: !lowResolution,
         antialias: !lowResolution,
@@ -89,7 +90,7 @@ class Render3D extends PureComponent {
         preserveDrawingBuffer: !lowResolution,
         powerPreference: lowResolution ? 'high-performance' : 'default'
       })
-      renderer.setPixelRatio(lowResolution ? (window.devicePixelRatio * 0.75) : window.devicePixelRatio)
+      renderer.setPixelRatio(lowResolution ? (window.devicePixelRatio * 0.7) : window.devicePixelRatio)
       renderer.setClearColor(0x000000, 0)
       renderer.setSize(clientWidth, clientHeight)
       if (!lowResolution) {
@@ -288,121 +289,245 @@ class Render3D extends PureComponent {
     }
   }
 
-  loadTextures = (design, actualImage, fromImage) =>
-    new Promise((resolve, reject) => {
-      try {
-        const {
-          product,
-          bibBraceColor,
-          bindingColor,
-          zipperColor,
-          colors,
-          style: { brandingPng },
-          proDesign,
-          outputSvg,
-          outputPng
-        } = design
-        const { colorAccessories, asImage, customProduct } = this.props
-        const { flatlock, bumpMap, zipper, binding, bibBrace } = product
-        const loadedTextures = {}
-        const textureLoader = new THREE.TextureLoader()
-        textureLoader.setCrossOrigin('anonymous')
-        if (!!zipper) {
-          const hasZipperColor =
-            has(colorAccessories, 'zipperColor') &&
-            colorAccessories.zipperColor.length
+  loadTextures = (design, actualImage, fromImage) => {
+    const { lowResolution } = this.props
+    return lowResolution ?
+      new Promise(async (resolve, reject) => {
+        try {
+          const {
+            product,
+            bibBraceColor,
+            bindingColor,
+            zipperColor,
+            colors,
+            style: { brandingPng },
+            proDesign,
+            outputSvg,
+            outputPng
+          } = design
+          const { colorAccessories, asImage, customProduct } = this.props
+          const { flatlock, bumpMap, zipper, binding, bibBrace } = product
+          const loadedTextures = {}
+          const textureLoader = new THREE.TextureLoader()
+          textureLoader.setCrossOrigin('anonymous')
+          if (!!zipper) {
+            const hasZipperColor =
+              has(colorAccessories, 'zipperColor') &&
+              colorAccessories.zipperColor.length
 
-          const texture =
-            zipper[hasZipperColor ? colorAccessories.zipperColor : zipperColor]
-          loadedTextures.zipper = textureLoader.load(texture)
-          loadedTextures.zipper.minFilter = THREE.LinearFilter
-        }
-        if (!!binding) {
-          const hasBindingColor =
-            has(colorAccessories, 'bindingColor') &&
-            colorAccessories.bindingColor.length
+            const texture =
+              zipper[hasZipperColor ? colorAccessories.zipperColor : zipperColor]
+            loadedTextures.zipper = textureLoader.load(lowResolution ? (await this.resizeImage(texture, 512, 512, 1) || texture) : texture)
+            loadedTextures.zipper.minFilter = THREE.LinearFilter
+          }
+          if (!!binding) {
+            const hasBindingColor =
+              has(colorAccessories, 'bindingColor') &&
+              colorAccessories.bindingColor.length
 
-          const texture =
-            binding[
-            hasBindingColor ? colorAccessories.bindingColor : bindingColor
-            ]
-          loadedTextures.binding = textureLoader.load(texture)
-          loadedTextures.binding.minFilter = THREE.LinearFilter
-        }
-        if (!!bibBrace) {
-          const hasBibColor =
-            has(colorAccessories, 'bibColor') &&
-            colorAccessories.bibColor.length
-          const texture =
-            bibBrace[hasBibColor ? colorAccessories.bibColor : bibBraceColor]
-          loadedTextures.bibBrace = textureLoader.load(texture)
-          loadedTextures.bibBrace.minFilter = THREE.LinearFilter
-        }
+            const texture =
+              binding[
+              hasBindingColor ? colorAccessories.bindingColor : bindingColor
+              ]
+            loadedTextures.binding = textureLoader.load(lowResolution ? (await this.resizeImage(texture, 512, 512, 1) || texture) : texture)
+            loadedTextures.binding.minFilter = THREE.LinearFilter
+          }
+          if (!!bibBrace) {
+            const hasBibColor =
+              has(colorAccessories, 'bibColor') &&
+              colorAccessories.bibColor.length
+            const texture =
+              bibBrace[hasBibColor ? colorAccessories.bibColor : bibBraceColor]
+            loadedTextures.bibBrace = textureLoader.load(lowResolution ? (await this.resizeImage(texture, 512, 512, 1) || texture) : texture)
+            loadedTextures.bibBrace.minFilter = THREE.LinearFilter
+          }
 
-        if (!!flatlock) {
-          loadedTextures.flatlock = textureLoader.load(flatlock)
-        }
-        if (!!brandingPng) {
-          loadedTextures.branding = textureLoader.load(brandingPng)
-          loadedTextures.branding.minFilter = THREE.LinearFilter
-        }
-        loadedTextures.bumpMap = textureLoader.load(bumpMap)
-        const sanitizedColors = colors.map(({ color, image }) => ({
-          color,
-          image
-        }))
+          if (!!flatlock) {
+            loadedTextures.flatlock = textureLoader.load(lowResolution ? (await this.resizeImage(flatlock, 512, 512, 1) || flatlock) : flatlock)
+          }
+          if (!!brandingPng) {
+            loadedTextures.branding = textureLoader.load(lowResolution ? (await this.resizeImage(brandingPng, 512, 512, 1) || brandingPng) : brandingPng)
+            loadedTextures.branding.minFilter = THREE.LinearFilter
+          }
+          loadedTextures.bumpMap = textureLoader.load(lowResolution ? (await this.resizeImage(bumpMap, 512, 512, 1) || bumpMap) : bumpMap)
+          const sanitizedColors = colors.map(({ color, image }) => ({
+            color,
+            image
+          }))
 
-        const images = []
+          const images = []
 
-        loadedTextures.colors = []
+          loadedTextures.colors = []
 
-        if ((proDesign || (outputPng && customProduct)) || (outputSvg && fromImage) || asImage) {
-          if ((actualImage || (outputSvg && !outputPng)) && !asImage) {
-            const imageExtension = getFileExtension(actualImage)
-            if (imageExtension === PNG_EXTENSION) {
-              loadedTextures.texture = textureLoader.load(
-                `${actualImage}${this.getCacheQuery()}`
-              )
-            } else {
+          if ((proDesign || (outputPng && customProduct)) || (outputSvg && fromImage) || asImage) {
+            if ((actualImage || (outputSvg && !outputPng)) && !asImage) {
+              const imageExtension = getFileExtension(actualImage)
+              if (imageExtension === PNG_EXTENSION) {
+                const auxImage = `${actualImage}${this.getCacheQuery()}`
+                const newImage = lowResolution ? (await this.resizeImage(actualImage, 1024, 1024, 1) || auxImage) : auxImage
+                loadedTextures.texture = textureLoader.load(
+                  newImage
+                )
+              } else {
+                const imageCanvas = document.createElement('canvas')
+                const auxImage = `${actualImage || outputSvg}${this.getCacheQuery()}`
+                const newImage = lowResolution ? (await this.resizeImage(auxImage, 1024, 1024, 1) || auxImage) : auxImage
+                canvg(
+                  imageCanvas,
+                  newImage
+                )
+                loadedTextures.texture = new THREE.Texture(imageCanvas)
+              }
+            } else if (!outputPng && outputSvg) {
               const imageCanvas = document.createElement('canvas')
+              const auxImage = `${outputSvg}${this.getCacheQuery()}`
+              const newImage = lowResolution ? (await this.resizeImage(auxImage, 1024, 1024, 1) || auxImage) : auxImage
               canvg(
                 imageCanvas,
-                `${actualImage || outputSvg}${this.getCacheQuery()}`
+                newImage
               )
               loadedTextures.texture = new THREE.Texture(imageCanvas)
             }
-          } else if (!outputPng && outputSvg) {
-            const imageCanvas = document.createElement('canvas')
-            canvg(
-              imageCanvas,
-              `${outputSvg}${this.getCacheQuery()}`
-            )
-            loadedTextures.texture = new THREE.Texture(imageCanvas)
+            else {
+              const auxImage = `${outputPng}${this.getCacheQuery()}`
+              loadedTextures.texture = textureLoader.load(
+                lowResolution ? (await this.resizeImage(auxImage, 1024, 1024, 1) || auxImage) : auxImage
+              )
+            }
+            loadedTextures.texture.needsUpdate = true
+          } else {
+            const reversedAreas = reverse(sanitizedColors)
+            reversedAreas.forEach(({ color, image }) => {
+              loadedTextures.colors.push(color)
+              images.push(image)
+            })
+            const loadedAreas = images.map((image) => {
+              const areaTexture = textureLoader.load(image)
+              areaTexture.minFilter = THREE.LinearFilter
+              return areaTexture
+            })
+            loadedTextures.areas = loadedAreas
           }
-          else {
-            loadedTextures.texture = textureLoader.load(
-              `${outputPng}${this.getCacheQuery()}`
-            )
-          }
-          loadedTextures.texture.needsUpdate = true
-        } else {
-          const reversedAreas = reverse(sanitizedColors)
-          reversedAreas.forEach(({ color, image }) => {
-            loadedTextures.colors.push(color)
-            images.push(image)
-          })
-          const loadedAreas = images.map((image) => {
-            const areaTexture = textureLoader.load(image)
-            areaTexture.minFilter = THREE.LinearFilter
-            return areaTexture
-          })
-          loadedTextures.areas = loadedAreas
+          resolve(loadedTextures)
+        } catch (e) {
+          reject(e)
         }
-        resolve(loadedTextures)
-      } catch (e) {
-        reject(e)
-      }
-    })
+      }) :
+      new Promise((resolve, reject) => {
+        try {
+          const {
+            product,
+            bibBraceColor,
+            bindingColor,
+            zipperColor,
+            colors,
+            style: { brandingPng },
+            proDesign,
+            outputSvg,
+            outputPng
+          } = design
+          const { colorAccessories, asImage, customProduct } = this.props
+          const { flatlock, bumpMap, zipper, binding, bibBrace } = product
+          const loadedTextures = {}
+          const textureLoader = new THREE.TextureLoader()
+          textureLoader.setCrossOrigin('anonymous')
+          if (!!zipper) {
+            const hasZipperColor =
+              has(colorAccessories, 'zipperColor') &&
+              colorAccessories.zipperColor.length
+
+            const texture =
+              zipper[hasZipperColor ? colorAccessories.zipperColor : zipperColor]
+            loadedTextures.zipper = textureLoader.load(texture)
+            loadedTextures.zipper.minFilter = THREE.LinearFilter
+          }
+          if (!!binding) {
+            const hasBindingColor =
+              has(colorAccessories, 'bindingColor') &&
+              colorAccessories.bindingColor.length
+
+            const texture =
+              binding[
+              hasBindingColor ? colorAccessories.bindingColor : bindingColor
+              ]
+            loadedTextures.binding = textureLoader.load(texture)
+            loadedTextures.binding.minFilter = THREE.LinearFilter
+          }
+          if (!!bibBrace) {
+            const hasBibColor =
+              has(colorAccessories, 'bibColor') &&
+              colorAccessories.bibColor.length
+            const texture =
+              bibBrace[hasBibColor ? colorAccessories.bibColor : bibBraceColor]
+            loadedTextures.bibBrace = textureLoader.load(texture)
+            loadedTextures.bibBrace.minFilter = THREE.LinearFilter
+          }
+
+          if (!!flatlock) {
+            loadedTextures.flatlock = textureLoader.load(flatlock)
+          }
+          if (!!brandingPng) {
+            loadedTextures.branding = textureLoader.load(brandingPng)
+            loadedTextures.branding.minFilter = THREE.LinearFilter
+          }
+          loadedTextures.bumpMap = textureLoader.load(bumpMap)
+          const sanitizedColors = colors.map(({ color, image }) => ({
+            color,
+            image
+          }))
+
+          const images = []
+
+          loadedTextures.colors = []
+
+          if ((proDesign || (outputPng && customProduct)) || (outputSvg && fromImage) || asImage) {
+            if ((actualImage || (outputSvg && !outputPng)) && !asImage) {
+              const imageExtension = getFileExtension(actualImage)
+              if (imageExtension === PNG_EXTENSION) {
+                loadedTextures.texture = textureLoader.load(
+                  `${actualImage}${this.getCacheQuery()}`
+                )
+              } else {
+                const imageCanvas = document.createElement('canvas')
+                canvg(
+                  imageCanvas,
+                  `${actualImage || outputSvg}${this.getCacheQuery()}`
+                )
+                loadedTextures.texture = new THREE.Texture(imageCanvas)
+              }
+            } else if (!outputPng && outputSvg) {
+              const imageCanvas = document.createElement('canvas')
+              canvg(
+                imageCanvas,
+                `${outputSvg}${this.getCacheQuery()}`
+              )
+              loadedTextures.texture = new THREE.Texture(imageCanvas)
+            }
+            else {
+              loadedTextures.texture = textureLoader.load(
+                `${outputPng}${this.getCacheQuery()}`
+              )
+            }
+            loadedTextures.texture.needsUpdate = true
+          } else {
+            const reversedAreas = reverse(sanitizedColors)
+            reversedAreas.forEach(({ color, image }) => {
+              loadedTextures.colors.push(color)
+              images.push(image)
+            })
+            const loadedAreas = images.map((image) => {
+              const areaTexture = textureLoader.load(image)
+              areaTexture.minFilter = THREE.LinearFilter
+              return areaTexture
+            })
+            loadedTextures.areas = loadedAreas
+          }
+          resolve(loadedTextures)
+        } catch (e) {
+          reject(e)
+        }
+      })
+  }
 
   handleOnLoadModel = (isLoading) => this.setState({ loadingModel: isLoading })
 
@@ -553,7 +678,7 @@ class Render3D extends PureComponent {
     if (obj && mtl) {
       const mtlLoader = new THREE.MTLLoader()
       mtlLoader.setCrossOrigin('anonymous')
-      mtlLoader.load(mtl, (materials) => {
+      mtlLoader.load(`${mtl}${this.getCacheQuery()}`, (materials) => {
         this.handleOnLoadModel(true)
 
         materials.preload()
@@ -561,7 +686,7 @@ class Render3D extends PureComponent {
         objLoader.crossOrigin = 'anonymous'
         objLoader.setMaterials(materials)
         objLoader.load(
-          obj,
+          `${obj}${this.getCacheQuery()}`,
           async (object) => {
             const { children } = object
             const objectChildCount = children.length
@@ -757,7 +882,7 @@ class Render3D extends PureComponent {
     fromImage = false
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution, outputPng } = design
-    const { stitchingValue, asImage, designSearch, hidePredyed, modelObj, modelMtl, customProduct } = this.props
+    const { stitchingValue, asImage, designSearch, hidePredyed, modelObj, modelMtl, customProduct, lowResolution } = this.props
     if (design.canvas && asImage) {
       await this.getFontsFromCanvas(design.canvas)
     }
@@ -769,14 +894,14 @@ class Render3D extends PureComponent {
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
     mtlLoader.setCrossOrigin('anonymous')
-    mtlLoader.load(modelMtl || product.mtl, (materials) => {
+    mtlLoader.load(`${modelMtl || product.mtl}${this.getCacheQuery()}`, (materials) => {
       this.handleOnLoadModel(true)
       materials.preload()
       const objLoader = new THREE.OBJLoader()
       objLoader.crossOrigin = 'anonymous'
       objLoader.setMaterials(materials)
       objLoader.load(
-        modelObj || product.obj,
+        `${modelObj || product.obj}${this.getCacheQuery()}`,
         async (object) => {
           const {
             areas = [],
@@ -1183,6 +1308,45 @@ class Render3D extends PureComponent {
       this.controls.update()
     }
   }
+
+  resizeImageCore = (imageElement, newWidth, newHeight, newQuality) => {
+    const canvas = document.createElement('canvas')
+    canvas.width = newWidth
+    canvas.height = newHeight
+    const context = canvas.getContext('2d')
+    context.drawImage(imageElement, 0, 0, newWidth, newHeight)
+    try {
+      return canvas.toDataURL('image/jpeg', newQuality)
+    } catch (e) {
+      console.error(e)
+      return null
+    }
+  }
+
+  resizeImage = (imageUrl, newWidth, newHeight, newQuality, onError) =>
+    new Promise((resolve) => {
+      const image = document.createElement('img');
+      image.crossOrigin = "anonymous"
+      image.crossorigin = "anonymous"
+      image.onload = () => {
+        var dataUrl = this.resizeImageCore(image, newWidth, newHeight, newQuality)
+        if (dataUrl) {
+          resolve(dataUrl)
+        } else {
+          if (onError) {
+            onError('Image saving error.');
+          }
+        }
+      };
+      image.onerror = () => {
+        if (onError) {
+          onError('Image loading error.');
+        }
+      };
+
+      image.src = imageUrl;
+    })
+
 
   takeScreenshot = () =>
     new Promise((resolve) => {
