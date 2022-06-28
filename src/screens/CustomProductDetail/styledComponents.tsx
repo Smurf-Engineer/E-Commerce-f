@@ -627,7 +627,7 @@ export const UpgradesDiv = styled.div`
 `
 
 export const UpgradeInput = styled.div`
-  max-width: 168px;
+  max-width: 192px;
   width: 100%;
   margin-right: 28px;
   margin-bottom: 20px;
