@@ -15,15 +15,21 @@ import {
   ButtonWrapper,
   Title,
   StyledCheckbox,
-  modalStyle
+  modalStyle,
 } from './styledComponents'
 import { QueryProps, AddressType } from '../../types/common'
 import messages from './messages'
 import { addAddressMutation, updateAddressMutation } from './data'
 import { GetAddressListQuery } from '../MyAddressesList/data'
-import { isPoBox, isApoCity, isValidCity, isNumberValue, isValidZip } from '../../utils/utilsAddressValidation'
+import {
+  isPoBox,
+  isApoCity,
+  isValidCity,
+  isNumberValue,
+  isValidZip,
+} from '../../utils/utilsAddressValidation'
 import message from 'antd/lib/message'
-import { PHONE_MINIMUM } from '../../constants'
+import { PHONE_MINIMUM, PHONE_MINIMUM_NOR } from '../../constants'
 
 interface Data extends QueryProps {
   addresses: AddressType[]
@@ -107,7 +113,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       currentPage,
       skip,
       limit,
-      listForMyAccount
+      listForMyAccount,
     } = this.props
 
     const content = (
@@ -124,7 +130,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
           setAddressToUpdateAction,
           currentPage,
           skip,
-          listForMyAccount
+          listForMyAccount,
         }}
         itemsNumber={limit}
         withPagination={true}
@@ -169,7 +175,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
               hasError,
               selectDropdownAction,
               inputChangeAction,
-              formatMessage
+              formatMessage,
             }}
           />
           <div>
@@ -198,7 +204,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
   ) => {
     const { defaultShippingAction } = this.props
     const {
-      target: { checked }
+      target: { checked },
     } = event
     defaultShippingAction(checked)
   }
@@ -208,7 +214,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
   ) => {
     const { defaultBillingAction } = this.props
     const {
-      target: { checked }
+      target: { checked },
     } = event
     defaultBillingAction(checked)
   }
@@ -248,7 +254,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       formatMessage,
       setModalLoadingAction,
       resetReducerDataAction,
-      validFormAction
+      validFormAction,
     } = this.props
 
     const error =
@@ -274,8 +280,18 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       return
     }
 
-    if (!phone || (phone && phone.length < PHONE_MINIMUM)) {
-      message.error(formatMessage(messages.invalidPhone))
+    if (
+      !phone || (phone && 
+        (phone.length < PHONE_MINIMUM) ||
+        (phone.startsWith('47') && phone.length < PHONE_MINIMUM_NOR)
+      )
+    ) {
+      message.error(
+        formatMessage(messages.invalidPhone, {
+          phone_length:
+            phone && phone.startsWith('47') ? PHONE_MINIMUM_NOR : PHONE_MINIMUM,
+        })
+      )
       return
     }
 
@@ -298,7 +314,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       zipCode: zipCode.trim(),
       phone,
       defaultBilling,
-      defaultShipping
+      defaultShipping,
     }
     setModalLoadingAction(true)
     this.updateAddAddress(isUpdatingAddress, address)
@@ -318,10 +334,10 @@ class MyAddresses extends React.PureComponent<Props, {}> {
             query: GetAddressListQuery,
             variables: { limit: 10 },
             options: {
-              fetchPolicy: 'network-only'
-            }
-          }
-        ]
+              fetchPolicy: 'network-only',
+            },
+          },
+        ],
       })
     } else {
       await addNewAddress({
@@ -329,7 +345,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
         update: (store: any, dataAddresses: AddressType) => {
           const data = store.readQuery({
             query: GetAddressListQuery,
-            variables: { limit: 10, offset: 0 }
+            variables: { limit: 10, offset: 0 },
           })
           const addressesList = get(data, 'userAddresses.addresses')
           const newAddres = get(dataAddresses, 'data.userAddress')
@@ -337,9 +353,9 @@ class MyAddresses extends React.PureComponent<Props, {}> {
           store.writeQuery({
             query: GetAddressListQuery,
             variables: { limit: 10, offset: 0 },
-            data
+            data,
           })
-        }
+        },
       })
     }
   }

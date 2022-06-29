@@ -13,7 +13,7 @@ import {
   UpdateNotificationSettingMutation,
   UpdateNewsletterSettingMutation,
   profilePhoneSettingsQuery,
-  UpdatePhoneSettingMutation
+  UpdatePhoneSettingMutation,
 } from './data'
 import {
   Container,
@@ -35,13 +35,17 @@ import {
   DesktopPhoneColumn,
   MobileFlexColumn,
   DesktopDescription,
-  DesktopHeader
+  DesktopHeader,
 } from './styledComponents'
-import { NotificationOption, NotificationSettings, UserType } from '../../../types/common'
+import {
+  NotificationOption,
+  NotificationSettings,
+  UserType,
+} from '../../../types/common'
 import { Message } from '../../../types/common'
 import { SPLIT_BY_CAPITAL_REGEX } from '../constants'
 import Notification from '../../../assets/notification.jpg'
-import { PHONE_MINIMUM } from '../../../constants'
+import { PHONE_MINIMUM, PHONE_MINIMUM_NOR } from '../../../constants'
 
 export interface NotificationSetting {
   notificationData: NotificationSettings
@@ -66,13 +70,9 @@ interface Props {
 }
 
 class Preferences extends React.Component<Props, {}> {
-  debouncePhoneUpdate = debounce(value => this.handlePhoneChange(value), 1000)
+  debouncePhoneUpdate = debounce((value) => this.handlePhoneChange(value), 1000)
 
-  updateSetting = async (
-    payload: {},
-    mutation: any,
-    successMessage: any
-  ) => {
+  updateSetting = async (payload: {}, mutation: any, successMessage: any) => {
     const { setSettingsLoadingAction, formatMessage } = this.props
     try {
       setSettingsLoadingAction(true)
@@ -82,10 +82,10 @@ class Preferences extends React.Component<Props, {}> {
           {
             query: profileNotificationSettingsQuery,
             options: {
-              fetchPolicy: 'network-only'
-            }
-          }
-        ]
+              fetchPolicy: 'network-only',
+            },
+          },
+        ],
       })
       setSettingsLoadingAction(false)
       MessageBar.success(formatMessage(successMessage), 4)
@@ -110,10 +110,10 @@ class Preferences extends React.Component<Props, {}> {
           {
             query: profilePhoneSettingsQuery,
             options: {
-              fetchPolicy: 'network-only'
-            }
-          }
-        ]
+              fetchPolicy: 'network-only',
+            },
+          },
+        ],
       })
       setSettingsLoadingAction(false)
       MessageBar.success(formatMessage(successMessage), 4)
@@ -126,7 +126,11 @@ class Preferences extends React.Component<Props, {}> {
 
   handlePhoneChange = (phone: string) => {
     const { user, updatePhone } = this.props
-    if (!!phone && phone.length >= PHONE_MINIMUM) {
+    if (
+      !!phone &&
+      (phone.length >= PHONE_MINIMUM ||
+        (phone.startsWith('47') && phone.length >= PHONE_MINIMUM_NOR))
+    ) {
       this.updatePhoneSetting(
         { userId: user ? user.id : '', phone },
         updatePhone,
@@ -138,14 +142,18 @@ class Preferences extends React.Component<Props, {}> {
   changeNotificationSettings = (key: string, selected: string) => () => {
     const {
       notificationSettings: { notificationData },
-      updateNotification
+      updateNotification,
     } = this.props
     const currentValue = notificationData ? notificationData[key] : 0
     let newValue = -1
     switch (currentValue) {
       case NotificationOption.EMAIL:
         if (selected === 'email') {
-          if (key === 'notifyProductService' || key === 'notifyTeamStore' || key === 'notifyComments') {
+          if (
+            key === 'notifyProductService' ||
+            key === 'notifyTeamStore' ||
+            key === 'notifyComments'
+          ) {
             newValue = NotificationOption.NONE
           }
         } else {
@@ -156,7 +164,11 @@ class Preferences extends React.Component<Props, {}> {
         if (selected === 'email') {
           newValue = NotificationOption.BOTH
         } else {
-          if (key === 'notifyProductService' || key === 'notifyTeamStore' || key === 'notifyComments') {
+          if (
+            key === 'notifyProductService' ||
+            key === 'notifyTeamStore' ||
+            key === 'notifyComments'
+          ) {
             newValue = NotificationOption.NONE
           }
         }
@@ -180,8 +192,11 @@ class Preferences extends React.Component<Props, {}> {
     }
     if (newValue !== -1) {
       const payload = {
-        setting: key.split(SPLIT_BY_CAPITAL_REGEX).join('_').toLowerCase(),
-        value: newValue
+        setting: key
+          .split(SPLIT_BY_CAPITAL_REGEX)
+          .join('_')
+          .toLowerCase(),
+        value: newValue,
       }
       this.updateSetting(
         payload,
@@ -194,11 +209,12 @@ class Preferences extends React.Component<Props, {}> {
   changeNewsletterSetting = () => {
     const {
       notificationSettings: { notificationData },
-      updateNewsletterSubscribed
+      updateNewsletterSubscribed,
     } = this.props
-    const currentValue = notificationData && notificationData.newsletterSubscribed
+    const currentValue =
+      notificationData && notificationData.newsletterSubscribed
     const payload = {
-      newsletterSubscribed: !currentValue
+      newsletterSubscribed: !currentValue,
     }
     this.updateSetting(
       payload,
@@ -209,10 +225,13 @@ class Preferences extends React.Component<Props, {}> {
 
   isNotificationSetTo = (key: string, to: number) => {
     const {
-      notificationSettings: { notificationData }
+      notificationSettings: { notificationData },
     } = this.props
-    return notificationData && (notificationData[key] === to
-      || notificationData[key] === NotificationOption.BOTH)
+    return (
+      notificationData &&
+      (notificationData[key] === to ||
+        notificationData[key] === NotificationOption.BOTH)
+    )
   }
 
   render() {
@@ -220,33 +239,68 @@ class Preferences extends React.Component<Props, {}> {
       loadingSettings,
       notificationSettings: { notificationData },
       phoneSettings: { phoneData },
-      formatMessage
+      formatMessage,
     } = this.props
 
-    const orderPaymentEmailChecked = this.isNotificationSetTo('notifyOrderPayment', NotificationOption.EMAIL)
-    const prodesignEmailChecked = this.isNotificationSetTo('notifyProDesign', NotificationOption.EMAIL)
-    const commentsEmailChecked = this.isNotificationSetTo('notifyComments', NotificationOption.EMAIL)
-    const teamStoreEmailChecked = this.isNotificationSetTo('notifyTeamStore', NotificationOption.EMAIL)
-    const designlabEmailChecked = this.isNotificationSetTo('notifyDesignLab', NotificationOption.EMAIL)
-    const productServiceEmailChecked = this.isNotificationSetTo('notifyProductService', NotificationOption.EMAIL)
-    const orderPaymentSmsChecked = this.isNotificationSetTo('notifyOrderPayment', NotificationOption.SMS)
-    const prodesignSmsChecked = this.isNotificationSetTo('notifyProDesign', NotificationOption.SMS)
-    const commentsSmsChecked = this.isNotificationSetTo('notifyComments', NotificationOption.SMS)
-    const teamStoreSmsChecked = this.isNotificationSetTo('notifyTeamStore', NotificationOption.SMS)
-    const designlabSmsChecked = this.isNotificationSetTo('notifyDesignLab', NotificationOption.SMS)
-    const productServiceSmsChecked = this.isNotificationSetTo('notifyProductService', NotificationOption.SMS)
+    const orderPaymentEmailChecked = this.isNotificationSetTo(
+      'notifyOrderPayment',
+      NotificationOption.EMAIL
+    )
+    const prodesignEmailChecked = this.isNotificationSetTo(
+      'notifyProDesign',
+      NotificationOption.EMAIL
+    )
+    const commentsEmailChecked = this.isNotificationSetTo(
+      'notifyComments',
+      NotificationOption.EMAIL
+    )
+    const teamStoreEmailChecked = this.isNotificationSetTo(
+      'notifyTeamStore',
+      NotificationOption.EMAIL
+    )
+    const designlabEmailChecked = this.isNotificationSetTo(
+      'notifyDesignLab',
+      NotificationOption.EMAIL
+    )
+    const productServiceEmailChecked = this.isNotificationSetTo(
+      'notifyProductService',
+      NotificationOption.EMAIL
+    )
+    const orderPaymentSmsChecked = this.isNotificationSetTo(
+      'notifyOrderPayment',
+      NotificationOption.SMS
+    )
+    const prodesignSmsChecked = this.isNotificationSetTo(
+      'notifyProDesign',
+      NotificationOption.SMS
+    )
+    const commentsSmsChecked = this.isNotificationSetTo(
+      'notifyComments',
+      NotificationOption.SMS
+    )
+    const teamStoreSmsChecked = this.isNotificationSetTo(
+      'notifyTeamStore',
+      NotificationOption.SMS
+    )
+    const designlabSmsChecked = this.isNotificationSetTo(
+      'notifyDesignLab',
+      NotificationOption.SMS
+    )
+    const productServiceSmsChecked = this.isNotificationSetTo(
+      'notifyProductService',
+      NotificationOption.SMS
+    )
     const phone = get(phoneData, 'phone', '')
 
     return (
       <Container>
-        {
-          loadingSettings &&
+        {loadingSettings && (
           <LoadingContainer>
             <Spin />
           </LoadingContainer>
-        }
+        )}
         <NotificationContainer>
-          <MobileFlexColumn >
+          <MobileFlexColumn>
             <RightInfo>{formatMessage(messages.rightTime)}</RightInfo>
             <DesktopPhoneColumn>
               <InputTitleContainer>
@@ -257,23 +311,24 @@ class Preferences extends React.Component<Props, {}> {
                 value={phone}
                 autoComplete="jv2"
                 countryCodeEditable={false}
-                onChange={value => {
+                onChange={(value) => {
                   this.debouncePhoneUpdate(value)
                 }}
                 inputProps={{ autoComplete: 'jv2' }}
                 inputStyle={{ borderRadius: 0, width: 250 }}
                 copyNumbersOnly={false}
-                disabled={!orderPaymentSmsChecked && !prodesignSmsChecked
-                  && !teamStoreSmsChecked && !designlabSmsChecked
-                  && !productServiceSmsChecked
+                disabled={
+                  !orderPaymentSmsChecked &&
+                  !prodesignSmsChecked &&
+                  !teamStoreSmsChecked &&
+                  !designlabSmsChecked &&
+                  !productServiceSmsChecked
                 }
               />
             </DesktopPhoneColumn>
             <NotifcationContent>
               <MobileFlexColumn>
-                <DesktopHeader>
-                  {formatMessage(messages.title)}
-                </DesktopHeader>
+                <DesktopHeader>{formatMessage(messages.title)}</DesktopHeader>
                 <Title>
                   {formatMessage(messages.notifyOrderPayments)}&nbsp;
                   <Description>
@@ -316,62 +371,115 @@ class Preferences extends React.Component<Props, {}> {
                 <Header>{formatMessage(messages.email)}</Header>
                 <CheckBoxStyled
                   checked={orderPaymentEmailChecked}
-                  onChange={this.changeNotificationSettings('notifyOrderPayment', 'email')}
+                  onChange={this.changeNotificationSettings(
+                    'notifyOrderPayment',
+                    'email'
+                  )}
                 />
                 <CheckBoxStyled
                   checked={prodesignEmailChecked}
-                  onChange={this.changeNotificationSettings('notifyProDesign', 'email')} />
+                  onChange={this.changeNotificationSettings(
+                    'notifyProDesign',
+                    'email'
+                  )}
+                />
                 <CheckBoxStyled
                   checked={commentsEmailChecked}
-                  onChange={this.changeNotificationSettings('notifyComments', 'email')} />
+                  onChange={this.changeNotificationSettings(
+                    'notifyComments',
+                    'email'
+                  )}
+                />
                 <CheckBoxStyled
                   checked={teamStoreEmailChecked}
-                  onChange={this.changeNotificationSettings('notifyTeamStore', 'email')} />
+                  onChange={this.changeNotificationSettings(
+                    'notifyTeamStore',
+                    'email'
+                  )}
+                />
                 <CheckBoxStyled
                   checked={designlabEmailChecked}
-                  onChange={this.changeNotificationSettings('notifyDesignLab', 'email')} />
+                  onChange={this.changeNotificationSettings(
+                    'notifyDesignLab',
+                    'email'
+                  )}
+                />
                 <CheckBoxStyled
                   checked={productServiceEmailChecked}
-                  onChange={this.changeNotificationSettings('notifyProductService', 'email')} />
+                  onChange={this.changeNotificationSettings(
+                    'notifyProductService',
+                    'email'
+                  )}
+                />
                 <CheckBoxStyled
-                  checked={notificationData && notificationData.newsletterSubscribed}
-                  onChange={this.changeNewsletterSetting} />
+                  checked={
+                    notificationData && notificationData.newsletterSubscribed
+                  }
+                  onChange={this.changeNewsletterSetting}
+                />
               </Column>
               <Column marginLeft="30px">
                 <Header>
                   SMS&nbsp;
-                  <DesktopDescription>{formatMessage(messages.smsComment)}</DesktopDescription>
+                  <DesktopDescription>
+                    {formatMessage(messages.smsComment)}
+                  </DesktopDescription>
                 </Header>
                 <CheckBoxStyled
                   checked={orderPaymentSmsChecked}
-                  onChange={this.changeNotificationSettings('notifyOrderPayment', 'sms')} />
+                  onChange={this.changeNotificationSettings(
+                    'notifyOrderPayment',
+                    'sms'
+                  )}
+                />
                 <CheckBoxStyled
                   checked={prodesignSmsChecked}
-                  onChange={this.changeNotificationSettings('notifyProDesign', 'sms')} />
+                  onChange={this.changeNotificationSettings(
+                    'notifyProDesign',
+                    'sms'
+                  )}
+                />
                 <CheckBoxStyled
                   checked={commentsSmsChecked}
-                  onChange={this.changeNotificationSettings('notifyComments', 'sms')} />
+                  onChange={this.changeNotificationSettings(
+                    'notifyComments',
+                    'sms'
+                  )}
+                />
                 <CheckBoxStyled
                   checked={teamStoreSmsChecked}
-                  onChange={this.changeNotificationSettings('notifyTeamStore', 'sms')} />
+                  onChange={this.changeNotificationSettings(
+                    'notifyTeamStore',
+                    'sms'
+                  )}
+                />
                 <CheckBoxStyled
                   checked={designlabSmsChecked}
-                  onChange={this.changeNotificationSettings('notifyDesignLab', 'sms')} />
+                  onChange={this.changeNotificationSettings(
+                    'notifyDesignLab',
+                    'sms'
+                  )}
+                />
                 <CheckBoxStyled
                   checked={productServiceSmsChecked}
-                  onChange={this.changeNotificationSettings('notifyProductService', 'sms')} />
+                  onChange={this.changeNotificationSettings(
+                    'notifyProductService',
+                    'sms'
+                  )}
+                />
                 <CheckBoxStyled
                   hide={true}
                   checked={false}
-                  onChange={() => { }} />
+                  onChange={() => {}}
+                />
               </Column>
-              </NotifcationContent>
-            </MobileFlexColumn>
-            <AlertsColumn>
-              <AlertsTitle>{formatMessage(messages.smsAlerts)}</AlertsTitle>
-              <AlertsSubtitle>{formatMessage(messages.flexible)}</AlertsSubtitle>
-              <NotificationImage src={Notification} />
-            </AlertsColumn>
+            </NotifcationContent>
+          </MobileFlexColumn>
+          <AlertsColumn>
+            <AlertsTitle>{formatMessage(messages.smsAlerts)}</AlertsTitle>
+            <AlertsSubtitle>{formatMessage(messages.flexible)}</AlertsSubtitle>
+            <NotificationImage src={Notification} />
+          </AlertsColumn>
         </NotificationContainer>
         <Description>{formatMessage(messages.notificationComment)}</Description>
       </Container>
@@ -384,22 +492,22 @@ const mapStateToProps = (state: any) => {
   const app = state.get('app').toJS()
   return {
     ...notificationSettigs,
-    ...app
+    ...app,
   }
 }
 
 const PreferencesEnhance = compose(
   graphql(profileNotificationSettingsQuery, {
     options: {
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'network-only',
     },
-    name: 'notificationSettings'
+    name: 'notificationSettings',
   }),
   graphql(profilePhoneSettingsQuery, {
     options: {
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'network-only',
     },
-    name: 'phoneSettings'
+    name: 'phoneSettings',
   }),
   UpdateNotificationSettingMutation,
   UpdateNewsletterSettingMutation,
@@ -407,7 +515,7 @@ const PreferencesEnhance = compose(
   connect(
     mapStateToProps,
     {
-      ...NotificationSettingsActions
+      ...NotificationSettingsActions,
     }
   )
 )(Preferences)

@@ -111,7 +111,7 @@ import { getShoppingCartData, getPriceRangeToApply } from '../../utils/utilsShop
 import Modal from 'antd/lib/modal'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
-import { APPROVED, DEFAULT_ROUTE, PHONE_MINIMUM } from '../../constants'
+import { APPROVED, DEFAULT_ROUTE, PHONE_MINIMUM, PHONE_MINIMUM_NOR } from '../../constants'
 import { message } from 'antd'
 import some from 'lodash/some'
 import { updateAddressMutation } from '../../components/MyAddresses/data'
@@ -796,8 +796,19 @@ class Checkout extends React.Component<Props, {}> {
       billingZipCode,
       billingPhone
     } = this.props
-    if (billingPhone && billingPhone.length < PHONE_MINIMUM) {
-      message.error(formatMessage(messages.phoneError))
+    if (
+      billingPhone && (billingPhone.length < PHONE_MINIMUM ||
+        (billingPhone.startsWith('47') &&
+        billingPhone.length < PHONE_MINIMUM_NOR))
+    ) {
+      message.error(
+        formatMessage(messages.phoneError, {
+          phone_length:
+            billingPhone && billingPhone.startsWith('47')
+              ? PHONE_MINIMUM_NOR
+              : PHONE_MINIMUM,
+        })
+      )
       return
     }
     if (
@@ -871,8 +882,16 @@ class Checkout extends React.Component<Props, {}> {
       return
     }
     
-    if (phone && phone.length < PHONE_MINIMUM) {
-      message.error(formatMessage(messages.phoneError))
+    if (phone && 
+      (phone.length < PHONE_MINIMUM) ||
+      (phone.startsWith('47') && phone.length < PHONE_MINIMUM_NOR)
+    ) {
+      message.error(
+        formatMessage(messages.phoneError, {
+          phone_length:
+            phone && phone.startsWith('47') ? PHONE_MINIMUM_NOR : PHONE_MINIMUM,
+        })
+      )
       return
     }
 

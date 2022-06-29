@@ -61,7 +61,7 @@ import {
   StripeCardData,
   TaxAddressObj
 } from '../../types/common'
-import { PHONE_MINIMUM } from '../../constants'
+import { PHONE_MINIMUM, PHONE_MINIMUM_NOR } from '../../constants'
 import { AddAddressMutation, CurrencyQuery } from '../../screens/Checkout/data'
 import { CreatePaymentIntentMutation, isScaPaymentQuery, PlaceOrderServiceMutation, getTaxQuery } from './data'
 import get from 'lodash/get'
@@ -235,10 +235,23 @@ class PayModal extends React.Component<Props, {}> {
       billingZipCode,
       billingPhone
     } = this.props
-    if (billingPhone && billingPhone.length < PHONE_MINIMUM) {
-      Message.error(formatMessage(messages.phoneError))
+    
+    if (
+      billingPhone && (billingPhone.length < PHONE_MINIMUM ||
+        (billingPhone.startsWith('47') &&
+        billingPhone.length < PHONE_MINIMUM_NOR))
+    ) {
+      Message.error(
+        formatMessage(messages.phoneError, {
+          phone_length:
+            billingPhone && billingPhone.startsWith('47')
+              ? PHONE_MINIMUM_NOR
+              : PHONE_MINIMUM,
+        })
+      )
       return
     }
+
     if (
       paymentMethod === PaymentOptions.CREDITCARD &&
       billingSave

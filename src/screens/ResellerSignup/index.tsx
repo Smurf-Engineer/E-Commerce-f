@@ -94,7 +94,7 @@ import designLabWhite from '../../assets/design_lab_white.png'
 import proDesignWhite from '../../assets/pro_design_white.png'
 import directShipWhite from '../../assets/directship_white.png'
 import resellerGuy from '../../assets/reseller-banner-image.jpg'
-import { NEW_USER, PHONE_MINIMUM } from '../../constants'
+import { NEW_USER, PHONE_MINIMUM, PHONE_MINIMUM_NOR } from '../../constants'
 import { User, UserType } from '../../types/common'
 import { CA_COUNTRY, CA_CURRENCY, US_COUNTRY, US_CURRENCY } from '../../components/ResellerAbout/constants'
 import { connect } from 'react-redux'
@@ -818,8 +818,16 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       message.error(formatMessage(messages.requiredFieldsError))
       return
     }
-    if (phone && phone.length < PHONE_MINIMUM) {
-      message.error(formatMessage(messages.badPhoneFormat))
+    if (phone && 
+      (phone.length < PHONE_MINIMUM) ||
+      (phone.startsWith('47') && phone.length < PHONE_MINIMUM_NOR)
+    ) {
+      message.error(
+        formatMessage(messages.badPhoneFormat, {
+          phone_length:
+            phone && phone.startsWith('47') ? PHONE_MINIMUM_NOR : PHONE_MINIMUM,
+        })
+      )
       return
     }
     if ((

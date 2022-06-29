@@ -17,7 +17,7 @@ import { AddressType, ClickParam } from '../../types/common'
 import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
 import { isApoCity, isNumberValue, isPoBox, isValidCity, isValidZip } from '../../utils/utilsAddressValidation'
-import { PHONE_MINIMUM } from '../../constants'
+import { PHONE_MINIMUM, PHONE_MINIMUM_NOR } from '../../constants'
 
 interface Props {
   shippingAddress: AddressType
@@ -135,8 +135,18 @@ export class Shipping extends React.PureComponent<Props, {}> {
         return
       }
 
-      if (!phone || (phone && phone.length < PHONE_MINIMUM)) {
-        message.error(formatMessage(messages.invalidPhone))
+      if (
+        !phone || (phone && 
+          (phone.length < PHONE_MINIMUM) ||
+          (phone.startsWith('47') && phone.length < PHONE_MINIMUM_NOR)
+        )
+      ) {
+        message.error(
+          formatMessage(messages.invalidPhone, {
+            phone_length:
+              phone && phone.startsWith('47') ? PHONE_MINIMUM_NOR : PHONE_MINIMUM,
+          })
+        )
         return
       }
 

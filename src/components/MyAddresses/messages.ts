@@ -7,38 +7,39 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.MyAddresses.tittle',
-    defaultMessage: 'MyAddresses'
+    defaultMessage: 'MyAddresses',
   },
   addAddress: {
     id: 'components.MyAddresses.addAddress',
-    defaultMessage: '+ ADD ADDRESS'
+    defaultMessage: '+ ADD ADDRESS',
   },
   modalTitle: {
     id: 'components.MyAddresses.modalTitle',
-    defaultMessage: 'Shipping Address'
+    defaultMessage: 'Shipping Address',
   },
   defaultShippingAddress: {
     id: 'components.MyAddresses.defaultShippingAddress',
-    defaultMessage: 'Make default shipping address'
+    defaultMessage: 'Make default shipping address',
   },
   defaultBillingAddress: {
     id: 'components.MyAddresses.defaultBillingAddress',
-    defaultMessage: 'Make default billing address'
+    defaultMessage: 'Make default billing address',
   },
   saveAddress: {
     id: 'components.MyAddresses.saveAddress',
-    defaultMessage: 'Save'
+    defaultMessage: 'Save',
   },
   invalidCity: {
     id: 'components.MyAddresses.invalidCity',
-    defaultMessage: 'Enter a valid city name'
+    defaultMessage: 'Enter a valid city name',
   },
   invalidZip: {
     id: 'components.MyAddresses.invalidZip',
-    defaultMessage: 'Enter a valid ZIP Code'
+    defaultMessage: 'Enter a valid ZIP Code',
   },
   invalidPhone: {
     id: 'components.MyAddresses.invalidPhone',
-    defaultMessage: 'Phone number must be at least 11 characters including the country code'
-  }
+    defaultMessage:
+      'Phone number must be at least {phone_length} characters including the country code',
+  },
 })
